@@ -1,0 +1,112 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_MonthlyMetrics
+* Description   :   This is the popup page for viewing the monthly metrics from the monthly plannig page               
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     17th-Apr-15   Shreyas             Created the vf page.
+
+********************************************************************************************************************************************
+-->
+
+<apex:page controller="ZTS_MonthlyMetricsController" showHeader="false" sidebar="false" LightningStyleSheets="true">
+    
+    <apex:slds />
+    <div class="slds-scope slds-p-horiozontal_medium">
+        <style>
+            body .list th, body .list td, body .detailList th, body .detailList td, body .listViewport table th, body .listViewport table td, .slds-vf-scope .list th,
+            .slds-vf-scope .list td, .slds-vf-scope .detailList th, .slds-vf-scope .detailList td, .slds-vf-scope .listViewport table th, 
+            .slds-vf-scope .listViewport table td
+            {
+                padding:0;
+            }
+            body .slds-vf-data-table thead th, 
+            body .slds-vf-data-table thead td, 
+            .slds-vf-scope .slds-vf-data-table thead th, 
+            .slds-vf-scope .slds-vf-data-table thead td
+            {
+                vertical-align: top;
+                white-space: normal;
+            }
+            body .bPageBlock .detailList .dataCol, 
+            body .bPageBlock .detailList .data2Col, 
+            .slds-vf-scope .bPageBlock .detailList .dataCol, 
+            .slds-vf-scope .bPageBlock .detailList .data2Col
+            {
+                width: unset;
+            }
+            .detailList tbody td:last-child, .detailList tbody td:nth-last-child(2)
+            {
+                display:none;
+            }
+            .detailList tbody td
+            {
+                padding-left: 0.5rem;
+            }
+        </style>
+        <script>
+           function action_recalculateMetrics(){
+                
+                recalculateMetrics();
+                return false;
+           }
+        </script>
+    
+        <apex:form id="frm">
+        
+            <apex:pageblock title="{!$Label.ZTS_EU_MonthlyMetrics}" id="pb">
+    
+                    <apex:outputLabel value="Month: " id="months"/>
+                    <apex:selectList value="{!monthValue}" id="monthList" size="1"  multiselect="false" onchange="return action_recalculateMetrics()"> 
+                        <apex:selectOptions value="{!monthList}" />                                                              
+                    </apex:selectList> 
+                    <br></br><br></br>
+                    &nbsp;&nbsp;&nbsp;
+                    
+                    <apex:outputLabel value="{!$Label.BU}: " id="bu"/>
+                    <apex:selectList size="1" value="{!selectedRatingLabel}">
+                        <apex:actionSupport event="onchange" rerender="pb,rating"/>
+                        <apex:selectOptions value="{!ratingLabels}"/>
+                    </apex:selectList>
+                    
+                    &nbsp;&nbsp;&nbsp;
+                    
+                    <apex:outputLabel value="{!$Label.Rating_Segmentation}: " id="rating"/>
+                    <apex:selectList id="ratingValues" size="1" value="{!selectedRatingValue}">
+                        <apex:selectOptions value="{!ratingValues}"/>
+                    </apex:selectList>
+    
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="{!$Label.ZTS_EU_GetDetailsForAccountBySegment}" action="{!getAccountBySegmentDetails}" rerender="pb,pbs,pbt" status="status_Loading"/>
+                    
+                    <br></br><br></br>
+                    <apex:pageblockSection title="Metrics" id="pbs" >
+                    
+                        <apex:dataTable value="{!wrapperList}" var="w" id="pbt">
+                            
+                            <apex:column headerValue="{!$Label.ZTS_EU_AverageNumberOfCustomersVisits}" value="{!w.averageCustomerVisitsPerDay}"/>
+                            <apex:column headerValue="{!$Label.ZTS_EU_time_in_the_field}" value="{!w.percentageTimeInTheField}"/>
+                            <apex:column headerValue="{!$Label.ZTS_EU_Reach_to_account_by_segment}" value="{!w.reachToAccountBySegment}"/>
+                            <apex:column headerValue="{!$Label.ZTS_EU_Frequency_to_account_by_segment}" value="{!w.frequencyToAccountBySegment}"/>
+                        
+                        </apex:dataTable>
+                        
+                    </apex:pageblockSection>
+                    
+                    <apex:actionFunction name="recalculateMetrics" rerender="pb" status="status_Loading" action="{!getMetricsDetails}">
+                    </apex:actionFunction>
+                    <apex:actionStatus id="status_Loading">
+                        <apex:facet name="start"> 
+                            <c:ZTS_EnhancedActionStatus BackColor="#F1F2C6" borderColor="#336699" borderSize="1" height="30px" width="120px" ImageUrl="{!$Resource.AjaxAnimation}" Message="{!$Label.ZTS_EU_Loading}" messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+                        </apex:facet>
+                    </apex:actionStatus>
+                        
+            </apex:pageblock>
+        
+        </apex:form>
+    </div>
+</apex:page>

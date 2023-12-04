@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>DEFAULT</label>
+    <protected>false</protected>
+    <values>
+        <field>Accounts_Payable_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086OszEAE</value>
+    </values>
+    <values>
+        <field>Action_Stat_Logistics__c</field>
+        <value xsi:type="xsd:string">actionstatlogistics@gmail.com</value>
+    </values>
+    <values>
+        <field>Billing_Inquiry_Entitlement_Record_Id__c</field>
+        <value xsi:type="xsd:string">5507h000001okysAAA</value>
+    </values>
+    <values>
+        <field>Block_VMIP_Integration_Created__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>CSE_Entitlement_Name__c</field>
+        <value xsi:type="xsd:string">5507h000001okytAAA</value>
+    </values>
+    <values>
+        <field>Canada_Accidental_Letter_ID__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWruEAG</value>
+    </values>
+    <values>
+        <field>Canada_Warranty_Letter_ID__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWrzEAG</value>
+    </values>
+    <values>
+        <field>Cash_Apps_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086Ot0EAE</value>
+    </values>
+    <values>
+        <field>Contact_Data_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k000008kl1JEAQ</value>
+    </values>
+    <values>
+        <field>Credit_and_Collection_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086Ot1EAE</value>
+    </values>
+    <values>
+        <field>Custom_Delivery_Service__c</field>
+        <value xsi:type="xsd:string">bobmullins@customdelivery.com</value>
+    </values>
+    <values>
+        <field>Customer_Service_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086Ot2EAE</value>
+    </values>
+    <values>
+        <field>Customer_Service_Supervisor_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086Ot3EAE</value>
+    </values>
+    <values>
+        <field>DCS_Delivery__c</field>
+        <value xsi:type="xsd:string">dispatch@dcsdelivery.com</value>
+    </values>
+    <values>
+        <field>Data_Inquiry_Entitlement_Record_Id__c</field>
+        <value xsi:type="xsd:string">5507h000001okyuAAA</value>
+    </values>
+    <values>
+        <field>Data_Request_Child_Case_Subject__c</field>
+        <value xsi:type="xsd:string">Opt In Receive Ref Labs/Imagyst Invoice Daily</value>
+    </values>
+    <values>
+        <field>Data_Request_RT__c</field>
+        <value xsi:type="xsd:string">0123k000001MTE1AAO</value>
+    </values>
+    <values>
+        <field>Diagnostics_Case_Milestone_Type_Id__c</field>
+        <value xsi:type="xsd:string">5573k0000008OkJAAU</value>
+    </values>
+    <values>
+        <field>Diagnostics_Case_SLA__c</field>
+        <value xsi:type="xsd:double">1800.0</value>
+    </values>
+    <values>
+        <field>Diagnostics_L1_Milestone_Type_Id__c</field>
+        <value xsi:type="xsd:string">5573k0000008OkKAAU</value>
+    </values>
+    <values>
+        <field>Diagnostics_L1_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086MHZEA2</value>
+    </values>
+    <values>
+        <field>Diagnostics_L1_SLA__c</field>
+        <value xsi:type="xsd:double">480.0</value>
+    </values>
+    <values>
+        <field>Diagnostics_L2_Milestone_Type_Id__c</field>
+        <value xsi:type="xsd:string">5573k0000008OkLAAU</value>
+    </values>
+    <values>
+        <field>Diagnostics_L2_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086MHaEAM</value>
+    </values>
+    <values>
+        <field>Diagnostics_L2_SLA__c</field>
+        <value xsi:type="xsd:double">1440.0</value>
+    </values>
+    <values>
+        <field>Diagnostics_L3_Connectivity_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k000008kl1KEAQ</value>
+    </values>
+    <values>
+        <field>Diagnostics_L3_Medical_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k000008kl1LEAQ</value>
+    </values>
+    <values>
+        <field>Diagnostics_L3_Milestone_Type_Id__c</field>
+        <value xsi:type="xsd:string">5573k0000008OkMAAU</value>
+    </values>
+    <values>
+        <field>Diagnostics_L3_SLA__c</field>
+        <value xsi:type="xsd:double">1440.0</value>
+    </values>
+    <values>
+        <field>Diagnostics_Rotor_Credit_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086MHcEAM</value>
+    </values>
+    <values>
+        <field>EHT_Logistics__c</field>
+        <value xsi:type="xsd:string">dispatch@ehtlogistics.com</value>
+    </values>
+    <values>
+        <field>Feedback_Entitlement_Record_Id__c</field>
+        <value xsi:type="xsd:string">5507h000001okyvAAA</value>
+    </values>
+    <values>
+        <field>Genetics_Australia_Email__c</field>
+        <value xsi:type="xsd:string">Genetics.AU@zoetis.com</value>
+    </values>
+    <values>
+        <field>Genetics_Billing_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086Ot4EAE</value>
+    </values>
+    <values>
+        <field>Genetics_Global_Email2__c</field>
+        <value xsi:type="xsd:string">global.genetics@zoetis.com</value>
+    </values>
+    <values>
+        <field>Genetics_Global_Email__c</field>
+        <value xsi:type="xsd:string">geneticsservice@zoetis.com</value>
+    </values>
+    <values>
+        <field>Genetics_New_Zealand_Email__c</field>
+        <value xsi:type="xsd:string">Genetics.NZ@zoetis.com</value>
+    </values>
+    <values>
+        <field>Genetics_Order_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086Ot5EAE</value>
+    </values>
+    <values>
+        <field>Genetics_Orders_Email2__c</field>
+        <value xsi:type="xsd:string">geneticsorders@zoetis.com</value>
+    </values>
+    <values>
+        <field>Genetics_Orders_Email__c</field>
+        <value xsi:type="xsd:string">geneticsoe@zoetis.com</value>
+    </values>
+    <values>
+        <field>Genetics_Process_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086Ot6EAE</value>
+    </values>
+    <values>
+        <field>Inside_Sales_Supervisor_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086Ot7EAE</value>
+    </values>
+    <values>
+        <field>Lab_Logistics__c</field>
+        <value xsi:type="xsd:string">znlabs@lablogistics.com</value>
+    </values>
+    <values>
+        <field>Master_Data_Business_Hours_ID__c</field>
+        <value xsi:type="xsd:string">01m3k000000XdVh</value>
+    </values>
+    <values>
+        <field>Master_Data_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086Ot8EAE</value>
+    </values>
+    <values>
+        <field>Mkt_Comm_Sup_Entitlement_Record_Id__c</field>
+        <value xsi:type="xsd:string">5507h000001okywAAA</value>
+    </values>
+    <values>
+        <field>Order_Inquiry_Entitlement_Record_Id__c</field>
+        <value xsi:type="xsd:string">5507h000001okyxAAA</value>
+    </values>
+    <values>
+        <field>RL_Courier_Logistics_Seattle_Queue_Id__c</field>
+        <value xsi:type="xsd:string">00G4z0000049FaLEAU</value>
+    </values>
+    <values>
+        <field>RefLabs_Courier_Child_Case_Subject__c</field>
+        <value xsi:type="xsd:string">Courier Request for Seattle</value>
+    </values>
+    <values>
+        <field>RefLabs_DAA_Agreement_Name__c</field>
+        <value xsi:type="xsd:string">Reference Labs Data Access Agreement</value>
+    </values>
+    <values>
+        <field>RefLabs_Email_To_Case__c</field>
+        <value xsi:type="xsd:string">referencelabsupport@zoetis.com</value>
+    </values>
+    <values>
+        <field>RefLabs_Entitlement_Record_Id__c</field>
+        <value xsi:type="xsd:string">5507h000001okyyAAA</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Consulting_Vet_Team_Queue__c</field>
+        <value xsi:type="xsd:string">00G4z0000049FaMEAU</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Courier_Task_Subject__c</field>
+        <value xsi:type="xsd:string">Follow Up with Courier Provider</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Customer_Onboarding_RT__c</field>
+        <value xsi:type="xsd:string">Ref_Labs_Onboarding</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Customer_Service_Support_Queue__c</field>
+        <value xsi:type="xsd:string">00G4z0000049FaNEAU</value>
+    </values>
+    <values>
+        <field>Ref_Labs_IT_Support_Queue_Id__c</field>
+        <value xsi:type="xsd:string">00G4z0000049FaOEAU</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Logistics_Courier_Team_Queue__c</field>
+        <value xsi:type="xsd:string">00G4z0000049FaPEAU</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Medtech_Team_Queue__c</field>
+        <value xsi:type="xsd:string">00G4z0000049FaQEAU</value>
+    </values>
+    <values>
+        <field>Ref_Labs_PIMS_Integration_Team_Queue__c</field>
+        <value xsi:type="xsd:string">00G4z0000049FaREAU</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Pathologists_Team_Queue__c</field>
+        <value xsi:type="xsd:string">00G4z0000049FaSEAU</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Predefined_Case_Teams_ID__c</field>
+        <value xsi:type="xsd:string">0B44z000000fzmcCAA</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Predefined_Courier_Team_Id__c</field>
+        <value xsi:type="xsd:string">0B44z000000fzmhCAA</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Sales_Consultant_Queue_Id__c</field>
+        <value xsi:type="xsd:string">00G4z0000049HgcEAE</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Support_RT_ID__c</field>
+        <value xsi:type="xsd:string">0124z000000gjJHAAY</value>
+    </values>
+    <values>
+        <field>Ref_Labs_Support_RT__c</field>
+        <value xsi:type="xsd:string">Reference_Labs_Support</value>
+    </values>
+    <values>
+        <field>Sales_Inquiry_RT__c</field>
+        <value xsi:type="xsd:string">Sales_Inquiry</value>
+    </values>
+    <values>
+        <field>Sales_Order_Management_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k0000086Ot9EAE</value>
+    </values>
+    <values>
+        <field>Supply_Child_Case_Subject__c</field>
+        <value xsi:type="xsd:string">Supplies Needed for Onboarding</value>
+    </values>
+    <values>
+        <field>Tax_Inquiry_Email_to_Case__c</field>
+        <value xsi:type="xsd:string">ext-salestax@zoetis.com</value>
+    </values>
+    <values>
+        <field>US_Accidental_Damage_Letter_ID__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsAEAW</value>
+    </values>
+    <values>
+        <field>US_Natural_Disaster_Letter_ID__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWs4EAG</value>
+    </values>
+    <values>
+        <field>US_Third_Party_Template_ID__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsQEAW</value>
+    </values>
+    <values>
+        <field>US_Warranty_Letter_Fuse__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsEEAW</value>
+    </values>
+    <values>
+        <field>US_Warranty_Letter_HM5_HM5C__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsOEAW</value>
+    </values>
+    <values>
+        <field>US_Warranty_Letter_Microscope__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsTEAW</value>
+    </values>
+    <values>
+        <field>US_Warranty_Letter_SA__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsYEAW</value>
+    </values>
+    <values>
+        <field>US_Warranty_Letter_UA__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsUEAW</value>
+    </values>
+    <values>
+        <field>US_Warranty_Letter_VS2__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsJEAW</value>
+    </values>
+    <values>
+        <field>US_Warranty_Letter_VSpro__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsVEAW</value>
+    </values>
+    <values>
+        <field>US_Warranty_Letter_VUE__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsdEAG</value>
+    </values>
+    <values>
+        <field>US_Warranty_Letter__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsPEAW</value>
+    </values>
+    <values>
+        <field>US_Warranty_Letter_i_STAT__c</field>
+        <value xsi:type="xsd:string">a2U3k000000OWsZEAW</value>
+    </values>
+    <values>
+        <field>VCS_House_Account_Email_to_Case__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>VCS_House_Account_Queue__c</field>
+        <value xsi:type="xsd:string">00G4z000004Y3jeEAC</value>
+    </values>
+    <values>
+        <field>VMIPS_Case_RT_Name__c</field>
+        <value xsi:type="xsd:string">Animal_Support</value>
+    </values>
+    <values>
+        <field>VMIPS_Email_To_Case__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>VMIPS_Email_to_Case_Email_1__c</field>
+        <value xsi:type="xsd:string">zoetisreporting@zoetis.com</value>
+    </values>
+    <values>
+        <field>VMIPS_Email_to_Case_Email_2__c</field>
+        <value xsi:type="xsd:string">supportus@zoetis.com</value>
+    </values>
+    <values>
+        <field>VMIPS_Email_to_Case_Email_3__c</field>
+        <value xsi:type="xsd:string">ahg_nar_rocky_mountain@zoetis.com</value>
+    </values>
+    <values>
+        <field>VMIPS_Email_to_Case_Email_4__c</field>
+        <value xsi:type="xsd:string">vmips@zoetis.com</value>
+    </values>
+    <values>
+        <field>VMIPS_Queue_ID__c</field>
+        <value xsi:type="xsd:string">00G3k000008gKMtEAM</value>
+    </values>
+    <values>
+        <field>X10_Day_Product__c</field>
+        <value xsi:type="xsd:string">CSE - 10 Days Case Product</value>
+    </values>
+    <values>
+        <field>X10_Day_Reportability__c</field>
+        <value xsi:type="xsd:string">CSE- 10 Day Alert (Reportability)</value>
+    </values>
+    <values>
+        <field>X3_Day_Alert__c</field>
+        <value xsi:type="xsd:string">CSE - 3 Day Alert</value>
+    </values>
+    <values>
+        <field>X3_Day_Product__c</field>
+        <value xsi:type="xsd:string">CSE - 3 Day Case Product</value>
+    </values>
+    <values>
+        <field>X7_Day_Product__c</field>
+        <value xsi:type="xsd:string">CSE - 7 Day Case Product</value>
+    </values>
+    <values>
+        <field>ZTS_US_Zoetis_Product_RT__c</field>
+        <value xsi:type="xsd:string">0124z000000gjNy</value>
+    </values>
+    <values>
+        <field>Zoetis__c</field>
+        <value xsi:type="xsd:string">lrogers@phoenixlab.com</value>
+    </values>
+</CustomMetadata>

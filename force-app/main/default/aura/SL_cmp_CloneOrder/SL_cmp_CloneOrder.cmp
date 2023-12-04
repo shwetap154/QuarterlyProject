@@ -1,0 +1,6 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId,lightning:actionOverride" controller="ZTS_EU_CloneOrderAndDetailsController" >
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="cloneRecordId" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+</aura:component>

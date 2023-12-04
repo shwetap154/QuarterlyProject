@@ -1,0 +1,600 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="accordianFAQ_Cntrl">
+<aura:attribute name="activeSections" type="List" default="['']" />
+<aura:attribute name="baseURL" type="String"/>
+<aura:attribute name="marketvalue" type="String"/>
+<aura:attribute name="FAQLabel" type="String"/>
+<aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+<ltng:require styles="{!$Resource.Zoetis_Static_Resources}" />
+<ltng:require styles="{!$Resource.Zoetis_Static_Resources + '/css/zoetis_global_styles.css'}" /> 
+<aura:attribute name="openModal" type="boolean" default="false"/>
+<aura:attribute name="showAcronymsAbbreviationsButton" type="boolean" default="false"/>
+
+<aura:if isTrue="{!v.openModal}">
+  <div role="dialog" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container zs_abbr_popup">
+          <div class="slds-modal__header zs_abbr_popup_header">
+              <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.handleCloseModal}">
+                  X
+                  <span class="slds-assistive-text">Close</span>
+              </button>
+  
+          <h2 class="slds-modal__title slds-hyphenate" >Acronyms &amp; Abbreviations</h2>       
+               
+          </div>
+          <div class="slds-modal__content slds-p-around--medium">
+          <div class="Header">
+          <p>ALPHA: African Livestock Productivity and Health Advancement</p>
+          <p>API:	Active Pharmaceutical Ingredient</p>  
+          <p>AQRT: Area Quality Review Team</p> 
+          <p>BenAfME:	Benelux, Africa, Middle East</p>
+          <p>CAPA: Corrective and Preventive Action</p>
+          <p>COA:	Certificate of Analysis</p>
+          <p>COGs: Cost of goods</p>
+          <p>CPP:	Certificate of Pharmaceutical Product</p>
+          <p>EHS:	Environment, Health and Safety</p>
+          <p>ESQA: External Supply Quality Assurance</p>
+          <p>ETS:	Event Tracking System</p>
+          <p>FSC:	Free Sales Certificate</p>
+          <p>GATP: Global Available To Promise</p>
+          <p>GDP:	Good Distribution Practice</p>
+          <p>GMP:	Good Manufacturing Proactive</p>
+          <p>GMS:	Global Manufacturing and Supply</p>
+          <p>GTS:	Global Trade Service</p>
+          <p>HA: Health Authority</p>
+          <p>HQ: Headquarter</p>
+          <p>icRAM:	in country Regulatory Affairs Manager</p>
+          <p>LSP:	Logistic Service Provider</p>
+          <p>LTR:	Local Technical Representative</p>
+          <p>MAH:	Marketing Authorisation Holder</p>
+          <p>MAR:	Market Addition Request</p>
+          <p>MFA:	Medicated Feed Additive</p>
+          <p>MOQ:	Minimum order quantity</p>
+          <p>MRL:	Maximum Residue Limit</p>
+          <p>MRP:	Mutual Recognition Procedure</p>
+          <p>MSDS: Material Safety Data Sheet</p>
+          <p>NAFDAC: National Agency for Food &amp; Drug Administration &amp; Control</p>
+          <p>NDA:	National Drug Authority</p>
+          <p>PMT:	Profit Margin Template</p>
+          <p>PoA:	Power of Attorney</p>
+          <p>PSUR: Periodic Safety Update Reports</p>
+          <p>PTRS: Probability of Technical and Regulatory Success</p>
+          <p>QA: Quality Assurance</p>
+          <p>QMS:	Quality Management System</p>
+          <p>QQF:	Qualitative/Quantitative Formula</p>
+          <p>RA: Regulatory Affairs</p>
+          <p>SCR:	Source Change Request</p>
+          <p>SKU:	Stock Keeping Unit</p>
+          <p>SME:	Subject Matter Expert</p>
+          <p>SMF:	Site Master File</p>
+          <p>SOP:	Standard Operating Procedure</p>
+          <p>SPC: Summary of Product Characteristics</p>
+          <p>SSA:	Sub-Saharan Africa</p>
+          <p>TFDA: Tanzania Food and Drug Authority</p>
+          <p>USDA: Veterinary Drug and Animal Feed Administration &amp; Control Authority</p>
+          <p>VMRA: Veterinary Medicine Regulatory Affairs</p>
+          <p>VMRD: Veterinary Medicine Research and Development</p>
+          </div>
+  <!--Markup End-->
+                  
+          </div>
+          <!--Modal Box Button
+          <div class="slds-modal__footer">
+              <button class="slds-button" onclick="{!c.handleCloseModal}">Cancel</button>
+          </div>-->
+      </div>
+  </div>
+ <div class="slds-backdrop slds-backdrop--open"></div>           
+</aura:if>
+    
+<p class="slds-p-bottom_medium">
+    <span class="zs_bc">Contact Us</span> / <span class="zs_active_bc">Customer Service</span></p>
+<div aura:id ="slds-text-heading_medium slds-p-bottom_small" >
+  <h2 class="slds-float_left zs_entry_title">Customer Service</h2> 
+  <aura:if isTrue="{!v.showAcronymsAbbreviationsButton}">
+    <lightning:button  class="slds-float_right zs_abbr_btn" variant="brand" label="Acronyms &amp; Abbreviations"  onclick="{! c.handleClick }"  />
+  </aura:if>
+</div>
+<!--Contact Information for Costa Rica and Panama Markets as per TPDEV-1107-->
+<div class="zs_customerServicePage">
+<aura:if isTrue="{!v.marketvalue == 'Costa Rica' || v.marketvalue == 'Panama'}">
+  <div class="customer_team_container">
+    <h2 class="slds-p-bottom_large">CUSTOMER SERVICE TEAM</h2>
+    <div class="customer_team slds-p-bottom_medium">                
+        <div class="customer_thumb"><img src="{!$Resource.CommunityContact_Michael}" /></div>
+        <div class="customer_content">
+            <p>Michael Aguilar| Customer Service Coordinator// Escalations - Central America</p>
+        <p>Mobile : +506 6050 9128|  <a href= "Michael.Aguilar@zoetis.com"><u style="color: #171C8F;"><b>Michael.Aguilar@zoetis.com</b></u></a></p>
+      </div>
+    </div>
+      
+    <div class="customer_team slds-p-bottom_medium">                
+      <div class="customer_thumb"><img src="{!$Resource.CommunityContact_Daniel}" /></div>
+      <div class="customer_content">
+      <p>Daniel Cortes | Invoicing - Central America</p>
+      <p>Mobile: +506 6033 4979 | <a href= "daniel.cortes@zoetis.com"><u style="color: #171C8F;"><b>daniel.cortes@zoetis.com</b></u></a></p>
+    </div>
+  </div>
+      
+    <div class="customer_team slds-p-bottom_medium">                
+      <div class="customer_thumb"><img src="{!$Resource.CommunityContact_Karol}" /></div>
+      <div class="customer_content">
+      <p>Karol Alfaro | Customer Service// Problem Solution - Central America</p>
+      <p>Mobile: +506 6053 3512 | <a href= "Karol.Alfaro@zoetis.com"><u style="color: #171C8F;"><b>Karol.Alfaro@zoetis.com</b></u></a></p>
+    </div>
+  </div>
+    </div>
+</aura:if>
+    <!-- End of Contact Information for Costa Rica and Panama Markets-->
+    
+<aura:if isTrue="{!v.marketvalue == 'ALPHA'}">
+  <div class="customer_team_container">
+    <h2 class="slds-p-bottom_large">CUSTOMER SERVICE TEAM</h2>
+    <div class="customer_team slds-p-bottom_medium">                
+        <div class="customer_thumb"><img src="{!$Resource.CommunityContact_Joy}" /></div>
+        <div class="customer_content">
+            <p>Joy Olisah | Commercial Customer Service Coordinator - Africa &amp; Middle East</p>
+        <p>Office: +32 274 68 145 | Mobile: +32 492 15 00 83 | <a href= "joy.olisah@zoetis.com"><u style="color: #171C8F;" ><b>joy.olisah@zoetis.com</b></u></a></p>
+      </div>
+    </div>
+   
+  <div class="customer_team slds-p-bottom_medium">                
+      <div class="customer_thumb"><img src="{!$Resource.CommunityContact_Isaac}" /></div>
+      <div class="customer_content">
+      <p>Isaac Senyondo | Commercial Customer Service Planner - Africa</p>
+      <p>Office: +32 274 68 318 | Mobile: +32 468 21 99 40 | <a href= "isaac.senyondo@zoetis.com"><u style="color: #171C8F;"><b>isaac.senyondo@zoetis.com</b></u></a></p>
+    </div>
+  </div>
+  </div>
+</aura:if>
+    
+<aura:if isTrue="{!v.marketvalue == 'Maghreb'}">
+  <div class="customer_team_container">
+    <h2 class="slds-p-bottom_large">CUSTOMER SERVICE TEAM</h2>
+    <div class="customer_team slds-p-bottom_medium">                
+        <div class="customer_thumb"><img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/user_icon.png'}" /></div>
+        <div class="customer_content">
+            <p>Kaoutar Addou| Customer service Coordinator Morocco, Algeria, Tunisia, Senegal Office :</p>
+        <p>Mobile : +212661472990| Kaouter.addou@zoetis.com</p>
+      </div>
+    </div>
+   
+  <div class="customer_team slds-p-bottom_medium">                
+      <div class="customer_thumb"><img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/user_icon.png'}" /></div>
+      <div class="customer_content">
+      <p>Zuzana Melsen | Intercompany Supply Planner Feed additives supplied from Belgium (All countries)</p>
+      <p>Office: +32 2 746 81 81 | Zuzana.placha@zoetis.com</p>
+    </div>
+  </div>
+  <div class="customer_team slds-p-bottom_medium">                
+      <div class="customer_thumb"><img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/user_icon.png'}" /></div>
+      <div class="customer_content">
+      <p>Femke Benoit | Intercompany Supply Coordinator Tunisia, Senegal, Morocco</p>
+      <p>Office : +2.02.33330800 | Mobile : +201097450745| Karim. Maklad@zoetis.com</p>
+    </div>
+  </div>
+  <div class="customer_team slds-p-bottom_medium">                
+      <div class="customer_thumb"><img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/user_icon.png'}" /></div>
+      <div class="customer_content">
+      <p>Karmen Stupar | Intercompany Supply Coordinator Algeria</p>
+      <p>Office: +32 2 746 81 81 | Karmen.stupar@zoetis.com</p>
+    </div>
+  </div>
+
+</div>
+</aura:if>
+
+<aura:if isTrue="{!v.marketvalue == 'Middle East'}">
+  <div class="customer_team_container">
+    <h2 class="slds-p-bottom_large">CUSTOMER SERVICE TEAM</h2>
+    <div class="customer_team slds-p-bottom_medium">                
+        <div class="customer_thumb"><img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/user_icon.png'}" /></div>
+        <div class="customer_content">
+            <p>Karim Maklad| Customer service Coordinator – Gulf &amp; Levant</p>
+        <p>Office : +2.02.33330800 | Mobile : +201097450745| Karim. Maklad@zoetis.com</p>
+      </div>
+    </div>
+   
+  <div class="customer_team slds-p-bottom_medium">                
+      <div class="customer_thumb"><img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/user_icon.png'}" /></div>
+        <div class="customer_content">
+            <p>Karmen Stupar| Intercompany Supply Coordinator – Saudi</p>
+        <p>Office: +32 2 746 81 81 | karmen.stupar@zoetis.com</p>
+      </div>
+    </div>
+	<div class="customer_team slds-p-bottom_medium">                
+        <div class="customer_thumb"><img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/user_icon.png'}" /></div>
+        <div class="customer_content">
+            <p>Zuzana Melsen|  Intercompany Supply Planner – Saudi</p>
+        <p>Office: +32 2 746 81 81 | zuzana.placha@zoetis.com</p>
+      </div>
+    </div>
+
+</div>
+</aura:if>
+    <div aura:id="customer_faq_container slds-m-top_large">
+     
+  
+      <h2 class="slds-p-bottom_large" >{!v.FAQLabel}</h2>
+    
+     
+ 
+   <lightning:accordion class="custom-header" allowMultipleSectionsOpen="true" onsectiontoggle="{! c.handleSectionToggle }" activeSectionName="{! v.activeSections }">
+        <aura:if isTrue="{!v.marketvalue == 'ALPHA'}">
+          <lightning:accordionSection name="A" label="Where do I find technical, marketing or sales information about the Zoetis products and solutions?">
+          <aura:set attribute="body">
+            <p>
+              All information about the Zoetis brand, products, services, and solutions can be found in the Library in this Distributor Service
+              Portal. You can search per species and alphabetically in the
+              <a href="{!v.baseURL + '/s/library?language=en_US'}" target="_blank" style=" font-size: 1em !important; color:#FF6400 !important;"><b>Library</b></a>.
+            </p>
+          </aura:set>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="B" label="How do I use product X?">
+          <p>To find out about the correct use of a specific product, you have 2 online sources:</p>
+          <p>-The
+            <a href="{!v.baseURL + '/s/library?language=en_US'}" target="_blank" style=" font-size: 1em! important; color:#FF6400 !important;"><b>Library</b></a>
+            : here you will find the leaflet, technical bulletin, and the eDetailer.</p>
+          <p>-The
+            <a href="{!v.baseURL + '/s/learning-zone?language=en_US'}" target="_blank" style=" font-size: 1em !important; color:#FF6400 !important;"><b>Learning Zone</b></a>
+            : for most of our products and solutions we offer eleanings - online courses (with quiz and certification) you can enroll in and
+            complete the training at your own convenience.<br />
+          </p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="C" label="Online training and certification: How to register, enroll and get certified?">
+          <p>
+            We offer online courses for compliance, product training, and business skills (finance, sales, and soft skills). There are mandatory
+            trainings to follow (yearly: compliance; ad hoc: product training) and complementary trainings you can enroll in and complete at
+            your convenience. You can set up your own online training program, focusing on what you want/need. For all the trainings, you get a
+            certification after successfully completing the quiz(es). You can access the learning materials In the
+            <a href="https://elearn.zoetis.ssa.en/" target="_blank" style=" font-size: 1em !important; color: #FF6400 !important;">
+              <b>Zoetis eLearning</b>
+            </a>
+            site.
+          </p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="D" label="What is the process for setting up a new product?">
+          <p>Timing:</p>
+          <p>-PMT will take 2 weeks if we have all the details (COG’s, yearly volume…..)</p>
+          <p>-MAR approval will take at least 4 weeks before we can start setup.</p>
+          <p>-Setup time is 4 to 6 weeks.</p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="E" label="What is the production timeline/lead time?">
+          <p>The Production Lead time is the period that it takes for goods to be delivered at our regional warehouse in Belgium.</p>
+          <p>-Vaccines: 3 to 4 months</p>
+          <p>-Biologicals: 6 months</p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="F" label="How are the products transported?">
+          <p>The volume and the destination define the way of transportation.</p>
+          <p>-Air: 2 to 3 days</p>
+          <p>-Ocean: up to 4 week</p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="G" label="What is a drop shipment?">
+          <p>Drop shipments (products with high toxicity) concerns products that are directly shipped from our factories.</p>
+          <p>Conditions:</p>
+          <p>-Minimal flexibility to delay the shipment as our factories do not have a large storage capacity.</p>
+          <p>-Purchase orders need to be received before the forecast goes into frozen period.</p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="H" label="What is in a stock shipment?">
+          <p>In-stock shipments are done from our Belgium warehouse.</p>
+          <p>Conditions:</p>
+          <p>-More flexibility regarding the shipping date.</p>
+          <p>-Expiration date should also be taken into consideration.</p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="I" label="What is the frozen period?">
+          <p>Period that it takes to produce goods: current month +2 months.</p>
+            <p><b>EX:</b>When in June, the frozen period is June, July and August. This implies that the forcase can only be entered for September.</p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="J" label="What is the forecasting process? How do I provide my forecast?">
+          <p>-18 months rolling forecast which is updated monthly. First available month to change: current month + 2 months.</p>
+          <p>-The
+            <a href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}" target="_blank" style=" font-size: 1em !important; color:#FF6400 !important;"><b>Forecast</b></a>
+            can only be entered after the frozen period and after the setup has been completed.
+          </p>
+          <p>The
+            <a href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}" target="_blank" style=" font-size: 1em! important; color:#FF6400 !important;"><b>Forecast</b></a>
+            needs to be entered online in the Distributor Portal.
+          </p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="K" label="What is the process for purchase orders? Why a purchase order? How do I order?">
+          <p>-Purchase orders (PO) can be issued by distributors at the beginning of every quarter when forecast is updated. This needs to be done online on the
+            <a href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}" target="_blank" style=" font-size: 1em! important; color:#FF6400 !important;">
+              <b>Forecast, Stock and Order</b>
+            </a>
+          </p>
+          <p>-POs are not influencing the payment terms, but it is a firm order.</p>
+          <p>-The PO is also needed for the manufacturing sites as a back order in case of supply issues.</p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="L" label="When and how do I provide the stock of Zoetis products?">
+          <p>
+            The stock of Zoetis products needs to be reported at the beginning of every month (before the 6th). This can be done online
+            <a href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}" target="_blank" style=" font-size: 1em! important; color:#FF6400 !important;"><b>HERE</b></a>
+            via an upload, or a manual entry
+          </p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="BB" label="We are expecting to get Zoetis Product X registered very soon. Can we locally design the promotion materials?">
+          <p>
+            Please visit the Advertising and Promotions section to review the Policy. All materials, documents should be compliant with local
+            regulations, guidance and best practices and approved by Zoetis Regulatory Affairs Colleagues.
+          </p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="M" label="What should I do if the product is not doing what it should? What should I do if there is a side effect after using the product? ">
+          <p>
+            Please fill the Pharmacovigilance Reporting Form and e-mail to
+            <a href="mailto:PVAfrica@zoetis.com" style=" font-size: 1em! important; color:#FF6400 !important;"><b>PVAfrica@Zoetis.com</b></a>
+          </p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="N" label="What should I do if there is a defect on the product?">
+          <p>Send an e-mail to
+            <a href="mailto:PVAfrica@zoetis.com" style=" font-size: 1em! important; color:#FF6400 !important;">
+              <u><b>PVAfrica@Zoetis.com</b></u>
+            </a>. Please include pictures, explanations and details. 
+          </p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="S" label="I noticed that my import permit was expired but I can manage custom clearance. However, Zoetis is not releasing the goods. What is the reason? How do I resolve the issue?">
+          <p>
+            It is Zoetis internal procedure to ensure compliance. The SAP system is integrated with registration database and automatically
+            blocked if the conditions are not met. (e.g. the product is not registered, no import available, etc). Please provide a statement
+            letter so that the Zoetis Team can release the goods.
+          </p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="T" label="Why is Zoetis asking me for GDP certificate or equivalent?">
+          <p>Good Distribution Practices is required by EU Regulation. It is acceptable to get any other official document which was issued by your local authorities. Zoetis has to ensure that the products can be stored and distributed as per local pharmaceutical guidelines.</p>
+        </lightning:accordionSection>
+
+        <lightning:accordionSection name="CC" label="How do I reset my password?">
+            <p>Contact customer service.
+            </p>
+        </lightning:accordionSection>
+        </aura:if>
+
+          <aura:if isTrue="{!v.marketvalue == 'Maghreb'}">
+              <lightning:accordionSection
+          name="A"
+          label="Where do I find technical, marketing or sales information about the Zoetis products and solutions?"
+        >
+          <aura:set attribute="body">
+            <p>
+              All information about the Zoetis brand, products, services, and solutions can be found in the Library in this Distributor Service
+              Portal. You can search per species and alphabetically in the
+              <a
+                href="{!v.baseURL + '/s/library?language=en_US'}"
+                target="_blank"
+                style=" font-size: 1em! important; color:#FF6400 !important;"
+              >
+                <b>Library</b>
+              </a>
+              .
+            </p>
+          </aura:set>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="D" label="What is the process for setting up a new product?">
+          <p>Few steps are needed to finalize setting up , which give the hand to introduce forecast :  </p>
+          <p>-PMT will take 2 weeks if we have all the details (COG’s, yearly volume…..)</p>
+          <p>-MAR approval will take at least 4 weeks before we can start setup.</p>
+          <p>-Setup time is 4 week minimum .</p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="E" label="What is the production timeline/lead time?">
+          <p>The production Lead time is the period that it takes for goods to be delivered at our regional warehouses which is around 4- 6 months, depending of the product .</p>
+        </lightning:accordionSection>     
+        <lightning:accordionSection name="F" label="How are the products transported?">
+          
+          <p>-Air: 2 to 3 days</p>
+          <p>-Ocean: up to 2 week</p>
+        </lightning:accordionSection>     
+        
+        <lightning:accordionSection name="I" label="What is the frozen period?">
+          <p>Period that it takes to produce goods: current month +3 months. For some products  it may take up to 6 months.</p>
+            <p><b>EX:</b>when in June, the frozen period is June, July , August and September . This implies that the forecast can only be entered for October.</p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="J" label="What is the forecasting process? How do I provide my forecast?">
+          <p>- 12 months rolling forecast which is updated monthly. First available month to change current month +3 months</p>
+          <p>
+            -The
+            <a
+              href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}"
+              target="_blank"
+              style=" font-size: 1em! important; color:#FF6400 !important;"
+            >
+              <b>Forecast</b>
+            </a>
+            can only be entered after the frozen period and after the setup has been completed.
+          </p>
+          <p>
+            The
+            <a
+              href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}"
+              target="_blank"
+              style=" font-size: 1em! important; color:#FF6400 !important;"
+            >
+              <b>Forecast</b>
+            </a>
+            needs to be entered online in the Distributor Portal.
+          </p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="K" label="What is the process for purchase orders? Why a purchase order? How do I order?">
+          <p>
+            -Purchase orders (PO) can be issued by distributors at the beginning of every quarter when forecast is updated. This needs to be
+            done online on the
+            <a
+              href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}"
+              target="_blank"
+              style=" font-size: 1em! important; color:#FF6400 !important;"
+            >
+              <b>Forecast, Stock and Order</b>
+            </a>
+          </p>
+          <p>-POs are not influencing the payment terms, but it is a firm order.</p>
+          <p>-The PO is also needed for the manufacturing sites as a back order in case of supply issues.</p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="L" label="When and how do I provide the stock of Zoetis products?">
+          <p>
+            The stock of Zoetis products needs to be reported at the beginning of every month (before the 10th). This can be done online
+            <a
+              href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}"
+              target="_blank"
+              style=" font-size: 1em! important; color:#FF6400 !important;"
+            >
+              <b>HERE</b>
+            </a>
+            via an upload, or a manual entry
+          </p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="M" label="What should I do if the product is not doing what it should? What should I do if there is a side effect after using the product? ">
+          <p>
+            Please fill the Pharmacovigilance Reporting Form and e-mail to
+            <a href="fadma.zouarhi@zoetis.com" style=" font-size: 1em! important; color:#FF6400 !important;"><b>fadma.zouarhi@zoetis.com</b></a> for Morocco, Tunisia and Senegal ,  and
+            <a href="mourad.lahoussine@zoetis.com" style=" font-size: 1em! important; color:#FF6400 !important;"><b>mourad.lahoussine@zoetis.com</b></a> for Algeria.
+          </p>
+                </lightning:accordionSection>
+        <lightning:accordionSection name="N" label="What should I do if there is a defect on the product?">
+          <p>
+            Send an e-mail to
+            <a href="fadma.zouarhi@zoetis.com" style=" font-size: 1em! important; color:#FF6400 !important;">
+              <u><b>fadma.zouarhi@zoetis.com</b></u>
+            </a> for Morocco , Tunisia and Senegal ,  and 
+              <a href="mourad.lahoussine@zoetis.com" style=" font-size: 1em! important; color:#FF6400 !important;">
+              <u><b>mourad.lahoussine@zoetis.com</b></u>
+            </a> for Algeria
+    . Please include pictures , explanations and details .
+
+          </p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="CC"
+                                    label="How do I reset my password?">
+            <p>Contact customer service.
+            </p>
+        </lightning:accordionSection>     
+          </aura:if>
+          <aura:if isTrue="{!v.marketvalue == 'Middle East'}">
+              <lightning:accordionSection
+          name="A"
+          label="Where do I find technical, marketing or sales information about the Zoetis products and solutions?"
+        >
+          <aura:set attribute="body">
+            <p>
+              All information about the Zoetis brand, products, services, and solutions can be found in the Library in this Distributor Service
+              Portal. You can search per species and alphabetically in the
+              <a
+                href="{!v.baseURL + '/s/library?language=en_US'}"
+                target="_blank"
+                style=" font-size: 1em! important; color:#FF6400 !important;"
+              >
+                <b>Library</b>
+              </a>
+              .
+            </p>
+          </aura:set>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="D" label="What is the process for setting up a new product?">
+          
+          <p>-PMT will take 2 weeks if we have all the details (COG’s, yearly volume…..)</p>
+          <p>-MAR approval will take at least 4 weeks before we can start setup.</p>
+          <p>-Setup time is 4 to 6 weeks.</p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="E" label="What is the production timeline/lead time?">
+          <p>The production Lead time is the period that it takes for goods to be delivered at our regional warehouses which is around 4- 6 months. </p>
+        </lightning:accordionSection>     
+        <lightning:accordionSection name="F" label="How are the products transported?">
+          
+          <p>-Air: 2 to 3 days</p>
+          <p>-Ocean: up to 4 week</p>
+        </lightning:accordionSection>     
+        
+        <lightning:accordionSection name="I" label="What is the frozen period?">
+          <p>Period that it takes to produce goods: current month +2 months.</p>
+            <p><b>EX:</b>When in June, the frozen period is June, July and August. This implies that the forcase can only be entered for September.</p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="J" label="What is the forecasting process? How do I provide my forecast?">
+          <p>- 12 months rolling forecast which is updated monthly. First available month to change current month +2 months.</p>
+          <p>
+            -The
+            <a
+              href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}"
+              target="_blank"
+              style=" font-size: 1em! important; color:#FF6400 !important;"
+            >
+              <b>Forecast</b>
+            </a>
+            can only be entered after the frozen period and after the setup has been completed.
+          </p>
+          <p>
+            The
+            <a
+              href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}"
+              target="_blank"
+              style=" font-size: 1em! important; color:#FF6400 !important;"
+            >
+              <b>Forecast</b>
+            </a>
+            needs to be entered online in the Distributor Portal.
+          </p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="K" label="What is the process for purchase orders? Why a purchase order? How do I order?">
+          <p>
+            -Purchase orders (PO) can be issued by distributors at the beginning of every quarter when forecast is updated. This needs to be
+            done online on the
+            <a
+              href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}"
+              target="_blank"
+              style=" font-size: 1em! important; color:#FF6400 !important;"
+            >
+              <b>Forecast, Stock and Order</b>
+            </a>
+          </p>
+          <p>-POs are not influencing the payment terms, but it is a firm order.</p>
+          <p>-The PO is also needed for the manufacturing sites as a back order in case of supply issues.</p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="L" label="When and how do I provide the stock of Zoetis products?">
+          <p>
+            The stock of Zoetis products needs to be reported at the beginning of every month (before the 10th). This can be done online
+            <a
+              href="{!v.baseURL + '/s/forecasts-and-orders?language=en_US'}"
+              target="_blank"
+              style=" font-size: 1em! important; color:#FF6400 !important;"
+            >
+              <b>HERE</b>
+            </a>
+            via an upload, or a manual entry
+          </p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="M" label="What should I do if the product is not doing what it should? What should I do if there is a side effect after using the product? ">
+          <p>
+            Please fill the Pharmacovigilance Reporting Form and e-mail to
+            <a href="mailto:hanan.a.younis@zoetis.com" style=" font-size: 1em! important; color:#FF6400 !important;"><b>hanan.a.younis@zoetis.com</b></a>
+          </p>
+                </lightning:accordionSection>
+        <lightning:accordionSection name="N" label="What should I do if there is a defect on the product?">
+          <p>
+            Send an e-mail to
+            <a href="mailto:hanan.a.younis@zoetis.com" style=" font-size: 1em! important; color:#FF6400 !important;">
+              <u><b>hanan.a.younis@zoetis.com</b></u>
+            </a>. Please include pictures, explanations and detail.
+          </p>
+        </lightning:accordionSection>
+        <lightning:accordionSection name="CC"
+                                    label="How do I reset my password?">
+            <p>Contact customer service.
+            </p>
+        </lightning:accordionSection>             
+          </aura:if>
+    </lightning:accordion>
+  </div>
+     
+</div>
+</aura:component>

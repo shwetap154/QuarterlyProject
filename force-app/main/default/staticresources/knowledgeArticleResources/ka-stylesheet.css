@@ -1,0 +1,17 @@
+.slds-theme--warning {
+  --slds-g-color-warning-base-60: purple !important;
+  color: white !important;
+}
+
+.slds-theme--warning .slds-icon {
+  fill: white !important;
+}
+
+.slds-theme--warning button {
+  color: white !important;
+}
+
+.slds-theme--warning .slds-button__icon {
+  fill: white !important;
+  /*display:none;*/
+}

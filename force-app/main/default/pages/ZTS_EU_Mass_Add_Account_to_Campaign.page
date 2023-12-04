@@ -1,0 +1,15 @@
+<apex:page standardController="Campaign" extensions="ZTS_EU_Mass_Add_Account_to_Campaign_Ext" tabStyle="Campaign" sidebar="false">
+    <apex:form >
+        <apex:outputText value="Campaign" style="font-weight:bold;font-size:11px;"></apex:outputText><br/>
+        <apex:outputText value="{!campName}" style="font-weight:bold;font-size:20px;"></apex:outputText>
+        <br/>
+    </apex:form>
+    <apex:form >
+        <apex:pageMessages />
+    </apex:form>
+    <apex:enhancedList type="Account" customizable="false" height="500" width="140" rowsPerPage="50" />
+    <apex:form >
+        <br/>
+        <apex:commandButton value="Back to Campaign" action="/{!campaignId}"/>
+    </apex:form>
+</apex:page>

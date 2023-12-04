@@ -1,0 +1,18 @@
+<apex:page standardController="ZTS_Events__c" extensions="USZTS_US_Mass_Add_Account_Ext" tabStyle="ZTS_Events__c" sidebar="false" action="{!redirect}" LightningStyleSheets="true">
+    <h1>
+        <apex:outputText value="{!currentEventsRecord.Name} - {!currentEventsRecord.ZTS_US_Name__c}" style="font-weight:bold; font-size:2em;" />
+    </h1>
+    <br/>
+    <apex:form >
+        <apex:commandButton value="Back to Event" action="/{!eventId}" />
+        <br/>
+    </apex:form>
+    <apex:form >
+        <apex:pageMessages />
+    </apex:form>
+    <apex:listViews type="Account" />
+    <apex:form >
+        <br/>
+        <apex:commandButton value="Back to Event" action="/{!eventId}"/>
+    </apex:form>
+</apex:page>

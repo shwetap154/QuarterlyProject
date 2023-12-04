@@ -1,0 +1,27 @@
+.container{
+    border: 1px solid #150909;
+    padding: 1px; 
+}
+.icon {
+    margin-left: 1px;
+}
+.account-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.account-item {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+.account-name {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.accountAlt-details {
+    display: flex;
+    flex-direction: column;
+}

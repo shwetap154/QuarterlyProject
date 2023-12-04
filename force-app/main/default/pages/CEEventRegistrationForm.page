@@ -1,0 +1,251 @@
+<apex:page standardController="ZTS_US_Event_Invitee__c"  extensions="CEEventRegistration_ctrl" id="regPage" sidebar="false" showChat="false" cache="false" docType="html-5.0" showQuickActionVfHeader="false" showHeader="false" >
+ <head>
+  <title>Registration</title>
+     <meta charset="utf-8" /> 
+     <meta content="IE=edge" http-equiv="X-UA-Compatible" /> 
+     <meta content="width=device-width,initial-scale=1" name="viewport" />
+     <!-- Bootstrap stylesheet -->
+     <apex:stylesheet value="{!URLFOR($Resource.CEEvents, 'CSS/bootstrap.min.css')}" /> 
+     <!--[if lt IE 9]>  
+        <apex:includeScript value="{!URLFOR($Resource.CEEvents, 'JS/html5shiv.min.js')}" /> 
+        <apex:includeScript value="{!URLFOR($Resource.CEEvents, 'JS/respond.min.js')}" />
+    <![endif]-->
+     <!-- Custom stylesheet -->
+     <apex:stylesheet value="{!URLFOR($Resource.CEEvents, 'CSS/style.css')} "/>  
+     <!--[if IE]>
+     <apex:stylesheet value="{!URLFOR($Resource.CEEvents, 'CSS/IE-style.css')} "/>   
+    <![endif]--> 
+     <apex:includeScript value="{!URLFOR($Resource.CEEvents, 'JS/jquery.min.js')} "/> 
+     <apex:includeScript value="{!URLFOR($Resource.CEEvents, 'JS/validationJS.js')}" /> 
+     <apex:includeScript value="{!URLFOR($Resource.CEEvents, 'JS/zoetis-validate.js')}" />    
+       
+
+</head>
+
+  <body  >
+        <div class="header zoetis">
+            <!-- ====== Header Section ====== -->
+      <header> 
+        
+      </header>
+      <!-- ====== Header Section ====== -->
+        <!-- ====== Banner Section ====== -->
+      <div class="header-banner"> 
+        <apex:image url="{!URLFOR($Resource.CEEvents, 'image/ZoetisBanner_left.jpg')}" />
+        <apex:image url="{!URLFOR($Resource.CEEvents, 'image/ZoetisSpecies.png')}" alt="Zoetis" styleClass="hidden-xs hidden-sm img-responsive" />        
+        <apex:image url="{!URLFOR($Resource.CEEvents, 'image/Zoetis-banner-tablet.jpg')}" alt="Zoetis" styleClass="hidden-md hidden-lg hidden-xs img-responsive" />
+      <!-- ====== Banner Section ====== -->
+      <!-- ====== invitation Section ====== -->
+          <apex:panelGroup id="uareinvitedid" rendered="{!!registrtionFlag}" >
+              <h2 class="zoetis-invite">You’re Invited!</h2> 
+          </apex:panelGroup>
+          <apex:panelGroup id="uareregisteredid" rendered="{!registrtionFlag}" >
+              <h2 class="zoetis-invite">You’re Registered!</h2> 
+          </apex:panelGroup>
+      </div>
+    </div>
+    <div class="container zoetis">
+        <!-- ====== invitation Section ====== -->
+        <!-- ====== content Section ====== -->
+      <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-12 col-lg-offset-2 col-md-offset-2">
+          <div class="zoetis-event-details"> 
+            <h3 class="">{!eventInfo.ZTS_US_Name__c}</h3>
+              <span class="divider"></span> 
+             <apex:pageMessages id="msgId"  />   
+              <p><span class="highlighted">Location:</span> <apex:outputText value="{!eventInfo.ZTS_US_Location__c}" escape="false" style="white-space:pre-wrap;" />  </p>
+              <p><span class="highlighted">Start Date:</span> {!startDateTime} </p>
+              <p><span class="highlighted">End date:</span> {!endDateTime}</p> 
+              <span class="divider"></span>
+              <apex:panelGroup rendered="{!eventInfo.of_CE_credits__c != null}" >
+                  <p><span class="highlighted"># of CE Hours earned by attending this event: </span>  {!eventInfo.of_CE_credits__c}</p>
+              </apex:panelGroup>
+              
+              <apex:panelGroup rendered="{!eventInfo.Speaker_ID_1__r.Name != null}" >
+                  <p><span class="highlighted"><b>Speaker/s: </b></span></p> 
+
+                  <apex:outputLabel value="Name: " style="color:#0096af;font-weight:normal;font-size:0.9em"  />
+                  <apex:outputText value="{!eventInfo.Speaker_ID_1__r.Name}" /><br/>
+                  <apex:outputLabel value="Short Bio: " style="color:#0096af;font-weight:normal;font-size:0.9em"  rendered="{!eventInfo.Speaker_ID_1__r.Speaker_Bio_Rich_Text__c != null}" />
+                  <apex:outputText value="{!eventInfo.Speaker_ID_1__r.Speaker_Bio_Rich_Text__c}" escape="false" rendered="{!eventInfo.Speaker_ID_1__r.Speaker_Bio_Rich_Text__c != null}" />
+                  <br/><apex:outputLabel value="Credentials: " style="color:#0096af;font-weight:normal;font-size:0.9em"  rendered="{!eventInfo.Speaker_ID_1__r.Speaker_Bio__c != null}" />
+                  <apex:outputText value="{!eventInfo.Speaker_ID_1__r.Speaker_Bio__c}" escape="false" rendered="{!eventInfo.Speaker_ID_1__r.Speaker_Bio__c != null}" />                  
+              </apex:panelGroup>
+              <br/><br/>
+               <apex:panelGroup rendered="{!eventInfo.Speaker_ID_2__r.Name != null}" >
+                  <apex:outputLabel value="Name: " style="color:#0096af;font-weight:normal;font-size:0.9em"  />
+                  <apex:outputText value="{!eventInfo.Speaker_ID_2__r.Name}" /><br/>
+                  <apex:outputLabel value="Short Bio: " style="color:#0096af;font-weight:normal;font-size:0.9em"  rendered="{!eventInfo.Speaker_ID_2__r.Speaker_Bio_Rich_Text__c != null}" />
+                  <apex:outputText value="{!eventInfo.Speaker_ID_2__r.Speaker_Bio_Rich_Text__c}" escape="false" rendered="{!eventInfo.Speaker_ID_2__r.Speaker_Bio_Rich_Text__c != null}" />
+                  <br/><apex:outputLabel value="Credentials: " style="color:#0096af;font-weight:normal;font-size:0.9em"  rendered="{!eventInfo.Speaker_ID_2__r.Speaker_Bio__c != null}" />
+                  <apex:outputText value="{!eventInfo.Speaker_ID_2__r.Speaker_Bio__c}" escape="false" rendered="{!eventInfo.Speaker_ID_2__r.Speaker_Bio__c != null}" />                  
+              </apex:panelGroup>
+
+              <br/><br/>
+               <apex:panelGroup rendered="{!eventInfo.Speaker_ID_3__r.Name != null}" >
+                  <apex:outputLabel value="Name: " style="color:#0096af;font-weight:normal;font-size:0.9em"  />
+                  <apex:outputText value="{!eventInfo.Speaker_ID_3__r.Name}" /><br/>
+                  <apex:outputLabel value="Short Bio: " style="color:#0096af;font-weight:normal;font-size:0.9em"  rendered="{!eventInfo.Speaker_ID_3__r.Speaker_Bio_Rich_Text__c != null}" />
+                  <apex:outputText value="{!eventInfo.Speaker_ID_3__r.Speaker_Bio_Rich_Text__c}" escape="false" rendered="{!eventInfo.Speaker_ID_3__r.Speaker_Bio_Rich_Text__c != null}" />
+                  <br/><apex:outputLabel value="Credentials: " style="color:#0096af;font-weight:normal;font-size:0.9em"  rendered="{!eventInfo.Speaker_ID_3__r.Speaker_Bio__c != null}" />
+                  <apex:outputText value="{!eventInfo.Speaker_ID_3__r.Speaker_Bio__c}" escape="false" rendered="{!eventInfo.Speaker_ID_3__r.Speaker_Bio__c != null}" />                  
+              </apex:panelGroup>
+
+              
+              <!--
+              <apex:panelGroup rendered="{!eventInfo.Speaker_ID_1__r.Speaker_Bio_Rich_Text__c != null}" >
+                 <p> <span class="highlighted"> Short Bio: </span>
+                      <apex:outputText value="{!eventInfo.Speaker_ID_1__r.Speaker_Bio_Rich_Text__c}" escape="false" />
+                  </p>
+              </apex:panelGroup>
+               <apex:panelGroup rendered="{!eventInfo.Speaker_ID_1__r.Speaker_Bio__c != null}" >
+                  <p> <span class="highlighted"> Credentials: </span>
+                      <apex:outputText value="{!eventInfo.Speaker_ID_1__r.Speaker_Bio__c}" escape="false" />
+                  </p>
+              </apex:panelGroup>
+              
+              <apex:panelGroup rendered="{!eventInfo.Speaker_ID_2__r.Name != null}" >
+                  <p><span class="highlighted"> </span> </p>{!eventInfo.Speaker_ID_2__r.Name}
+              </apex:panelGroup>             
+              <apex:panelGroup rendered="{!eventInfo.Speaker_ID_2__r.Speaker_Bio_Rich_Text__c != null}" >
+                  <span class="highlighted"> </span><br/>
+                      <apex:outputText value="{!eventInfo.Speaker_ID_2__r.Speaker_Bio_Rich_Text__c}" escape="false" />   
+              </apex:panelGroup>            
+              <apex:panelGroup rendered="{!eventInfo.Speaker_ID_3__r.Name != null}" >
+                  <p><span class="highlighted"> </span> </p>{!eventInfo.Speaker_ID_3__r.Name}
+              </apex:panelGroup>             
+              <apex:panelGroup rendered="{!eventInfo.Speaker_ID_3__r.Speaker_Bio_Rich_Text__c != null}" >
+                  <span class="highlighted"> </span><br/>
+                      <apex:outputText value="{!eventInfo.Speaker_ID_3__r.Speaker_Bio_Rich_Text__c}" escape="false" />
+              </apex:panelGroup>              
+              -->
+              <apex:panelGroup id="thanksmsg" rendered="{!registrtionFlag}" >
+                  <h3 class="footer"> We are looking forward to seeing you at the event! </h3>
+              </apex:panelGroup>
+              <apex:panelGroup id="thanksmsg2" rendered="{!!registrtionFlag}" >
+                  <h3 class="footer">Register for this event by confirming your contact information</h3>
+              </apex:panelGroup>
+          </div>  
+            
+            <apex:panelGroup id="formpanel" rendered="{!!registrtionFlag}" >
+                <apex:form id="registration" styleClass="registration-form"  >    
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 col-lg-offset-2 col-sm-offset-2 col-md-offset-2">
+                            <div class="row">  
+                                <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                    <label for="prefix" class="zoetis-mandatory-field">Prefix</label>
+                                    <div class="select-style">
+                                        <apex:inputField value="{!newInviteeContact.Salutation}" id="prefix" styleClass="form-control" />  
+                                    </div>
+                                </div>
+                                <apex:panelGroup rendered="{!einviteID == null}" >
+                                    <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                        <label for="firstname1" class="zoetis-mandatory-field">First Name</label>
+                                        <apex:inputtext id="firstname1" styleClass="form-control" value="{!newInviteeContact.firstName}" html-placeholder="Enter your First Name"  />                                   
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                        <label for="lastname1" class="zoetis-mandatory-field">Last Name</label> 
+                                        <apex:inputtext id="lastname1" styleClass="form-control" value="{!newInviteeContact.lastName}" html-placeholder="Enter your Last Name" /> 
+                                    </div>
+                                </apex:panelGroup>
+                                <apex:panelGroup rendered="{!einviteID != null}" >
+                                    <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                        <label for="firstname" class="zoetis-mandatory-field">First Name</label>
+                                        <apex:outputtext id="firstname" styleClass="zoetis-disabled-field form-control" value="{!newInviteeContact.firstName}"   />
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                        <label for="lastname" class="zoetis-mandatory-field">Last Name</label> 
+                                        <apex:outputtext id="lastName" styleClass="zoetis-disabled-field form-control" value="{!newInviteeContact.lastName}"   />
+                                    </div>
+                                </apex:panelGroup>
+                                <!--  <div class="col-lg-12 col-sm-12 col-xs-12"><p id="messageBox" class="zoetis-custom-error">Please provide value for any of Email/Business Phone/Mobile Phone field</p></div>   -->
+                                <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                    <label for="email" class="zoetis-mandatory-field">Email</label> 
+                                    <apex:inputtext id="email" styleClass="phone-group form-control" value="{!newInviteeContact.Interface_Email__c}" html-placeholder="Enter your Email" />                  
+                                </div>
+                                <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                    <label for="businessPhone" class="zoetis-mandatory-field">Business Phone</label>                  
+                                    <apex:inputtext id="businessPhone" styleClass="phone-group form-control number-only" value="{!newInviteeContact.Phone}" html-placeholder="Enter your Business Phone" onChange="this.value=this.value.replace(/\D/g,'').replace(/^(\d{3})(\d{3})/,'$1-$2-')" /> 
+                                    <label class="zoetis-number-only error">only numbers allowed </label>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                    <label for="mobilePhone" class="zoetis-mandatory-field">Mobile Phone</label>                  
+                                    <apex:inputtext id="mobilePhone"  styleClass="phone-group form-control number-only" value="{!newInviteeContact.MobilePhone}" onChange="this.value=this.value.replace(/\D/g,'').replace(/^(\d{3})(\d{3})/,'$1-$2-')" html-placeholder="Enter your Mobile Phone" /> 
+                                    <label class="zoetis-number-only error">only numbers allowed </label>
+                                </div>
+                                <apex:panelGroup rendered="{!einviteID == null}" >
+                                    <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                        <label for="account" class="zoetis-mandatory-field">Account</label>
+                                        <div class="select-style">
+                                            <apex:selectList id="account" size="1" label="Account" value="{!selAccount}" styleClass="form-control" > 
+                                                <apex:selectOptions value="{!AccountList}"></apex:selectOptions>
+                                            </apex:selectList>  
+                                        </div>
+                                    </div> 
+                                </apex:panelGroup>
+                                
+                                <apex:panelGroup rendered="{!einviteID != null}" >
+                                    <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                        <label for="AccountName" >Account</label>                  
+                                        <apex:outputtext id="AccountName" styleClass="zoetis-disabled-field form-control" value="{!newInviteeContact.Account.Name}"   /> 
+                                    </div>
+                                </apex:panelGroup>
+                                <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                    <label for="profession" class="zoetis-mandatory-field">Profession</label>
+                                    <div class="select-style">
+                                        <apex:inputField value="{!newInviteeContact.ZTS_US_Profession__c}" id="profession" styleClass="form-control" /> 
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                    <label for="jobFunction" class="zoetis-mandatory-field">Job Function</label>
+                                    <div class="select-style">
+                                        <apex:inputField value="{!newInviteeContact.ZTS_US_Job_Function__c}" id="jobFunction" styleClass="form-control" />  
+                                    </div>
+                                </div>
+                                <!--
+                                <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper" style="display: inline-block;">                                 
+                                    <label for="smsoptin" >SMS Text Opt In &nbsp;</label>                                  
+                                    <apex:inputCheckbox label="SMS Opt In" id="smsoptin" value="{!smsOptIn}" />   
+                                    <br/><br/>
+                                    <label class="zoetis-mandatory-field"> By entering your mobile phone number, you are signing up to receive text messages for Zoetis Petcare event reminders. Text messages may be sent by automated dialing technology. 
+                                        Consent to the terms is not a condition of purchase of any goods or services.  
+                                        <apex:outputlink value="http://www.zoetis.com/terms-use" target="_blank" > Click here </apex:outputLink> 
+                                        for program terms and conditions. 
+                                    </label>
+                                </div>
+                                -->
+                                <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                    <label class="zoetis-mandatory-field"> <b>Note: </b> If you do not see the Account you work at in the drop down list, 
+                                        please email the event owner <b> “{!eventOwnerName} </b>at  
+                                        <b> <apex:outputlink value="mailto:{!eventOwnerEmail}" > {!eventOwnerEmail} </apex:outputLink> </b>”
+                                        so they can get your information, to add you to the invitation list.</label>                                                        
+                                </div>
+                                
+                                <div class="col-lg-12 col-sm-12 col-xs-12 form-input-wraper">
+                                    <label class="zoetis-mandatory-field"> By pressing the Register button I agree to receive email communications from Zoetis.  
+                                        I agree with the Zoetis
+                                        <apex:outputlink value="http://www.zoetis.com/terms-use" target="_blank" > Terms of Use </apex:outputLink> 
+                                        and <apex:outputlink value="http://www.zoetis.com/privacy-policy" target="_blank" > Privacy Policy </apex:outputLink> 
+                                    </label>                    
+                                </div>
+                         
+                                
+                                <div class="col-lg-12 col-sm-12 col-xs-12 text-center"> 
+                                    <apex:commandButton value="Register" action="{!register}" styleClass="zoetis-register-button btn"  />
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </apex:form>
+            </apex:panelGroup>
+        </div>
+        <!-- ====== content Section ====== -->
+      </div>
+    </div>
+      <div class="zoetis footer">
+      <footer class=""> 
+           <apex:image url="{!URLFOR($Resource.CEEvents, 'image/Zoetis-logo.png')}" />
+      </footer> 
+      </div>
+  </body>
+  </apex:page>

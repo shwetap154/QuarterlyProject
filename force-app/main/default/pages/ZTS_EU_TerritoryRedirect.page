@@ -1,0 +1,33 @@
+<apex:page standardController="ZTS_EU_Territory__c" extensions="ZTS_EU_TerritoryRedirect" >
+    <apex:form >
+        <apex:actionFunction action="{!trrRedirect}" name="totRedirectAF"/>
+      </apex:form>
+      <apex:form >
+        <apex:actionFunction action="{!backToView}" name="exit"/>
+      </apex:form>
+      <apex:slds />
+      <div id="lightningscope" class="slds-scope slds-hide">
+          <article class="slds-card">
+              <div class="slds-card__header slds-grid">
+              
+              </div>
+              <div class="slds-card__body slds-card__body_inner">
+                  <div style="text-align:right; margin-right: .5rem;">
+                      <button class="slds-button slds-button_brand" onclick="exit()">Exit from Territory Creation Wizard</button>
+                  </div>
+              </div>
+          </article>
+      </div>
+      <script>
+          if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
+              document.getElementById('lightningscope').classList.remove("slds-hide");
+              sforce.one.createRecord('ZTS_EU_Territory__c',null,{ 
+                ZTS_EU_Market__c : "{!userDefaultMar}",  
+                  });
+          }
+          else
+              totRedirectAF();
+              
+      </script>
+<!-- action="{!trrRedirect}" -->
+</apex:page>

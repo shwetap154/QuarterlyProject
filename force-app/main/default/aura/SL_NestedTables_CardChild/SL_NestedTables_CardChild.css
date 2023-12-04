@@ -1,0 +1,33 @@
+.THIS{
+    
+}
+.THIS .otherBrowser{
+
+}
+
+.THIS .otherBrowser table,
+.THIS .otherBrowser thead,
+.THIS .otherBrowser tbody {
+    display: block; 
+}
+
+.THIS .infiniteScrollDiv {
+    max-height: 300px !important;
+    overflow-y: auto !important;
+}
+
+.THIS .infiniteScrollDiv.show-5-rows {
+    max-height: 150px !important;
+}
+
+.THIS .infiniteScrollDiv.show-10-rows {
+    max-height: 300px !important;
+}
+
+.THIS .infiniteScrollDiv.show-15-rows {
+    max-height: 449px !important;
+}
+
+.THIS .infiniteScrollDiv.show-20-rows {
+    max-height: 599px !important;
+}

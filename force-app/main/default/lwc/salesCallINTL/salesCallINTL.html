@@ -1,0 +1,577 @@
+<!--------------------------------------------------------------------------
+ * Component name: salesCallINTL
+ * Description   : Call Edit page for INTL markets in Lightning
+ * Author        : Aritra (Cognizant)
+ * Date          : 12-April-2021
+ * Modification Log
+ **********************************************************************************
+ Modified By            Date                     Changes
+ **********************************************************************************
+ Aritra (Cognizant)   12-April-2021              Created
+ * -------------------------------------------------------------------------->
+ <template>
+    <div class={formContainer}>
+        <lightning-record-edit-form
+                class="sales-call-form"
+                density="Comfy"
+                record-id={callRecordId}
+                object-api-name="Call__c"
+                onload={handleFormLoad}
+                onsubmit={handleSubmit}
+                onerror={handleError}
+                onsuccess={handleSuccess}>
+            <header class={headerClass}>
+                <h2 id="modal-heading-01" class={titleClass}>{modalHeader}</h2>
+            </header>
+            <div class={contentClass}>
+                <div if:true={isViewOnly}>
+                    <!-- <div class="demo-only" style="height:4rem"> -->
+                        <div class="slds-notify_container slds-is-relative">
+                            <div class="slds-notify slds-notify_toast slds-theme_info info-color" role="status">
+                                <!-- <span class="slds-assistive-text"></span> -->
+                                <span class="slds-icon_container slds-icon-utility-info slds-m-right_small slds-no-flex slds-align-top">
+                                    <lightning-icon
+                                        alternative-text="info"
+                                        icon-name="utility:info"
+                                        size="small"
+                                        variant="inverse"
+                                    ></lightning-icon>
+                                </span>
+                                <div class="slds-notify__content">
+                                    <h2 class="slds-text-heading_small">{isViewOnlyMessage}
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- </div> -->
+                </div>
+                <div class="slds-section">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Call Information">{label.CallInfSectionHeading}</span>
+                    </h3>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <!-- Left column -->
+                    <div class="slds-col slds-size_1-of-2">
+                        <!--<lightning-combobox disabled={isViewOnly} label="Sub Type" class="ltng-input-fields" placeholder="Select Subtype"  options={subTypeOptions} onchange={handleSubTypeChange} value={subTypeValue} >
+                        </lightning-combobox>-->
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields" field-name="ZTS_EU_Sub_Type__c" required>
+                        </lightning-input-field>
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields" field-name="ZTS_EU_Local_Subtype__c" >
+                        </lightning-input-field>
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields" field-name="ZTS_EU_Start_Date_Time__c" value ={currentDateTime} required>
+                        </lightning-input-field>
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields" field-name="ZTS_EU_Duration__c">
+                        </lightning-input-field>
+                    </div>
+                    <!-- Right column -->
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input-field disabled={isViewOnly} class="account-field ltng-input-fields" field-name="ZTS_EU_Account__c">
+                        </lightning-input-field>   
+                        <lightning-output-field disabled={isViewOnly} class="ltng-input-fields" field-name="ZTS_EU_Status__c">
+                        </lightning-output-field>
+                        <lightning-output-field class="ltng-input-fields" field-name="ZTS_EU_Submitted_Date__c">
+                        </lightning-output-field>
+                    </div>
+                    <div class="slds-col slds-size_2-of-2">
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields" field-name="ZTS_EU_Call_Objectives__c">
+                        </lightning-input-field>
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields" field-name="ZTS_EU_Additional_Notes__c">
+                        </lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_2-of-2">
+                        <div class="ltng-input-fields">
+                            <!-- changed objects value to Affiliation(SC-008075) -->
+                            <c-lookup
+                                selection={initialAttendees}
+                                objects="ZTS_EU_Affiliations__c"
+                                errors={attendeeErrors}
+                                onsearch={handleSearch}
+                                onselectionchange={handleSelectionChange}
+                                label={label.AttendeeHeadingLabel}
+                                placeholder={label.AttendeeSearchHelpText}
+                                is-multi-entry="true"
+                                component-index="0"
+                                is-disabled={isViewOnly}
+                                display-type="intl_attendee"
+                            ></c-lookup>
+                            <div class="new-contact-container" if:false={isViewOnly}>
+                                <div class if:false={isContactCreationRestricted}><!--created to hide this div for Russia--> 
+                                <div if:false={showNewContactform}>
+                                    <lightning-button variant="base" label="Add New Contact" title="Add Contact" onclick={toggleNewContactForm} class="slds-m-left_x-small"></lightning-button>
+                                </div>
+                                <div if:true={showNewContactform} class="new-contact-form-container">
+                                    <lightning-record-edit-form
+                                        class="create-contact-form"
+                                        density="Comfy"
+                                        record-id=""
+                                        object-api-name="Contact"
+                                        onsubmit={handleCreateContactSubmit}
+                                        onsuccess={handleCreateContactSuccess}
+                                        onerror={handleCreateContactError}
+                                    >
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="10" required class="new-contact-ltng-input-fields" field-name="FirstName">
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="40"  class="new-contact-ltng-input-fields" field-name="Salutation">
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="10" required class="new-contact-ltng-input-fields" field-name="LastName">
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="20" required class="new-contact-ltng-input-fields" field-name="ZTS_EU_Contact_type__c">
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="30"  class="new-contact-ltng-input-fields" field-name="Email">
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="60"  class="new-contact-ltng-input-fields" field-name="Phone">
+                                                </lightning-input-field>  
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="60"  class="new-contact-ltng-input-fields" field-name="ZTS_EU_Market__c">
+                                                </lightning-input-field>  
+                                            </div>
+            
+                                            <div class="slds-col slds-size_2-of-2 slds-align_absolute-center contact-buttons">
+                                                <lightning-button class="slds-m-left_small"
+                                                    variant="brand"
+                                                    type="submit"
+                                                    label={label.SaveButtonLabel}
+                                                    title="Save">
+                                                </lightning-button>
+                                                <lightning-button class="slds-m-left_small"
+                                                    variant="neutral"
+                                                    label={label.CancelButtonLabel}
+                                                    title="Close modal without making changes"
+                                                    onclick={handleCreateContactCancel}>
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    </lightning-record-edit-form>
+                                
+                                    <!-- <lightning-record-form
+                                        record-id=""
+                                        record-type-id="0123K0000008V2oQAE"
+                                        object-api-name="Contact"
+                                        fields={fields}
+                                        columns="2"
+                                        mode="edit"
+                                        onsubmit={handleCreateContactSubmit}
+                                        onsuccess={handleCreateContactSuccess}
+                                        oncancel={handleCreateContactCancel}
+                                        onerror={handleCreateContactError}
+                                        onload={handleCreateContactLoad}>
+                                    </lightning-record-form> -->
+
+                                </div>
+                                <div if:true={isContactProcessing}>
+                                    <lightning-spinner
+                                        alternative-text="Loading"
+                                        size="medium"
+                                        class="medium-height"
+                                    ></lightning-spinner>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ltng-input-fields">
+                            <c-lookup 
+                                selection={initialDiscussions} 
+                                objects="ZTS_EU_Species_Product__c,Campaign,ZTS_EU_Discussion_Item__c"
+                                errors={discussionErrors}
+                                onsearch={handleSearch}
+                                onselectionchange={handleSelectionChange}
+                                label={label.DiscussionHeadingLabel}
+                                placeholder={label.DiscussionSearchHelpText}
+                                is-multi-entry="true"
+                                component-index="1"
+                                is-disabled={isViewOnly}
+                            ></c-lookup>
+                        </div>
+                        <div class="ltng-input-fields">
+                            <c-lookup
+                                selection={initialColleagues}
+                                objects="User"
+                                errors={colleagueErrors}
+                                onsearch={handleSearch}
+                                onselectionchange={handleSelectionChange}
+                                label={label.ColleagueHeadingLabel}
+                                placeholder={label.ColleagueSearchHelpText}
+                                is-multi-entry="true"
+                                component-index="2"
+                                is-disabled={isViewOnly}
+                            ></c-lookup>
+                        </div>
+                        <div class="ltng-input-fields">
+                            <c-lookup
+                                selection={opportunities}
+                                objects="Opportunity"
+                                errors={opportunityErrors}
+                                onsearch={handleSearch}
+                                onselectionchange={handleSelectionChange}
+                                label={label.OpportuntiesLabel}
+                                placeholder={label.OpptySearchHelpText}
+                                is-multi-entry="true"
+                                component-index="3"
+                                is-disabled={isViewOnly}
+                            ></c-lookup>
+                        </div>
+                        <div class="ltng-input-fields">
+                            <c-lookup
+                                selection={initialSampleDrops}
+                                objects="ZTS_EU_Sample__c"
+                                errors={sampleDropErrors}
+                                onsearch={handleSearch}
+                                onselectionchange={handleSelectionChange}
+                                label={label.SampleDropHeadingLabel}
+                                placeholder={label.SampleSearchHelpText}
+                                is-multi-entry="true"
+                                component-index="4"
+                                is-disabled={isViewOnly}
+                                display-type="intl_sample"
+                            ></c-lookup> 
+                            
+                        </div>
+                    </div>
+                </div>
+                <!--Added by Aritra for SC-004726-->
+                
+                
+                <div class="slds-section">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Follow Up Activities">{label.FollowUpActivityHeadingLabel}</span>
+                    </h3>
+                </div>
+                <div class="">
+                    <div class="followup-container"> 
+                        <div class="followup-header row">
+                            <div class="slds-grid">
+                                <div class="assign-to-column">
+                                    <span class="header-span">{label.FUAAssignedToHeaderLabel}</span>
+                                </div>
+                                <div class="subject-column">
+                                    <span class="header-span">{label.FUASubjectHeaderLabel}</span>
+                                </div>
+                                <div class="due-date-column">
+                                    <span class="header-span">{label.FUADueDateHeaderLabel}</span>
+                                </div>
+                                <div class="priority-column">
+                                    <span class="header-span">{label.FUAPriorityHeaderLabel}</span>
+                                </div>
+                                <div class="status-column">
+                                    <span class="header-span">{label.FUAStatusHeaderLabel}</span>
+                                </div>
+                                <div class="followup-column">
+                                    <span class="header-span">{label.FUAItemHeaderLabel}</span>
+                                </div>
+                                <div class="button-column">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <template for:each={followUpActivities} for:item="task" for:index="taskInd">
+                            <div key={task.taskLookupIndex} class="row task-row">
+                                <div key={task.taskLookupIndex} class="slds-grid">
+                                    <div class="assign-to-column">
+                                        <!--Do not make change here for now-->
+                                        <div class="lookup-input">
+                                            <c-lookup
+                                                selection={task.owner}
+                                                objects="User"
+                                                errors={taskErrors}
+                                                onsearch={handleSearch}
+                                                onselectionchange={handleSelectionChange}
+                                                label=""
+                                                placeholder={label.UserSearchHelpText}
+                                                component-index={task.taskLookupIndex}
+                                                is-disabled={isViewOnly}
+                                            >
+                                            </c-lookup>
+                                        </div>
+                                    </div>
+                                    <div class="subject-column">
+                                        <lightning-input 
+                                            data-item={task.taskLookupIndex}
+                                            data-id="subject"
+                                            value={task.subject}
+                                            type="text"
+                                            label=""
+                                            disabled={isViewOnly}
+                                            variant="label-hidden"
+                                            onchange={handleTaskChange}>
+                                        </lightning-input>
+                                    </div>
+                                    <div class="due-date-column">
+                                        <lightning-input 
+                                            data-item={task.taskLookupIndex}
+                                            data-id="activityDate"
+                                            value={task.activityDate}
+                                            type="date"
+                                            label=""
+                                            disabled={isViewOnly}
+                                            variant="label-hidden"
+                                            onchange={handleTaskChange}>
+                                        </lightning-input>
+                                    </div>
+                                    <div class="priority-column">
+                                        <lightning-combobox
+                                            data-item={task.taskLookupIndex}
+                                            data-id="priority"
+                                            name="priority"
+                                            label=""
+                                            value={task.priority}
+                                            placeholder="Select Priority"
+                                            options={priorityOptions}
+                                            variant="label-hidden"
+                                            onchange={handleTaskChange}
+                                            disabled={isViewOnly}
+                                            required>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="status-column">
+                                        <lightning-combobox
+                                            data-item={task.taskLookupIndex}
+                                            data-id="status"
+                                            name="status"
+                                            label=""
+                                            value={task.status}
+                                            placeholder="Select Status"
+                                            options={statusOptions} 
+                                            variant="label-hidden"
+                                            onchange={handleTaskChange}
+                                            disabled
+                                            required>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="followup-column">
+                                        <div class="lookup-input">
+                                            <c-lookup
+                                                selection={task.followup}
+                                                objects="ZTS_EU_Species_Product__c"
+                                                errors={taskErrors}
+                                                onsearch={handleSearch}
+                                                onselectionchange={handleSelectionChange}
+                                                label=""
+                                                placeholder={label.ProductSearchHelpText}
+                                                component-index={task.taskItemLookupIndex}
+                                                is-disabled={isViewOnly}
+                                            >
+                                            </c-lookup>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="button-column slds-m-left_xx-small slds-m-top_x-small">
+                                        <lightning-button-icon
+                                            data-item={task.taskLookupIndex}
+                                            variant="bare"
+                                            size="large"
+                                            icon-name="utility:delete"
+                                            alternative-text="Delete"   
+                                            class="slds-m-left_xx-small" 
+                                            title="Delete"
+                                            value={task.taskId}
+                                            onclick={handleDelete}
+                                            disabled={isViewOnly}>
+                                        </lightning-button-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                            <div if:false={isViewOnly}>
+                                <lightning-button variant="base" label={label.AddFollowUpActivityButtonLabel} title={label.AddFollowUpActivityButtonLabel} onclick={addFollowUpActivity} class="slds-m-left_x-small" ></lightning-button>
+                            </div>
+                    </div>
+                </div>
+                <!--added by Aritra for SC-004726 for Gifts section of INTL calls-->
+                <div class="slds-section">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Add Gifts">{label.GiftsHeadingLabel}</span>
+                    </h3>
+                </div>
+                
+                <div class="">
+                    <div class="followup-container"> 
+                        <div class="followup-header row">
+                            <div class="slds-grid">
+                             
+                                <div class="product-column">
+                                    <span class="header-span">{ProductLabel}</span>
+                                </div>
+                                <div class="quantity-column">
+                                    <span class="header-span">{QuantityLabel}</span>
+                                </div>
+                                <div class="description-column">
+                                    <span class="header-span">{DescriptionLabel}</span>
+                                </div>
+                                <div class="contact-column">
+                                    <span class="header-span">{ContactLabel}</span>
+                                </div>
+                                <div class="button-column">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <template for:each={gifts} for:item="gift" for:index="giftInd">
+                            <div key={gift.giftLookupIndex} class="row task-row">
+                                <div key={gift.giftkLookupIndex} class="slds-grid">
+
+                                    <div class="product-column">
+                                        <div class="lookup-input">
+                                            <c-lookup
+                                                selection={gift.product}
+                                                objects="ZTS_EU_Species_Product__c"
+                                                errors={giftErrors}
+                                                onsearch={handleSearch}
+                                                onselectionchange={handleSelectionChange}
+                                                label=""
+                                                placeholder={label.ProductSearchHelpText}
+                                                component-index={gift.giftLookupIndex}
+                                                is-disabled={isViewOnly}
+                                            >
+                                            </c-lookup>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="quantity-column">
+                                        <lightning-input 
+                                            data-item={gift.giftLookupIndex}
+                                            data-id="quantity"
+                                            value={gift.quantity}
+                                            type="text"
+                                            label=""
+                                            disabled={isViewOnly}
+                                            variant="label-hidden"
+                                            onchange={handleGiftChange}>
+                                        </lightning-input>
+                                    </div>
+
+                                    <div class="description-column">
+                                        <lightning-input 
+                                            data-item={gift.giftLookupIndex}
+                                            data-id="description"
+                                            value={gift.description}
+                                            type="text"
+                                            label=""
+                                            disabled={isViewOnly}
+                                            variant="label-hidden"
+                                            onchange={handleGiftChange}>
+                                        </lightning-input>
+                                    </div>
+
+                                    <div class="contact-column">
+                                        <div class="lookup-input">
+                                            <c-lookup
+                                                selection={gift.contact}
+                                                objects="Contact"
+                                                errors={giftErrors}
+                                                onsearch={handleSearch}
+                                                onselectionchange={handleSelectionChange}
+                                                label=""
+                                                placeholder={label.ContactSearchHelpText}
+                                                component-index={gift.giftcontactLookupIndex}
+                                                is-disabled={isViewOnly}
+                                            >
+                                            </c-lookup>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="button-column slds-m-left_xx-small slds-m-top_x-small">
+                                        <lightning-button-icon
+                                            data-item={gift.giftLookupIndex}
+                                            variant="bare"
+                                            size="large"
+                                            icon-name="utility:delete"
+                                            alternative-text="Delete"   
+                                            class="slds-m-left_xx-small" 
+                                            title="Delete"
+                                            value={gift.giftId}
+                                            onclick={handleGiftsDelete}
+                                            disabled={isViewOnly}>
+                                        </lightning-button-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                            <div if:false={isViewOnly}>
+                                <lightning-button variant="base" label={label.AddGiftButtonLabel} title="Add Gifts" onclick={addGifts} class="slds-m-left_x-small" ></lightning-button>
+                            </div>
+                    </div>
+                </div>
+                 <!--added by Aritra for SC-004726 for Gifts section of INTL calls-->
+            
+                <div class="slds-section">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Next Call">{label.NextCallHeadingLabel}</span>
+                    </h3>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_2-of-2">
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields" field-name="ZTS_EU_Next_Step__c">
+                        </lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields" field-name="ZTS_EU_Next_Call_Date__c">
+                        </lightning-input-field>
+                    </div>
+                </div>
+                <lightning-messages></lightning-messages>
+            </div>
+            <div if:true={processing}>
+                <lightning-spinner
+                    alternative-text="Loading"
+                    size="medium"
+                    class={spinnerClass}
+                ></lightning-spinner>
+            </div>
+            <footer class={footerClass}>
+                <lightning-button
+                    variant="neutral"
+                    label={label.CancelButtonLabel}
+                    title="Close modal without making changes"
+                    onclick={cancelOnClick}>
+                </lightning-button>
+                <span if:true={renderSave}>
+                    <lightning-button class="slds-m-left_small"
+                        variant="brand"
+                        type="submit"
+                        label={label.SaveButtonLabel}
+                        title={buttonTitle}
+                        onclick={saveOnClick}>
+                    </lightning-button>
+                </span>
+                <span if:true={renderSubmit}>
+                    <lightning-button class="slds-m-left_small"
+                        variant="brand"
+                        type="submit"
+                        label={label.CompleteButtonLabel}
+                        title="Submit"
+                        onclick={submitOnclick}>
+                    </lightning-button>
+                </span>
+            </footer>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </lightning-record-edit-form>
+    </div>
+</template>

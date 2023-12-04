@@ -1,0 +1,118 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_AddGiftFromCall
+* Description   :   This is the popup page for adding Gifts from Call page.                        
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     30th-Dec-14   Shreyas             Created the vf page.
+
+********************************************************************************************************************************************
+-->
+
+<apex:page sidebar="false" showHeader="false" id="pg" controller="ZTS_EU_AddGiftFromCallController" LightningStyleSheets="true">
+    <style>
+        body .bPageBlock, .slds-vf-scope .bPageBlock
+        {
+            margin-top:10px;
+        }
+        .listRelatedObject .bPageBlock .pbHeader .btn:hover, .listRelatedObject .bPageBlock .pbBottomButtons .btn:hover, .apexp .bPageBlock .pbHeader .btn:hover, 
+        .apexp .bPageBlock .pbBottomButtons .btn:hover, div.buttons .btn:hover, div.pbBottomButtons > .btn:hover, body button:hover, body .x-btn:hover, 
+        body .btn:hover, body .btnDisabled:hover, body .btnCancel:hover, body .menuButton .menuButtonButton:hover
+        {
+            background: rgb(244,246,249);
+        }
+        .pbBody a > i
+        {
+            margin-top:-16px;
+        }
+    </style>
+    <apex:slds />
+    <div class="slds-scope slds-p-horizontal_medium">
+        
+        <apex:stylesheet value="{!$Resource.AddInformationOnCall}"/>
+        <apex:stylesheet value="{!$Resource.CallPage}"/>
+        <apex:includeScript value="{!$Resource.jquery_1_11_1}"/>
+    
+        <h3 style="font-size: 1.6em;">{!$Label.ZTS_EU_AddGifts}</h3>
+    
+        <apex:form id="frm_gifts">
+        
+            <apex:messages layout="list" style="color:red;"/>
+            <apex:pageblock title="{!$Label.ZTS_EU_GiftsAssociatedToThisCall}" id="pb_gifts">
+            
+                <apex:pageblocktable value="{!existingGifts}" var="gift" rendered="{! (existingGiftListSize != 0) }">
+                    <apex:column value="{!gift.Name}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.Name.Label}"/>
+                    <apex:column value="{!gift.ZTS_EU_Contact__c}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.ZTS_EU_Contact__c.Label}"/>
+                    <apex:column value="{!gift.ZTS_EU_Quantity__c}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.ZTS_EU_Quantity__c.Label}"/>
+                    <apex:column value="{!gift.ZTS_EU_Gift_type__c}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.ZTS_EU_Gift_type__c.Label}"/>
+                    <apex:column value="{!gift.ZTS_EU_Product_Hierarchy__c}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.ZTS_EU_Product_Hierarchy__c.Label}"/>
+                    <apex:column value="{!gift.ZTS_EU_Year__c}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.ZTS_EU_Year__c.Label}"/>
+                    <apex:column headervalue="{!$Label.ZTS_EU_Remove}">
+                        <apex:commandLink value="X" action="{!deleteGift}" rerender="frm_gifts" status="status_Loading" immediate="true">
+                        <apex:param name="param1" value="{!gift.Id}" assignTo="{!giftId}"/>
+                        </apex:commandLink>
+                    </apex:column>
+                </apex:pageblocktable>
+                
+                <!--<br></br>-->
+                <apex:commandlink styleClass="callGift" action="{!showNewGift}" rerender="frm_gifts" status="status_Loading">
+                       {!$Label.ZTS_EU_NewGift}
+                </apex:commandlink>
+                <br></br>
+                
+                <apex:pageBlock rendered="{!showNewGift}" id="pb_newGift">
+                    <apex:pageblockSection collapsible="false" id="pbs_newGift">
+                        <apex:inputField value="{!newGift.ZTS_EU_Contact__c}" rendered="{! (newGift.ZTS_EU_Contact__c) == null }"/>
+                        <apex:outputField value="{!newGift.ZTS_EU_Contact__c}" rendered="{! (newGift.ZTS_EU_Contact__c) != null }"/>
+                        <apex:inputField value="{!newGift.ZTS_EU_Product_Hierarchy__c}"/>
+                        <apex:inputField value="{!newGift.ZTS_EU_Quantity__c}" />
+                        <apex:inputField value="{!newGift.ZTS_EU_Description__c}" style="width:300px;height:75px;"/>
+                    </apex:pageblockSection>       
+                    <br></br>
+                    <apex:commandButton styleClass="slds-button slds-button_neutral" value="{!$Label.ZTS_EU_Save}" action="{!saveNewGift}" style="margin-left:42%" rendered="{!showNewGift}"/>
+                    <apex:commandButton styleClass="slds-button slds-button_neutral" value="{!$Label.ZTS_EU_Cancel}" action="{!cancelNewGift}" immediate="true" style="margin-left:3%" rendered="{!showNewGift}"/>
+                </apex:pageBlock>
+                
+            </apex:pageblock>
+            
+            
+            <br></br><br></br>
+            <apex:commandButton styleClass="slds-button slds-button_neutral" value="{!$Label.ZTS_EU_Done}" onclick="closeWindow();" style="margin-left:49%" immediate="true"/>    
+            
+            
+         
+         <apex:actionStatus id="status_Loading">
+            <apex:facet name="start"> 
+                <c:ZTS_EnhancedActionStatus BackColor="#F1F2C6" borderColor="#336699" borderSize="1" height="30px" width="120px" ImageUrl="{!$Resource.AjaxAnimation}" Message="{!$Label.ZTS_EU_Loading}" messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+            </apex:facet>
+        </apex:actionStatus>
+         
+            
+         </apex:form>
+         
+         <script type = "text/javascript">
+        
+            $(document).ready(function(){
+                reloadPage();
+            });
+            
+            var addCallGift = '{!$Label.ZTS_EU_NewGift}'; 
+            
+            function reloadPage(viewdiscid) {
+               $('a.callGift').html('<i>+</i>'+addCallGift); 
+            }
+            
+            function closeWindow(){
+                opener.location.reload(true);
+                window.close();
+                return;
+            }  
+                      
+        </script>
+    </div>
+  
+</apex:page>

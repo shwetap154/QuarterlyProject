@@ -1,0 +1,7 @@
+.THIS {
+}
+.THIS .message-text {
+    display: inline;
+    margin-left: 10px;
+    vertical-align: middle;
+}

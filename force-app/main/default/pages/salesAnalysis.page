@@ -1,0 +1,16 @@
+<apex:page id="salesAnalysis" standardController="Account" showHeader="false" sidebar="false"  >
+    <script>
+		function showDashboard() {
+            var iframe = document.getElementById('theIframe');
+            iframe.src = "https://tableau.corp.zoetis.com/t/ZTSUS/views/SalesSummaryDashboard-TP/TPSalesAnalysis?CRMAcctID={!Account.Id}&iframeSizedToWindow=true&%3Aembed=y&%3Alinktarget=_self&%3AshowAppBanner=false&%3Adisplay_count=no&%3Atoolbar=top#2&original_view=yes"; 
+            document.getElementById('buttonDiv').style.display = 'none';
+		}
+    </script>
+    <div id='buttonDiv' style="display:block">
+        <button name="Click Here To View Dashboard" onclick="showDashboard()">Click Here To View Dashboard</button>
+    </div>
+    <div id='dashboardDiv'>
+        <apex:iframe id="theIframe" height="650px" width="100%" src="about:blank"/>
+    </div>
+        
+</apex:page>

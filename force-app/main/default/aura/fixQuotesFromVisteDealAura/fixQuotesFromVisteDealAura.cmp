@@ -1,0 +1,17 @@
+<aura:component implements="force:hasRecordId,force:lightningQuickActionWithoutHeader" 
+                access="global"
+                controller="FixQuotesFromVistexDeal">
+    <aura:attribute name="recordId" type="string" default="test" />
+    
+
+    <lightning:card title="Fix Quotes">
+        <p class="slds-p-horizontal_small">
+            Do you really want to remove Vistex Deal from quotes?
+        </p>
+    </lightning:card>
+    <div class="">        
+        <lightning:button variant="neutral" label="Cancel" onclick="{! c.handleCancelClick }" />      
+        <lightning:button variant="brand" label="Submit" onclick="{! c.handleSubmitClick }" />
+    </div>
+    <!--<c:fixQuotesFromVistexDeal recordId="{!v.recordId}"/> -->
+</aura:component>

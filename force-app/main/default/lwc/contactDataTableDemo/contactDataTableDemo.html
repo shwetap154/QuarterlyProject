@@ -1,0 +1,143 @@
+<template>
+    <lightning-card title="Contact Editor" icon-name="custom:custom64">
+        <div id="container" class="slds-var-p-around_small">
+            <div>
+                <span>
+                    <label style="margin-left: 1rem;font-weight: 500;">Instructions</label>
+                </span>
+                <ul class="slds-list_ordered">
+                    <b>Note:</b> Your contacts may take several second to initially load onscreen. Using filters will increase speed of screen loading.
+                    <li><span>Mouse over contact records and click on pencil icon to
+                            update
+                            contacts. Updated fields will
+                            display in yellow - be sure
+                            to click on the <b>"Save"</b> button before leaving the page.</span></li>
+
+                    <li><span>Add Filter Criteria to narrow down your list of
+                            contacts. Use the Filter Column to select a
+                            field you want to filter by
+                            and type a value in the Enter Search Value field. After you have added filters, click
+                            the
+                            <b>"Apply Filter"</b> button. You can
+                            also delete filters by clicking the trash icon.</span></li>
+                </ul>
+            </div>
+            <br/>
+            <template for:each={filters} for:item="filter" for:index="filterInd">
+                <div key={filter.index}>
+                    <div class="slds-form_horizontal slds-grid">
+                        <div class="slds-size_1-of-5">
+                            <lightning-combobox name="Filter Column" label="Filter Column" value={filter.fieldName}
+                                placeholder="Select field to filter" options={filterOptions} data-item={filter.index}
+                                onchange={handlefilterColumnChange}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-size_1-of-5">
+                            <lightning-input type="search" label="Enter Search Value"
+                                onchange={handleSerchKeyColumnChange} value={filter.searchKey} data-item={filter.index}>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-top_xx_large">
+                            <lightning-button-icon style="margin-left: 10px;margin-top: 10px;" icon-name="utility:delete"
+                                alternative-text="Delete Filter" data-item={filter.index} label="Delete" title="Delete"
+                                variant="brand" onclick={deleteSearchFilter}>
+                            </lightning-button-icon>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template if:true={hasFilters}>
+                <lightning-button variant="brand" label="Apply filter" title="Apply filter" onclick={handleSearch}
+                    class="slds-m-left_x-small"></lightning-button>
+            </template>
+            <lightning-button variant="base" label="Add Filter Criteria" title="Add Filter Criteria"
+                onclick={addNewFilter} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button variant="brand" label="New Contact" title="New Contact" onclick={createNewContact}
+                class="slds-m-left_x-small" style="float:right;margin-right: 1rem;"></lightning-button>   
+            <br/><br/>
+            <div>
+                <div onitemregister={handleItemRegister}>
+                    <div slot="actions" class="button-div slds-float_none" if:true={hasDraftData}>
+
+                        <lightning-button variant="brand" label="Save" title="Save" type="submit" onsave={handleSave}
+                            draft-values={draftValues} onclick={handleSave} class="slds-m-left_x-small">
+
+                        </lightning-button>
+                        <lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={handleCancel}
+                            class="slds-m-left_x-small">
+                        </lightning-button>
+                    </div>
+                    <div style="height: 25rem">
+                        <c-custom-datatable class="slds-max-medium-table_stacked eighty-percent"
+                            onvaluechange={handleValueChange} oncellchange={handleCellChange} data={records}
+                            columns={columns} show-row-number-column="false" key-field="Id" draft-values={draftValues}
+                            onsave={handleSave} data-record="Id" onedit={handleEdit} hide-checkbox-column="true"
+                            oncancel={handleCancel} sorted-by={sortBy} sorted-direction={sortDirection} onsort={doSorting}
+                            onrowaction={handleContactRowAction} errors={errors}>
+                        </c-custom-datatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="showSpinner" if:true={showSpinner}>
+            <lightning-spinner class="slds-is-fixed" alternative-text="Loading" variant="brand"></lightning-spinner>
+        </div>
+
+        <template if:true={showProfJobFunceditModal}>
+            <div class="slds-modal slds-fade-in-open slds-backdrop">
+                <div class="slds-modal__container">
+
+                    <div class="slds-modal__header">
+                        <h2> <b>Edit Profession and Job Function</b></h2>
+                    </div>
+                    <div class="slds-modal__content modal-content-override">
+                        <lightning-combobox name="Profession" class="profession" label="Profession"
+                            value={selectedConProfession} options={professionOptions} onchange={handleProfChange}
+                            style="color:grey;width:300px">
+                        </lightning-combobox>
+
+                        <lightning-combobox name="Job Function" class="jobfunction" label="Job Function"
+                            value={selectedConJobFunction} options={jobFunctionOptions} onchange={handleJobFuncChange}
+                            style="color:grey;width:300px">
+                        </lightning-combobox>
+
+                    </div>
+                    <div class="slds-modal__footer">
+                        <lightning-button label="Save" variant="brand" onclick={saveModalSelections}>
+                        </lightning-button> &nbsp;&nbsp;
+                        <lightning-button label="Cancel" variant="brand" onclick={cancelOnClick}>
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template if:true={showAffiliationTablemodal}>
+            <div class="slds-modal slds-fade-in-open slds-backdrop">
+                <div class="scrollable duplicate-container-override">
+
+                    <div class="slds-modal__header">
+                        <h2> <b>Inactivate Active Affiliations</b></h2>
+                    </div>
+                    <lightning-datatable key-field=id data={wiredAffRecords} columns={affColumns}
+                        onrowselection={handleRowSelection} onrowaction={handleRowAction}
+                        selected-rows={selectedAffRecords} class="eighty-percent">
+                    </lightning-datatable>
+                    <div class="showAffSpinner" if:true={showAffSaveSpinner}>
+                        <lightning-spinner class="slds-is-fixed" alternative-text="Loading" variant="brand">
+                        </lightning-spinner>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <lightning-button label="Inactivate" variant="destructive" onclick={deactivateAff}>
+                        </lightning-button> &nbsp;&nbsp;
+                        <lightning-button label="Reset" variant="brand" onclick={resetAffSelection}>
+                        </lightning-button> &nbsp;&nbsp;
+                        <lightning-button label="Close" variant="brand" onclick={closeAffModal}>
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+
+
+</template>

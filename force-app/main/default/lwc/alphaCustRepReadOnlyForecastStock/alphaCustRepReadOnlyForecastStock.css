@@ -1,0 +1,9 @@
+.zs_cb_distname_wrap{
+    border: 1px solid #ccc;
+    padding: 1% 2% 2%;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-bottom: 1%;
+    background: #ddd;
+}

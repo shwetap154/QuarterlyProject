@@ -1,0 +1,7 @@
+.slds-modal__container{
+    width: 100%;
+}
+
+.slds-fade-in-open{
+    z-index: 9999;
+}

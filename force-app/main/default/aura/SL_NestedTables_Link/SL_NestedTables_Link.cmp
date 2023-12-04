@@ -1,0 +1,17 @@
+<aura:component
+    description="SL_NestedTables_Link"
+>
+    <aura:attribute name="currentField" type="Object"/>
+    <aura:attribute name="cellValue" type="String"/>
+    <aura:attribute name="lookupId" type="String"/>
+
+    <aura:attribute name="testsfid" type="Aura.Action" default="{!c.testsfclick}"/>
+
+    <a
+        href="javascript:void(0);"
+        data-sfid="{!v.lookupId}"
+        onclick="{!v.testsfid}"
+    >
+        {!v.cellValue}
+    </a>
+</aura:component>

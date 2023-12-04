@@ -1,0 +1,35 @@
+<apex:page standardController="Lead" showChat="false" showHeader="false" cache="false" title="Sales Policy" >
+    
+    <style type="text/css">
+        .individualPalette .leadBlock .tertiaryPalette{
+        background-color:#0096AF !important;
+        }
+        .individualPalette .leadBlock .secondaryPalette {
+        border-color:#0096AF !important;
+        }
+        body .bEditBlock .pbBody .pbSubheader{
+        background-image:none !important;
+        color:#ffffff !important;
+        }
+        .requiredLegend{
+        color:#ffffff !important;
+        }
+        body{
+        font-size: 80% !important;
+        }
+    </style>
+    <center>
+        <apex:form style="width: 95%; text-align:justify;">
+            <apex:pageBlock >
+                <center><h1 style="font-size:15px;color:#1696ad;">Sales Policy</h1></center>
+                <br/><br/>
+                Zoetis’ sales policy is based on the importance of the veterinarian-client-patient relationship. 
+                Due to a veterinarian’s unique education and training, we maintain that veterinarians are the best-qualified professionals to provide guidance when dispensing our prescription products for animals.  
+                For this reason, Zoetis maintains a strict policy of selling prescription products exclusively through appropriately licensed entities.  
+                Zoetis will, at its discretion suspend sales to anyone who resells or dispenses our products in the absence of a professional veterinarian-client-patient relationship.
+                
+                <br/><br/><br/>
+            </apex:pageBlock>
+        </apex:form>
+    </center>
+</apex:page>

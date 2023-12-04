@@ -1,0 +1,49 @@
+<apex:component access="global" controller="NOA_EmailToExtonController">
+    <apex:attribute name="EmailToExton" assignTo="{!LeadID}" type="Id" description="Salesforce Id of Lead"/> 
+    <style type="text/css"  >
+        .ct{
+        text-align:center;
+        font-weight: bold;
+        font-family:Arial; 
+        font-size:12px;
+        }
+    </style>   
+    <body style="font-family:Arial; font-size:11px;text-align:left;"/>
+    <apex:outputText value="{!loadData}"></apex:outputText>
+    
+    <apex:outputPanel rendered="{!(formType != null && formType == 'Basic')}" >
+        Below is basic information that just completed / submitted a New Standard Licensed Vet Online Account application. 
+        Below is a link to their lead profile in TouchPoint that will provide full information and attachments, including their completed application and other documents that would help qualify them to become a new account. 
+    </apex:outputPanel>    
+    
+    <apex:outputPanel rendered="{!(formType != null && formType == 'Diagnostics')}" >
+        Below is basic information that just completed / submitted a New Diagnostics or Reproductive Services Online Account application. 
+        Below is a link to their lead profile in TouchPoint that will provide full information and attachments, including their completed application and other documents that would help qualify them to become a new account. 
+    </apex:outputPanel>    
+    
+    
+    <br/>
+    <apex:outputLink value="{!baseURL}/{!newOnlineAcc.Id}">{!newOnlineAcc.NOA_Application_Number__c} - {!newOnlineAcc.FirstName} {!newOnlineAcc.LastName}</apex:outputLink>
+    
+    <apex:outputPanel rendered="{!existingAccts != null && existingAccts.size > 0}">
+        <br/><br/>
+        Below is the list of potential duplicate accounts that already exist in TouchPoint matching on either Account Name, Account SAP#, Billing Address or Shipping Address. 
+        Please consider and verify the existing accounts before creating a new account. <br/><br/>
+        
+        <apex:dataTable value="{!existingAccts}" var="acc" border="1" cellpadding="3">
+            <apex:column headerValue="Account" headerClass="ct" style="text-align:center;font-family:Arial; font-size:11px;">
+                <apex:outputLink value="{!baseURL}/{!acc.Id}">{!acc.Name}</apex:outputLink>
+            </apex:column>
+            <apex:column headerValue="Account NARC#" headerClass="ct" style="text-align:center;font-family:Arial; font-size:11px;"  >
+                <apex:outputText value="{!acc.ZTS_US_NARC_ID__c}" />
+            </apex:column>
+            <apex:column headerValue="Primary Address" headerClass="ct" style="text-align:center;font-family:Arial; font-size:11px;">
+                <apex:outputText value="{!acc.BillingStreet},{!acc.BillingCity},{!acc.BillingState},{!acc.BillingPostalCode},{!acc.BillingCountry}" />
+            </apex:column>
+        </apex:dataTable>
+    </apex:outputPanel>
+    <br/><br/>
+    Thanks, <br/>
+    <b>Zoetis Team</b>
+    
+</apex:component>

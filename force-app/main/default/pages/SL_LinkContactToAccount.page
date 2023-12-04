@@ -1,0 +1,31 @@
+<apex:page standardController="ZTS_EU_Affiliations__c" tabStyle="ZTS_EU_Affiliations__c" recordSetVar="record" lightningStylesheets="true" extensions="SL_LinkContactToAccountController">
+
+    <apex:form >
+        <apex:actionFunction action="{!backToView}" name="exit"/>
+    </apex:form>
+
+    <apex:slds />
+    <div id="lightningscope" class="slds-scope slds-hide">
+        <article class="slds-card">
+            <div class="slds-card__header slds-grid">
+                
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <div style="text-align:right; margin-right: .5rem;">
+                    <button class="slds-button slds-button_brand" onclick="exit()">Exit from Account Contact Affiliation Creation Wizard</button>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <script>
+        if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
+            document.getElementById('lightningscope').classList.remove("slds-hide");
+            sforce.one.createRecord('ZTS_EU_Affiliations__c', null, {'ZTS_EU_Contact__c' : '{!$CurrentPage.parameters.id}',
+                                                                     'Name' : '-Autopopulates on Save-'});
+        }else {
+            window.location.href="/a0P/e?CF00NF000000CM805={!URLENCODE(ContactName)}&CF00NF000000CM805_lkid={!$CurrentPage.parameters.Id}&retUrl={!$CurrentPage.parameters.Id}";
+        }
+    </script>
+
+</apex:page>

@@ -1,0 +1,313 @@
+<apex:page standardController="Account" extensions="ZTS_US_salesDataReportingController" renderAs="pdf" applyhtmltag="false" showheader="false">
+
+<head>
+    <style type="text/css" media="print">
+      #htmlTable2 tr.alt td {
+        color:#000000;
+        background-color:#EAF2D3;
+        }
+        @page :first {
+            size:landscape;
+            margin-top: 100px;
+            margin-bottom:80px;
+            //margin-top: 3cm;              
+            @top-center {
+                content: element(headerOne);                
+            }           
+                        
+           /* Put page numbers in the bottom center of each
+              page in the pdf document. */
+            @bottom-center {
+              font-family: Arial Unicode MS;
+              content:  counter(page) "  /  " counter(pages);
+              font-size: 8pt;
+            }                       
+        }
+      @page{
+           /* Landscape orientation */
+            size:landscape;
+            margin-top: 147px;
+            margin-bottom:80px;
+            //margin-top: 3cm;          
+            @top-center {               
+                content: element(header);               
+            }
+            
+            
+           /* Put page numbers in the bottom center of each
+              page in the pdf document. */
+            @bottom-center {
+              font-family: Arial Unicode MS;
+              content:  counter(page) "  /  " counter(pages);
+              font-size: 8pt;
+            }
+    
+        }
+      @page-break {
+            display:block;
+            page-break-after:always;
+            
+      }
+     
+      body {
+            font-family: Arial Unicode MS;
+      }
+     div.header
+    {        
+        margin-top:70px;
+        margin-left:3px;
+        
+        padding: 5px;
+        position: running(header);
+    }
+    div.headerOne
+    {        
+        margin-top:465px;
+        margin-left:3px;        
+        padding: 5px;
+        position: running(headerOne);
+    }
+    table.fixed { table-layout:fixed; }
+    table.fixed td { overflow: hidden; }
+        
+    </style>
+</head>
+
+ <font  margin-top="0" ><center> Product Sales Report </center> </font><br/><br/>
+<apex:form id="theForm">
+<table id="tb1" style="border-style: solid;">
+    <tr> 
+        <td>
+            <apex:outputText rendered="{!IF(accntchild.Id <> null, FALSE, TRUE)}">{!accntCurrent.Name}-{!accntCurrent.ZTS_US_NARC_ID__c}-Account Sales       Analysis: Product Sales
+            </apex:outputtext>
+            <apex:outputText rendered="{!IF(accntchild.Id <> null, TRUE, FALSE)}">{!accntCurrent.Name}-{!accntCurrent.ZTS_US_NARC_ID__c}-Account Sales Analysis: Product Sales-Aggregated
+            </apex:outputtext>    
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <apex:outputText value="Generated On: {!NOW()}"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <apex:outputText value="Sales Through: {!salesDateCustSett.ZTS_US_Date__c}"/>
+        </td>
+    </tr>
+        <tr>
+        <td>
+            <apex:outputText value=""/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <apex:outputText value="Filtered By : "/>
+        </td>
+    </tr> 
+    <tr>
+        <td style="padding-left:3cm;">
+            <apex:outputText value="{!selectedLevelValue}"/>
+        </td>
+    </tr>       
+     <tr>
+        <td style="padding-left:3cm;">
+            <apex:outputText value="{!selectedMATYTD}"/>
+        </td>
+    </tr>           
+    <tr>        
+        <td style="padding-left:3cm;">
+            <apex:outputText value="{!selectedBillToShipTo}"/>
+        </td>
+    </tr>      
+   <tr>            
+        <td style="padding-left:3cm;">
+            <apex:outputText value="Species :N/A" rendered="{!IF(AND(selectedSpecies == '<Species>',selectedPreset == '--None--'),true, false)}"/>
+             <apex:outputText value="Species :{!selectedSpecies}" rendered="{!IF(AND(selectedSpecies != '<Species>',selectedPreset == '--None--'),true, false)}"/>
+            <apex:outputText value="Species :{!salesPresets.ZTS_EU_Selected_Preferred_Species__c}" rendered="{!IF(AND(selectedSpecies == '<Species>',selectedPreset != '--None--'),true, false)}"/>     
+        </td>
+    </tr>
+    <tr>            
+        <td style="padding-left:3cm;">
+            
+            <apex:outputText value="Therapeutic Group :N/A" rendered="{!IF(AND(selectedTherapeuticGrp == '<Therapeutic Group>',selectedPreset == '--None--'),true, false)}"/>
+            <apex:outputText value="Therapeutic Group :{!selectedTherapeuticGrp}" rendered="{!IF(AND(selectedTherapeuticGrp != '<Therapeutic Group>',selectedPreset == '--None--'),true, false)}"/>
+            <apex:outputText value="Therapeutic Group :{!salesPresets.ZTS_EU_Selected_Preferred_Thera_Grps__c}" rendered="{!IF(AND(selectedTherapeuticGrp == '<Therapeutic Group>',selectedPreset != '--None--'),true, false)}"/>   
+        </td>
+    </tr>
+    <tr>            
+        <td style="padding-left:3cm;">
+           
+           <apex:outputText value="Product :N/A" rendered="{!IF(AND(selectedProduct == '<Product>',selectedPreset == '--None--'),true, false)}"/>
+           <apex:outputText value="Product :{!selectedProduct}" rendered="{!IF(AND(selectedProduct != '<Product>',selectedPreset == '--None--'),true, false)}"/>
+            <apex:outputText value="Product :{!salesPresets.ZTS_EU_Selected_Preferred_Brands__c}" rendered="{!IF(AND(selectedProduct == '<Product>',selectedPreset != '--None--'),true, false)}"/>  
+        </td>
+    </tr> 
+    
+</table>
+<br/>
+<br/>
+
+
+<div class="headerOne">
+<table border="1" cellpadding="0" cellspacing="0" style="width:850px;font-family:sans-serif;font-size:4px" id="htmlTable2">  
+<tr style="font-weight:bold;background-color: #819FF7;font-size: 10px;" >                            
+        <td style="width: 92px;text-align:center;" align="middle"><b><apex:outputText value="Account Name"/></b> 
+        </td>
+        <td style="width: 93px;text-align:center;" align="middle"><b><apex:outputText value="Therapeutic Group"/></b>
+        </td>
+        <td style="width: 94px;text-align:center;" align="middle"><b><apex:outputText value="Product"/></b>
+        </td>                            
+        <td style="width: 55px;text-align:center;" align="middle"><b> <apex:outputText value="Product Sales"/></b>
+        </td> 
+        <td style="width: 42px;text-align:center;" align="middle"><b><apex:outputText value="Grand Total"/></b> 
+        </td>    
+        <apex:repeat value="{!monthList_MAT}" var="mon">                        
+                <apex:outputText rendered="{!IF((selectedMATYTD != 'MAT'),false, true)}">
+                <td style="width: 35px;" align="middle">
+                    <b><apex:outputText value="{!mon}" ></apex:outputText></b>
+                </td>
+            </apex:outputText>    
+        </apex:repeat>
+        <apex:repeat value="{!monthList_MAT}" var="colItem">                        
+            <apex:outputText rendered="{!IF((selectedMATYTD != 'YTD'),false, true)}">
+            <td align="middle" style="width: 35px;">
+                <b><apex:outputText value="{!colItem}" ></apex:outputText></b>
+            </td>
+            </apex:outputText>    
+        </apex:repeat>
+    </tr>
+</table>
+</div>
+
+
+
+<div class="header">
+ <font margin-top="0" ><center> Product Sales Report </center> </font> <br/>
+<table border="1" cellpadding="0" cellspacing="0" style="width:850px;font-family:sans-serif;font-size:4px" id="htmlTable2">  
+<tr style="font-weight:bold;background-color: #819FF7;font-size: 10px;" >                            
+        <td style="width: 94px;text-align:center;" align="middle"><b><apex:outputText value="Account Name"/></b> 
+        </td>
+        <td style="width: 92px;text-align:center;" align="middle"><b><apex:outputText value="Therapeutic Group"/></b>
+        </td>
+        <td style="width: 93px;text-align:center;" align="middle"><b><apex:outputText value="Product"/></b>
+        </td>                            
+        <td style="width: 54px;text-align:center;" align="middle"><b> <apex:outputText value="Product Sales"/></b>
+        </td> 
+        <td style="width: 42px;text-align:center;" align="middle"><b><apex:outputText value="Grand Total"/></b> 
+        </td>    
+        <apex:repeat value="{!monthList_MAT}" var="mon">                        
+                <apex:outputText rendered="{!IF((selectedMATYTD != 'MAT'),false, true)}">
+                <td style="width: 35px;" align="middle">
+                    <b><apex:outputText value="{!mon}" ></apex:outputText></b>
+                </td>
+            </apex:outputText>    
+        </apex:repeat>
+        <apex:repeat value="{!monthList_MAT}" var="colItem">                        
+            <apex:outputText rendered="{!IF((selectedMATYTD != 'YTD'),false, true)}">
+            <td align="middle" style="width: 35px;">
+                <b><apex:outputText value="{!colItem}" ></apex:outputText></b>
+            </td>
+            </apex:outputText>    
+        </apex:repeat>
+    </tr>
+</table>
+</div>
+
+<table class="fixed" border="1" cellpadding="0" cellspacing="0" style="width:850px;font-family:sans-serif;font-size:4px" id="htmlTable3">
+    <col width="94px" />
+    <col width="93px" />
+    <col width="94px" />
+    <col width="55px" />
+    <col width="42px" />
+    <apex:repeat value="{!monthList_MAT}" var="mon"> 
+    <col width="35px" />
+    </apex:repeat>
+   
+    <apex:repeat value="{!customSetList}" var="salesDataRec" id="theTable3b">                            
+        <tr style="font-family:verdana;color:Black;font-size:9px;text-align:center !important;">                            
+            <td>
+                <div style="margin:0;padding:0;">
+                    {!salesDataRec.accntName} - {!salesDataRec.narcId}
+                </div>
+            </td>
+            <td>
+                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                    <apex:outputPanel rendered="{!IF(str1.therapeuticGrp.size==0,TRUE,FALSE)}">&nbsp;</apex:outputPanel>
+                    <apex:repeat value="{!str1.therapeuticGrp}" var="str">
+                        <div style="width:90px;height:52px;text-align:center;display:table;border-top:1px solid #666;margin:0;padding:40px 0 0 0;word-break:break-all;">
+                            <span style="display: table-cell;vertical-align: middle;">{!str}</span>
+                        </div>
+                    </apex:repeat>
+                </apex:repeat>
+            </td>
+            <td>
+                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1" >
+                    <apex:outputPanel rendered="{!IF(str1.prodValue.size==0,TRUE,FALSE)}">&nbsp;</apex:outputPanel>
+                    <apex:repeat value="{!str1.prodValue}" var="str">
+                        <div style="width:90px;height:52px;text-align:center;display:table;border-top:1px solid #666;margin:0;padding:40px 0 0 0;word-break:break-all;">
+                            <span style="display: table-cell;vertical-align: middle;">{!str}</span>
+                        </div>
+                    </apex:repeat>
+                </apex:repeat>
+            </td>                                
+            <td>
+                <apex:variable var="i" value="{!0}"/>
+                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                    <apex:variable var="i" value="{!i+1}"/>
+                    <apex:repeat value="{!str1.valueType}" var="str">
+                        <div style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">
+                            {!str}
+                        </div>
+                    </apex:repeat>
+
+                </apex:repeat>
+            </td>   
+            <td>
+                <apex:variable var="i" value="{!0}"/>
+                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                    <apex:variable var="i" value="{!i+1}"/>
+                    <apex:repeat value="{!str1.grandTotal}" var="str">
+                        <div style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">${!str}</div>
+                    </apex:repeat>
+                </apex:repeat>
+            </td>                           
+            <apex:variable var="i" value="{!0}"/>
+            <apex:repeat value="{!monthList_MAT}" var="MonthValue_product_Total">   
+                <apex:variable var="i" value="{!i+1}"/> 
+                <apex:outputText rendered="{!IF((selectedMATYTD != 'MAT'),false, true)}">                           
+                    <td>          
+                        <apex:repeat value="{!salesDataRec.monthValueMapMAT[MonthValue_product_Total]}" var="Value_product_Total">
+                            <div style="height:20px;border-top:1px solid #666;white-space:no-wrap;text-align:center;margin:0;padding:5px 0;">                 <apex:outputLabel value="${!Value_product_Total}" ></apex:outputLabel>
+                            </div>
+                        </apex:repeat>                                            
+                    </td>                                                                             
+                </apex:outputtext>  
+            </apex:repeat>  
+            <apex:variable var="i" value="{!0}"/>
+                <apex:repeat value="{!monthList_MAT}" var="colItem">
+                    <apex:variable var="i" value="{!i+1}"/>
+                        <apex:outputText rendered="{!IF((selectedMATYTD != 'YTD'),false, true)}">
+                            <td>                                    
+                                <apex:repeat value="{!salesDataRec.monthValueMap[colItem]}" var="listvar">
+                                    <div style="height:20px;border-top:1px solid #666;white-space:no-wrap;text-align:center;margin:0;padding:5px 0;">
+                                        <apex:outputLabel value="${!listvar}"></apex:outputLabel>
+                                    </div>
+                                </apex:repeat>  
+                            </td>
+                        </apex:outputText>
+                </apex:repeat>                                
+        </tr> 
+    </apex:repeat>    
+</table>
+<br/>
+<br/>
+<br/>
+<apex:outputText rendered="{!IF(customSetList.size == 0,TRUE,FALSE)}" > 
+    <br/><b style="font-size: 15px;">Based on the current report selections, no data is available.</b>
+</apex:outputText>
+<br/>
+<br/>
+<br/>
+</apex:form>
+
+</apex:page>

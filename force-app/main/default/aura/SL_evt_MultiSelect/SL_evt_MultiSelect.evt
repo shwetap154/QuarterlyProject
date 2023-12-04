@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="Event template" >
+    <aura:attribute name="Id" type="String"/>
+    <aura:attribute name="fieldApi" type="String"/>
+    <aura:attribute name="Values" type="String"/>
+</aura:event>

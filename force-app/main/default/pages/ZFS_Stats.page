@@ -1,0 +1,280 @@
+<apex:page title="Zoetis For Shelters" standardController="Lead"  extensions="ZoetisForShelters" cache="false" showChat="false" showHeader="false" sidebar="false">
+    <c:ZFS_header shelterObj="{!shelter}" ></c:ZFS_header>
+    <style type="text/css"  >
+        .btn {  
+        line-height:1.5 !important;border:2px solid transparent !important;min-width:8em !important;
+        background-color:#ff6400 !important;
+        background:#ff6400 !important;
+        color:white !important;
+        }  
+        .individualPalette .leadBlock .tertiaryPalette{
+        background-color:#0096AF !important;
+        }
+        .individualPalette .leadBlock .secondaryPalette {
+        border-color:#0096AF !important;
+        }
+        body .bEditBlock .pbBody .pbSubheader{
+        background-image:none !important;
+        color:#ffffff !important;
+        }
+        .requiredLegend{
+        color:#ffffff !important;
+        }
+       
+        .message{
+        background-color: #ffffff !important;
+        padding: 0px 0px 0px 0px !important;
+        margin: 2px 0px !important;
+        width: 100% !important;
+        }
+        body{
+        font-size: 85% !important;
+        }
+        body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label{
+        font-size: 1.4em;
+        }
+        input{
+                height:2em !important; 
+                font-size:1em !important; 
+            } 
+        body .bPageBlock .pbBody .labelCol{
+            vertical-align:middle !important;
+            font-size:1em !important; 
+        }
+        select{
+            height:2em !important; 
+        }
+        th {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+         }     
+        td {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+        }
+        
+        fieldset {
+        	padding: inherit;
+    		border: none;
+        }
+        
+    </style>
+    <script type='text/javascript'>
+    function noenter(ev)  {
+        if (window.event && window.event.keyCode == 13 || ev.which == 13) {
+            saveShelter();
+            return false;
+        } else {
+            return true;
+        }
+    }
+    </script>
+    
+    <table style="width:100%;">
+        <tr>
+            <td style="width:10%;"></td>
+            <td style="vertical-align: top; text-align: right;">
+                <c:ZFS_Page_Navigation leadId="{!LeadId}" currStepNo="4" compStepNo="{! IF(LeadId==null,0,shelter.Step_Number__c)}"></c:ZFS_Page_Navigation>
+            </td>
+            <td style="width:50%;vertical-align: top;">
+                <center>
+                    <apex:form >
+                        <apex:pageMessages rendered="{!hasErrors}"></apex:pageMessages>
+                        <apex:outputPanel id="stats"  >
+                            <apex:pageBlock mode="edit" id="statsBlock" >
+                                <apex:pageBlockSection columns="1" title="Statistics"  >
+                                    
+                                    <label><B>Dog &amp; Puppy Statistics</B></label><br/><br/>
+                                    <apex:pageBlockSectionItem labelStyle="width:25%;">
+                                        <label># Puppy Intakes/yr</label>
+                                        <apex:outputPanel >                                            
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>                                                 
+                                                <apex:inputField label="" value="{!shelter.Puppy_Intakes_Yr__c}" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" style="width:50%" onkeypress="return noenter(event);"/>                                                 
+                                            </div>                                            
+                                            <apex:outputField label="" value="{!shelter.Puppy_Intakes_Yr__c}" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" style="width:50%" /> 
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label># Dog Intakes/yr</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div> 
+                                                <apex:inputField label=""  value="{!shelter.Dog_Intakes_Yr__c}" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" style="width:50%" onkeypress="return noenter(event);"/> 
+                                            </div>
+												<apex:outputField label=""  value="{!shelter.Dog_Intakes_Yr__c}" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" style="width:50%" /> 
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label># Puppy Adoptions/yr</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div> 
+                                                <apex:inputField label="" value="{!shelter.Puppy_Adoptions_Yr__c}" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" style="width:50%" onkeypress="return noenter(event);"/> 
+                                            </div>
+                                            <apex:outputField label="" value="{!shelter.Puppy_Adoptions_Yr__c}" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" style="width:50%" /> 
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label># Dog Adoptions/yr</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div> 
+                                                <apex:inputField label="" value="{!shelter.Dog_Adoptions_Yr__c}" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" style="width:50%" onkeypress="return noenter(event);"/> 
+                                            </div>
+                                            <apex:outputField label="" value="{!shelter.Dog_Adoptions_Yr__c}" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" style="width:50%" />
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label># Resurrenders</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div> 
+                                                <apex:inputField label="" value="{!shelter.Resurrenders_for_Dogs__c}" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" style="width:50%" onkeypress="return noenter(event);"/> 
+                                            </div>
+                                            <apex:outputField label="" value="{!shelter.Resurrenders_for_Dogs__c}" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" style="width:50%" />
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label style="white-space: nowrap;" >Max Capacity for Dogs</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div> 
+                                                <apex:inputField label="" value="{!shelter.Max_Capacity_for_Dogs__c}" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" style="width:50%" onkeypress="return noenter(event);"/> 
+                                            </div>
+                                            <apex:outputField label="" value="{!shelter.Max_Capacity_for_Dogs__c}" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" style="width:50%" />
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <br/><label><B>Cat &amp; Kitten Statistics</B></label><br/><br/>
+                                    <apex:pageBlockSectionItem >
+                                        <label># Kitten Intakes/yr</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div> 
+                                                <apex:inputField label="" value="{!shelter.Kitten_Intakes_Yr__c}" style="width:50%" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" onkeypress="return noenter(event);"/> 
+                                            </div>
+                                            <apex:outputField label="" value="{!shelter.Kitten_Intakes_Yr__c}" style="width:50%" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" />
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label># Cat Intakes/yr</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div> 
+                                                <apex:inputField label="" value="{!shelter.Cat_Intakes_Yr__c}" style="width:50%" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" onkeypress="return noenter(event);"/> 
+                                            </div>
+                                            <apex:outputField label="" value="{!shelter.Cat_Intakes_Yr__c}" style="width:50%" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" />
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label># Kitten Adoptions/yr</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div> 
+                                                <apex:inputField label="" value="{!shelter.Kitten_Adoptions_Yr__c}" style="width:50%" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" onkeypress="return noenter(event);"/> 
+                                            </div>
+                                            <apex:outputField label="" value="{!shelter.Kitten_Adoptions_Yr__c}" style="width:50%" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" />
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>                                    
+                                
+                                    <apex:pageBlockSectionItem >
+                                        <label># Cat Adoptions/yr</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div> 
+                                                <apex:inputField label="" value="{!shelter.Cat_Adoptions_yr__c}" style="width:50%" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" onkeypress="return noenter(event);"/>
+                                            </div>
+                                            <apex:outputField label="" value="{!shelter.Cat_Adoptions_yr__c}" style="width:50%" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" />
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label># Resurrenders</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div> 
+                                                <apex:inputField label="" value="{!shelter.Resurrenders_for_Cats__c}" style="width:50%" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" onkeypress="return noenter(event);"/> 
+                                            </div>
+                                            <apex:outputField label="" value="{!shelter.Resurrenders_for_Cats__c}" style="width:50%" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" />
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Max Capacity for Cats</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div> 
+                                                <apex:inputField label="" value="{!shelter.Max_Capacity_for_Cats__c}" style="width:50%" rendered="{!shelter.Status != 'Pre-Qualification Not Eligible'}" onkeypress="return noenter(event);"/> 
+                                            </div>
+                                            	<apex:outputField label="" value="{!shelter.Max_Capacity_for_Cats__c}" style="width:50%" rendered="{!shelter.Status == 'Pre-Qualification Not Eligible'}" />  
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <br/> 
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div> 
+                                        <label><b>Does your organization perform spay and neuter operations?</b></label></div>
+                                    <apex:selectRadio label="" value="{!shelter.Does_org_perform_Spay_Neuter_operations__c}" style="width:40%" onkeypress="return noenter(event);">
+                                        <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                        <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                                    </apex:selectRadio><br/>   
+                                    
+                                    <apex:outputPanel id="op2">
+               						  <div class="requiredInput">
+                                        <div class="requiredBlock"></div> 
+                                        <label><b>Are you affiliated with a clinic that sees animals that are not in the shelter's care?</b></label></div>
+                                    <apex:selectRadio label="" value="{!shelter.In_House_Clinic__c}" immediate="true" style="width:40%" onkeypress="return noenter(event);">
+                                        <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                        <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                                        <apex:actionSupport event="onchange" reRender="op2"/>
+                                    </apex:selectRadio><br/>
+                                    
+                                   <apex:pageBlockSection columns="1" rendered="{! shelter.In_House_Clinic__c == 'Yes'}"> 
+                                       <label><b>Profit Wellness Center</b></label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.Wellness_Center__c}" style="width:30%"  /> 
+                                            </div>
+                                    </apex:outputPanel>
+                                    </apex:pageBlockSection>
+                                   </apex:outputPanel> 
+                                    
+                                    <label><b>Estimated number of spays/neuters your shelter performs in an average year.</b><br/>(Not required)</label>
+                                    <apex:inputField label="" value="{!shelter.Estimated_S_N_performed_average_yr__c}" style="width:50%" onkeypress="return noenter(event);"/><br/>  
+                                    
+                                </apex:pageBlockSection>
+                                
+                                <br/><br/>
+                                <apex:outputPanel rendered="{! !readonly}">
+                                    <apex:outputPanel style="float: left; padding-left:0.5%;">
+                                        <apex:commandButton value="Previous" action="{!previous}" immediate="true"/> 
+                                        <apex:commandButton value="Save & Next" action="{!saveShelter}"/> 
+                                        <apex:commandButton value="Save & Exit" action="{!saveExit}" /> 
+                                    </apex:outputPanel>
+                                    <apex:outputPanel style="float: right; padding-right:0.5%;">
+                                        <apex:commandButton value="Reset Form" onclick="return confirm('Are you sure you want to remove all entered details? \nPlease click \'OK\' to continue.')" action="{!reset}" immediate="true" />
+                                        <apex:commandButton value="Discard Form" onclick="return confirm('Are you sure you want to discard your application? \nPlease click \'OK\' to continue.');" action="{!discard}" immediate="true" />
+                                    </apex:outputPanel>
+                                    <apex:actionFunction name="saveShelter" action="{!saveShelter}"/>
+                                    <br/><br/><br/>
+                                </apex:outputPanel>
+                                <br/>
+                            </apex:pageBlock>
+                        </apex:outputPanel>
+                    </apex:form>
+                </center>
+            </td>
+            <td style="width:25%;"><apex:outputPanel ></apex:outputPanel></td>
+        </tr>
+    </table>
+    <c:ZFS_footer /> 
+</apex:page>

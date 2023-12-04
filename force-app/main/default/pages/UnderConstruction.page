@@ -1,0 +1,245 @@
+<apex:page showHeader="false" title="{!$Label.site.site_under_construction}">
+    <apex:includeLightning />
+    <apex:slds />
+    <style>
+        .embeddedServiceHelpButton .helpButton .uiButton {
+        background-color: #ff6400;
+        font-family: "GothamNarrowSSm-Book","Helvetica", "sans-serif";
+        }
+        
+        .embeddedServiceHelpButton .helpButton .uiButton:focus {
+        outline: none;
+        }
+        
+        .message {
+        background-color: #ff6400;
+        border-width: 1px;
+        color: #fff;
+        padding: 6px 8px 6px 6px;
+        font-size: 15px;
+        border: none;
+        }
+     
+        .chasitor[c-chatMessageOverride_chatMessageOverride] a {
+        color: #ffffff;
+        }
+        .chatMessage[c-chatMessageOverride_chatMessageOverride] {
+        line-height: normal;
+        }
+        h2[embeddedService-chatHeader_chatHeader] {
+       
+        } 
+    
+        .embeddedServiceLiveAgentStateChatItem.chatMessage button {
+        font-family:"GothamNarrowSSm-Book","Helvetica", "sans-serif";
+        font-size: 14px;
+        }
+        .embeddedServiceLiveAgentStateChatMenuMessage .chatContent .rich-menu-item:hover, 
+        .embeddedServiceLiveAgentStateChatMenuMessage .chatContent .rich-menu-item:active, 
+        .embeddedServiceLiveAgentStateChatMenuMessage .chatContent .rich-menu-item:hover:active, 
+        .embeddedServiceLiveAgentStateChatMenuMessage .chatContent .rich-menu-item:focus, 
+        .embeddedServiceLiveAgentStateChatMenuMessage .chatContent .rich-menu-item:focus:hover {
+        background: #007b8f;
+        color:#ffffff;
+        }
+        .embeddedServiceLiveAgentStateChatItem.chatMessage button:hover, 
+        .embeddedServiceLiveAgentStateChatItem.chatMessage button:hover:focus {
+        opacity: 1;
+        }
+        .embeddedServiceLiveAgentStateChatItem.chatMessage button:hover, 
+        .embeddedServiceLiveAgentStateChatItem.chatMessage button:hover:focus, 
+        .embeddedServiceLiveAgentStateChatItem.chatMessage button:hover span, 
+        .embeddedServiceLiveAgentStateChatItem.chatMessage button:hover:focus span {
+        background: #007b8f;
+        box-shadow: none;
+        }
+        .announcement[embeddedService-chatHeaderAnnouncement_chatHeaderAnnouncement]{
+        visibility: hidden;
+        animation: announcement-embeddedService-chatHeaderAnnouncement_chatHeaderAnnouncement 10s;
+        }
+       
+        .embeddedServiceSidebar p.text{
+        background-color: #6FB1C8;
+        color:#000000;
+        }       
+		.embeddedServiceSidebar h2{
+        font-size: 20px;
+        color:#ffffff;
+        }      
+        .embeddedServiceSidebar ul.rich-menu-items {
+    	width: 250px;
+		}      
+        .embeddedServiceSidebar span.label.bBody{
+        color: #000000;
+        }	   
+		.dialog-button-0.embeddedServiceSidebarButton{
+        background-color: #DEDEDE;
+        }    
+        .embeddedServiceSidebar .agent .slds-rich-text-editor__output span a {
+        color:#005670;
+        font-weight: bold;
+        }     
+       
+    </style>
+    
+    
+    
+    <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+    <script type='text/javascript'>
+        
+        hideShowInit(); // calling function to hide/show input box
+    var initESW = function(gslbBaseURL) {
+        
+        embedded_svc.settings.displayHelpButton = true; //Or false
+        embedded_svc.settings.language = 'en-US'; //For example, enter 'en' or 'en-US'
+        
+        embedded_svc.settings.defaultMinimizedText = 'Chat with us'; //(Defaults to Chat with an Expert)
+        // use 'https://site endpoint + /resource/*static resource number*/*static resource name*';
+        embedded_svc.settings.chatbotAvatarImgURL = 'https://touchpointeca--quarterly.sandbox.my.salesforce-sites.com/zoey/resource/BotIcon40px';
+        
+        
+        //embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+        
+        //embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+        //embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+        
+        // Settings for Chat
+        //embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+        // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+        // Returns a valid button ID.
+        //};
+        //embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+        //embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+        //embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+        
+        embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+        embedded_svc.settings.entryFeature = 'LiveAgent';
+        
+        embedded_svc.init(
+			'https://touchpointeca--quarterly.sandbox.my.salesforce.com',
+			'https://touchpointeca--quarterly.sandbox.my.salesforce-sites.com/zoey',
+			gslbBaseURL,
+			'00D7h0000004irq',
+			'Zoey_Embedded_Service_Deployment',
+			{
+				baseLiveAgentContentURL: 'https://c.la3-c1cs-ia5.salesforceliveagent.com/content',
+				deploymentId: '5724z0000004D2f',
+				buttonId: '5734z0000004DIW',
+				baseLiveAgentURL: 'https://d.la3-c1cs-ia5.salesforceliveagent.com/chat',
+				eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I4z0000008OItEAM_1838bf85b4c',
+				isOfflineSupportEnabled: false
+			}
+		);
+    };
+    
+    if (!window.embedded_svc) {
+		var s = document.createElement('script');
+		s.setAttribute('src', 'https://touchpointeca--quarterly.sandbox.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+		s.onload = function() {
+			initESW(null);
+		};
+		document.body.appendChild(s);
+	} else {
+		initESW('https://service.force.com');
+	}
+    
+    let chasitorControlsChildren;
+    
+    function hideShowInit() {
+        
+        // Initialize listeners
+        window.addEventListener("hide-message-input", hideMessageInput, false);
+        window.addEventListener("show-message-input", showMessageInput, false);
+        //window.addEventListener("get-browser-type", browserMessage, false);
+       
+    }
+    
+    function hideMessageInput() {
+        console.log('hideMessageInput');
+        const chasitorControl = window.document.querySelectorAll('.chasitorControls');
+        if(chasitorControl.length > 0){
+            chasitorControlsChildren = window.document.querySelectorAll('.chasitorControls')[0].children;
+            console.log(chasitorControlsChildren);
+            Array.from(chasitorControlsChildren).forEach((element) => {
+                element.style.display = 'none';
+            });
+                const newDiv = document.createElement("div");
+                const newDiv1 = document.createElement("div");
+                // and give it some content
+                const newContent = document.createTextNode("Please select from a menu item above");
+                
+                var aTag = document.createElement('a');
+                aTag.style.textDecoration = 'underline';
+                aTag.style.color = '#000000';
+               
+                aTag.innerText = "Start Over";
+                aTag.style.cursor = 'pointer';
+                aTag.setAttribute("target", "_blank");
+               
+                
+                
+                newDiv.appendChild(aTag);
+                //newDiv.appendChild(newContent);
+                
+                aTag.addEventListener("click", function(e) {
+                e.preventDefault();
+                embedded_svc.postMessage("chasitor.sendMessage", "Start Over");
+                
+        		});
+   			
+                window.document.querySelectorAll('.chasitorControls')[0].appendChild(newDiv);
+                window.document.querySelectorAll('.chasitorControls')[0].style = 'display: flex;justify-content: center;align-content: center;text-align: center;flex-direction: column-reverse;text-align: center;color: #000000;background-color: #DEDEDE;';
+                              
+            }
+            }
+                
+                function showMessageInput() {
+                console.log('showMessageInput');
+                const chasitorControl = window.document.querySelectorAll('.chasitorControls');
+                if(chasitorControl.length > 0){
+                console.log('found chasitorControl');
+                console.log(chasitorControlsChildren);
+                window.document.querySelectorAll('.chasitorControls')[0].style = '';
+                Array.from(chasitorControlsChildren).forEach((element, index) => {
+                if(element.tagName == 'DIV'){
+                element.style.display = 'none';
+            } else {
+                element.style.display = 'flex';
+            }
+            });
+            }
+            }
+                //added
+                function startOver(){         
+                console.log('show-start-over');               
+                }
+                
+                </script>
+    
+    
+    
+    
+    <apex:composition template="StdExceptionTemplate">
+        
+        <apex:define name="icon">
+            <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/tools.png')}"/>
+        </apex:define>
+        <apex:define name="error">
+            <apex:outputText escape="false" styleClass="title" value="{!$Label.site.under_construction}">
+                <apex:param value="{!$Site.BaseUrl}"/>
+            </apex:outputText>
+            <br/>
+            <br/>
+            <apex:outputText value="{!$Label.site.stay_tuned}"/>
+            <apex:outputText escape="false" value=" {!$Label.site.get_in_touch}">
+                <apex:param value="mailto:{!HTMLENCODE($Site.AdminEmailAddress)}"/>
+                <apex:param value="{!$Label.site.email_us}"/>
+            </apex:outputText>
+        </apex:define>
+    </apex:composition>
+    
+    
+    <!--Added to check Chat-->
+    
+    <!--End -->
+</apex:page>

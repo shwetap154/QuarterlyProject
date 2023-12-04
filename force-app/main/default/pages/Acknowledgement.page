@@ -1,0 +1,8 @@
+<apex:page sidebar="false" showHeader="false">
+
+  <body><br/><br/><br/><br/>
+    <div   style="width:800px; margin:0 auto;">
+        <p style="font-size : 25px;color : red"><b>Thanks for the update </b></p>
+    </div>
+</body>
+</apex:page>

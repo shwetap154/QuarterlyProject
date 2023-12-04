@@ -1,0 +1,23 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+    
+    <aura:attribute name="isLoading" type="Boolean"/>
+    <aura:attribute name="timeOffTerritoryRecord" type="Object"/>
+    <aura:attribute name="recordSaveError" type="String" description="An error message bound to force:recordData"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.timeOffTerritoryRecord}" action="{!c.submit}"/>
+    
+    <force:recordData aura:id="TOTRec" 
+                      fields="ZTS_EU_Status__c"
+                      recordId="{!v.recordId}"  
+                      targetError="{!v.recordSaveError}"
+                      targetFields="{!v.timeOffTerritoryRecord}"
+                      mode="EDIT"/>
+    
+    <aura:if isTrue="{!v.isLoading}">
+        <div>
+            <lightning:spinner variant="brand" size="medium"/>
+        </div>
+    </aura:if>
+    
+</aura:component>

@@ -1,0 +1,4 @@
+<apex:page standardController="ZTS_EU_Species_Product__c" extensions="ZTS_EU_SpeciesProducRedirect" action="{!spRedirect}">
+  
+
+</apex:page>

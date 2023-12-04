@@ -1,0 +1,27 @@
+<apex:page standardController="Contact" recordSetVar="contactRecords" tabStyle="Contact">
+
+    <script>
+        
+        var ids = []; 
+        <apex:repeat value="{!contactRecords}" var="con">
+            ids.push('{!con.Id}'); 
+        </apex:repeat>
+        try 
+        {
+            var evntId = window.location.search.substring(1).split('=')[1];
+            if (!ids || ids.length < 1)
+            {
+                alert('Please select at least one record.');
+                window.location = ("/003");   
+            }
+            else 
+            {
+                window.location = ("/apex/ZTS_EU_Add_Contact_Redirect?records=" + ids + "&eventId=" + evntId);
+            }
+        } 
+        catch (ex) 
+        { 
+            alert('Exception:' + ex);
+        }
+    </script>
+</apex:page>

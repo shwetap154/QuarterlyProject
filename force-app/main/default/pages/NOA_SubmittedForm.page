@@ -1,0 +1,474 @@
+<!--
+  @description       : 
+  @author            : Morgan Marchese @ Zoetis Inc
+  @group             : 
+  @last modified on  : 02-23-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   02-23-2021   Morgan Marchese @ Zoetis Inc   Initial Version
+  1.1   06-08-2021   Chelsea Paice @ Zoetis Inc     Adding Specialty Section
+-->
+<apex:page id="mainPage" title="New Online Account" standardController="Lead" extensions="NOA_NewOnlineAccount" cache="false" 
+           showChat="false" showHeader="false" sidebar="false">
+    <head>
+        <style type="text/css"  >
+            th {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+            }     
+            td {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+            }
+            .btn {  
+            line-height:1.5 !important;border:2px solid transparent !important;min-width:8em !important;
+            background-color:#ff6400 !important;
+            background:#ff6400 !important;
+            color:white !important;
+            }  
+            pbSubheader{
+            background-color:#1696ad !important;
+            color:white !important;
+            }
+            .individualPalette .leadBlock .tertiaryPalette{
+            background-color:#0096AF !important;
+            border-color:#0096AF !important;
+            }
+            .individualPalette .leadBlock .secondaryPalette {
+            border-color:#0096AF !important;
+            }
+            body .bEditBlock .pbBody .pbSubheader{
+            background-image:none !important;
+            color:#ffffff !important;
+            }
+            .requiredLegend{
+            color:#ffffff !important;
+            }
+            .message{
+            background-color: #ffffff !important;
+            padding: 0px 0px 0px 0px !important;
+            margin: 2px 0px !important;
+            width: 100% !important;
+            }
+            body{
+            font-size: 75% !important;
+            }
+            body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label{
+            font-size: 1.4em;
+            }
+            input{
+            height:2em !important; 
+            font-size:1em !important; 
+            } 
+            body .bPageBlock .pbBody .labelCol{
+            vertical-align:middle !important;
+            font-size:1em !important; 
+            white-space:nowrap !important;
+            }
+            select{
+            height:2em !important; 
+            }
+            .nowordbreak {
+            white-space:normal !important;
+            }
+        </style>
+    </head>
+    
+      <c:NOA_AnimalHeader />
+    <c:NOA_header noaLeadObj="{!newOnlineAcc}" renderRx="{!renderRx}" ></c:NOA_header>
+    <br/><br/><br/><br/>
+    <center>
+        <apex:form style="width:60%;">
+            <apex:outputPanel id="NOA_SubmittedForm" style="text-align: left;width:100%">
+                <apex:pageBlock >
+                    <apex:outputPanel styleClass="submitMessage" rendered="{!$CurrentPage.parameters.submitted == 'true'}" >  
+                        <apex:image url="{!$Resource.ZFS_Submitted_Green_Check}" style="vertical-align:text-bottom;"/>
+                        <apex:outputlabel style="font-weight:bold" value="Your application has been submitted successfully with the following details." />   
+                    </apex:outputPanel>
+                    <apex:outputPanel styleClass="submitMessage" rendered="{!newOnlineAcc.Signature_Status__c == 'Out for Signature'}" >  
+                        <apex:image url="{!$Resource.ZFS_Submitted_Green_Check}" style="vertical-align:text-bottom;"/>
+                        <apex:outputlabel style="font-weight:bold" value="The application has been sent for electronic signature. Once all signatures are received, the application will be submitted for Zoetis review automatically." />   
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!formType == 'Basic' }" >
+                        <apex:pageBlockSection title="{! IF(newOnlineAcc.New_Shipping_Location__c,'Applicant Information' ,'Applicant & Facility Information')}" columns="1" >
+                            <apex:outputText value="{!newOnlineAcc.Salutation}" label="Applicant Prefix" />
+                            <apex:outputText value="{!newOnlineAcc.FirstName}" label="Applicant First Name"/>
+                            <apex:outputText value="{!newOnlineAcc.LastName}" label="Applicant Last Name"/>
+                             <apex:outputText value="{!newOnlineAcc.Applicant_Role__c}" label="Applicant Role"/>
+                            <apex:outputText value="{!newOnlineAcc.Email}" label="Applicant Email"/>
+                            <apex:outputText value="{!newOnlineAcc.Phone}" label="Applicant Phone"/>
+                            <apex:outputText value="{!newOnlineAcc.Business_Name__c}" label="Business Name" rendered="{!!newOnlineAcc.New_Shipping_Location__c}"  />
+                            <apex:outputText value="{!newOnlineAcc.Customer_Type__c}" label="Customer Type" rendered="{!!newOnlineAcc.New_Shipping_Location__c}"  />
+                            <apex:pageBlockSectionItem rendered="{!!newOnlineAcc.New_Shipping_Location__c && newOnlineAcc.Customer_Type__c == 'Other'}">
+                                <label style="color:#4A4A56;" for="other" ><b>If other, please describe:</b></label>
+                                <apex:outputText id="other" label="" value="{!newOnlineAcc.Customer_Type_Other__c}" />
+                            </apex:pageBlockSectionItem>
+                            <apex:outputText value="{!newOnlineAcc.Total_number_of_practitioners__c}" label="Total number of practitioners at this location" rendered="{!!newOnlineAcc.New_Shipping_Location__c}"  />
+                        </apex:pageBlockSection> 
+                        
+                        <apex:pageBlockSection title="Business Type" columns="2">
+                            <apex:pageBlockSection columns="1">
+                                <apex:outputText label="Small Animal" value="{!IF(newOnlineAcc.Small_Animal__c != null, TEXT(newOnlineAcc.Small_Animal__c) + ' %', '')}"/>
+                                <apex:outputText label="Equine" value="{!IF(newOnlineAcc.Equine__c != null,  TEXT(newOnlineAcc.Equine__c) + ' %', '')}"/>
+                                <apex:outputText label="Beef" value="{!IF(newOnlineAcc.Beef__c != null, TEXT(newOnlineAcc.Beef__c) + ' %', '')}"/>
+                                <apex:outputText label="Dairy" value="{!IF(newOnlineAcc.Dairy__c != null, TEXT(newOnlineAcc.Dairy__c) + ' %', '')}"/>
+                                <apex:outputText label="Swine" value="{!IF(newOnlineAcc.Swine__c != null, TEXT(newOnlineAcc.Swine__c) + ' %', '')}"/> 
+                            </apex:pageBlockSection>
+                            <apex:pageBlockSection columns="1" >
+                                <apex:outputText label="Feed" value="{!IF(newOnlineAcc.Feed__c != null, TEXT(newOnlineAcc.Feed__c) + ' %', '')} "/> 
+                                <apex:outputText label="Poultry" value="{!IF(newOnlineAcc.Poultry__c != null, TEXT(newOnlineAcc.Poultry__c) + ' %', '')} "/> 
+                                <apex:outputText label="Eggs" value="{!IF(newOnlineAcc.Eggs__c != null, TEXT(newOnlineAcc.Eggs__c) + ' %', '')} " rendered="{!newOnlineAcc.Poultry__c != null}" />
+                                <apex:outputText label="Turkey" value="{!IF(newOnlineAcc.Turkey__c != null, TEXT(newOnlineAcc.Turkey__c) + ' %', '')} " rendered="{!newOnlineAcc.Poultry__c != null}" />
+                                <apex:outputText label="Broiler" value="{!IF(newOnlineAcc.Broiler__c != null, TEXT(newOnlineAcc.Broiler__c) + ' %', '')} " rendered="{!newOnlineAcc.Poultry__c != null}" /> 
+                            </apex:pageBlockSection>                         
+                        </apex:pageBlockSection>
+                        <!-- Specialty hospital section added for SC-006354 by C. Paice-->
+                        <apex:pageBlockSection title="Hospital Type" columns="1">
+                            <apex:outputField value="{!newOnlineAcc.Specialty_Hospital__c}" label="Specialty Hospital"  />
+                            <apex:outputField value="{!newOnlineAcc.Specialty_Description__c}" label="Specialty Hospital Type"  />
+                        </apex:pageBlockSection>
+                    
+                        <apex:pageBlocksection title="Billing Address" columns="1"  >
+                            <apex:pageBlockSectionItem rendered="{!!newOnlineAcc.New_Shipping_Location__c}"  >
+                                <label style="white-space: nowrap;vertical-align:center; "><b> I authorize Zoetis to send Invoices and Statements via  </b></label>
+                                <apex:selectRadio label="" value="{!newOnlineAcc.Contact_Preference__c}"  disabled="true">
+                                    <apex:selectOption itemLabel="Fax" itemValue="Fax"></apex:selectOption>
+                                    <apex:selectOption itemLabel="Email" itemValue="Email"></apex:selectOption>
+                                    <apex:selectOption itemLabel="Mail" itemValue="Mail"></apex:selectOption>
+                                </apex:selectRadio>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlocksection columns="2"  >
+                            
+                            <apex:pageBlocksection columns="1" >
+                                <apex:outputText label="Street 1" value="{!newOnlineAcc.Billing_Street_1__c}"/>
+                                <apex:outputText label="Street 2" value="{!newOnlineAcc.Billing_Street_2__c}"/>
+                                <apex:outputText label="County" value="{!newOnlineAcc.Billing_County__c}"/>
+                                <apex:outputText label="City" value="{!newOnlineAcc.Billing_City__c}"/>
+                                <apex:outputText label="State" value="{!newOnlineAcc.Billing_State__c}"/>
+                                <apex:outputText label="Zip Code" value="{!newOnlineAcc.Billing_Zip_Code__c}"/> 
+                            </apex:pageBlocksection>
+                            <apex:pageBlocksection columns="1">
+                                <apex:outputText label="Phone" value="{!newOnlineAcc.Billing_Phone__c}"/>
+                                <apex:outputText label="Fax" value="{!newOnlineAcc.Billing_Fax__c}"/>
+                                <apex:outputText label="Email" value="{!newOnlineAcc.Billing_Email__c}"/>
+                            </apex:pageBlocksection>
+                             
+                        </apex:pageBlocksection>
+                        </apex:pageBlocksection>
+                        
+                        
+                        <apex:pageBlocksection id="ship_info" title="{! IF(newOnlineAcc.New_Shipping_Location__c,'Shipping Information' ,'Shipping Address')}" columns="2">
+                            <apex:pageBlocksection columns="1"> 
+                                <apex:outputText value="{!newOnlineAcc.Business_Name__c}" label="Business Name" rendered="{!newOnlineAcc.New_Shipping_Location__c}"  />
+                                <apex:outputText value="{!newOnlineAcc.Customer_Type__c}" label="Customer Type" rendered="{!newOnlineAcc.New_Shipping_Location__c}"  />
+                                <apex:outputText value="{!newOnlineAcc.Customer_Type_Other__c}" label="If other, please describe:" rendered="{!newOnlineAcc.New_Shipping_Location__c && newOnlineAcc.Customer_Type__c == 'Other'}"  />
+                                <apex:outputText label="Street 1" value="{!newOnlineAcc.Shipping_Street_1__c}"/>
+                                <apex:outputtext label="Street 2" value="{!newOnlineAcc.Shipping_Street_2__c}"/>
+                                <apex:outputText label="County" value="{!newOnlineAcc.Shipping_County__c}"/>
+                                <apex:outputText label="City" value="{!newOnlineAcc.Shipping_City__c}"/>
+                                <apex:outputText label="State" value="{!newOnlineAcc.Shipping_State__c}"/>
+                                <apex:outputText label="Zip Code" value="{!newOnlineAcc.Shipping_Zip_Code__c}"/>
+                            </apex:pageBlocksection>
+                            <apex:pageBlocksection columns="1"> 
+                                <apex:outputText label="Phone" value="{!newOnlineAcc.Shipping_Phone__c}"/>
+                                <apex:outputText label="Fax" value="{!newOnlineAcc.Shipping_Fax__c}"/>
+                                <apex:outputText label="Email" value="{!newOnlineAcc.Shipping_Email__c}"/>
+                            </apex:pageBlocksection> 
+                            <apex:outputText value="{!newOnlineAcc.Total_number_of_practitioners__c}" label="Total number of practitioners at this location:" rendered="{!newOnlineAcc.New_Shipping_Location__c}"  />
+                            <br/>
+                            <apex:outputText label="Business Permit /License Number to operate within your state?: " value="{!newOnlineAcc.Business_Permit_or_License_Number__c}" escape="false" rendered="{!newOnlineAcc.New_Shipping_Location__c}"  />
+                        </apex:pageBlocksection>
+                        <br/> 
+                        <apex:outputPanel >
+                            <label><b>Is there currently an account with Zoetis at this location? </b></label>  
+                            <apex:selectRadio label="" value="{!newOnlineAcc.Existing_account_with_Zoetis_at_this_Loc__c}" style="width:40%" disabled="true">
+                                <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                            </apex:selectRadio>  
+                            <br/> <label> <b>Has there been a change in ownership?  </b> </label>   
+                            <apex:selectRadio label="" value="{!newOnlineAcc.Ownership_Change__c}" style="width:40%" disabled="true">
+                                <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                            </apex:selectRadio>
+                        </apex:outputPanel>
+                        <apex:pageBlocksection columns="1" rendered="{!newOnlineAcc.Ownership_Change__c == 'Yes'}"> 
+                            <apex:pageBlockSectionItem >
+                                <label><b>Date of Ownership Change:   </b> </label>
+                                <apex:outputField label="" value="{!newOnlineAcc.Date_of_Ownership_Change__c}" />
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlocksection>
+                        <apex:outputPanel rendered="{!!newOnlineAcc.New_Shipping_Location__c}"  >
+                        <br/><label for="exAcc"><b>Do you have an existing account with Zoetis?  </b></label>
+                        <apex:selectRadio id="exAcc" label="" value="{!newOnlineAcc.Existing_account_with_Zoetis__c}" style="width:40%" disabled="true">
+                            <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                            <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                        </apex:selectRadio>
+                        </apex:outputPanel>
+                        
+                        <apex:pageBlocksection columns="1" rendered="{!!newOnlineAcc.New_Shipping_Location__c && newOnlineAcc.Existing_account_with_Zoetis__c=='Yes'}">
+                            <label><B>Please provide the account information below:</B></label>
+                            <apex:outputText label="Account Name" value="{!newOnlineAcc.Existing_Account_Name__c}"/>
+                            <apex:outputText label="Account#" value="{!newOnlineAcc.Zoetis_Account__c}"/>
+                        </apex:pageBlocksection>
+                        <br/><label><b>Sales Tax Status: </b> {!newOnlineAcc.Sales_Tax_Status__c} </label> 
+                        <apex:pageBlocksection columns="1" rendered="{!newOnlineAcc.Sales_Tax_Status__c=='Tax Exempt'}">
+                            <apex:outputText value="<b>Tax Permit Number: </b> {!newOnlineAcc.Tax_Permit__c}" escape="false" />
+                            <apex:pageBlockSectionItem >
+                                <label> <b>Uploaded Tax File: </b></label>
+                                <apex:outputLink value="{! URLFOR($Action.Attachment.Download, existingTaxAtt.Id)}" target="_blank" rendered="{!existingTaxAtt.Id != null}">
+                                    {!existingTaxAtt.Name}</apex:outputLink> 
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlocksection> 
+                        
+                        <apex:pageBlocksection columns="1" title="Veterinarian Information">
+                            <apex:pageBlockTable value="{!vetList}" var="vet" width="100%" >
+                                <apex:column value="{!vet.Veterinarian_First_Name__c}" />
+                                <apex:column value="{!vet.Veterinarian_Last_Name__c}" />
+                                <apex:column value="{!vet.Veterinarian_Email__c}"/>
+                                <apex:column value="{!vet.State_License__c}"/>
+                                <apex:column value="{!vet.DEA__c}"/>
+                                <apex:column value="{!vet.Veterinarian_Role__c}"/>
+                                <apex:column value="{!vet.Primary__c}"/>
+                            </apex:pageBlockTable>
+                        </apex:pageBlocksection> 
+                        
+                        
+                    </apex:outputPanel>                       
+                    <!-- 6. NOA_DiagnosticsorReproductiveServices  --> 
+                    <apex:outputPanel rendered="{!formType == 'Diagnostics' }" >
+                        <apex:pageBlocksection id="diaginfo" columns="1" title="Applicant Information">
+                            <apex:outputField value="{!newOnlineAcc.Business_Name__c}"  label="Business Name" />
+                            <apex:outputField value="{!newOnlineAcc.FirstName}"  label="Applicant First Name" />
+                            <apex:outputField value="{!newOnlineAcc.LastName}"  label="Applicant Last Name" />
+                            <apex:outputField value="{!newOnlineAcc.Applicant_Role__c}"  label="Applicant Role" />
+                            <apex:outputField value="{!newOnlineAcc.Email}"  label="Applicant Email" />
+                            <apex:outputField value="{!newOnlineAcc.Phone}"  label="Applicant Phone" />
+                        </apex:pageBlocksection>  
+                        <apex:pageBlocksection title="Billing Address" columns="1"  >
+                            <apex:pageBlockSectionItem >
+                            <label style="white-space: nowrap;"><b> I authorize Zoetis to send Invoices and Statements via  </b></label>
+                        <apex:selectRadio label="" value="{!newOnlineAcc.Contact_Preference__c}"  disabled="true">
+                            <apex:selectOption itemLabel="Fax" itemValue="Fax"></apex:selectOption>
+                            <apex:selectOption itemLabel="Email" itemValue="Email"></apex:selectOption>
+                            <apex:selectOption itemLabel="Mail" itemValue="Mail"></apex:selectOption>
+                        </apex:selectRadio>
+                                </apex:pageBlockSectionItem>
+
+                            <apex:pageBlocksection columns="2"  >
+                            <apex:pageBlocksection columns="1" >
+                                <apex:outputText label="Street 1" value="{!newOnlineAcc.Billing_Street_1__c}"/>
+                                <apex:outputText label="Street 2" value="{!newOnlineAcc.Billing_Street_2__c}"/>
+                                <apex:outputText label="County" value="{!newOnlineAcc.Billing_County__c}"/>
+                                <apex:outputText label="City" value="{!newOnlineAcc.Billing_City__c}"/>
+                                <apex:outputText label="State" value="{!newOnlineAcc.Billing_State__c}"/>
+                                <apex:outputText label="Zip Code" value="{!newOnlineAcc.Billing_Zip_Code__c}"/> 
+                            </apex:pageBlocksection>
+                            <apex:pageBlocksection columns="1">
+                                <apex:outputText label="Phone" value="{!newOnlineAcc.Billing_Phone__c}"/>
+                                <apex:outputText label="Fax" value="{!newOnlineAcc.Billing_Fax__c}"/>
+                                <apex:outputText label="Email" value="{!newOnlineAcc.Billing_Email__c}"/>
+                            </apex:pageBlocksection>
+                        </apex:pageBlocksection>
+                            </apex:pageBlocksection>
+                        
+                        <br/>
+                        
+                        
+                        
+                        <apex:pageBlocksection id="ship_info_diag" title="Shipping Address" columns="2">
+                            <apex:pageBlocksection columns="1"> 
+                                <apex:outputText label="Street 1" value="{!newOnlineAcc.Shipping_Street_1__c}"/>
+                                <apex:outputtext label="Street 2" value="{!newOnlineAcc.Shipping_Street_2__c}"/>
+                                <apex:outputText label="County" value="{!newOnlineAcc.Shipping_County__c}"/>
+                                <apex:outputText label="City" value="{!newOnlineAcc.Shipping_City__c}"/>
+                                <apex:outputText label="State" value="{!newOnlineAcc.Shipping_State__c}"/>
+                                <apex:outputText label="Zip Code" value="{!newOnlineAcc.Shipping_Zip_Code__c}"/>
+                            </apex:pageBlocksection>
+                            <apex:pageBlocksection columns="1"> 
+                                <apex:outputText label="Phone" value="{!newOnlineAcc.Shipping_Phone__c}"/>
+                                <apex:outputText label="Fax" value="{!newOnlineAcc.Shipping_Fax__c}"/>
+                                <apex:outputText label="Email" value="{!newOnlineAcc.Shipping_Email__c}"/>
+                            </apex:pageBlocksection> 
+                            <br/><label><b>Sales Tax Status: </b> {!newOnlineAcc.Sales_Tax_Status__c} </label>
+                        </apex:pageBlocksection>
+                        
+                        <apex:pageBlocksection title="Type of Business" columns="1">
+                            <apex:outputText label="Small Animal" value="{!newOnlineAcc.Small_Animal__c}"/>
+                            <apex:outputText label="Equine" value="{!newOnlineAcc.Equine__c}"/>
+                            <apex:outputText label="Beef" value="{!newOnlineAcc.Beef__c}"/>
+                            <apex:outputText label="Dairy" value="{!newOnlineAcc.Dairy__c}"/>
+                            
+                            <apex:outputText value="<font color=#4a4a56><b> Type of Business: </b></font> {!newOnlineAcc.Type_of_Business__c}" escape="false" rendered="false" />
+                            <apex:outputText value="<font color=#4a4a56><b> Business Other: </b></font> {!newOnlineAcc.Business_Other__c}" escape="false" rendered="false" />
+                            
+                             
+                            <apex:pageBlocksection columns="1" rendered="{!newOnlineAcc.Sales_Tax_Status__c=='Tax Exempt'}">
+                                <apex:outputText value="<b>Tax Permit Number: </b> {!newOnlineAcc.Tax_Permit__c}" escape="false" />
+                                <apex:pageBlockSectionItem >
+                                    <label> <b>Uploaded Tax File: </b></label>
+                                    <apex:outputLink value="{! URLFOR($Action.Attachment.Download, existingTaxAtt.Id)}" target="_blank" rendered="{!existingTaxAtt.Id != null}">
+                                        {!existingTaxAtt.Name}</apex:outputLink> 
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlocksection>
+                        </apex:pageBlocksection>          
+                        
+                        <apex:pageBlockSection title="Banking and Trade Reference Information" columns="2" rendered="false" >
+                            <apex:outputField style="white-space: nowrap;" value="{!newOnlineAcc.Principal_Bank_Name__c}"  label="Principal Bank Name" />
+                            <apex:outputField value="{!newOnlineAcc.Principal_Bank_Phone__c}"  label="Principal Bank Phone" />
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_1_Company_Name__c}"  label="Trade References 1" />
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_1_Company_Phone__c}"  label="Phone" />
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_2_Company_Name__c}"  label="Trade References 2" />
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_2_Company_Phone__c}"  label="Phone" />
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_3_Company_Name__c}"  label="Trade References 3" />
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_3_Company_Phone__c}"  label="Phone" />
+                            
+                            <!--<br/><label>I authorize Zoetis to send Invoices and Statements via </label>
+<apex:selectRadio label="" value="{!newOnlineAcc.Contact_Preference__c}" style="width:40%" disabled="true">
+<apex:selectOption itemLabel="Fax" itemValue="Fax"></apex:selectOption>
+<apex:selectOption itemLabel="Email" itemValue="Email"></apex:selectOption>
+<apex:selectOption itemLabel="Mail" itemValue="Mail"></apex:selectOption>
+</apex:selectRadio>
+<apex:pageBlocksection columns="1" rendered="{!newOnlineAcc.Contact_Preference__c=='Email'}">
+<apex:outputField value="{!newOnlineAcc.Authorization_Email__c}"  label="Email" />
+</apex:pageBlocksection>  -->
+                            
+                        </apex:pageBlockSection>         
+                        
+                        
+                    </apex:outputPanel>
+                    
+                    
+                    <!-- OwnershipInformation page Details -->
+                        
+                        <apex:pageBlocksection columns="1" title="Business Information" > 
+                            <apex:outputText label="Business Permit/License Number to operate within your state?: " value="{!newOnlineAcc.Business_Permit_or_License_Number__c}" escape="false" rendered="{!!newOnlineAcc.New_Shipping_Location__c}"  />
+                            <apex:outputText label="Business Type: " value="{!newOnlineAcc.Ownership_Type__c}"/>
+                            
+                            <apex:pageBlocksection columns="2" rendered="{!newOnlineAcc.Ownership_Type__c=='Sole-proprietorship'}">
+                                <apex:outputField value="{!newOnlineAcc.SP_Name__c}"  label="Name" /> 
+                                <apex:outputField value="{!newOnlineAcc.SP_Telephone__c}"  label="Telephone" /> 
+                                <apex:outputField value="{!newOnlineAcc.SP_Email__c}"  label="Email" />
+                                <apex:outputField value="{!newOnlineAcc.SP_Fax__c}"  label="Fax#" />
+                                <apex:outputField value="{!newOnlineAcc.SP_Address__c}"  label="Address" />
+                                <apex:outputField value="{!newOnlineAcc.SP_County__c}"  label="County" />
+                                <apex:outputField value="{!newOnlineAcc.SP_City__c}"  label="City" />
+                                <apex:outputField value="{!newOnlineAcc.SP_State__c}"  label="State" />
+                                <apex:outputField value="{!newOnlineAcc.SP_Zip__c}"  label="Zip" />
+                            </apex:pageBlocksection>   
+                            
+                            <apex:pageBlocksection columns="2" rendered="{!newOnlineAcc.Ownership_Type__c=='Partnership'}">
+                                <apex:outputField value="{!newOnlineAcc.Partership_Name__c}"  label="Name1" /> 
+                                <apex:outputField value="{!newOnlineAcc.Partership_Name_2__c}"  label="Name2" /> 
+                                <apex:outputField value="{!newOnlineAcc.Partnership_Title_or_Officer_Info_1__c}"  label="Title/Officer Information(1)" /> 
+                                <apex:outputField value="{!newOnlineAcc.Partnership_Title_or_Officer_Info_2__c}"  label="Title/Officer Information(2)" />
+                                <apex:outputField value="{!newOnlineAcc.Partership_Address__c}"  label="Address" /> 
+                                <apex:outputField value="{!newOnlineAcc.Partership_Address_2__c}"  label="Address" />  
+                                <apex:outputField value="{!newOnlineAcc.Partership_City__c}"  label="City" /> 
+                                <apex:outputField value="{!newOnlineAcc.Partership_City_2__c}"  label="City" />  
+                                <apex:outputField value="{!newOnlineAcc.Partership_County__c}"  label="County" />  
+                                <apex:outputField value="{!newOnlineAcc.Partership_County_2__c}"  label="County" /> 
+                                <apex:outputField value="{!newOnlineAcc.Partership_State_2__c}"  label="State" />
+                                <apex:outputField value="{!newOnlineAcc.Partership_State_2__c}"  label="State" /> 
+                                <apex:outputField value="{!newOnlineAcc.Partership_Zip__c}"  label="Zip" />
+                                <apex:outputField value="{!newOnlineAcc.Partership_Zip_2__c}"  label="Zip" /> 
+                                <apex:outputField value="{!newOnlineAcc.Partership_Telephone__c}"  label="Telephone#" />    
+                                <!--        <apex:outputField value="{!newOnlineAcc.Telephone_2__c}"  label="Telephone 2#" />   -->
+                                <apex:outputField value="{!newOnlineAcc.Partership_Email__c}"  label="Email" />
+                                <!--       <apex:outputField value="{!newOnlineAcc.Email_2__c}"  label="Email 2" /> -->
+                                <apex:outputField value="{!newOnlineAcc.Partership_Fax__c}"  label="Fax#" />
+                                <!--       <apex:outputField value="{!newOnlineAcc.Fax_2__c}"  label="Fax 2#" />    -->
+                            </apex:pageBlocksection>
+                        </apex:pageBlocksection>
+                        
+                        <apex:pageBlocksection columns="2" rendered="{!newOnlineAcc.Ownership_Type__c=='Corporation' || newOnlineAcc.Ownership_Type__c=='LLC' || newOnlineAcc.Ownership_Type__c=='Government'}">
+                            <apex:outputField value="{!newOnlineAcc.CLG_Name__c}"  label="Name" />
+                            <apex:outputField value="{!newOnlineAcc.CLG_Company__c}"  label="Company" />
+                            <apex:outputField value="{!newOnlineAcc.CLG_Address__c}"  label="Address" /> 
+                            <apex:outputField value="{!newOnlineAcc.CLG_City__c}"  label="City" /> 
+                            <apex:outputField value="{!newOnlineAcc.CLG_County__c}"  label="County" /> 
+                            <apex:outputField value="{!newOnlineAcc.CLG_State__c}"  label="State" />
+                            <apex:outputField value="{!newOnlineAcc.CLG_Zip__c}"  label="Zip" />
+                            <apex:outputField value="{!newOnlineAcc.CLG_Telephone__c}"  label="Telephone#" />
+                            <apex:outputField value="{!newOnlineAcc.CLG_Fax__c}"  label="Fax#" />
+                            <apex:outputField value="{!newOnlineAcc.CLG_Email__c}"  label="Email" />
+                            <apex:outputField value="{!newOnlineAcc.Buyer_Name__c}"  label="Buyer Name" />
+                            <apex:outputField value="{!newOnlineAcc.Buyer_Phone__c}"  label="Buyer Phone#" />
+                            <apex:outputField value="{!newOnlineAcc.Type_of_Business__c}"  label="Type of Business" rendered="false" />
+                            <apex:outputField value="{!newOnlineAcc.Years_in_Business__c}"  label="Years in Business" />
+                            <apex:outputField value="{!newOnlineAcc.Controller_Name__c}"  label="Controller Name" />
+                            <apex:outputField value="{!newOnlineAcc.Controller_Phone__c}"  label="Controller Phone#" />
+                            <apex:outputField value="{!newOnlineAcc.Accounts_Payable_Contact_Name__c}"  label="Accounts Payable Contact Name" />
+                            <apex:outputField value="{!newOnlineAcc.Accounts_Payable_Contacts_Phone__c}"  label="Contact Phone#" /> 
+                        </apex:pageBlocksection>
+                        <br/>
+                        <apex:outputText value="<font color=#4a4a56><b> Has your company filed for bankruptcy?  :</b></font> {!newOnlineAcc.Has_your_company_filed_bankruptcy__c}" escape="false" rendered="{!!newOnlineAcc.New_Shipping_Location__c && (newOnlineAcc.Ownership_Type__c=='Corporation' || newOnlineAcc.Ownership_Type__c=='LLc' || newOnlineAcc.Ownership_Type__c=='Government')}" />
+                        <apex:pageBlocksection columns="1" rendered="{!!newOnlineAcc.New_Shipping_Location__c && newOnlineAcc.Has_your_company_filed_bankruptcy__c=='Yes'}">
+                            <apex:outputField value="{!newOnlineAcc.Type_of_bankruptcy__c}"  label="If yes,what type of bankruptcy?" />
+                            <apex:outputField value="{!newOnlineAcc.Bankrupt_File_Date__c}"  label="Date" />
+                        </apex:pageBlocksection>
+                        <apex:pageBlockSection columns="2">  
+                            <apex:outputField style="white-space: nowrap;" value="{!newOnlineAcc.Principal_Bank_Name__c}"  label="Principal Bank Name" />
+                            <apex:outputField value="{!newOnlineAcc.Principal_Bank_Phone__c}"  label="Principal Bank Phone" />
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="Additional Comments" columns="1"  >
+                        <apex:outputField value="{!newOnlineAcc.Additional_Comments__c}"  />
+                    </apex:pageBlockSection>
+                        
+                       <!-- <apex:pageBlockSection title="Banking and Trade Reference Information" columns="1" rendered="{!!newOnlineAcc.New_Shipping_Location__c}"  >  -->
+                        <apex:pageBlockSection title="Banking and Trade Reference Information" columns="1" rendered="false"  >
+                            <apex:pageBlockSection columns="2">  
+                                <apex:outputField style="white-space: nowrap;" value="{!newOnlineAcc.Principal_Bank_Name__c}"  label="Principal Bank Name" />
+                                <apex:outputField value="{!newOnlineAcc.Principal_Bank_Phone__c}"  label="Principal Bank Phone" />
+                            </apex:pageBlockSection>
+                            <apex:pageBlockSection columns="1">
+                                     <apex:outputText style="color:#4a4a56" value="<b>A Trade Reference is any company that you’ve done business with within in the veterinary industry. This can be any distributor, veterinary company, pet food or supplies stores, diagnostics labs, pharmacies or veterinarians. </b>" escape="false" />
+                                </apex:pageBlockSection>
+                            <apex:pageBlockSection columns="2">   
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_1_Company_Name__c}"  label="Trade References 1" />
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_1_Company_Phone__c}"  label="Phone" />
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_2_Company_Name__c}"  label="Trade References 2" />
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_2_Company_Phone__c}"  label="Phone" />
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_3_Company_Name__c}"  label="Trade References 3" />
+                            <apex:outputField value="{!newOnlineAcc.Trade_Reference_3_Company_Phone__c}"  label="Phone" />
+                            
+                        </apex:pageBlockSection>
+                        </apex:pageBlockSection>
+                    
+                    <apex:pageBlocksection columns="1" title="Signed Application & Additional Uploads">
+                        <apex:outputpanel >
+                            <B><Label style="color:#4A4A56;white-space: nowrap;">Uploaded signed application form:</Label></B>   
+                            <apex:outputlink value="{! URLFOR($Action.Attachment.Download, existingSignedAtt.Id)}" target="_blank" rendered="{!existingSignedAtt.Id!=null}">{!existingSignedAtt.Name}</apex:outputlink> 
+                        </apex:outputpanel>
+                        <apex:outputPanel >
+                            <B><Label style="color:#4A4A56;white-space: nowrap;">Uploaded additional files:</Label></B>  
+                            <apex:outputLabel rendered="{! existingOtherAtt==null || existingOtherAtt.size==0}" value="No additional files uploaded."></apex:outputLabel>
+                            <br/><br/>
+                            <apex:outputPanel rendered="{! !(existingOtherAtt==null || existingOtherAtt.size==0)}">
+                                <apex:dataTable value="{!existingOtherAtt}" var="exAtt" columns="2" border="1" width="90%" columnsWidth="35%,55%" style="table-layout:fixed;"> 
+                                    <apex:column headerValue="File Name" style="word-wrap:break-word; word-break: break-all;white-space: normal;">
+                                        <apex:outputLink value="{! URLFOR($Action.Attachment.Download, exAtt.Id)}" target="_blank">{!exAtt.Name}</apex:outputLink>
+                                    </apex:column>
+                                    <apex:column headerValue="Description"  style="word-wrap:break-word; word-break: break-all;white-space: normal;">
+                                        {!exAtt.Description}
+                                    </apex:column>
+                                </apex:dataTable> 
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:pageBlocksection>  
+                    <br/>
+                    <b>Note: </b>If you are unable to upload your signed documents on the website you may send the requested documents via email, fax, or mail:
+                    <br/> 
+                    <table>
+                        <tr><td><b>Email: </b></td><td><apex:outputlink value="mailto:CustomerAccounts@zoetis.com" style="color:#ff6400 " > CustomerAccounts@zoetis.com </apex:outputLink></td></tr>
+                        <tr><td><b>Fax: </b></td><td>1(800)742-1301</td></tr>
+                        <tr><td width="5%"><b>Mail: </b></td><td>Attn: Zoetis Customer Accounts</td></tr>
+                        <tr><td></td><td>2476 Swedesford Road – Suite 250</td></tr>
+                        <tr><td></td><td>Malvern, PA 19355</td></tr>
+                    </table>  
+                </apex:pageBlock>
+            </apex:outputPanel>
+        </apex:form> 
+    </center>
+   <c:NOA_footerpage /> 
+</apex:page>

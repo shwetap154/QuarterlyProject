@@ -1,0 +1,37 @@
+<apex:page standardController="ZTS_EU_Campaign_Account__c" recordSetVar="campAccRecords" extensions="SL_RemoveAccount" >
+    
+    <script>
+        try
+        {
+            var ids = [];
+            <apex:repeat value="{!lstCampAccount}" var="campAcc">
+                ids.push('{!campAcc.Id}');
+            </apex:repeat>
+            
+            var statusVar = '{!strStatus}';
+            if (!ids || ids.length < 1) 
+            {
+                alert('Please select at least one record.'); 
+                sforce.one.navigateToURL("/" + '{!strCampId}');
+            }
+            else 
+            {
+                if(statusVar == 'Open') 
+                {
+                    window.location = ("/apex/ZTS_EU_removeTargetAccnts?records="+ids+"&campId="+ '{!strCampId}');
+                    sforce.one.navigateToURL("/" + '{!strCampId}');
+                }
+                else if(statusVar == 'Closed') 
+                {
+                    alert('You cannot add or remove Targeted Accounts if Campaign Field Targeting is Closed');
+                    sforce.one.navigateToURL("/" + '{!strCampId}');
+                }
+            }
+        } 
+        catch(ex) 
+        { 
+            alert('Exception:'+ex); 
+        }
+    </script>
+    
+</apex:page>

@@ -1,0 +1,34 @@
+<apex:page standardController="ZTS_EU_Discussion_Item__c" extensions="ZTS_EU_DescItemRedirect">
+
+    <apex:form >
+        <apex:actionFunction action="{!descitemRedirect}" name="itemRedirectAction"/>
+    </apex:form>
+    <apex:form >
+        <apex:actionFunction action="{!backToView}" name="exit"/>
+    </apex:form>
+    <apex:slds />
+    <div id="lightningscope" class="slds-scope slds-hide">
+        <article class="slds-card">
+            <div class="slds-card__header slds-grid">
+
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <div style="text-align:right; margin-right: .5rem;">
+                    <button class="slds-button slds-button_brand" onclick="exit()">Exit from Discussion Itam Creation Wizard</button>
+                </div>
+            </div>
+        </article>
+    </div>
+    <script>
+        if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
+            document.getElementById('lightningscope').classList.remove("slds-hide");
+            sforce.one.createRecord('ZTS_EU_Discussion_Item__c',null,{ 
+                ZTS_EU_Market__c : "{!userDefaultMar}",  
+            });
+        }
+        else
+        itemRedirectAction();
+
+    </script>
+
+</apex:page>

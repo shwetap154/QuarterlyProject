@@ -1,0 +1,18 @@
+<!--
+/*************************************************************************************************************************
+Class Name : AddTAfromAccountRedirect.vfp
+Description : This page will open when 'Add to Campaign' button is clicked on Campaign related list on Account screen (SC-008159)
+Modified By : Aritra(Cognizant)
+Edited On   : 5-Mar-2021
+**************
+* Modification Log:  
+* ---------------------------------------------------------------------------------------------------------------------------------------
+* Developer                Date               Description 
+* ---------------------------------------------------------------------------------------------------------------------------------------
+* Aritra(Cognizant)        03/05/2021         Created
+***************************************************************************************************************************/
+-->
+<apex:page standardController="ZTS_EU_Campaign_Account__c" extensions="AddTAfromAccountRedirectCtl" 
+                   recordSetVar="targeted" action="{!doredirect}">
+    <apex:pageMessages />
+</apex:page>

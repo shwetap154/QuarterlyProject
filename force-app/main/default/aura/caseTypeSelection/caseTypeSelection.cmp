@@ -1,0 +1,76 @@
+<aura:component controller="SL_RxNewCaseController">
+
+    <aura:attribute name="picklistValues" type="Object" />
+    <aura:attribute name="subType" type="Object" />
+    <aura:attribute name="subType2" type="Object" />
+    <aura:attribute name="selectedRecordType" type="String" default="NONE"/>
+    <aura:attribute name="selectedSubType" type="String" default="NONE"/>
+    <aura:attribute name="selectedSubType2" type="String" default="NONE"/>
+    <aura:attribute name="IsRecordTypeSelected" type="Boolean" default="false" />
+    <aura:attribute name="IsSubTypeSelected" type="Boolean" default="false" />
+    <aura:attribute name="openForm" type="Boolean" default="false" />
+    <aura:attribute name="showAssetAndConsumable" type="Boolean" default="false" />
+    <aura:attribute name="hasAssetOrConsumable" type="Boolean" default="false" />
+    <aura:attribute name="selectedAsset" type="String" />
+    <aura:attribute name="selectedErrorCode" type="String" />
+    <aura:attribute name="objCase" type="Case"/>
+    <!--register event-->
+    <aura:handler name="SelectedRecordEvent" event="c:selectedsObjectRecordEvent" action="{!c.handleComponentEvent}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <lightning:card class="slds-p-left_small">
+        <lightning:layout multipleRows="true" class="slds-m-bottom_x-small">
+            <lightning:layoutItem size="4">
+                <lightning:select label="Choose Record Type" aura:id="caseRecordtypeId" value="{!v.selectedRecordType}" onchange="{!c.onChangeRecordType}" >
+                    <option value="NONE" >-- Select --</option>
+                    <aura:iteration items="{!v.picklistValues}" var="item">
+                        <option value="{!item.Id}" style="width:30%">
+                            {!item.label}
+                        </option>
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="8" class="slds-align_middle slds-p-left_medium">
+                <div class="slds-text-title">Description</div>
+                <div class="slds-text-body_regular">{!v.objCase.RecordTypeDescription}</div>
+            </lightning:layoutItem>
+        </lightning:layout>
+
+        <aura:if isTrue="{!v.openForm}" >
+            <lightning:recordEditForm aura:id='typeForm' objectApiName="Case" recordTypeId="{!v.objCase.RecordTypeId}" >
+                <aura:if isTrue="{!v.openForm}" >
+                    <lightning:inputField   aura:id="type"
+                                          fieldName="Type"
+                                          onchange="{!c.onChangeType}"
+                                          variant="label-stacked"
+                                          class="slds-size_4-of-12"/>
+                    <aura:renderIf isTrue="{!v.showAssetAndConsumable}" >
+                        <div class="slds-size_4-of-12" variant="label-stacked">
+                            <c:customLookup objectAPIName="Asset"
+                                            fieldName="Name"
+                                            accountId="{!v.objCase.AccountId}"
+                                            iconName="standard:asset_object"
+                                            label="Asset"
+                                            placeholder = "Search Assets..."/>
+                        </div>
+                        <lightning:inputField aura:id="consumableField"
+                                              fieldName="Primary_Consumable__c"
+                                              onchange="{!c.onConsumbaleChange}"
+                                              variant="label-stacked"
+                                              class="slds-size_4-of-12"/>
+                        <div class="slds-size_4-of-12" variant="label-stacked">
+                            <aura:if isTrue="{!v.hasAssetOrConsumable}">
+                                <c:customLookup objectAPIName="Diagnostics_Error_Codes__c"
+                                                fieldName="Name"
+                                                assetId="{!v.objCase.AssetId}"
+                                                consumableId="{!v.objCase.Primary_Consumable__c}"
+                                                iconName="custom:custom18"
+                                                label="Primary Error Code"
+                                                placeholder = "Search Diagnostic Error Codes..."/>
+                            </aura:if>
+                        </div>
+                    </aura:renderIf>
+                </aura:if>
+            </lightning:recordEditForm>
+        </aura:if>
+    </lightning:card>
+</aura:component>

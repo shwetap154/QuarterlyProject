@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION">
+    <aura:attribute name="accounts" type="Account[]"/>
+    <aura:attribute name="accountsToSAPWrapp" type="List"  />
+</aura:event>

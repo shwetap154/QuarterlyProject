@@ -1,0 +1,22 @@
+<apex:page standardController="ZTS_EU_Account_Position__c" sidebar="false" LightningStyleSheets="True" tabStyle="ZTS_EU_Account_Position__c">
+    <style>
+        .primaryPalette img
+        {
+            border-radius: .25rem;
+            background-color: #5A95DD;
+            background-image: url(/apexpages/slds/latest/assets/icons/custom/custom39.svg);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 2rem;
+            width: 2rem;
+            height: 2rem;
+            display: inline-block;
+            
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+
+    <apex:enhancedList type="ZTS_EU_Account_Position__c" customizable="false" height="450" rowsPerPage="50" />
+   
+</apex:page>

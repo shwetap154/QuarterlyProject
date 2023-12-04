@@ -1,0 +1,39 @@
+<apex:component layout="none">
+    <apex:attribute name="compStepNo" type="Integer" description="last completed step number" required="true"/>
+    <apex:attribute name="currStepNo" type="Integer" description="current page number" required="true"/>
+    <apex:attribute name="leadId" type="Id" description="salesforce lead Id" required="true"/>
+    
+    <apex:outputPanel rendered="{! currStepNo==1}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/1_selected.png')}"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=1 && compStepNo>=1}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/1_checked.png')}" onclick="location.href='/zoetisforshelters/ZFS_BasicInformation?id={!leadId}';"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=1 && compStepNo<1}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/1_GREY.png')}" /><br/></apex:outputPanel>
+    
+    <apex:outputPanel rendered="{! currStepNo==2}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/2_selected.png')}"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=2 && compStepNo>=2}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/2_checked.png')}" onclick="location.href='/zoetisforshelters/ZFS_QualificationCriteria?id={!leadId}';"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=2 && compStepNo<2}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/2_GREY.png')}" /><br/></apex:outputPanel>
+    
+    <apex:outputPanel rendered="{! currStepNo==3}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/3_selected.png')}"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=3 && compStepNo>=3}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/3_checked.png')}" onclick="location.href='/zoetisforshelters/ZFS_Contact?id={!leadId}';"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=3 && compStepNo<3}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/3_GREY.png')}" /><br/></apex:outputPanel>
+    
+    <apex:outputPanel rendered="{! currStepNo==4}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/4_selected.png')}"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=4 && compStepNo>=4}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/4_checked.png')}" onclick="location.href='/zoetisforshelters/ZFS_Stats?id={!leadId}';"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=4 && compStepNo<4}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/4_GREY.png')}" /><br/></apex:outputPanel>
+    
+    <apex:outputPanel rendered="{! currStepNo==5}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/5_selected.png')}"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=5 && compStepNo>=5}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/5_checked.png')}" onclick="location.href='/zoetisforshelters/ZFS_VeterinarianInformation?id={!leadId}';"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=5 && compStepNo<5}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/5_GREY.png')}" /><br/></apex:outputPanel>
+    
+     <!--Pooja Added TPDEV-1355 -->
+    <!--<apex:outputPanel rendered="{! currStepNo==6}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/6_selected.png')}"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=6 && compStepNo>=6}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/6_checked.png')}" onclick="location.href='/zoetisforshelters/ZFS_References?id={!leadId}';"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=6 && compStepNo<6}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/6_GREY.png')}" /><br/></apex:outputPanel>-->
+     <!--Pooja Added TPDEV-1355 -->
+    <apex:outputPanel rendered="{! currStepNo==6}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/7_selected.png')}"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=6 && compStepNo>=6}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/7_checked.png')}" onclick="location.href='/zoetisforshelters/ZFS_SalesTaxStatus?id={!leadId}';"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=6 && compStepNo<6}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/7_GREY.png')}" /><br/></apex:outputPanel>
+    
+    <apex:outputPanel rendered="{! currStepNo==7}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/8_selected.png')}"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=7 && compStepNo>=7}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/8_checked.png')}" onclick="location.href='/zoetisforshelters/ZFS_ReviewAndSubmit?id={!leadId}';"/><br/></apex:outputPanel>
+    <apex:outputPanel rendered="{! currStepNo!=7 && compStepNo<7}"><apex:image url="{!URLFOR($Resource.ZFS_navigation, 'Navigation_01052017/8_GREY.png')}" /><br/></apex:outputPanel>
+    
+</apex:component>

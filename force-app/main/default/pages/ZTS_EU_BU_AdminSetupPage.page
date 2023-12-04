@@ -1,0 +1,168 @@
+<apex:page Controller="ZTS_EU_SetAdjustmentFactorsController" extensions="ZTS_EU_BU_AdminSetupController" tabStyle="ZTS_EU_Potential_Brands__c" id="PageId" LightningStyleSheets="true">  
+    
+    <apex:slds />
+    <style>
+        body select[size], body select[multiple], .slds-vf-scope select[size], .slds-vf-scope select[multiple]
+        {
+            border: 1px solid rgb(221, 219, 218);
+            border-radius: .25rem;
+            padding: .25rem 0;
+            width: 13rem;
+            height: 15rem;
+            background-color: rgb(255, 255, 255);
+            overflow: auto;
+        }
+        .slds-scope .slds-select[size], .slds-scope .slds-select[multiple]
+        {
+            width:auto;
+        } 
+    </style>
+    <script type="text/javascript">
+        function selectAllCheckboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input");                  
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+        }
+   
+    </script>
+    <div class="slds-scope slds-p-horizontal_medium">
+        <apex:form id="form1" >
+            <apex:pageMessages id="M1"/>
+            
+            <apex:pageBlock title="{!$Label.BU_Admin_Setup_Section}" id="pb"> 
+                <table id="thePage:theTable" border="0" cellpadding="0" cellspacing="10">
+                <tr class="row1">
+                     <td><apex:outputPanel ><br></br><b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {!$ObjectType.ZTS_EU_Species__c.Fields.ZTS_EU_Market__c.Label}</b> </apex:outputPanel></td>
+                     <td><apex:outputPanel ><br></br><b>{!$ObjectType.ZTS_EU_Account_Species_Potential__c.Fields.ZTS_EU_BU_Abbr__c.Label}</b>  </apex:outputPanel></td>  
+                     <td><apex:outputPanel id="op2" rendered="{!IF(speciesOptions!=null,true,false)}"><br></br><b>{!$ObjectType.ZTS_EU_Species__c.Fields.ZTS_EU_Species__c.Label}</b> </apex:outputPanel></td>            
+                      <td><apex:outputPanel id="op6" rendered="{!IF(speciesOptions!=null && checkCAAnimal,true,false)}"><br></br><b>{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.Protocol_For_CA__c.Label}</b> </apex:outputPanel></td>            
+                      <td><apex:outputPanel id="op7" rendered="{!IF(speciesOptions!=null && checkCAAnimal,true,false)}"><br></br><b>{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.ZTS_EU_CA_Account_Type__c.Label}</b> </apex:outputPanel></td>            
+                     <td><apex:outputPanel ><br></br><b>{!$Label.Therapeutic_Group}</b>  </apex:outputPanel></td> 
+                     <td><apex:outputPanel id="op1" rendered="{!AND(checkRegionOfMarket,IF(selectedBrandOptions!=null,true,false))}"><br/><b>{!$Label.Brand}</b> </apex:outputPanel></td> 
+               </tr>
+                <tr class="row2" >
+                    <td>            
+                        <apex:selectList multiselect="false"  size="1"  value="{!SelectedMarket}" styleClass="slds-select" style="width:auto;">
+                            <apex:actionSupport event="onchange" action="{!filterByMarket}" /> 
+                            <apex:selectOptions value="{!Options}" id="optMarket" />
+                        </apex:selectList>               
+                    </td>
+                     <td> 
+                        <apex:outputPanel id="op5">          
+                        <apex:selectList multiselect="false"  size="5"  value="{!SelectedBusinessUnit}"  Rendered="{!businessGroupFlag}" style="min-width:50%">
+                            <apex:selectOptions value="{!businessUnitOptions}" id="businessUnit"  />
+                            <apex:actionSupport event="onchange" action="{!populateSpecies}" reRender="op4,pb"/>
+                        </apex:selectList>
+                        </apex:outputPanel>
+                     </td> 
+                      <td>       
+                            <apex:outputPanel id="op4">
+                            <apex:selectList multiselect="false"  size="5" value="{!SelectedSpecies}" rendered="{!IF(speciesOptions!=null,true,false)}" id="optedSpecieId" title="{!$ObjectType.ZTS_EU_Species__c.Fields.ZTS_EU_Species__c.Label}" style="min-width:50%;">
+                                <apex:selectOptions value="{!speciesOptions}" id="optSpecies" />
+                            </apex:selectList>
+                            </apex:outputPanel>
+                    </td>
+                    <td>           
+                        <apex:selectList multiselect="false"  size="1"  value="{!selectedProtocolForCA}" rendered="{!checkCAAnimal}" styleClass="slds-select" style="width:auto;">
+                         <apex:selectOptions value="{!protocolForCAOptions}" id="protocolForCA"  />
+                         <apex:actionSupport event="onchange" action="{!populateSkus}" reRender="parentOp,btn"/>
+                         </apex:selectList>            
+                                                   
+                    </td>
+                     <td>
+                             <apex:selectList multiselect="false"  size="1"  value="{!selectedCAAccountType}" rendered="{!checkCAAnimal}" styleClass="slds-select" style="width:auto;">
+                             <apex:selectOptions value="{!cAAccountTypeOptions}" id="caAccountType" />
+                             <apex:actionSupport event="onchange" action="{!populateSkus}" reRender="parentOp,btn"/>
+                              </apex:selectList>
+                     </td>         
+                    <td>           
+                        <apex:selectList multiselect="true"  size="5"  value="{!SelectedTGGroups}"  Rendered="{!tGGroupFlag}" style="min-width:50%;">
+                            <apex:selectOptions value="{!tGGroupOptions}" id="optTGGroup"  />
+                            <apex:actionSupport event="onchange" action="{!populateBrands}" reRender="op3,pb,parentOp,btn" />
+                        </apex:selectList>             
+                                                   
+                    </td>
+                   
+          
+                     <td> 
+                          <apex:outputPanel id="op3">
+                           <apex:selectList multiselect="true"  size="5"  value="{!SelectedBrandGroups}"  Rendered="{!AND(brandFlag,IF(selectedBrandOptions.size>0,true,false))}" id="optedBrandId" title="{!$Label.Brand}" style="min-width:50%;">
+                            <apex:selectOptions value="{!selectedBrandOptions}" id="optBrandGroup" />
+                            <apex:actionSupport event="onchange" action="{!populateSkus}" reRender="parentOp,btn,M1"/>
+                         </apex:selectList>
+                         </apex:outputPanel>              
+                    </td>
+        
+                </tr>
+         
+            </table> 
+            <br></br>
+            <apex:outputPanel id="parentOp">
+            <apex:outputPanel rendered="{!If(potentialBrandWrapperList.size>0,true,false)}" id="potTable">
+             <b style="margin-left:35%;color:red"> {!$Label.Message_to_override} </b>
+                <br/>
+            <c:ZTS_EU_PaginationComponent paging="{!Paging}" rerender="table"></c:ZTS_EU_PaginationComponent>  
+             <apex:pageBlockTable title="{!$Label.Products}"  value="{!potentialBrandWrapperList}" rendered="{!If(potentialBrandWrapperList.size>0,true,false)}" var="pb" id="table" headerClass="Products" first="{!Paging.offset}" rows="{!Paging.PageSize}">            
+              <apex:column width="50">
+                                <apex:facet name="header">
+                                 <apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')"/>
+                                </apex:facet>
+                                <apex:inputCheckbox value="{!pb.brandSelect}" id="inputId"/>
+                                </apex:column>
+                                <apex:column width="120">
+                                <apex:outputLink value="/{!pb.brand.id}">{!pb.brand.Name}</apex:outputLink>
+                                    <apex:facet name="header">{!$Label.Products}</apex:facet>    
+                                </apex:column>  
+                                <apex:column value="{!pb.brand.ZTS_EU_Type__c}" width="70">
+                                    <apex:facet name="header">{!$ObjectType.ZTS_EU_Species_Product__c.Fields.ZTS_EU_Type__c.label}</apex:facet>    
+                                </apex:column>   
+                                <apex:column value="{!pb.brand.ZTS_EU_Budgeted_Price__c}" width="70">
+                                    <apex:facet name="header">{!$ObjectType.ZTS_EU_Species_Product__c.Fields.ZTS_EU_Budgeted_Price__c.label}</apex:facet>    
+                                </apex:column>  
+                                <apex:column value="{!pb.potentialRecordPresent}" width="50">
+                                    <apex:facet name="header">{!$Label.Potential_Product_Present}</apex:facet>    
+                                </apex:column>        
+                            </apex:pageBlockTable> 
+              </apex:outputPanel>  
+              </apex:outputPanel>            
+              <apex:outputPanel id="btn" >
+              <br></br>
+              <div align="center" style="margin-bottom:10px;"> 
+                <apex:commandButton value="{!$Label.SetFactors}" action="{!setFactors}" rendered="{!If(potentialBrandWrapperList.size>0,true,false)}" reRender="compTable" styleClass="slds-button slds-button_neutral"> </apex:commandButton>
+                <apex:commandButton value="{!$Label.Cancel}" action="{!cancel}" onclick="window.location.reload()" rendered="{!If(potentialBrandWrapperList.size>0,true,false)}" reRender="compTable,pb" styleClass="slds-button slds-button_neutral"> </apex:commandButton></div>
+                 <apex:outputPanel id="compTable"><c:ZTS_EU_Potential_Factor_Adjustment_Table id="componentTable" checkCA="{!checkCAAnimal}" brandList="{!potBrandsToUpsert}" setFactorFlag="{!setFactorsFlag}" species="{!speciesOptions}" brand="{!selectedBrandOptions}" rendered="{!AND(checkRegionOfMarket,setFactorsFlag)}">
+                    </c:ZTS_EU_Potential_Factor_Adjustment_Table>
+                 </apex:outputPanel>        
+                
+                 <apex:pageBlock title="Factor Adjustments" rendered="{!AND(NOT(checkRegionOfMarket),setFactorsFlag)}" id="factorBlock">
+                <apex:pageBlockSection >
+                <table colspan="2">
+                    <tr>
+                        <apex:inputtext value="{!price}" id="priceId" label="Price"/> 
+                        <apex:selectList multiselect="false"  size="1"  value="{!selectedCurrency}" label="Currency" styleClass="slds-select" style="width:auto;">
+                             <apex:selectOptions value="{!currencyOptions}" id="optCurrency" />
+                        </apex:selectList>
+                    </tr>
+                    
+                    <tr>
+                        <apex:inputText value="{!dosage}" id="doageId" label="Doses per Animal"/>
+                        <apex:selectList multiselect="false"  size="1"  value="{!selectedUnit}" label="Units" styleClass="slds-select" style="width:auto;">
+                             <apex:selectOptions value="{!UnitOptions}" id="optUnit" />
+                        </apex:selectList>
+                    </tr>
+                    <tr>
+                        <apex:inputText value="{!adjustmentFactor}" id="adjustmentFactor1Id" label="Adjustment Factor"/>        
+                    </tr>
+                </table>
+                </apex:pageBlockSection>
+                              
+                </apex:pageBlock> 
+                </apex:outputPanel>
+            </apex:pageBlock>  
+        </apex:form>
+    </div>
+  
+</apex:page>

@@ -1,0 +1,767 @@
+<apex:page controller="PIT_BudgetAllocationController" sidebar="true" tabStyle="PIT_Budget_Management__tab" cache="false">
+ <head>      
+    <style>
+        /* This is for the full screen DIV */
+    .popupBackground {
+        /* Background color */
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        /* Dimensions */
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 998;
+        position: absolute;
+        /* Mouse */
+        cursor:wait;
+    }
+     
+    /* This is for the message DIV */
+    .PopupPanel {
+        /* Background color */
+        border: solid 2px red;
+        background-color: white;
+         
+        /* Dimensions */
+        left: 50%;
+        width: 200px;
+        margin-left: -100px;
+        top: 50%;
+        height: 80px;
+        margin-top: -25px;
+        z-index: 999;
+        position: fixed;
+        /* Mouse */
+        cursor:pointer;
+    }
+    
+    input::-ms-clear {                  
+        display: none !important;
+    }                 
+    </style>
+    <!--Load the AJAX API-->
+    <apex:includeScript value="{!$Resource.jquery_1_11_1}"/>
+    <apex:includeScript value="{!$Resource.jqueryBlockUi}"/>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  </head>
+<apex:form id="form1">
+    <script type="text/javascript">
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+      
+      google.load('visualization', '1.0', {packages:['table']});
+ 
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawAllCharts);
+           
+ 
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      
+      function freezeScreen(){
+        try{
+            $.blockUI('...loading...');
+        } catch(e){}
+      }
+            
+      function drawMainChart() {
+        
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        
+        var formatter = new google.visualization.NumberFormat({prefix: '{!curSymbol} ', groupingSymbol: ',', decimalSymbol: '.'});
+             
+        //
+        $('tr.mainRow').each(function(){
+            var alloc = $.find('.inputAlloc', this);
+            var result = 0;
+            //console.log('alloc='+alloc);
+            if(alloc.length == 1) {
+                result = Number(alloc[0].value.replace(/,/g,''));
+            } else {
+                alloc = $.find('.outputAlloc', this)[0]; 
+                result = Number(alloc.innerHTML.replace(/,/g,''));
+            }
+            var name = $.find('.area', this)[0].innerHTML;
+            data.addRow([name, result]);
+        });
+        //
+ 
+        // Set chart options
+        var options = {'title':'Budget Assignment per Area\n  [ -- based on saved data -- ]',
+                       'width':300,
+                       'height':250};
+          
+        // Instantiate and draw our chart, passing in some options.
+        formatter.format(data, 1);
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+      
+      function drawTable(data2vis) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'First Name');
+        data.addColumn('string', 'Last Name');
+        data.addColumn('string', 'Territory');
+        data.addColumn('number', 'Allocation'); 
+        data.addColumn('number', 'Adjustment'); 
+        data.addColumn('number', 'Adjusted Budget');
+        data.addColumn('number', 'Shipped');
+        data.addColumn('number', 'Remaining');
+        data.addRows(data2vis);
+     
+        var table = new google.visualization.Table(document.getElementById('child_table_div'));
+        
+        var formatter = new google.visualization.NumberFormat({prefix: '{!curSymbol} ', groupingSymbol: ',', decimalSymbol: '.', negativeColor: 'red'});
+        formatter.format(data, 3); 
+        //formatter.format(data, 4);
+        formatter.format(data, 4); 
+        formatter.format(data, 5);
+        formatter.format(data, 6);
+        formatter.format(data, 7);
+        table.draw(data, {showRowNumber: false});
+      }
+      
+      function drawChart2(consumed, remaining) {
+            // Create the data table.
+            var data2 = new google.visualization.DataTable();
+            data2.addColumn('string', 'Topping');
+            data2.addColumn('number', 'Slices');
+            data2.addRows([
+              ['Remaining', remaining],
+              ['Spent', consumed]
+            ]);
+            
+            var formatter = new google.visualization.NumberFormat({prefix: '{!curSymbol} ', groupingSymbol: ',', decimalSymbol: '.'});
+            formatter.format(data2, 1); 
+
+            // Set chart options
+            var options2 = {'title':'Overall Budget Utilization',
+                           'width':400,
+                           'height':300,
+                           'is3D': true};
+    
+            // Instantiate and draw our chart, passing in some options.
+            var chart2 = new google.visualization.PieChart(document.getElementById('chart_div2'));
+            chart2.draw(data2, options2);
+      }
+      
+      function drawChart3(subData) {
+            // Create the data table.
+            var data3 = new google.visualization.DataTable();
+            data3.addColumn('string', 'Name');
+            data3.addColumn('number', 'Remaining');
+            data3.addColumn('number', 'Spent');
+            data3.addRows(subData);
+            //data3.addRow();
+            
+            var formatter = new google.visualization.NumberFormat({prefix: '{!curSymbol} ', groupingSymbol: ',', decimalSymbol: '.'});
+            formatter.format(data3, 1);
+            formatter.format(data3, 2);
+            
+            // Set chart options
+            var options3 = {'title':'Territories allocations',
+                           width: 400,
+                           height: 300,
+                           is3D: true,
+                           legend: { position: 'top', maxLines: 3 },
+                           isStacked: true};
+    
+            // Instantiate and draw our chart, passing in some options.
+            var chart3 = new google.visualization.ColumnChart(document.getElementById('chart_div3'));
+            chart3.draw(data3, options3);   
+      }
+     
+      function drawAllCharts() {
+        if({!isRSD} || {!isAM} ){
+            copyBudget();
+            drawMainChart(); 
+            drawChart2();
+        }  
+        if({!isTM}){  // Added as a part of defect SC-009700
+            drawTMCharts();
+        }
+      }
+         
+      function copyBudget() {
+        $('#totalBudget')[0].innerHTML = $('.totalBudget')[0].innerHTML;
+      }         
+       
+      function refreshTableData() {
+        //console.log('refreshTableData START');
+        copyBudget();
+        refreshRemaining();
+        refreshTotals();
+      }
+       
+        //print decimal with thousand separator
+        function thousandSep(val) {
+            return String(val).split("").reverse().join("")
+                          .replace(/(\d{3}\B)/g, "$1,")
+                          .split("").reverse().join("");
+        }
+        
+        function IsJsonString(str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        }
+      
+      
+        //gets all data from input/output fields with allocations
+        //-1 when error
+        function getAllocsSum() {
+            if($('.outputAlloc').size() > 0) {
+                //get data from all output fields
+                var sum = 0;
+                var ok = true;
+                $('.outputAlloc').each(function(index){
+                    //console.log(index + ': ' + this.innerHTML);
+                    if($.isNumeric(this.innerHTML.replace(/,/g,''))) {
+                        sum += Number(this.innerHTML.replace(/,/g,''));
+                    } else {
+                        ok = false;
+                    }
+                });
+                if(ok) {
+                    return sum;
+                } else {
+                    return 'ERROR';
+                }
+            } else if($('.inputAlloc').size() > 0) {
+                //get data from all input fields
+                var sum = 0;
+                var ok = true;
+                $('.inputAlloc').each(function(index){
+                    //console.log(index + ': ' + this.value);
+                    if($.isNumeric(this.value.replace(/,/g,''))) {
+                        sum += Number(this.value.replace(/,/g,''));
+                    } else {
+                        ok = false;
+                    }
+                });
+                if(ok) {
+                    return sum;
+                } else {
+                    return 'ERROR';
+                }
+            } else {
+                return 0;
+            }
+        }
+     
+        //similar function to getAllocsSum
+        //parameter colName is name of css class that will be sumed
+        function getColSum(colName) {
+            var sum = 0;
+            var ok = true;
+            $('.' + colName).each(function(index){
+                //console.log(index + ': ' + this.innerHTML);
+                if($.isNumeric(this.innerHTML.replace(/,/g,''))) {
+                    sum += Number(this.innerHTML.replace(/,/g,''));
+                } else {
+                    ok = false;
+                }
+            });
+            if(ok) {
+                return sum;
+            } else {
+                return 'ERROR';
+            } 
+        }
+     
+        function refreshTotals() {
+            //console.log('refresh totals='+$('#totalBudget')[0].innerHTML.replace(/,/g,''));
+            var bud = parseInt($('#totalBudget')[0].innerHTML.replace(/,/g,''));
+            //console.log('bud: ' + bud);
+            
+            sum = getAllocsSum();
+            
+            if(sum == 'ERROR' || sum > bud){
+                $('#unallocBudgetTotalId')[0].innerHTML = thousandSep((bud - sum).toFixed(2));
+                if(!isNaN(sum)){
+                    sum = parseFloat(Math.round(sum * 100) / 100).toFixed(2);
+                } else {
+                    
+                }
+                sum = '<img src="/img/msg_icons/error16.png" width="12"/> <font color="red">{!curSymbol} ' + thousandSep(sum) + '</font>';
+                $('.buttonUpd').hide();
+            } else {
+                $('#unallocBudgetTotalId')[0].innerHTML = thousandSep((bud - sum).toFixed(2));
+                sum = '<img src="/img/msg_icons/confirm16.png" width="12" /> <font color="green">{!curSymbol} ' + thousandSep(parseFloat(Math.round(sum * 100) / 100).toFixed(2))  + '</font>';
+                $('.buttonUpd').show();
+            }
+            
+            sumConsumed = getColSum('consumedAlloc');
+            sumAdjustment = getColSum('adjmnts');
+            sumAdjBudget = getColSum('adjbdgt');
+            sumRem = getColSum('remainingAlloc');
+            if(!isNaN(sumConsumed ))
+                sumConsumed  = thousandSep(parseFloat(Math.round(sumConsumed  * 100) / 100).toFixed(2));
+            if(!isNaN(sumRem))
+                sumRem = thousandSep(parseFloat(Math.round(sumRem * 100) / 100).toFixed(2));
+            if(!isNaN(sumAdjustment))
+                sumAdjustment = thousandSep(parseFloat(Math.round(sumAdjustment * 100) / 100).toFixed(2));
+            if(!isNaN(sumAdjBudget))
+                sumAdjBudget = thousandSep(parseFloat(Math.round(sumAdjBudget * 100) / 100).toFixed(2));        
+            
+            
+            $('#totalAllocation')[0].innerHTML = sum; 
+            //$('#totalShipped')[0].innerHTML = sumConsumed;
+            //$('#totalRemaining')[0].innerHTML = sumRem;
+            $('#totalAdjustment')[0].innerHTML = sumAdjustment;
+            $('#totalAdjBudget')[0].innerHTML = sumAdjBudget;
+            
+            if({!isRSD}){
+                var sumUnAlloc = getColSum('unAlBudg');
+                if(!isNaN(sumUnAlloc ))
+                    sumUnAlloc  = thousandSep(parseFloat(Math.round(sumUnAlloc  * 100) / 100).toFixed(2));
+                $('#totalUnAlloc')[0].innerHTML = sumUnAlloc;
+            }
+        }
+     
+        function refreshRemaining() {
+            //console.log('refresh remaining');
+            $('tr.mainRow').each(function(){
+                var alloc = $.find('.inputAlloc', this);
+                var result = 0;
+                var allocBelowEl = 0;
+                var allocBelow = 0;
+                var unAlloc = 0;
+                //console.log('refresh remaining1');
+                if({!isRSD}){
+                    //console.log('refresh remainingRDS');
+                    allocBelowEl = $.find('.allocBelow', this)[0];
+                    //console.log('unalbel: ' + allocBelowEl.innerHTML);
+                    allocBelow = Number(allocBelowEl.innerHTML.replace(/,/g,''));
+                    //console.log('unalbelAf: ' + allocBelow );
+                }
+                //console.log('alloc='+alloc);
+                //console.log('refresh remaining2');
+                if(alloc.length == 1) {
+                    result = Number(alloc[0].value.replace(/,/g,''));
+                } else {
+                    alloc = $.find('.outputAlloc', this)[0]; 
+                    result = Number(alloc.innerHTML.replace(/,/g,''));
+                }
+                //console.log('refresh remaining3');
+                //console.log('result='+result);
+                if($.isNumeric(result)) {
+                    //alloc = $.find('.consumedAlloc', this)[0];
+                    unAlloc = result - allocBelow;
+                    unAlloc = unAlloc.toFixed(2);
+                    //console.log('unallocBef: ' + unAlloc );
+                    /*if($.isNumeric(alloc.innerHTML.replace(/,/g,''))) {
+                        result -= Number(alloc.innerHTML.replace(/,/g,''));
+                    } else {
+                        result = "ERROR";
+                    }*/
+                } else {
+                    result = "ERROR";   
+                }
+                //console.log('refresh remaining4');
+                if(!isNaN(result))
+                    result = parseFloat(Math.round(result * 100) / 100).toFixed(2);
+                    result = thousandSep(result);
+                //$.find('.remainingAlloc', this)[0].innerHTML = result;
+                
+                
+                //console.log('refresh remaining5');
+                if({!isRSD}){
+                    unAlloc = thousandSep(unAlloc);
+                    //console.log('unalloc: ' + unAlloc );
+                    $.find('.unAlBudg', this)[0].innerHTML = unAlloc;
+                }
+                //console.log('refresh remaining6');
+            });
+        }
+      
+        function toggleSubChartsVisibility(show) {
+            $('#rsdSelected').toggle(show);
+        }
+     
+        function chartSelectedData() {
+              //console.log('chartSelectedDataStart');
+             selected = 0;
+             $('.tableCheckbox').each(function(key, value){   
+                 if(this.checked) {
+                       selected = key;
+                 }
+             });
+             
+             //if no data hide charts and return
+             if({!isRSD}){
+                 toggleSubChartsVisibility(IsJsonString($('.subData')[selected].innerHTML));
+                 if(!IsJsonString($('.subData')[selected].innerHTML)) {
+                    return;
+                 }
+             }
+             
+             $("#rsdNoneSelected").hide();
+             $("#rsdSelected").show();
+             consumed = Number($('.consumedAlloc')[selected].innerHTML.replace(/,/g,''));
+             remaining = Number($('.remainingAlloc')[selected].innerHTML.replace(/,/g,''));
+             //Adjustment = Number($('.adjmnts')[selected].innerHTML.replace(/,/g,''));
+             //Adjusted Budget = Number($('.adjbdgt')[selected].innerHTML.replace(/,/g,''));
+             //completed = Number($('.completedAlloc')[selected].innerHTML.replace(/,/g,''));
+
+             drawChart2(consumed, remaining); 
+             if({!isRSD}){
+                subData = JSON.parse($('.subData')[selected].innerHTML);
+                drawChart3(subData);
+                //console.log('chartSelectedDataRSD');
+                subDataComplex = JSON.parse($('.subDataComplex')[selected].innerHTML);
+                drawTable(subDataComplex);
+                //console.log('chartSelectedDataAM');
+             } else {  
+                drawChart4(consumed - completed, completed);
+                //console.log('chartSelectedDataTM');
+             } 
+             //console.log('chartSelectedDataEnd');
+        }
+                 
+        function onCheckboxClick(event) {
+            //console.log(event.target); 
+            //console.log('onCheckboxClickStart'); 
+            $('.tableCheckbox').each(function(key, value){
+                //console.log(key + '->' + value);
+                this.checked = false;
+                //if(this.checked) {selected = key}
+            });
+            event.target.checked = true;
+            chartSelectedData();
+            //console.log('onCheckboxClickENd');
+        }
+        
+        function numberWithCommas(x) {
+            var parts = x.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts.join(".");
+        }
+        
+        function copyAllocsFromVF() {
+            index = 0;
+            $('.inputAlloc').each(function(index){
+                //console.log('index='+index);
+                $('.inputAllocCopy')[index].value = numberWithCommas(this.value);
+                index++;
+            });
+        }
+        
+        function keyupFunction(){
+          //test
+        }
+        
+        function copyAllocsToVF() {
+            index = 0;
+            $('.inputAllocCopy').each(function(index){
+                //console.log('index='+index);
+                $('.inputAlloc')[index].value = this.value.replace(/,/g,'');
+                index++;
+            });
+        }
+     
+        function initPage(){
+            //console.log('doc ready!');
+            copyAllocsFromVF();
+            //console.log('doc ready!2');
+            //add limitation to only numbers and separators for fields
+            $(".inputAllocCopy").keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                     // Allow: Ctrl+A
+                    (e.keyCode == 65 && e.ctrlKey === true) || 
+                     // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 40)) {
+                         // let it happen, don't do anything
+                         return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            }); 
+            
+            //console.log('doc ready!3');
+            
+            $(".inputAllocCopy").keyup(function(event) {
+              //console.log('inputAllocCopy EVENT1');
+              // skip for arrow keys
+              if(event.which >= 37 && event.which <= 40){
+                //console.log('here');
+                event.preventDefault();
+              }
+              //console.log('inputAllocCopy EVENT2');
+              start = this.selectionStart,
+              end = this.selectionEnd;
+              console.log('0this.value: ' + this.value + ' start: ' + start + ' length: ' + this.value.length);
+              var prevCommas = this.value.split(",").length - 1;
+              $(this).val(function(index, value) {
+                  value = value.replace(/,/g,''); // remove commas from existing input
+                  return numberWithCommas(value); // add commas back in
+              });
+              console.log('inputAllocCopy EVENT3');
+              copyAllocsToVF();
+              var nowCommas = this.value.split(",").length - 1;
+              if(!(event.which >= 37 && event.which <= 40)){
+                console.log('this.value: ' + this.value + ' start: ' + start + ' length: ' + this.value.length);
+                if(event.which != 8){
+                    console.log('cond1');
+                    //if(start > 2){
+                        if(this.value.substring(0,start).indexOf(".") == -1 && this.value.substring(0,2).indexOf(",") == 1){
+                            console.log('condition 1A start: ' + start);
+                            this.setSelectionRange(start+1, end+1);
+                        } else {
+                            this.setSelectionRange(start, end);
+                        }
+                    //}
+                } else { //backspace event
+                    console.log('cond2');
+                    if(nowCommas + 1 == prevCommas){
+                        this.setSelectionRange(start-1, end-1);
+                    } else {
+                        this.setSelectionRange(start, end);
+                    }
+                    
+                    /*
+                    if(this.value.substring(0,start).indexOf(".") == -1 && this.value.length > 2 && (this.value.length == 3 || this.value.substring(0,3).indexOf(".") == -1 || this.value.substring(0,3).indexOf(",") == -1) && start != this.value.length && nowCommas ==){
+                        //((start + 2) % 4 == 0) && 
+                        console.log('condition 1C start: ' + start + ' length: ' + this.value.length);
+                        this.setSelectionRange(start-1, end-1);
+                    } else {
+                       console.log('condition 1D start: ' + start + ' length: ' + this.value.length);
+                       this.setSelectionRange(start, end);
+                    }*/
+                }
+              } else {
+                this.setSelectionRange(start, end);
+              }
+              console.log('inputAllocCopy EVENT4');
+              refreshTableData();  
+            });
+            //console.log('doc ready END');
+            refreshTableData();
+        }          
+        
+        //on document ready handler
+        $(document).ready(function() {
+            if({!isRSD} || {!isAM}){
+                initPage();
+            }                    
+        });
+      
+    </script>
+    
+    <apex:outputPanel id="multiMode" layout="none" rendered="{!multiMode}">
+        <apex:pageBlock title="Available contexts">
+            Your current context: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            <apex:selectList value="{!contextId}" size="1" multiselect="false">
+                <apex:selectOptions value="{!contextList}"/>
+                <apex:actionSupport event="onchange" action="{!changeContext}" onsubmit="freezeScreen();"/><!-- rerender="form1" oncomplete="initPage();" -->
+            </apex:selectList><p/> 
+        </apex:pageBlock>
+    </apex:outputPanel> 
+
+<apex:outputPanel id="rsdMode" layout="none" rendered="{!isRSD || isAM}"> <!-- {!IF(isRSD,'Regional Sales Director', 'Area Manager') -->
+    <apex:pageBlock title="{!IF(isRSD,'Regional Sales Director','Area Business Manager')}: {!curRec.ZTS_EU_Territory__r.Name}">
+    <apex:outputPanel id="totalBudgetVf"><span style="margin-left: 50px;"><b>Annual Budget: </b>{!curSymbol} <apex:outputText styleClass="totalBudget" value="{0, number,###,###,##0.00}"><apex:param value="{!totalBudget}"/></apex:outputText></span></apex:outputPanel>
+    <apex:outputPanel id="RemBudgetVf"><span style="margin-left: 50px;"><b>Unallocated Budget: </b> {!curSymbol} <span id="unallocBudgetTotalId">0</span></span></apex:outputPanel><br/><br/>
+    <apex:pageBlockButtons location="top">
+        <apex:commandButton action="{!updateAllocs}" value="Update" id="updButton" styleClass="buttonUpd"/>
+    </apex:pageBlockButtons>
+    
+    <apex:pageBlockSection columns="2">
+            <apex:pageBlockSectionItem >
+                <apex:pageBlockTable styleClass="mainTable" rowClasses="mainRow" id="tableEl" value="{!AMs}" var="am1">
+                    <apex:column >
+                        <apex:inputCheckbox styleClass="tableCheckbox" value="{!am1.selected}" onclick="onCheckboxClick(event);" />
+                        <apex:facet name="footer">Total:</apex:facet>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Last Name">
+                        <apex:outputText value="{!am1.lastName}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="First Name">
+                        <apex:outputText value="{!am1.firstName}"/>
+                    </apex:column>
+
+                    <apex:column headerValue="{!IF(isRSD, 'Area',IF(isAM,'Territory','ERROR'))}" rendered="{!isRSD || isAM}">
+                        <apex:outputText styleClass="area" value="{!am1.position}"/>
+                        <span class="subDataComplex" style="display:none">{!am1.subDataComplex}</span>
+                        <span class="subData" style="display:none">{!am1.subData}</span>
+                    </apex:column>   
+
+                    <apex:column headerValue="Allocation">
+                        <apex:outputPanel layout="none" rendered="{!IF(VALUE(selYear)>=VALUE(curYear), true, false)}">
+                            {!curSymbol} <input class="inputAllocCopy" onkeyup="keyupFunction();" oninput="keyupFunction();" />
+                            <apex:inputText styleClass="inputAlloc" style="display:none" onkeyup="javascript:refreshTableData();" value="{!am1.allocation}"/>
+                        </apex:outputPanel>         
+                        <apex:outputPanel layout="none" rendered="{!IF(VALUE(selYear)<VALUE(curYear),true,false)}">
+                            {!curSymbol}  
+                            <!-- <apex:outputText styleClass="outputAlloc" value="{!am1.allocation}"/>  -->
+                            <apex:outputText styleClass="outputAlloc" value="{0, number,###,###,##0.00}">
+                               <apex:param value="{!am1.allocation}"/>
+                            </apex:outputText>
+                        </apex:outputPanel>  
+                        <apex:facet name="footer"><span id="totalAllocation">0</span>  / {!curSymbol} <span id="totalBudget"></span></apex:facet>
+                    </apex:column>
+
+                    <apex:column headerValue="Unallocated" rendered="{!isRSD}">
+                        {!curSymbol} 
+                        <apex:outputText styleClass="unAlBudg" value="{0, number,###,###,##0.00}">
+                            <apex:param value="{!am1.allocation - am1.allocBelow}"/>
+                        </apex:outputText>
+                        <span class="allocBelow" style="display:none">{!am1.allocBelow}</span>
+                        <apex:facet name="footer">{!curSymbol} <span id="totalUnAlloc">0</span></apex:facet>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Adjustment">
+                        {!curSymbol} <apex:outputText styleClass="adjmnts" value="{0, number,###,###,##0.00}">
+                            <apex:param value="{!am1.Adjustment}"/>
+                        </apex:outputText>
+                        <apex:facet name="footer">{!curSymbol} <span id="totalAdjustment">0</span></apex:facet>
+                    </apex:column> 
+                    
+                     <apex:column headerValue="Adjusted Budget">
+                        {!curSymbol} <apex:outputText styleClass="adjbdgt" value="{0, number,###,###,##0.00}">
+                            <apex:param value="{!am1.AdjBudget}"/>
+                        </apex:outputText>
+                        <apex:facet name="footer">{!curSymbol} <span id="totalAdjBudget">0</span></apex:facet>
+                    </apex:column>
+
+                    <!-- Code commented out as per the system change SC-008107-->
+                   <!--<apex:column headerValue="Shipped">
+                        {!curSymbol} <apex:outputText styleClass="consumedAlloc" value="{0, number,###,###,##0.00}">
+                            <apex:param value="{!am1.consumed}" />
+                        </apex:outputText>
+                        <apex:facet name="footer">{!curSymbol} <span id="totalShipped">0</span></apex:facet>
+                    </apex:column> 
+
+                     
+                    
+                    <apex:column headerValue="Remaining">
+                        {!curSymbol} <apex:outputText styleClass="remainingAlloc" value="{0, number,###,###,##0.00}">
+                        <apex:param value="{!am1.Remaining}" />
+                        </apex:outputText>
+                        <apex:facet name="footer">{!curSymbol} <span id="totalRemaining">0</span></apex:facet>
+                    </apex:column>-->
+    
+                </apex:pageBlockTable>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <span id="chart_div"></span>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    
+    
+        <br/>
+        <hr/>
+        <apex:pageBlockSection columns="1">
+            <div id="rsdNoneSelected"> 
+                <br/><br/>
+                <h2 style="text-align:center">There is no data to be displayed.<br/><br/>- please select {!IF(isRSD, 'Area', 'Territory')} to see the details - </h2>
+            </div>
+            <br/><br/>
+            <div style="display:none;" id="rsdSelected">
+                <h2 style="text-align:center">Detailed info of {!IF(isRSD, 'Area', 'Territory')}:</h2>
+                <br/>
+                <div id="child_table_div"></div>
+                <br/><br/>
+                <table style="width:100%">
+                    <tr>
+                        <td style="width:50%">
+                            <div style="width:100%" id="chart_div2"></div>
+                        </td>
+                        <td style="width:50%">
+                            <div style="width:100%" id="chart_div3"></div>          
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br/>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:outputPanel>
+
+<apex:outputPanel id="tmMode" layout="none" rendered="{!isTM}">
+    <apex:pageBlock title="Territory Manager: {!curRec.ZTS_EU_Territory__r.Name}">
+        <apex:outputText styleClass="totalBudget" style="display:none;" value="{0, number,###,###,##0.00}"><apex:param value="{!totalBudget}"/></apex:outputText>
+        <span id="totalBudget" style="display:none;"></span>
+        <center><h2>Some of Your Stats for the current year:</h2></center>
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <div style="width:100%" id="tmTable"></div>
+                </td>
+                <td>
+                    <div style="width:100%" id="chart_div2"></div>
+                </td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+            function drawTableTM(data2vis) {
+                var data = new google.visualization.DataTable();
+                //data.addColumn('string', 'First Name');
+                //data.addColumn('string', 'Last Name');
+                //data.addColumn('string', 'Territory');
+                data.addColumn('number', 'Allocation'); 
+                data.addColumn('number', 'Adjustment');
+                data.addColumn('number', 'Adjusted Budget'); 
+                data.addColumn('number', 'Shipped');
+                data.addColumn('number', 'Remaining');
+                data.addRows(data2vis);
+             
+                var table = new google.visualization.Table(document.getElementById('tmTable'));
+                
+                var formatter = new google.visualization.NumberFormat({prefix: '{!curSymbol} ', groupingSymbol: ',', decimalSymbol: '.', negativeColor: 'red'});
+                formatter.format(data, 0); 
+                formatter.format(data, 1); 
+                formatter.format(data, 2);
+                formatter.format(data, 3);
+                formatter.format(data, 4);
+                table.draw(data, {showRowNumber: false});
+              }
+            
+        function drawTMCharts(){           // Added as a part of defect SC-009700
+                var Shipped = {!statTM.Consumed};
+                var remaining = {!statTM.remaining};
+                var completed = {!statTM.completed};
+                var adjustment = {!statTM.Adjustment};
+                var adjustedalloc = {!statTM.AdjBudget};
+                var aloc = {!statTM.allocation};
+                
+                
+                var jVar = '[[' + aloc + ',' + adjustment +',' + adjustedalloc +',' + Shipped + ',' + remaining + ']]';
+                var tabData = JSON.parse(jVar);
+                drawChart2(Shipped, remaining);
+                //drawChart4(consumed - completed, completed);
+                drawTableTM(tabData);
+            }
+        </script>
+    </apex:pageBlock>
+</apex:outputPanel>
+<apex:outputPanel id="noAccess" layout="none" rendered="{!noAccess}">
+    <br/><br/>
+<style>
+a {font-weight:bold; color: rgb(141, 179, 226);}
+</style>
+    <div style="margin: 25px; width: 880px; border:2px solid #000000; padding:30px; -webkit-border-radius: 25px; -moz-border-radius: 25px; border-radius: 25px;">
+        <apex:outputText value="Access Forbidden" style="font-family: Tahoma, Arial, sans-serif; font-weight:bold; font-size: 18px; color: rgb(75, 172, 198);" escape="false"/><br/><br/>
+        <apex:outputText value="You are not allowed to use this page." escape="false"/>
+    </div>    
+    <!--  
+    <center><h2>You are not allowed to use this page.</h2></center>-->
+    <br/><br/>
+</apex:outputPanel>
+</apex:form>
+
+</apex:page>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Maghreb Sandbox</label>
+    <protected>true</protected>
+    <values>
+        <field>API_Key__c</field>
+        <value xsi:type="xsd:string">3_aPfR_5k-KTa3p_e5iPD8UB5oLtnXU_ME-Vc2oUaa5JzLlCkoGyif991MTJ9TI0qb</value>
+    </values>
+    <values>
+        <field>Environment__c</field>
+        <value xsi:type="xsd:string">Sandbox</value>
+    </values>
+    <values>
+        <field>Market__c</field>
+        <value xsi:type="xsd:string">Maghreb</value>
+    </values>
+</CustomMetadata>

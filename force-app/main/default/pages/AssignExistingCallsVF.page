@@ -1,0 +1,4 @@
+<apex:page standardController="Call__c" extensions="CallAssignExistingCallsController" 
+                    recordSetVar="targeted" action="{!doRedirect}">
+
+</apex:page>

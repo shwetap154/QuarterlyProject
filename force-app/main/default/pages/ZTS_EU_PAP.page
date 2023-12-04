@@ -1,0 +1,82 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_PAP
+* Description   :   This vf page is overrides new/edit and view link for PAP                         
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     4th-May-15   Shreyas             Created the vf page.
+
+********************************************************************************************************************************************
+-->
+
+<apex:page standardController="ZTS_EU_Product_Adoption_Profile__c" extensions="ZTS_EU_PAPController" tabStyle="ZTS_EU_Product_Adoption_Profile__c" id="pg" LightningStyleSheets="true">
+     
+     <apex:form id="frm_edit">
+     
+         <apex:SectionHeader title="Product Adoption Profile Edit" subtitle="New Product Adoption Profile" rendered="{! NOT(showName)}"/>
+         <apex:SectionHeader title="Product Adoption Profile Edit" subtitle="{!papName}" rendered="{!showName}"/>
+         
+         <apex:pageMessages />
+         
+         <apex:pageblock id="pb_edit" title="Product Adoption Profile Edit">
+         
+             <apex:pageblockSection id="pbs_edit" title="Information">
+             
+                 <apex:inputfield value="{!papRecord.ZTS_EU_Contact__c}" id="con"/>
+                 <apex:inputfield value="{!papRecord.ZTS_EU_Contact_Primary_Account__c}" id="acc"/>
+                 <apex:inputfield value="{!papRecord.ZTS_EU_Brand_Indication__c}" id="brandindication" onchange="modifyLookups();">
+                     <apex:variable var="bi_Id" value="{!papRecord.ZTS_EU_Brand_Indication__c}" />
+                 </apex:inputfield>
+                 <apex:inputfield value="{!papRecord.ZTS_EU_Product_Barrier__c}" id="productbarrier" required="true"/>
+                 <apex:inputfield value="{!papRecord.ZTS_EU_Competitor_Product__c}" id="competitorproduct"/>
+                 <apex:inputfield value="{!papRecord.ZTS_EU_Usage__c}" id="usage" required="true"/>
+             </apex:pageblockSection>
+             
+             <apex:pageblockButtons location="both">
+                 <apex:commandButton action="{!savePAP}" value="Save"/>
+                 <apex:commandButton immediate="true" action="{!lightningCancel}" value="Cancel" />
+             </apex:pageblockButtons>
+         
+         </apex:pageblock>
+         
+     
+     </apex:form>
+     
+     <script type = "text/javascript">
+     
+        window.onload = modifyLookups();
+        
+        function modifyLookups() { 
+             
+            var brandIndicationId = document.getElementById('pg:frm_edit:pb_edit:pbs_edit:brandindication_lkid').value;
+            
+            if(brandIndicationId != null){
+                
+                var assocLink_PB = document.getElementById('pg:frm_edit:pb_edit:pbs_edit:productbarrier_lkwgt'); 
+                if (assocLink_PB != null) {
+                    assocLink_PB.href = "JavaScript: openLookup('/apex/ZTS_EU_ProductBarrierLookupOnPAP?field=field_pb&lkfm=editPage&lknm=pg:frm_edit:pb_edit:pbs_edit:productbarrier&lktp=' + getElementByIdCS('pg:frm_edit:pb_edit:pbs_edit:productbarrier_lktp').value,getElementByIdCS('pg:frm_edit:pb_edit:pbs_edit:productbarrier_mod').value,'&lksrch=' + escapeUTF(getElementByIdCS('pg:frm_edit:pb_edit:pbs_edit:productbarrier').value))";
+                }
+                
+                var assocLink_CP = document.getElementById('pg:frm_edit:pb_edit:pbs_edit:competitorproduct_lkwgt'); 
+                if (assocLink_CP != null) {                                           
+                    assocLink_CP.href = "JavaScript: openLookup('/apex/ZTS_EU_CompetitorProductLookupOnPAP?field=field_cp&lkfm=editPage&lknm=pg:frm_edit:pb_edit:pbs_edit:competitorproduct&lktp=' + getElementByIdCS('pg:frm_edit:pb_edit:pbs_edit:competitorproduct_lktp').value,getElementByIdCS('pg:frm_edit:pb_edit:pbs_edit:competitorproduct_mod').value,'&lksrch=' + escapeUTF(getElementByIdCS('pg:frm_edit:pb_edit:pbs_edit:competitorproduct').value))";
+                }
+            }
+             
+            
+        } 
+        
+        function openLookup(baseURL, modified, searchParam) {   
+             var brandIndicationId = document.getElementById('pg:frm_edit:pb_edit:pbs_edit:brandindication_lkid').value;
+             baseURL = baseURL + '&biId=' + brandIndicationId + searchParam;                                                
+             openPopup(baseURL, "lookup", 350, 480, "width="+670+",height=575,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollbars=yes", true);
+        } 
+        
+     
+     </script>
+    
+</apex:page>

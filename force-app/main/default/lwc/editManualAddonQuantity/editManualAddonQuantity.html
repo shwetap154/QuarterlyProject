@@ -1,0 +1,88 @@
+<template>
+  <div class="slds-p-top_small">
+    <lightning-card variant="narrow">
+      <h4 slot="title">
+        <lightning-input
+          type="checkbox"
+          style="display: inline-block;"
+          label="Include add-on"
+          name="chkInclude"
+          variant="label-hidden"
+          onchange={onIncludeChange}         
+          disabled={isDisabled}
+          checked={isDisabled}
+        ></lightning-input>
+        <lightning-icon icon-name="custom:custom83" class="slds-m-right_x-small" size="small"></lightning-icon>
+        {manualAddon.MaterialName}
+        <template if:true={includeAddon}>
+          <span class="slds-badge slds-m-left_x-large">
+            <lightning-icon icon-name="utility:info_alt" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+            {label.TargetQuantity}: <strong class="slds-m-left_xx-small">{manualAddon.Quantity}</strong>
+          </span>
+          <span class={currQuantityClass}>
+            <lightning-icon icon-name={currQuantityIcon} variant="inverse" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+            {label.CurrentQuantity}: <strong class="slds-m-left_xx-small">{currentQuantity}</strong
+            ><strong style="margin-left: 3px;">{quantityErrorMessage}</strong>
+          </span>
+        </template>
+      </h4>
+      <div class="slds-p-horizontal_small">
+        <template if:true={includeAddon}>
+          <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+            <thead>
+              <tr class="slds-line-height_reset">
+                <th class="" scope="col"><div class="slds-truncate">{label.Quantity}</div></th>
+                <th class="" scope="col"><div class="slds-truncate">{label.MaterialNumber}</div></th>
+                <th class="" scope="col"><div class="slds-truncate">{label.Description}</div></th>
+                <th class="" scope="col"><div class="slds-truncate">{label.Price}</div></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr key={manualAddon.Key}>
+                <th scope="row" style="font-weight: bold; padding-left: 2.5rem;"></th>
+                <td><div class="slds-truncate">{manualAddon.MaterialNumber}</div></td>
+                <td><div class="slds-truncate">{manualAddon.MaterialName}</div></td>
+                <td><div class="slds-truncate">{manualAddon.NetPrice}</div></td>
+              </tr>
+              <template iterator:it={shipToLocations}>
+                <tr key={it.value.Id}>
+                  <th scope="row">
+                    <template if:true={it.first}>
+                      <lightning-input
+                        type="number"
+                        value={manualAddon.Quantity}
+                        variant="label-hidden"
+                        max="9999"
+                        min="0"
+                        style="width: 50px;"
+                        disabled={quantityNotEditable}
+                        onchange={handleQuantityChange}
+                        label={manualAddon.Key}
+                        aria-label={it.value.Id}
+                      ></lightning-input>
+                    </template>
+                    <template if:false={it.first}>
+                      <lightning-input
+                        type="number"
+                        value="0"
+                        variant="label-hidden"
+                        max="99"
+                        min="0"
+                        style="width: 50px;"
+                        disabled={quantityNotEditable}
+                        onchange={handleQuantityChange}
+                        label={manualAddon.Key}
+                        aria-label={it.value.Id}
+                      ></lightning-input>
+                    </template>
+                  </th>
+                  <td colspan="3"># {label.Addons} @ {it.value.Ship_to_Address__r.Name}</td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </template>
+      </div>
+    </lightning-card>
+  </div>
+</template>

@@ -1,0 +1,44 @@
+<apex:page controller="ZTS_EU_HistoryTrackingController" LightningStyleSheets="true">
+    <script>
+        function back()
+        {
+            // window.location.href = 'https://' + window.location.hostname + '/' + '{!$CurrentPage.parameters.id}';
+            if((typeof sforce != 'undefined') && sforce && (!!sforce.one)) {
+                sforce.one.navigateToURL('/'+'{!$CurrentPage.parameters.id}'); // Commented as it is not supported outside console apps.
+            } else {
+                // updated for work in classic version.
+                window.location.href = '/' +'{!$CurrentPage.parameters.id}';
+            }
+        }
+    </script> 
+    <apex:variable var="lightningDesktop" value="{! $User.UIThemeDisplayed == 'Theme4d'}" />
+    <apex:slds />   
+    <div class="slds-scope slds-p-horizontal_medium" style="margin-top: 10px;">
+        <apex:pageBlock >
+            <div align="center"> 
+                <button class="slds-button slds-button_neutral" onclick="back()" style="margin-bottom:10px;">{!$Label.ZTS_EU_HistoryTrackingBackButton}</button>
+                <br/>
+            </div>
+           <apex:repeat var="historyLists" value="{!objHistoryList}">       
+               <apex:pageBlockTable var="h" value="{!historyLists}" footerClass="float:left">
+                   <apex:column headerValue="{!$Label.ZTS_EU_HistoryTrackingObject}" value="{!$ObjectType[h.SObjectName].Label}" width="20%"/>
+                   <apex:column headerValue="{!$Label.ZTS_EU_HistoryTrackingRecord}"  width="10%">
+                        <apex:outputLink value="/{!h.parentID}" target="_blank">{!$Label.ZTS_EU_HistoryTrackingViewRecord}</apex:outputLink>
+                    </apex:column> 
+                    <apex:column headerValue="{!$Label.ZTS_EU_HistoryTrackingHistory}"  width="10%">
+                        <apex:outputLink value="{!IF(lightningDesktop, '/lightning/r/'+h.parentID+'/related/Histories/view', '/_ui/common/history/ui/EntityHistoryFilterPage?id='+h.parentID+'&rowsperpage=2500')}" target="_blank"> {!$Label.ZTS_EU_HistoryTrackingViewHistory} </apex:outputLink>
+                    </apex:column>                
+                   <apex:column headerValue="{!$Label.ZTS_EU_HistoryTrackingDate}" value="{!h.theDate}" width="10%"/>
+                   <apex:column headerValue="{!$Label.ZTS_EU_HistoryTrackingUser}" width="10%">
+                        <apex:outputLink value="/{!h.userId}" target="_blank"> {!h.who} </apex:outputLink>
+                    </apex:column>                       
+                    <apex:column headerValue="{!$Label.ZTS_EU_HistoryTrackingOld}" value="{!h.oldValue }" width="20%"/>
+                    <apex:column headerValue="{!$Label.ZTS_EU_HistoryTrackingNew}" value="{!h.newValue}" width="20%"/>                 
+                                                    
+               </apex:pageBlockTable>           
+               <br/>
+           </apex:repeat>
+       </apex:pageBlock>   
+       <br/>
+    </div>
+</apex:page>

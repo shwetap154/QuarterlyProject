@@ -1,0 +1,95 @@
+<apex:component controller="GetApprovalDataforEmailTemplate" access="global">
+    <apex:attribute name="currentRecordId" description="" assignTo="{!quoteId}" type="Id"/>
+	<style>
+		.value{
+		background-color: #FCF7F7;}
+	</style>
+
+    <apex:dataTable value="{!EmailData}" var="s_quoteline" width="75%" border="1">
+        <apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_Number}</apex:facet>
+			<apex:outputText value="{0,number,0}">
+    			<apex:param value="{!s_quoteline.numberLine}" />
+			</apex:outputText>						
+		</apex:column>
+		<apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_Qty}</apex:facet>
+			<apex:outputText value="{0,number,0}">
+    			<apex:param value="{!s_quoteline.qty}" />
+			</apex:outputText>			
+		</apex:column>
+		<apex:column style="{!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_ProdName}</apex:facet>
+			{!s_quoteline.productName}
+		</apex:column>
+		<apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_ContractPrice}</apex:facet>
+			<apex:outputText value="{!s_quoteline.currencyCode}" rendered="{!s_quoteline.contractPrice != null}" />
+			<apex:outputText value="{0, Number, ###,###,##0.00}" >
+        		<apex:param value="{!s_quoteline.contractPrice}" />
+    		</apex:outputText>
+		</apex:column>
+		<apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_OfferDisc}</apex:facet>			
+			<apex:outputText value="{0,number,0}%" rendered="{!s_quoteline.offerDisc != 0}">					
+				<apex:param value="{!s_quoteline.offerDisc}" />					
+			</apex:outputText>
+		</apex:column>
+		<apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_Add_Discount}</apex:facet>
+			<apex:outputText value="{0,number,0}%" rendered="{!s_quoteline.addDisc != 0}">
+    			<apex:param value="{!s_quoteline.addDisc}" />
+			</apex:outputText>
+		</apex:column>
+		<apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_Net_Total}</apex:facet>
+			<apex:outputText value="{!s_quoteline.currencyCode}" rendered="{!s_quoteline.netTotal != null}" />
+			<apex:outputText value="{0, Number, ###,###,##0.00}" >
+        		<apex:param value="{!s_quoteline.netTotal}" />
+    		</apex:outputText>			
+		</apex:column>		
+		<apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_Cash_Back_Buy_Out_Amt}</apex:facet>
+			<apex:outputText value="{!s_quoteline.currencyCode}" rendered="{!s_quoteline.cashBackBuyAmount != null}" />			
+			<apex:outputText value="{0, Number, ###,###,##0.00}" >
+        		<apex:param value="{!s_quoteline.cashBackBuyAmount}" />
+    		</apex:outputText>			
+		</apex:column>
+		<apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_Init_Ship_Qty}</apex:facet>
+			<apex:outputText value="{0,number,0}">
+    			<apex:param value="{!s_quoteline.initShipQty}" />
+			</apex:outputText>			
+		</apex:column>
+		<apex:column style="text-align:center !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_Init_Ship_Off_Free}</apex:facet>
+			{!s_quoteline.initShipOfferedFree}
+		</apex:column>
+		<apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_Offer_Commit_Qty}</apex:facet>			
+			<apex:outputText value="{0,number,0}">
+    			<apex:param value="{!s_quoteline.offerCommQty}" />
+			</apex:outputText>			
+		</apex:column>
+		<apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_Offer_Commit_Value}</apex:facet>
+			<apex:outputText value="{!s_quoteline.currencyCode}" rendered="{!s_quoteline.offerCommValue != null}" />			
+			<apex:outputText value="{0, Number, ###,###,##0.00}" >
+        		<apex:param value="{!s_quoteline.offerCommValue}" />
+    		</apex:outputText>
+		</apex:column>
+		<apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_Quote_Commit_Qty}</apex:facet>
+			<apex:outputText value="{0,number,0}">
+    			<apex:param value="{!s_quoteline.quoteCommQty}" />
+			</apex:outputText>			
+		</apex:column>
+		<apex:column style="text-align:right !important; {!IF((s_quoteline.addDisc != 0),"background-color: #F6DDCC;","")}" >
+			<apex:facet name="header">{!$Label.Approve_Email_Header_Quote_Commit_Val}</apex:facet>
+			<apex:outputText value="{!s_quoteline.currencyCode}" rendered="{!s_quoteline.quoteCommValue != null}" />
+			<apex:outputText value="{0, Number, ###,###,##0.00}" >
+        		<apex:param value="{!s_quoteline.quoteCommValue}" />
+    		</apex:outputText>
+		</apex:column>		
+	</apex:dataTable>
+</apex:component>

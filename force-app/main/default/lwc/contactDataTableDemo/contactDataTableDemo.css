@@ -1,0 +1,46 @@
+.eighty-percent {
+    zoom: 85%;
+    height:25rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+.slds-modal__container {
+    max-width: 30rem !important;
+    width: 30% !important;
+}
+
+.duplicate-container-override {
+    position: absolute !important;
+    margin-left: 15rem;
+    margin-right: 15rem;
+    margin-top: 15rem;
+    max-height: 70%;
+
+
+}
+
+.slds-modal__content {
+    overflow: initial !important;
+}
+
+.modal-content-override {
+    padding-top: 1.25rem;
+    padding-left: 3.50rem;
+    padding-bottom: 1rem;
+}
+
+.button-div {
+    width: 100% !important;
+    padding-bottom: 1rem !important;
+    display: flex;
+    justify-content: center;
+}
+
+ul:not(.browser-default) li {
+    list-style-type: disc;
+}
+.float_right{
+    float: right;
+    margin-right: 1rem;
+}

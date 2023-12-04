@@ -1,0 +1,4 @@
+<apex:page standardController="Campaign" extensions="CampaignButtonController" 
+                    recordSetVar="campaigns" action="{!doRedirectToAddCampaignFromContact}">
+    <apex:pageMessages />
+</apex:page>

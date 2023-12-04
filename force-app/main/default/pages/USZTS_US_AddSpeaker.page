@@ -1,0 +1,70 @@
+<apex:page standardController="ZTS_US_Speaker__c" extensions="USZTS_US_AddSpeakercontroller" lightningStylesheets="true">
+    <script type="text/javascript">
+        window.onload = checkError;
+        function checkError(){
+            var eventCategory = '{!eventCat}';
+            var eventId = '{!evntId}';
+            if((eventCategory != 'Value Added Services') && (eventCategory != 'Sponsorship') && (eventCategory != 'Educational Meeting')&&(eventCategory != 'Marketing Meeting')&&(eventCategory != 'Speaker Event - Online Registration')&&(eventCategory != 'Bark Tank')){//Excluded Bark Tank from the checking as per SC-009431
+                alert('You cannot add a speaker to a Gaining Customer Insights event. Please use a different applicable Event Category if you need to add a speaker.');
+                window.location = ("/"+eventId);
+            }
+        }
+        function checkContact(){
+            //alert('hi');
+            renderValuesAF();
+        }
+    </script>
+    <apex:form id="theForm">
+        <apex:pageMessages />
+        <apex:pageBlock title="New Speaker" id="thePageBlock">
+            <apex:pageBlockSection columns="2">
+                <apex:inputField value="{!speaker.ZTS_US_Event__c}"/>
+                <apex:inputField value="{!speaker.ZTS_US_Contact__c}" onchange="checkContact();" id="contact"/> 
+                <apex:inputField value="{!speaker.ZTS_US_Speaking_Date__c}"/>
+                <!-- <apex:inputField value="{!speaker.ZTS_US_Speaker_Fee__c}"/>-->
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection rendered="{!IF(isCorrectProfile==true, TRUE,FALSE)}">
+                <!-- <apex:pageBlockSectionItem >
+                    <apex:outputText value="Speaker Fee"/>
+                    <apex:selectList value="{!selectedSpeakerFee}" multiselect="false" size="1" required="true">
+                        <apex:selectOptions value="{!listSpeakerFee}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Speaker Fee Type"/>
+                    <apex:selectList value="{!selectedFeeType}" multiselect="false" size="1" required="true">
+                        <apex:selectOptions value="{!listFeeType}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>-->
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Maximum Speaker Fee"/>
+                    <apex:selectList value="{!selectedSpeakerVal}" multiselect="false" size="1" required="true">
+                        <apex:selectOptions value="{!listSpeakerVal}"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Actual Speaker Fee"/>
+                    <apex:inputField value="{!speaker.ZTS_US_Actual_Speaker_Fee__c}" required="{!isSearched}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection rendered="{!IF(isCorrectProfile==false, TRUE,FALSE)}">
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Speaker Fee"/>
+                    <apex:inputField value="{!speaker.ZTS_US_Speaker_Fee__c}" required="true"/>
+                </apex:pageBlockSectionItem>
+                <!--  <apex:pageBlockSectionItem >
+                    <apex:outputText value="Speaker Fee Type"/>
+                    <apex:inputField value="{!speaker.ZTS_US_Speaker_Fee_Type__c}" />
+                </apex:pageBlockSectionItem>-->
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save"/>
+                <apex:commandButton action="/{!evntId}" value="Cancel" immediate="true"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+        
+        <apex:actionFunction name="renderValuesAF" action="{!populateValues}" reRender="theForm"/> 
+    </apex:form>
+</apex:page>

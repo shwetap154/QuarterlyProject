@@ -1,0 +1,810 @@
+<!-- 
+
+    @@Modified By: Aritra (SC-004984) on 12/29/2020
+	@@Change: Added Javascript prompt alert for survey prompt on Account Call for AUS and NZ markets
+
+ -->
+<apex:page standardController="Call__c" extensions="ZTS_EU_SalesCallController" sidebar="false"
+    id="pgid" LightningStyleSheets="true" action="{!redirect}">
+    <apex:stylesheet value="{!$Resource.OrderCall}" />
+    <!-- Ilirjana 30/9/2014 Css style moved to static resource OrderCall -->
+    <apex:includeScript value="{!$Resource.jquery_1_11_1}" />
+    
+    <style>
+        .pbBody a > i
+        {
+            margin-top: -17px;
+        }
+        .listRelatedObject .bPageBlock .pbHeader .btn:hover, 
+        .listRelatedObject .bPageBlock .pbBottomButtons .btn:hover, 
+        .apexp .bPageBlock .pbHeader .btn:hover, 
+        .apexp .bPageBlock .pbBottomButtons .btn:hover, 
+        div.buttons .btn:hover, 
+        div.pbBottomButtons > .btn:hover, 
+        body button:hover, 
+        body .x-btn:hover, 
+        body .btn:hover, 
+        body .btnDisabled:hover, 
+        body .btnCancel:hover, 
+        body .menuButton .menuButtonButton:hover
+        {
+            background:rgb(244, 246, 249);
+        }
+
+        .custPopup {
+            background-color: white;
+            border-style: solid;
+            border-width: 2px;
+            padding: 10px;
+            position: fixed;
+            z-index: 9999;            
+            width: 500px;
+            top:25%;
+            left:50%;
+            transform: translate(-50%,0);
+        }
+
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+
+        .closeButton {
+            float: right;
+        }
+
+        .hide {
+            display: none !important;
+        }
+
+        .notice {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+    <!-- LIGHTNI-1573 moved the script code in the form to render the (+) icon -->
+    <script type="text/javascript">
+        // To open the AddAttendeesAndSearchContact Page
+
+
+        function openAddAttendeeScreen() {
+            window.open('/apex/INTLAddAttendeesAndContact?callId=' + '{!call.id}' +
+                '&accountid=' + '{!call.ZTS_EU_Account__c}' +
+                '&ContactFlag=true' + '&searchString=' + '', '_blank',
+                'width=1000,height=520,top=100, left=255",resizable=0,scrollbars=1'
+            );
+            return false;
+        }
+
+        // To open the AddAttendeesAndSearchContact Page
+
+        function openAddColleagueScreen() {
+            window.open('/apex/AddColleaguesAsAttendee?callId=' + '{!call.id}' +
+                '&accountid=' + '{!call.ZTS_EU_Account__c}' +
+                '&EmployeeFlag=true' + '&searchString=' + '', '_blank',
+                'width=1000,height=520,top=100, left=255",resizable=0,scrollbars=1'
+            );
+            return false;
+        }
+        // To open the AddProduct Page
+
+        function openAddMessageScreen(productIds) {
+            var selectedID = productIds;
+            window.open('/apex/ZTS_GL_AddKeyMessage?callId=' + '{!call.id}' +
+                '&productid=' + selectedID + '&searchString=' + '',
+                '_blank',
+                'width=1000,height=520,top=100, left=255",resizable=0,scrollbars=1'
+            );
+            return false;
+        }
+
+        function openAddProductScreen() {
+            window.open('/apex/ZTS_EU_AddDiscussion?callId=' + '{!call.id}' +
+                '&searchString=' + '', '_blank',
+                'width=1000,height=520,top=100, left=255",resizable=0,scrollbars=1'
+            );
+            return false;
+        }
+        // To open a SampleDrop Page
+        function openAddSampleScreen() {
+            window.open('/apex/ZTS_GL_AddSampleDrop?callId=' + '{!call.id}' +
+                '&searchString=' + '', '_blank',
+                'width=1000,height=520,top=100, left=255",resizable=0,scrollbars=1'
+            );
+            return false;
+        }
+
+        // Code added by Shefali for showing AAP Addition Pop-up Page.
+        function openAddAAPCallObjScreen() {
+            window.open('/apex/ZTS_EU_AddAAPCallObjectives?callId=' +
+                '{!call.id}' + '&accountid=' + '{!call.ZTS_EU_Account__c}' +
+                '&searchString=' + '', '_blank',
+                'width=1000,height=520,top=100, left=255",resizable=0,scrollbars=1'
+            );
+            return false;
+        }
+
+        // Code added by Shreyas for showing Sample Drop Pop-up Page.
+        function openSampleDropScreen() {
+            window.open('/apex/ZTS_EU_AddSampleDrops?callId=' + '{!call.id}',
+                '_blank',
+                'width=1150,height=520,top=100, left=180",resizable=0,scrollbars=1'
+            );
+            return false;
+        }
+
+        // Code added by Shreyas for showing Gift Pop-up Page.
+        function openGiftScreen(contactId) {
+            window.open('/apex/ZTS_EU_AddGiftFromCall?callId=' + '{!call.id}' +
+                '&contactId=' + contactId, '_blank',
+                'width=1190,height=520,top=100, left=100",resizable=0,scrollbars=1'
+            );
+            return false;
+        }
+
+        function showKeyMessages(containerId, msg_ele) {
+            //alert(document.getElementById(containerId));
+            var keymsg_div = document.getElementById(containerId);
+            var display = keymsg_div.style.display;
+            if (display == 'none') {
+                msg_ele.innerHTML = 'Hide';
+                keymsg_div.style.display = '';
+            } else {
+                msg_ele.innerHTML = 'Show';
+                keymsg_div.style.display = 'none';
+            }
+        }
+        
+        function showPopup() {
+            var ErrorMessage = '';
+            let errorElement = document.getElementById('pgid:formID:sErrorMsg');
+            displayPopup = true;      
+            let submitButton = document.getElementById('pgid:formID:submitButton');
+            if({!shwSubmitError}){
+                ErrorMessage ='{!$Label.ZTS_EU_Call_cannot_be_submitted_prior_to_the_activity_date}';
+                submitButton.classList.add('hide');
+            }else if({!showErr}){
+                ErrorMessage = '{!$Label.ZTS_EU_You_would_not_be_able_to_make_any_more_changes_14_days_after_a_call_is_su}';
+            }else{
+                ErrorMessage = 'Confirm Save';
+            }
+            let containerObj = document.getElementById('pgid:formID:confirmPopup');
+            containerObj.classList.remove('hide');             
+            errorElement.innerHTML = ErrorMessage;     
+        }
+
+        function hidePopup() {
+            let containerObj = document.getElementById('pgid:formID:confirmPopup');
+            containerObj.classList.add('hide');
+            let submitButton = document.getElementById('pgid:formID:submitButton');
+            submitButton.classList.remove('hide');
+        }
+
+        function processSubmit(){
+            var processingMessage = 'Please wait, your call is being Saved...';
+            let elementObj = document.getElementById('pgid:formID:sErrorMsg');
+            let surveyObj = document.getElementById('pgid:formID:surveyPrompt');
+            let submitButton = document.getElementById('pgid:formID:submitButton');
+            let cancelButton = document.getElementById('pgid:formID:cancelButton');
+            elementObj.innerHTML = processingMessage;
+            surveyObj.classList.add('hide');
+            submitButton.classList.add('hide');
+            cancelButton.classList.add('hide');
+        }
+        /*function openProductWindow(){
+        updateProd();
+        return openAddProductScreen();
+        
+    }*/
+    
+    </script>
+    <apex:sectionHeader title="{!$Label.ZTS_GL_Call_SCall_Planning}" subtitle="{!call.Name}"
+    />
+    <apex:form id="formID">
+        <script>
+            $(document).ready(function() {
+                reloadPage();
+            });
+    
+    
+            var addCallInvitees = '{!$Label.ZTS_GL_Call_Add_Invitees}';
+            var addCallColleagues = '{!$Label.ZTS_US_Add_Call_Colleagues}';
+            var addCallProduct = '{!$Label.ZTS_GL_Call_Add_Product}';
+            var addCallFollowup = '{!$Label.ZTS_GL_Follow_Up_Activities}';
+            var addCallAAP = '{!$Label.ZTS_EU_Add_Call_AccountActionPlanObjective}'; /*<!-- Bimba 29/10/2014 Added Label for AAP -->*/
+            var addCallSampleDrop = '{!$Label.ZTS_EU_AddSampleDrops}'; /*<!-- Shreyas 20th-Nov-2014 Added Label for Sample Drops-->*/   
+            var addCallGift = '{!$Label.ZTS_EU_NewGift}'; /*<!-- Shreyas 30th-Dec-2014 Added for Gifts-->*/
+    
+            function reloadPage(viewdiscid) {
+                if (document.getElementById(viewdiscid) != null) {
+                    document.getElementById(viewdiscid).style.display = "none";
+                }
+                $('a.callAttendees').html('<i>+</i>' + addCallInvitees);
+                $('a.callColleagues').html('<i>+</i>' + addCallColleagues);
+                $('a.callProduct ').html('<i>+</i>' + addCallProduct);
+                $('a.callFollowup').html('<i>+</i>' + addCallFollowup);
+                $('a.callAAP').html('<i>+</i>' + addCallAAP); /*<!-- Bimba 29/10/2014 Added for AAP -->*/
+                $('a.callSampleDrop').html('<i>+</i>' + addCallSampleDrop); /*<!-- Shreyas 20th-Nov-2014 Added for Sample Drops-->*/
+                $('a.callGift').html('<i>+</i>' + addCallGift); /*<!-- Shreyas 30th-Dec-2014 Added for Gifts-->*/
+            }
+    
+        </script>
+        <apex:pageMessages escape="true" />
+        <apex:pageBlock title="{!$Label.ZTS_GL_Call_GCall_Info}">
+            <apex:pageblocksection columns="2">
+
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Sub_Type__c.Label}:"
+                    />
+                    <apex:outputField value="{!call.ZTS_EU_Sub_Type__c}" rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Sub_Type__c.Accessible}"
+                    />
+                </apex:pageblocksectionitem>
+
+
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Account__c.Label}:"
+                    />
+                    <apex:outputField value="{!call.ZTS_EU_Account__c}" rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Account__c.Accessible}"
+                    />
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Local_Subtype__c.Label}:"
+                    />
+                    <apex:outputField value="{!call.ZTS_EU_Local_Subtype__c}" rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Local_Subtype__c.Accessible}"
+                    />
+                </apex:pageblocksectionitem>
+                <apex:outputField value="{!call.ZTS_EU_Unique_Call_Number__c}" />
+
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Start_Date_Time__c.Label}:"
+                    />
+                    <apex:outputField value="{!call.ZTS_EU_Start_Date_Time__c}" rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Start_Date_Time__c.Accessible}"
+                    />
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Status__c.Label}:" />
+                    <apex:outputField value="{!call.ZTS_EU_Status__c}" rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Status__c.Accessible}"
+                    />
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Duration__c.Label}:"
+                    />
+                    <apex:outputField value="{!Call.ZTS_EU_Duration__c}" />
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.Is_Pre_Planned__c.Label}:"
+                    />
+                    <apex:outputField value="{!Call.Is_Pre_Planned__c}" />
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Submitted_Date__c.Label}:"
+                    />
+                    <apex:outputField value="{!Call.ZTS_EU_Submitted_Date__c}" />
+                </apex:pageblocksectionitem>
+                <apex:pageBlockSectionitem rendered="{!isMarketFromCLAR}">
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Agree_To_Purchase__c.Label}"
+                    />
+                    <apex:outputField value="{!Call__c.ZTS_EU_Agree_To_Purchase__c}" />
+                </apex:pageBlockSectionitem>
+                <!-- -------- Added By Shefali 03/12/2014 for Call Owner field ---------------->
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Historical_Owner_Name__c.Label}:"
+                        rendered="{!ownerFlag}" />
+                    <apex:outputField value="{!call.ZTS_EU_Historical_Owner_Name__c}" rendered="{!ownerFlag}"
+                    />
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Call_Owner__c.Label}:"
+                        rendered="{!not(ownerFlag)}" />
+                    <apex:outputField value="{!Call__c.ZTS_EU_Call_Owner__c}" rendered="{!not(ownerFlag)}"
+                    />
+                </apex:pageblocksectionitem>
+                <!--------------------- EOC by Shefali 03/12/2014 ------------------------------>
+
+
+
+
+
+            </apex:pageblocksection>
+            <!-- title="{!$Label.ZTS_GL_Call_Add_Details}" -->
+            <hr/>
+            <apex:pageblocksection columns="1">
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Call_Objectives__c.Label}:"
+                    />
+                    <apex:outputField value="{!call.ZTS_EU_Call_Objectives__c}" style="width:70%;height: 32px;"
+                        rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Call_Objectives__c.Accessible}"
+                    />
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Additional_Notes__c.Label}:"
+                    />
+                    <apex:outputField value="{!call.ZTS_EU_Additional_Notes__c}" style="width:70%;height: 32px;"
+                        rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Additional_Notes__c.Accessible}"
+                    />
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Next_Step__c.Label}:"
+                    />
+                    <apex:outputField value="{!call.ZTS_EU_Next_Step__c}" style="width:70%;height: 32px;"
+                        rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Next_Step__c.Accessible}"
+                    />
+                </apex:pageblocksectionitem>
+            </apex:pageblocksection>
+            <apex:pageblocksection >
+                    <apex:pageblocksectionitem >
+                        <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Next_Call_Date__c.Label}:"
+                                          />
+                        <apex:outputField value="{!call.ZTS_EU_Next_Call_Date__c}" rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Next_Call_Date__c.Accessible}"
+                                          />
+                    </apex:pageblocksectionitem>
+                <!---TPDEV-346-->
+                    <apex:pageblocksectionitem >
+                        <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Next_Call_Type__c.Label}:"
+                                          />
+                        <apex:outputField value="{!call.ZTS_EU_Next_Call_Type__c}" rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Next_Call_Type__c.Accessible}"
+                                          />
+                    </apex:pageblocksectionitem>
+            </apex:pageblocksection>
+            <hr/>
+            <apex:pageblocksection columns="2">
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Expense_Value__c.Label}"
+                    />
+                    <apex:outputField id="callObjDel" value="{!call.ZTS_EU_Expense_Value__c}" rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Expense_Value__c.Accessible}"
+                    />
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Expense_Type__c.Label}"
+                    />
+                    <apex:outputField value="{!call.ZTS_EU_Expense_Type__c}" rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Expense_Type__c.Accessible}"
+                    />
+                </apex:pageblocksectionitem>
+            </apex:pageblocksection>
+            <apex:pageblocksection columns="1">
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Expense_Comments__c.Label}"
+                    />
+                    <apex:outputField value="{!call.ZTS_EU_Expense_Comments__c}" style="width:70%;height: 32px;"
+                        rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Expense_Comments__c.Accessible}"
+                    />
+                </apex:pageblocksectionitem>
+
+            </apex:pageblocksection>
+        </apex:pageBlock>
+        <apex:pageBlock >
+            <apex:pageBlockSection title="{!$Label.ZTS_GL_Call_Invitees}" id="pbAtt" collapsible="true"
+                columns="1">
+                <apex:pageBlockTable value="{!attendeeWraList}" var="attendee" rendered="{! NOT(ISNULL(attendeeWraList)) && attendeeWraList.size >0}">
+
+                    <apex:column headerValue="{!$Label.ZTS_GL_Call_Con_Emp}" width="20%">
+                        <apex:outputLink value="{!'/lightning/r/Contact/'+attendee.attendeeObj.ZTS_EU_Contact__c+'/view'}"
+                            target="_blank" rendered="{!NOT(ISNULL(attendee.attendeeObj.ZTS_EU_Contact__c)) && $ObjectType.Attendee__c.Fields.ZTS_EU_Contact__c.Accessible}">{!attendee.attendeeObj.name}</apex:outputLink>
+                        <br/>
+                        <i class="iSection">
+                           <br></br>
+                           <!-- added by Shreyas for Gifts-->
+                           <apex:commandLink id="addGift" value="{!$Label.ZTS_EU_Gifts}" onclick="return openGiftScreen('{!attendee.attendeeObj.ZTS_EU_Contact__c}');" rendered="{! NOT(isMarketFromCLAR) }">
+                                <apex:param name="attendeeid" assignTo="{!attendeeid}" value="{!attendee.attendeeObj.Id}"/>
+                           </apex:commandLink>
+                        </i>
+                    <i class="iSection">
+                        <apex:commandLink value="{!$Label.ZTS_EU_Hide_Discussion}" action="{!hideDiscussionAF}" rendered="{!AND(if(listdiscc.size>0,true,false),if(attendeeid==attendee.attendeeObj.Id,true,false),hidediscussion)}" reRender="formID" onComplete="reloadPage();">
+                        </apex:commandLink>
+                    </i>
+                    </apex:column>
+                    <apex:column headerValue="{!$Label.ZTS_EU_Primary_Account}" width="20%">
+                        <apex:outputField value="{!attendee.attendeeObj.ZTS_EU_Represents_Account__c}" rendered="{!(ISNULL(attendee.attendeeObj.ZTS_EU_Employee__c)) && $ObjectType.Attendee__c.Fields.ZTS_EU_Represents_Account__c.Accessible}"/>
+                        <apex:outputText value="{!$Label.ZTS_GL_Call_Employee}" rendered="{!NOT(ISNULL(attendee.attendeeObj.ZTS_EU_Employee__c)) && $ObjectType.Attendee__c.Fields.ZTS_EU_Employee__c.Accessible}"/>
+                        <br/><br/>
+                        <apex:outputPanel id="showdisc2" rendered="{!AND(if(listdiscc.size>0,true,false),if(attendeeid==attendee.attendeeObj.Id,true,false))}">
+                            <apex:repeat value="{!listdiscc}" var="disc">
+                                <br/>
+                            </apex:repeat>
+                        </apex:outputPanel>
+
+                    </apex:column>
+                    <!-------------------------------->
+                    <apex:column headerValue="{!$Label.ZTS_EU_Profession}" width="20%">
+                        <apex:outputField value="{!attendee.attendeeObj.ZTS_EU_Contact_Profession__c}" rendered="{!(ISNULL(attendee.attendeeObj.ZTS_EU_Employee__c))}"
+                        />
+                        <apex:outputText value="{!$Label.ZTS_GL_Call_Employee}" rendered="{!NOT(ISNULL(attendee.attendeeObj.ZTS_EU_Employee__c)) && $ObjectType.Attendee__c.Fields.ZTS_EU_Employee__c.Accessible}"
+                        />
+                        <br/><br/>
+                        <apex:outputPanel id="showdisc3" rendered="{!AND(if(listdiscc.size>0,true,false),if(attendeeid==attendee.attendeeObj.Id,true,false))}">
+                            <apex:repeat value="{!listdiscc}" var="disc">
+                                <br/>
+                            </apex:repeat>
+                        </apex:outputPanel>
+
+                    </apex:column>
+                    <apex:column headerValue="{!$Label.ZTS_EU_Job_Function}" width="20%">
+                        <apex:outputField value="{!attendee.aConAff.ZTS_EU_Job_Function__c}" rendered="{!(ISNULL(attendee.attendeeObj.ZTS_EU_Employee__c))}"
+                        />
+                        <apex:outputText value="{!$Label.ZTS_GL_Call_Employee}" rendered="{!NOT(ISNULL(attendee.attendeeObj.ZTS_EU_Employee__c)) && $ObjectType.Attendee__c.Fields.ZTS_EU_Employee__c.Accessible}"
+                        />
+                        <br/><br/>
+                        <apex:outputPanel id="showdisc4" rendered="{!AND(if(listdiscc.size>0,true,false),if(attendeeid==attendee.attendeeObj.Id,true,false))}">
+                            <apex:repeat value="{!listdiscc}" var="disc">
+                                <br/>
+                            </apex:repeat>
+                        </apex:outputPanel>
+
+                    </apex:column>
+
+                    <apex:column style="width:20%" headerValue="{!$Label.ZTS_EU_Remove}" rendered="{!$ObjectType.Attendee__c.Deletable && (callEditForUser) && Call.ZTS_EU_Status__c != COMPLETED_STATUS}">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <apex:commandLink value="X" action="{!removeAttendee}" rerender="pbAtt" style="font-weight:bold;text-decoration:none;color:#DC143C">
+                            <apex:param value="{!attendee.attendeeObj.Id}" assignTo="{!attendeeRemoveId}" name="pNo"
+                            />
+                        </apex:commandLink>
+                        <br/><br/>
+                        <apex:outputPanel id="showdisc5" rendered="{!AND(if(listdiscc.size>0,true,false),if(attendeeid==attendee.attendeeObj.Id,true,false))}">
+                            <apex:repeat value="{!listdiscc}" var="disc">
+                                <br/>
+                            </apex:repeat>
+                        </apex:outputPanel>
+                    </apex:column>
+
+
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <apex:commandLink styleClass="callAttendees" value="{!$Label.ZTS_GL_Call_Add_Invitees}"
+                onclick="return openAddAttendeeScreen();" rendered="{!$ObjectType.Attendee__c.Createable && (callEditForUser) && (Call.ZTS_EU_Status__c != COMPLETED_STATUS||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14))}"
+            />
+
+
+        </apex:pageBlock>
+    <apex:pageBlock >
+    
+        <!--TPDEV-775-->  
+        <apex:pageBlockSection title="{!$Label.ZTS_GL_Call_Prod_Discussed}" id="discussionSection" collapsible="true" columns="1">
+            <i class="iSection">
+                <apex:outputPanel >
+                    <apex:repeat value="{!discList}" var="di" rendered="{! NOT(ISNULL(discList))}">
+                        <br/>
+                        <apex:commandLink value="X" action="{!removeDiscussionItem}" rerender="showdisc" style="font-weight:bold;text-decoration:none;color:#DC143C">
+                            <apex:param value="{!IF(NOT(ISNULL(di.ZTS_EU_Campaign__c)), di.ZTS_EU_Campaign__c, 
+                                      IF(NOT(ISNULL(di.ZTS_EU_Product__c)), di.ZTS_EU_Product__c, 
+                                         IF(NOT(ISNULL(di.ZTS_EU_Discussion_Items__c)), di.ZTS_EU_Discussion_Items__c, '')))}" assignTo="{!discRemoveId}" name="discrem"/>
+                        </apex:commandLink> &nbsp;&nbsp;
+                        <apex:outputText value="{!di.Name}"/>
+                    </apex:repeat>
+                </apex:outputPanel>
+            </i>
+        </apex:pageBlockSection>
+        <!--TPDEV-775 end-->
+        
+            <apex:commandLink styleClass="callProduct" value="{!$Label.ZTS_GL_Call_Add_Product}"
+                onclick="return openAddProductScreen()" rendered="{!$ObjectType.Product_Metrics__c.Createable && (callEditForUser) && (Call.ZTS_EU_Status__c != COMPLETED_STATUS||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14))}"
+            />
+            <!--<apex:actionFunction action="{!updateProduct}" name="updateProd"/>-->
+        </apex:pageBlock>
+
+        <apex:actionFunction name="callstProAdoPro" action="{!productAdaptation}" reRender="displayPA"
+        />
+        <apex:pageBlock title="{!$Label.ZTS_EU_Product_Adoption_Profile}" rendered="true"
+            id="addBrand">
+            <table>
+                <tr>
+                    <apex:repeat value="{!attendeeWraList}" var="c">
+                        <td style="padding-right: 8px;">
+                            <apex:commandLink id="check" styleClass="changeColor" reRender="displayPA"
+                                action="{!productAdaptation}" rendered="{!NOT(ISNULL(c.attendeeObj.ZTS_EU_Contact__c)) && (callEditForUser) && $ObjectType.Attendee__c.Fields.ZTS_EU_Contact__c.Accessible}">{!c.attendeeObj.name}
+                                <apex:param value="{!c.attendeeObj.ZTS_EU_Contact__c}" assignTo="{!attConID}" name="attConID"
+                                />
+                            </apex:commandLink>
+                        </td>
+                    </apex:repeat>
+                </tr>
+            </table>
+
+            <apex:pageBlockSection id="displayPA" columns="1">
+
+                <apex:pageBlockTable rendered="{!wrapPbList.size != NULL}" value="{!wrapPbList}"
+                    var="a">
+                    <apex:column headerValue="{!$ObjectType.ZTS_EU_Product_Adoption_Profile__c.Fields.ZTS_EU_Brand_Indication__c.Label}">
+                        <apex:selectList id="brandIndication" value="{!a.brandIndication}" size="1" rendered="{!If(ISNULL(a.pALis.Id),true,false)}">
+                            <apex:selectOptions value="{!a.brands}" />
+                            <apex:actionSupport event="onchange" action="{!productAdaptationChange}" reRender="displayPA">
+                                <apex:param value="{!a.index}" assignto="{!selIndex}" name="p" />
+                            </apex:actionSupport>
+                        </apex:selectList>
+
+                        <apex:outputlabel value="{!a.pALis.ZTS_EU_Brand_Indication__r.name}" rendered="{!If(ISNULL(a.pALis.Id),false,true)}"
+                        />
+                    </apex:column>
+                    <!-- <apex:column title="Product Barrier" value="{!a.ZTS_EU_Product_Barrier__c}"/> -->
+                    <apex:column headerValue="{!$ObjectType.ZTS_EU_Product_Adoption_Profile__c.Fields.ZTS_EU_Product_Barrier__c.Label}">
+                        <apex:selectList id="pBarrior" value="{!a.prodBarrier}" size="1">
+                            <apex:selectOptions value="{!a.barriers}" />
+                            <apex:actionSupport event="onchange" action="{!displaySave}" reRender="btnSave">
+                                <apex:param value="{!a.index}" assignto="{!selIndex}" name="changeBarrier" />
+                            </apex:actionSupport>
+                        </apex:selectList>
+                    </apex:column>
+                    <!-- <apex:column headerValue="Competitor" value="{!a.pALis.ZTS_EU_Competitor_Product__c}"/>-->
+                    <apex:column headerValue="{!$Label.ZTS_EU_Competitor}">
+                        <apex:selectList id="pCompetitor" value="{!a.prodCompetitor}" size="1">
+                            <apex:selectOptions value="{!a.comps}" />
+                            <apex:actionSupport event="onchange" action="{!displaySave}" reRender="btnSave">
+                                <apex:param value="{!a.index}" assignto="{!selIndex}" name="changeCompetitor" />
+                            </apex:actionSupport>
+                        </apex:selectList>
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.ZTS_EU_Product_Adoption_Profile__c.Fields.ZTS_EU_Usage__c.Label}">
+                        <apex:inputfield value="{!a.pALis.ZTS_EU_Usage__c}">
+                            <apex:actionSupport event="onchange" action="{!displaySave}" reRender="btnSave">
+                                <apex:param value="{!a.index}" assignto="{!selIndex}" name="changeUsage" />
+                            </apex:actionSupport>
+                        </apex:inputfield>
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.ZTS_EU_Product_Adoption_Profile__c.Fields.LastModifiedDate.Label}"
+                        value="{!a.pALis.LastModifiedDate}" />
+
+                    <apex:column headerValue="Action">
+                        <apex:commandButton value="{!$Label.ZTS_EU_Save}" action="{!addNewPAP}" disabled="{!a.displaySave}"
+                            reRender="displayPA" title="Save" id="btnSave">
+                            <apex:param value="{!a.index}" assignTo="{!selIndex}" name="a" />
+
+                        </apex:commandButton>
+                    </apex:column>
+                    <apex:column rendered="{!If(ISNULL(a.pALis.Id),true,false)}">
+                        <apex:commandbutton value="{!$Label.ZTS_EU_Cancel}" action="{!cancelBrandIndication}"
+                            rendered="{!If(ISNULL(a.pALis.Id),true,false)}" reRender="displayPA">
+                            <apex:param value="{!a.index}" assignTo="{!selIndex}" name="b" />
+                        </apex:commandbutton>
+                    </apex:column>
+
+                </apex:pageBlockTable>
+                <apex:outputLabel value="{!$Label.ZTS_EU_No_more_Brand_Indications_are_available_to_add_Product_Adoption_Profiles}"
+                    rendered="{!AND(wrapPbList.size != NULL && !If((brandsCnt<=1),false,true),NOT(conClicked == true|| !If((brandsCnt>1),false,true)))}"></apex:outputLabel>
+                <apex:commandLink value="{!$Label.ZTS_EU_Add_Product_Adoption_Profile}" action="{!addBrandIndication}"
+                    rendered="{!conClicked == true|| !If((brandsCnt>1),false,true)&& (callEditForUser)}"
+                    reRender="displayPA" />
+
+
+            </apex:pageBlockSection>
+
+
+        </apex:pageBlock>
+
+
+        <apex:pageBlock >
+            <apex:pageBlockSection title="{!$Label.ZTS_EU_Colleagues}"  collapsible="true"
+                columns="1">
+
+                <apex:pageBlockTable id="pbCol" value="{!colleagueWraList}" var="colleague" rendered="{! NOT(ISNULL(colleagueWraList)) && colleagueWraList.size >0}">
+
+                    <!--<apex:column headerValue="{!$ObjectType.ZTS_EU_Colleague__c.Fields.Name.Label}" width="20%"> -->
+                    <apex:column headerValue="{!$Label.ZTS_CHN_ColleagueName}" width="20%">
+                        <!-- Shreyas 20th-Nov-2014 Added Label for Sample Drops-->
+                        <!-- Chandana 6th June 2016 Added label for translations-->
+                        <apex:outputLink value="/{!colleague.colleagueobj.ZTS_EU_User__c}" target="_blank"
+                            rendered="{!NOT(ISNULL(colleague.colleagueobj.ZTS_EU_User__c)) && $ObjectType.ZTS_EU_Colleague__c.Fields.ZTS_EU_User__c.Accessible}">{!colleague.colleagueobj.name}</apex:outputLink>
+
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.ZTS_EU_Colleague__c.Fields.ZTS_EU_User_Email__c.Label}"
+                        width="20%">
+                        <apex:outputText value="{!colleague.colleagueobj.ZTS_EU_User_Email__c }" rendered="{!NOT(ISNULL(colleague.colleagueobj.ZTS_EU_User_Email__c )) && $ObjectType.ZTS_EU_Colleague__c.Fields.ZTS_EU_User_Email__c .Accessible}"
+                        />
+                    </apex:column>
+                    <apex:column headerValue="{!$Label.ZTS_EU_Account_Position}:" id="accPosdataCol">
+                        <apex:inputHidden id="empCrId" value="{!colleague.empCreditId}" />
+                        <apex:selectList value="{!colleague.selectedAcctPos}" size="1" rendered="{! NOT(ISNULL(colleague.empAcctPos)) && colleague.empAcctPos.size >0}">
+                            <apex:selectOptions value="{!colleague.empAcctPos}" />
+                        </apex:selectList>
+
+                    </apex:column>
+
+                    <apex:column style="width:20%" headerValue="{!$Label.ZTS_EU_Remove}" rendered="{!$ObjectType.ZTS_EU_Colleague__c.Deletable && (callEditForUser) && (Call.ZTS_EU_Status__c != COMPLETED_STATUS ||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14))}">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <apex:commandLink value="X" action="{!removeColleague}" rerender="pbCol" style="font-weight:bold;text-decoration:none;color:#DC143C"
+                            rendered="{!NOT(colleague.colleagueobj.ZTS_EU_User__c==$User.Id)}">
+                            <apex:param value="{!colleague.colleagueobj.Id}" assignTo="{!colleagueRemoveId}"
+                                name="pNo" />
+                        </apex:commandLink>
+
+                    </apex:column>
+
+
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+
+
+            <apex:commandLink styleClass="callColleagues" value="{!$Label.ZTS_US_Add_Call_Colleagues}"
+                onclick="return openAddColleagueScreen();" rendered="{!$ObjectType.ZTS_EU_Colleague__c.Createable && (callEditForUser) && (Call.ZTS_EU_Status__c != COMPLETED_STATUS||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14))}"
+            />
+
+        </apex:pageBlock>
+
+        <!-- Added By Shefali for AAP Objectives Display -->
+        <!-- Commented by Sohil for deployment 07/07/15 
+         <apex:pageBlock >
+            <apex:pageBlockSection title="{!$Label.ZTS_CHN_AccountActionPlan}" id="pbAAP" collapsible="true" columns="1">      
+                <apex:pageBlockTable value="{!objectiveCallAssociationWraList}" var="objtvCallAssoObjective"  rendered="{! NOT(ISNULL(objectiveCallAssociationWraList)) && objectiveCallAssociationWraList.size >0}">
+                    <apex:column headerValue="Objective" width="20%">
+                        <apex:outputLink value="/{!objtvCallAssoObjective.objtvCallAssoObj.ZTS_EU_Objective__r.Id}" target="_blank" rendered="{!NOT(ISNULL(objtvCallAssoObjective.objtvCallAssoObj.ZTS_EU_Objective__c)) && $ObjectType.ZTS_EU_Objective_Call_Association__c.Fields.Name.Accessible}">{!objtvCallAssoObjective.objtvCallAssoObj.ZTS_EU_Objective__r.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column style="width:20%" headerValue="Remove" rendered="{!$ObjectType.ZTS_EU_Objective_Call_Association__c.Deletable && (callEditForUser) && (Call.ZTS_EU_Status__c != COMPLETED_STATUS ||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14))}" >
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                        <apex:commandLink value="X" action="{!removeAAP}" rerender="pbAAP" style="font-weight:bold;text-decoration:none;color:#DC143C" rendered="{!NOT(objtvCallAssoObjective.objtvCallAssoObj.ZTS_EU_Objective__c =null)}">
+                        <apex:param value="{!objtvCallAssoObjective.objtvCallAssoObj.Id}" assignTo="{!aapRemoveId}" name="pNo"/>
+                        </apex:commandLink>
+                    </apex:column>
+                </apex:pageBlockTable>     
+          </apex:pageBlockSection>          
+          
+          <apex:commandLink styleClass="callAAP" value="{!$Label.ZTS_EU_Add_Call_AccountActionPlanObjective}" onclick="return openAddAAPCallObjScreen();" rendered="{!$ObjectType.ZTS_EU_Objective_Call_Association__c.Createable && (callEditForUser) && (Call.ZTS_EU_Status__c != COMPLETED_STATUS||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14))}"/>
+        
+        </apex:pageBlock>  
+                -->
+        <apex:pageBlock id="followUpAct">
+            <apex:pageBlockSection title="{!$Label.ZTS_GL_Follow_Up_Activities_Header}" 
+                collapsible="true" columns="1">
+
+                <apex:outputPanel id="tasksAdded">
+                    <apex:pageBlockTable value="{!taskObj}" var="task" id="createTask" rendered="{!(Call.ZTS_EU_Status__c != COMPLETED_STATUS||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14)) && addFollowUpSection = true}">
+                        <apex:column style="width:14%" headerValue="{!$Label.ZTS_EU_Remove}" rendered="{!$ObjectType.Task.Deletable && (Call.ZTS_EU_Status__c != COMPLETED_STATUS||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14)) && addFollowUpSection = true}">
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:commandLink value="X" action="{!addSectionToTask}" oncomplete="reloadPage()"
+                                rerender="followUpAct" style="font-weight:bold;text-decoration:none;color:#DC143C">
+                            </apex:commandLink>
+                        </apex:column>
+                        <apex:column style="width:25%;" headerValue="{!$ObjectType.Task.Fields.Subject.Label}">
+                            <apex:inputField value="{!task.Subject}" rendered="{!$ObjectType.Task.Fields.Subject.Accessible}"
+                                required="true" />
+                        </apex:column>
+                        <apex:column style="width:20%" headerValue="{!$ObjectType.Task.Fields.ActivityDate.Label}">
+                            <apex:inputField value="{!task.ActivityDate}" rendered="{!$ObjectType.Task.Fields.ActivityDate.Accessible}"
+                            />
+                        </apex:column>
+
+                        <apex:column style="display: table-cell;text-align: left;width: 25%;" headerValue="{!$ObjectType.Task.Fields.Status.Label}">
+                            <apex:inputField value="{!task.Status}" rendered="{!$ObjectType.Task.Fields.Status.Accessible}"
+                            /> 
+                        </apex:column>
+                        <apex:column style="display: block;padding: 4px 17%;padding-bottom: 25px;text-align: left;" headerValue="{!$ObjectType.Task.Fields.Priority.Label}">
+                            <apex:inputField value="{!task.Priority}" rendered="{!$ObjectType.Task.Fields.Priority.Accessible}"
+                            />
+                        </apex:column>
+
+                        <apex:column style="width:15%">
+
+                            <apex:commandButton value="{!$Label.ZTS_EU_Save}" action="{!saveTask}">
+                                <apex:actionSupport event="onclick" reRender="tasksAdded,tasks" />
+                            </apex:commandButton>
+
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+                <apex:outputPanel id="tasks">
+                    <apex:pageBlockTable value="{!followUpActivitiesList}" var="followUp" rendered="{!NOT(ISNULL(followUpActivitiesList)) && followUpActivitiesList.size >0}">
+                        <apex:column style="width:13.5%" headerValue="{!$Label.ZTS_EU_Remove}" rendered="{!$ObjectType.Task.Deletable && (callEditForUser) && (Call.ZTS_EU_Status__c != COMPLETED_STATUS||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14))}">
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:commandLink value="X" immediate="true"
+                                action="{!removefollowUpActivities}" rerender="followUpAct" oncomplete="reloadPage()"
+                                style="font-weight:bold;text-decoration:none;color:#DC143C">
+                                <apex:param value="{!followUp.Id}" assignTo="{!followUpActivityRemoveId}" name="followUpNo"
+                                />
+                            </apex:commandLink>
+                        </apex:column>
+                        <apex:column style="width:24%" headerValue="{!$ObjectType.Task.Fields.Subject.Label}">
+                            <apex:outputLink value="/{!followUp.Id}" target="_blank" rendered="{!$ObjectType.Task.Fields.Subject.Accessible}">
+                            {!followUp.Subject} </apex:outputLink>
+                        </apex:column>
+                        <apex:column style="width:19%" headerValue="{!$ObjectType.Task.Fields.ActivityDate.Label}">
+                            <apex:outputField value="{!followUp.ActivityDate}" rendered="{!$ObjectType.Task.Fields.ActivityDate.Accessible}"
+                            />
+                        </apex:column>
+                        <apex:column style="width:10%" headerValue="{!$ObjectType.Task.Fields.Status.Label}">
+                            <apex:outPutField value="{!followUp.Status}" rendered="{!$ObjectType.Task.Fields.Status.Accessible}"
+                            />
+                        </apex:column>
+                        <apex:column style="width:25% text-align:left;" headerValue="{!$ObjectType.Task.Fields.Priority.Label}">
+                            <apex:outPutField value="{!followUp.Priority}" rendered="{!$ObjectType.Task.Fields.Priority.Accessible}"
+                                style="text-align: left;" />
+                        </apex:column>
+
+                    </apex:pageBlockTable>
+
+                </apex:outputPanel>
+
+            </apex:pageBlockSection>
+            <apex:commandLink styleClass="callFollowup" value="{!$Label.ZTS_GL_Follow_Up_Activities}" oncomplete="reloadPage()"
+                action="{!addSectionToTask}" rerender="tasksAdded" rendered="{!$ObjectType.Task.Createable && (callEditForUser) && (Call.ZTS_EU_Status__c != COMPLETED_STATUS||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14)) && addFollowUpSection = false}"
+            />
+
+        </apex:pageBlock>
+        <!--Ilirjana T-14040 23/09/2014 SalesCallOrder-->
+        <c:SalesCallOrder rendered="{!isMarketFromCLAR}" />
+
+        <!-- Shreyas 20th-Nov-2014 Added for Sample Drops-->
+
+        <apex:pageBlock rendered="{! NOT(isMarketFromCLAR)}">
+            <apex:pageBlockSection title="{!$Label.ZTS_EU_SampleDrops}" id="samples" collapsible="true"
+                columns="1">
+                <apex:commandLink styleClass="callSampleDrop" value="{!$Label.ZTS_EU_AddSampleDrops}"
+                    onclick="return openSampleDropScreen();" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+
+        <!-- Shreyas 30th-Dec-2014 Added for Gifts -->
+        <apex:pageBlock rendered="{! NOT(isMarketFromCLAR) }">
+            <apex:pageBlockSection title="{!$Label.ZTS_EU_Gifts}" id="samples" collapsible="true"
+                columns="1">
+                <apex:commandLink styleClass="callGift" value="{!$Label.ZTS_EU_AddGifts}" onclick="return openGiftScreen('null');"
+                />
+                <c:SalesCallGift />
+                <!--IP 20-Feb-15 Added component to display list of gifts on call-->
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton styleclass="buttonFix" value="{!$Label.ZTS_EU_Edit_Call}"
+                    action="{!edit}" rendered="{!$ObjectType.Call__c.Updateable && (callEditForUser) &&(Call.ZTS_EU_Status__c != COMPLETED_STATUS||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14))}"
+                />&nbsp;
+                <!--<apex:commandButton value="Clone" rendered="{!Call.ZTS_EU_Status__c != COMPLETED_STATUS}" /> -->
+                <apex:commandButton styleclass="buttonFix" value="{!$Label.ZTS_EU_Delete_Call}" action="{!deleteCall}" rendered="{!$ObjectType.Call__c.Deletable && (callEditForUser) && Call.ZTS_EU_Status__c != COMPLETED_STATUS}"
+                />&nbsp;
+                <apex:commandButton styleclass="buttonFix" value="{!$Label.ZTS_EU_Save}" action="{!updateCallDetails}" rendered="{!$ObjectType.Call__c.Updateable && (callEditForUser) && ( Call.ZTS_EU_Status__c != COMPLETED_STATUS||(Call.ZTS_EU_Status__c == COMPLETED_STATUS&&call.ZTS_EU_Submitted_Date__c<>null&&NOW()-call.ZTS_EU_Submitted_Date__c<=14))}"
+                />
+                <!--apex:commandButton styleclass="buttonFix" value="{!$Label.ZTS_EU_Complete}" action="{!saveAndSubmit}" onClick="if (!showPopUp()) return false;"
+                    rendered="{!Call.ZTS_EU_Status__c != COMPLETED_STATUS && (callEditForUser)}" reRender="formID"
+                /-->
+                <apex:commandButton styleclass="buttonFix" value="{!$Label.ZTS_EU_Complete}" onclick="showPopup(); return false" rendered="{!Call.ZTS_EU_Status__c != COMPLETED_STATUS && (callEditForUser)}"/>
+                   
+                
+            </apex:pageBlockButtons>
+            <apex:pageMessages escape="true" />
+        </apex:pageBlock>
+
+        <!-- Added by Namrata Patane [25th July 2021] -->
+        <apex:outputPanel id="confirmPopup" styleClass="hide">
+            <apex:outputPanel styleClass="popupBackground" layout="block"/>
+                <apex:outputPanel styleClass="custPopup" layout="block">
+                    <apex:outputText id="sErrorMsg"/>
+                    <br /><br />
+                    <apex:outputText id="surveyPrompt"/>
+                    <br/><br/><br/>
+                    <apex:commandButton id="submitButton" onclick="processSubmit();" value="Ok" action="{!saveandsubmit}" rendered="{!Call.ZTS_EU_Status__c != COMPLETED_STATUS && (callEditForUser)}" reRender="formID" styleClass="closeButton"/>
+                    <apex:commandButton id="cancelButton" value="Cancel" onclick="hidePopup(); return false;" />
+                </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+    <apex:form id="formID1">
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Account__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Start_Date_Time__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_End_Date_Time__c}" />
+        <apex:inputHidden value="{!Call__c.Name}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_SelectedAdress__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_City__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Call_Objectives__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Next_Step__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Next_Call_Date__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Status__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Additional_Notes__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Duration__c}" />
+        <apex:inputHidden value="{!Call__c.Is_Pre_Planned__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Submitted_Date__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Sub_Type__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Local_Subtype__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Expense_Value__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Expense_Type__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Expense_Comments__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Historical_Owner_Name__c}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Unique_Call_Number__c}" />
+        <apex:inputHidden value="{!Call__c.CreatedByID}" />
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Next_Call_Type__c}" />
+
+    </apex:form>
+
+</apex:page>

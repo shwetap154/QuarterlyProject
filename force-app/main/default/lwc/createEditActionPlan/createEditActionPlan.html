@@ -1,0 +1,109 @@
+<!--
+  @description       : 
+  @author            : Padma Nerella @ Zoetis Inc
+  @group             : 
+  @last modified on  : 11-29-2023
+  @last modified by  : Padma Nerella @ Zoetis Inc
+-->
+<template>
+	<template if:false={isCreated}>
+		
+		<template for:each={searchData} for:item="action">
+			<lightning-card key={action.Id} variant="Narrow" title={action.Name} icon-name="standard:account"
+				class="slds-m-bottom_medium">
+				<!--<div class="slds-box slds-box_small slds-p-around_large">-->
+					<lightning-record-edit-form record-id={action.Id} object-api-name={objectApiName}>
+						<div class="slds-p-around_medium">
+							<lightning-layout multiple-rows>
+								<lightning-layout-item size="10" padding="around-small" small-device-size="12"
+									medium-device-size="6" large-device-size="2">
+									<label class="slds-form-element__label">{competencyModelLabel}</label>
+									<lightning-output-field variant="label-hidden" field-name={competencyModelLabel}>
+									</lightning-output-field>
+								</lightning-layout-item>
+								<lightning-layout-item size="10" padding="around-small" small-device-size="12"
+									medium-device-size="6" large-device-size="2">
+									<label class="slds-form-element__label">{competencyLabel}</label>
+									<lightning-output-field variant="label-hidden" field-name="Competency__c">
+									</lightning-output-field>
+								</lightning-layout-item>
+								<lightning-layout-item size="10" padding="around-small" small-device-size="12"
+									medium-device-size="6" large-device-size="2">
+									<label class="slds-form-element__label">{skillLabel}</label>
+									<lightning-output-field variant="label-hidden" field-name="Skill__c">
+									</lightning-output-field>
+								</lightning-layout-item>
+								<lightning-layout-item size="10" padding="around-small" small-device-size="12"
+									medium-device-size="6" large-device-size="2">
+									<label class="slds-form-element__label">
+									{ratingLabel}</label>
+									<lightning-output-field variant="label-hidden" field-name="Rating__c">
+									</lightning-output-field>
+								</lightning-layout-item>
+							</lightning-layout>
+							<div class="slds-p-around_medium lgc-bg">
+								{actionLabel}
+								<lightning-helptext label="Action"
+									content="Next actions should be developed using SMART goals; specific motivating, attainable, relevant and trackable.">
+								</lightning-helptext>
+								<lightning-input-rich-text  data-id={action.Id} name="action" value={action.Action__c} onchange={handleRichTextChange}></lightning-input-rich-text>
+							</div>
+							<!--<lightning-layout multiple-rows class="slds-p-around_small">
+								<lightning-layout-item size="1">{toBeCompletedDateFieldLabel}
+								</lightning-layout-item>-->
+								<!--<lightning-layout-item size="2">-->
+									<lightning-input-field class="slds-size_6-of-10" name="date" field-name="To_Be_Completed__c" 
+									 value={action.To_Be_Completed__c} data-id={action.Id} onchange={handleRichTextChange}>
+									</lightning-input-field>
+								<!--</lightning-layout-item>-->
+							<!--</lightning-layout>-->
+							<div if:false={isFileUploaded} class="slds-p-left_medium">
+								<lightning-file-upload class="slds-m-top_medium" label="Attach file" name="fileUploader"
+									record-id={action.Id} onuploadfinished={handleUploadFinished} multiple>
+								</lightning-file-upload>
+							</div>
+							<lightning-layout multiple-rows class="slds-p-around_small">
+								<lightning-layout-item size="5">
+									<c-action-plan-related-files class="slds-m-top_medium" onrefresh={handleRefresh} files-list={action.filesList}>
+									</c-action-plan-related-files>
+								</lightning-layout-item>
+							</lightning-layout>
+							
+							</div>
+					</lightning-record-edit-form>
+				<!--</div>-->
+			</lightning-card>
+			
+		</template>
+		<div if:false={isCreated} align="center" style="padding : 5px;">
+			<lightning-button variant="brand" label="Save" title="Save" onclick={handleClickSubmit}></lightning-button>
+		</div>
+		
+	</template>
+
+</template>
+
+<!--<template>
+	<template if:false={isCreated}>
+		<template for:each={sreachData} for:item="action">
+			<lightning-card key ={action.Id} ariant="Narrow" title={action.Name} icon-name="standard:account"
+				class="slds-m-bottom_medium">
+				<div class="slds-box slds-box_small slds-p-around_large">
+					<lightning-record-edit-form record-id={action.Id} object-api-name={ObjectApiName}>
+						<lightning-layout multiple-rows>
+							<div class="slds-grid slds-wrap">
+								<div class="slds-col slds-size_1-of-3">
+									<div class="slds-form-element">
+									<label class="slds-form-element__label" for="html">{competencyModelLabel}</strong></label>
+									<lightning-output-field variant="label-hidden" field-name="Competency_Model__c">
+									</lightning-output-field>
+									</div>
+								</div>
+							</div>
+						</lightning-layout>
+				    </lightning-record-edit-form>
+				</div>
+			</lightning-card>
+		</template>
+	</template>
+</template>-->

@@ -1,0 +1,204 @@
+<apex:page standardController="Call__c" extensions="SalesCallController" tabstyle="Call__c" id="pageId">
+<style type="text/css">
+
+body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+    background-color: rgba(0, 0, 0, 0);
+    border-color: #FF6400;
+    border-radius: 0;
+    border-style: solid none none;
+    border-width: 1px medium medium;
+}
+.bEditBlock .pbHeader > table, .apexp .bPageBlock.apexDefaultPageBlock .pbHeader > table, #ep.bLayoutBlock .pbHeader > table {
+    border-bottom: medium none;
+}
+body .bPageBlock .pbBody hr {
+    border: none;
+    border-bottom: 1px solid #DBDBDB;
+}
+.add {
+    color: #0096AF !important;
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+}
+.add:hover{
+   opacity: .5;
+   text-decoration: none;
+}
+body .bPageBlock .pbBody .labelCol,
+body .bPageBlock .pbBody .dataCol,
+body .bPageBlock .pbBody .data2Col,
+.apexp .detailList .list .headerRow th,
+.apexp .bPageBlock .detailList .list,
+body .pbBody table.list tr.dataRow th, 
+body .pbBody table.list tr.dataRow td,
+body .bEditBlock .pbBottomButtons, 
+body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+    border: medium none;
+}
+.apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-top: 0 none;
+    color: #000000;
+}
+.apexp .detailList .list .headerRow th {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    text-align: center;
+}
+body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow td {
+    border-bottom: 1px solid #DBDBDB !important;
+    padding: 5px 0;
+    text-align: center;
+}
+body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow:last-child td {
+    border-bottom: none !important;
+}
+.pbSubheader > img {
+    display: none;
+}
+.pbSubheader > h3 {
+    font-size: 1.2em;
+}
+.pbBody > a {
+    display: block;
+    float: left;
+    font-size: 1em;
+    font-weight: bold;
+    left: 0;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+.pbBody a > i{
+      color: #0096AF;
+    display: block;
+    float: left;
+    font-size: 2.5em;
+    font-weight: normal;
+    margin-right: 2px;
+    margin-top: -11px;
+}
+
+.listRelatedObject .bPageBlock .pbHeader .btn, .listRelatedObject .bPageBlock .pbBottomButtons .btn, .apexp .bPageBlock .pbHeader .btn, .apexp .bPageBlock .pbBottomButtons .btn, div.buttons .btn, div.pbBottomButtons > .btn,
+body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-color: #DBDBDB;
+    font-size: 1em;
+    font-weight: normal;
+    margin: 0 10px;
+}
+
+.listRelatedObject .bPageBlock .pbHeader .btn:hover, .listRelatedObject .bPageBlock .pbBottomButtons .btn:hover, .apexp .bPageBlock .pbHeader .btn:hover, .apexp .bPageBlock .pbBottomButtons .btn:hover, div.buttons .btn:hover, div.pbBottomButtons > .btn:hover,
+body button:hover, body .x-btn:hover, body .btn:hover, body .btnDisabled:hover, body .btnCancel:hover, body .menuButton .menuButtonButton:hover {
+    background: linear-gradient(to bottom, #DBDBDB 0%, #808080 99%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+
+.apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader h3 {
+    font-size: 1.3em;
+}
+.errorConsole .x-grid3-row-over, body .pbBody table.list tr.dataRow.highlight td, body .pbBody table.list tr.dataRow.highlight th {
+    background-color: #FFC19B;
+}
+
+</style>
+
+<script>
+    function populateSubTypeJS(){
+        var accId = document.getElementById('pageId:frmid:pgBlk:pgBlkSec:pgBlkSecItem:acc_lkid').value;
+        if(accId != '000000000000000'){
+            var acc = document.getElementById('pageId:frmid:pgBlk:pgBlkSec:pgBlkSecItem:acc_lkid').value;
+            populateSubTypeAF(acc);
+        }
+    }
+</script>
+    <apex:form id="frmid" >
+        <apex:sectionHeader title="Sales Call Planning" subtitle="Create Sales Call"/>
+        <apex:pageMessages /> 
+            <apex:pageBlock title="Sales Call Edit" id="pgBlk">
+            <hr/>
+            <apex:pageblocksection title="Basic Information" columns="2" id="pgBlkSec">
+                    <apex:pageblocksectionitem > 
+                    <apex:outputLabel value="Sub Type" />
+                <apex:outputPanel id="subvaltype">
+                    <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                           <apex:selectList value="{!selectedop}" size="1" required="true">
+                                <apex:selectOptions value="{!subtypelist}" id="subtypelst"> 
+                                </apex:selectOptions>                            
+                            </apex:selectList> 
+                    </div>
+                </apex:outputPanel>
+                    </apex:pageblocksectionitem> 
+                    <apex:pageblocksectionitem id="pgBlkSecItem">
+                        <apex:outputLabel value="Account"/>
+                            <apex:inputField value="{!call.ZTS_EU_Account__c}" onchange="populateSubTypeJS()" id="acc">
+                            </apex:inputField>  
+                    </apex:pageblocksectionitem>
+                    <apex:pageblocksectionitem >
+                        <apex:outputLabel value="Activity Date"/>
+                        <apex:inputField value="{!call.ZTS_EU_Start_Date_Time__c}" required="true"/>
+                    </apex:pageblocksectionitem>
+                <apex:outputField value="{!call.ZTS_EU_Status__c}" />
+                    <apex:pageblocksectionitem >
+                        <apex:outputLabel value="Duration"/>
+                        <apex:inputField value="{!Call.ZTS_EU_Duration__c}" required="true"/>
+                    </apex:pageblocksectionitem>
+                <apex:outputText value="{!Call.ZTS_EU_Submitted_Date__c}" />  
+            </apex:pageblocksection>
+            <hr/>
+            <apex:pageblocksection title="Additional Details" columns="1" >
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Call_Objectives__c.Label}" />
+                    <apex:inputTextarea id="callObjDel" value="{!call.ZTS_EU_Call_Objectives__c}" rows="5" style="width:70%"/>
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Additional_Notes__c.Label}" />
+                    <apex:inputTextarea value="{!call.ZTS_EU_Additional_Notes__c}" rows="5" style="width:70%"/>
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Next_Step__c.Label}" />
+                    <apex:inputTextarea value="{!call.ZTS_EU_Next_Step__c}" rows="5" style="width:70%"/>
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                    <apex:outputlabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Next_Call_Date__c.Label}" />
+                    <apex:inputField value="{!call.ZTS_EU_Next_Call_Date__c}" />
+                </apex:pageblocksectionitem>
+            </apex:pageblocksection>
+            <apex:pageBlockButtons location="bottom">
+                <apex:actionStatus id="disablebtn">
+                     <apex:facet name="stop">     
+                           <apex:commandButton value="Save Call" action="{!saveCall}" status="disablebtn" disabled="false" reRender="frmid"/>     
+                     </apex:facet>     
+                     <apex:facet name="start">
+                      <apex:commandButton action="{!saveCall}" status="disablebtn" value="Saving..." disabled="true"/>                  
+                      </apex:facet>
+                </apex:actionStatus>
+            <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons> 
+        </apex:pageBlock> 
+        <apex:actionFunction name="populateSubTypeAF" action="{!populateSubType}" reRender="subvaltype,subtypelst" immediate="true" oncomplete="abc()">
+            <apex:param name="accid" value="" assignTo="{!call.ZTS_EU_Account__c}" />
+        </apex:actionFunction>
+    </apex:form>
+    <apex:form id="formID1">
+       <apex:inputHidden value="{!Call__c.ZTS_EU_Account__c}"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Start_Date_Time__c}"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_End_Date_Time__c}"/>
+        <apex:inputHidden value="{!Call__c.Name}"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_City__c}"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_SelectedAdress__c }"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Address__c}"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Call_Objectives__c}"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Next_Step__c}"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Status__c}"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Additional_Notes__c}"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Duration__c}"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Submitted_Date__c}"/>
+        <apex:inputHidden value="{!Call__c.ZTS_EU_Next_Call_Date__c}"/>
+         <apex:inputHidden value="{!Call__c.ZTS_EU_Sub_Type__c}"/>
+                  
+    </apex:form>   
+</apex:page>

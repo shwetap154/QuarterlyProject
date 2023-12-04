@@ -1,0 +1,21 @@
+<apex:page standardController="PIT_STOMP__c" extensions="PITStompButtonController">
+    <apex:pageMessages />
+    <apex:form >
+        <apex:actionFunction action="{!doCompleteFollowUp}" name="followUp" rerender="myPageId" oncomplete="showAlert();"/>
+    </apex:form>
+    <apex:form >
+        <apex:actionFunction action="{!goBackToPITStomp}" name="switchPage" />
+    </apex:form>
+    <script>
+    followUp();
+    </script>
+    <apex:pageBlock id="myPageId">
+        <script>
+        function showAlert() 
+        {
+            alert("{!response}");
+            switchPage();
+        }
+        </script>
+    </apex:pageBlock>
+</apex:page>

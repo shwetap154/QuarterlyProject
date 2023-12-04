@@ -1,0 +1,16 @@
+.THIS {
+}
+
+.THIS .duplicate-container-override {
+    width: 80% !important;
+}
+
+.THIS .eighty-percent {
+   
+    zoom: 90%;
+}
+
+.THIS .slds-modal__container{
+	width: 80% !important;
+	max-width: 80% !important;
+}

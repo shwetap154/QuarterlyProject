@@ -1,0 +1,9 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,lightning:hasPageReference">
+    <aura:attribute name="recordId" type="String" />
+    <div class="slds-is-relative" style="height:200px">
+        <c:lwc_EventRequestPaymentBtn recordId="{!v.recordId}" 
+                                        onclose="{!c.closeChildLWC}">
+        </c:lwc_EventRequestPaymentBtn>
+    	<lightning:spinner alternativeText="Loading" size="medium" variant="brand" />
+    </div>
+</aura:component>

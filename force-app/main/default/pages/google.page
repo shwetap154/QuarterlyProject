@@ -1,0 +1,50 @@
+<apex:page controller="googleauthclass" showHeader="false" sidebar="false" lightningStylesheets="true" docType="html-5.0" >
+    <apex:slds />
+    <div class="slds-scope slds-p-horizontal_medium" >
+        <apex:form >
+            <apex:pageBlock mode="write" title="Google Drive Connect"   > 
+                <apex:pageblockSection showHeader="true" >
+                </apex:pageblockSection>
+                <apex:pageBlockSection showHeader="true" collapsible="true" title="connect to google>Auth>Choose File>Upload" >
+                    <apex:image url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSsr1O7FdRpRuogSuOIDTNFNRnB7IlymJV0lvv9SrbsAr7_5wn" style="width:80px;height:80px;"/>
+                    <apex:image url="http://theblackshack.ltd/ekmps/shops/griffiths174/images/upload-your-logo-here-21052-p.png" style="width:50px;height:50px;"/>
+                    <apex:commandButton value="Connect To Google" action="{!connect}" />
+                    <apex:commandButton value="Fetch Auth Token" action="{!showtoken}"/>
+                    <apex:inputField value="{!myfile.name}" />
+                    <!--<apex:inputFile value="{!myfile.body}" fileName="{!myfile.name}"></apex:inputFile>-->
+                    
+                    <apex:outputPanel layout="block" styleclass="slds-form-element">
+                        <div class="slds-form-element__control">
+                            <div class="slds-file-selector slds-file-selector--files">
+                              <div class="slds-file-selector__dropzone">
+                                <apex:inputFile styleClass="slds-file-selector__input slds-assistive-text" 
+                                                id="fileUploadInput01" value="{!myfile.body}" fileName="{!myfile.name}" onchange="handleFile(this)" />
+                                <apex:outputLabel styleClass="slds-file-selector__body" for="fileUploadInput01">
+                                    <span class="slds-file-selector__button slds-button slds-button_neutral"> 
+                                        <apex:image url="/apexpages/slds/latest/assets/icons/utility/upload_60.png" styleclass="slds-icon--x-small" /> &nbsp;
+                                        Upload Files
+                                    </span>
+                                  <span id="fileName" class="slds-file-selector__text slds-medium-show">No file choosen</span>
+                                </apex:outputLabel>
+                              </div>
+                            </div> 
+                        </div>
+                    </apex:outputPanel>     
+                    <apex:commandButton value="upload" action="{!save}" image="https://printingworx.com/files/Subscribers/038b1c05-0952-486b-9a26-2ab126eb2319/webfiles/printingworx/MDC_PrintingWorx_6761_Icon-Upload.png" style="width:80px;height:70px;"/>
+                    <script>
+                            function handleFile(file) 
+                            {
+                                var str = file.value;
+                                var newString = str.substr(str.indexOf('fakepath')+9, str.length);
+                                
+                                document.getElementById("fileName").innerHTML = newString;
+                                
+                                if(document.getElementById("fileName").innerHTML == '' )
+                                    document.getElementById("fileName").innerHTML = 'No file choosen';
+                            }
+                    </script>
+                </apex:pageBlockSection> 
+            </apex:pageBlock>
+        </apex:form>
+    </div>
+</apex:page>

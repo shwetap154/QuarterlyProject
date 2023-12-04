@@ -1,0 +1,41 @@
+<apex:page standardController="ZTS_EU_Affiliations__c" extensions="ZTS_US_accountContactAffController" action="{!doRedirect}" id="thePage">
+  <script type="text/javascript">
+        function checkContact(){
+            //alert('hi');
+            renderValuesAF();
+        }
+    </script>
+  <apex:form id="theForm">
+  <apex:pageMessages />
+  <apex:pageBlock mode="Edit" title="New Account Contact Affiliation" id="thePageBlock">
+      <apex:pageBlockButtons location="top">
+            <apex:commandButton action="{!save}" value="Save" rendered="{!NOT(fromCon)}"/>
+            <apex:commandButton action="{!saveCon}" value="Save" rendered="{!fromCon}"/>
+            <apex:commandButton action="/{!accntId}" value="Cancel" immediate="true" rendered="{!NOT(fromCon)}"/>
+            <apex:commandButton action="/{!conId}" value="Cancel" immediate="true" rendered="{!fromCon}"/>
+      </apex:pageBlockButtons>
+      <apex:pageBlockSection columns="2">
+            <apex:inputField value="{!accConAff.Name}"/>
+            <apex:inputField value="{!accConAff.ZTS_EU_Affiliation_Status__c}" rendered="{!NOT(fromCon)}"/>
+            <apex:inputField value="{!accConAff.ZTS_EU_Affiliation_Status__c}" rendered="{!fromCon}" required="true"/> 
+            <apex:inputField value="{!accConAff.ZTS_EU_Account__c}"/>
+            <apex:inputField value="{!accConAff.ZTS_EU_Account_influence__c}"/>
+            <apex:inputField value="{!accConAff.ZTS_EU_Contact__c}" onchange="checkContact();" id="contact"/>
+            <apex:inputField value="{!accConAff.ZTS_US_LE_Contact__c}"/>
+            <apex:inputField value="{!accConAff.ZTS_US_Profession__c}" rendered="{!NOT(renProf)}"/>
+            
+            
+            <apex:outputField value="{!accConAff.ZTS_US_Profession__c}" rendered="{!renProf}"/>
+            <apex:inputField value="{!accConAff.Profit_Solver_Contact__c}"/>
+            <apex:inputField value="{!accConAff.ZTS_US_Job_Function__c}" required="true"/>
+            <apex:inputField value="{!accConAff.eCommerce_Eligible__c}"/>   <!-- SC010173 Changes added here -->           
+
+            <apex:inputField value="{!accConAff.ZTS_US_Profession__c}" rendered="{!renProf}" style="display:none;visibility:hidden" label=""/> 
+          
+            <apex:inputField value="{!accConAff.Key_Contact__c}"/>
+          <apex:outputText ></apex:outputText>
+      </apex:pageBlockSection>
+  </apex:pageBlock>
+  <apex:actionFunction name="renderValuesAF" action="{!populateProfValue}" reRender="theForm"/>
+  </apex:form>
+</apex:page>

@@ -1,0 +1,18 @@
+<apex:page showheader="false" standardController="Contract" cache="false"  >
+    <head>
+        
+        <script src="/soap/ajax/42.0/apex.js" type="text/javascript" />
+        <script src="/soap/ajax/42.0/connection.js" type="text/javascript" />
+            <script type="text/javascript"> 
+                sforce.connection.sessionId = '{!$Api.Session_ID}'; 
+                var results = sforce.connection.query("SELECT Id,Name FROM Document WHERE Name = 'MZR PARAs Calculator' ");  
+                var records = results.getArray("records");   
+                var url = '/servlet/servlet.FileDownload?file=' + records[0].Id;     
+       			var myWindow = window.open(url, "_self"); 
+                myWindow.resizeTo(650, 150);  
+                myWindow.moveTo(50, 700); 
+                myWindow.focus();  
+            </script> 
+    </head>
+   
+</apex:page>

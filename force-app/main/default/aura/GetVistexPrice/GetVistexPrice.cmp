@@ -1,0 +1,43 @@
+<aura:component implements="force:hasRecordId,force:lightningQuickActionWithoutHeader"
+                access="global" 
+                controller="GetVistexPriceController">
+    <!-- flexipage:availableForRecordHome, -->
+    
+    <!-- input attributes -->
+    <aura:attribute name="recordId" type="string" />
+    
+    <aura:attribute name="loading" type="boolean" default="true" />
+    <aura:attribute name="errorMessage" type="string" />
+    <aura:attribute name="statusMessage" type="string" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <div style="max-height: 200px; position: relative;">
+
+        <aura:if isTrue="{! !empty(v.errorMessage) }">
+            <lightning:icon variant="error" iconName="utility:warning" size="small" />
+            <div class="slds-text-heading_small slds-text-color_error slds-m-bottom--medium">
+                {!v.errorMessage}
+            </div>
+            <aura:set attribute="else">
+                    <aura:if isTrue="{! !empty(v.statusMessage) }">
+                        <lightning:icon variant="warning" iconName="utility:warning" size="small" />
+                        <div class="slds-text-heading_small slds-text-color_default slds-m-bottom--medium">
+                            {!v.statusMessage}
+                        </div>
+                        <!--<aura:set attribute="else">
+                            
+                        </aura:set>-->
+                    </aura:if>
+            </aura:set>
+        </aura:if>
+
+        <aura:if isTrue="{! v.loading }">
+            <div>
+                <lightning:spinner variant="brand" size="large" alternativeText="loading" class="slds-m-top--xx-large slds-p-top--xx-large" />
+                <div>Getting pricing information from Vistex...</div>
+            </div>
+        </aura:if>
+
+    </div>
+</aura:component>

@@ -1,0 +1,106 @@
+<aura:component controller="SL_RxNewCaseController">
+    <aura:attribute name="objCase" type="Object" />
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    <aura:attribute name="showModal" type="boolean" default="false" />
+    <aura:attribute name="activeSectionName" type="string" />
+    <aura:attribute name="displayCaseComponent" type="Boolean" />
+    <!-- Change started by Aritra -->
+    <aura:attribute name="accountID" type="Id"/>
+    <aura:attribute name="newContact" type="Contact" default="{'sobjectType':'Contact'}"/>
+    <aura:attribute name="showDupContactModal" type="boolean" default="false" />
+    <aura:attribute name="conRecords" type="Contact[]"/>
+    <aura:attribute name="maxRowSelection" type="Integer" default="1"/>
+    <aura:attribute name="conColumns" type="List"/>
+    <aura:attribute name="duplicateContactMessage" type="string" />
+    <aura:attribute name="selectedConRecordId" type="Id" />
+    <aura:attribute name="selectedContactName" type="string" />
+    
+    <!-- <aura:handler name="init" value="{!this }" action="{!c.init }"/> -->
+	<!-- Change End by Aritra -->
+
+    <button class="slds-button slds-button_neutral" onclick="{!c.openModal}">New Contact</button>
+
+    <aura:if isTrue="{!v.showModal}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close">
+                        <lightning:buttonIcon onclick="{!c.closeModal}" iconName="utility:close" size="small"
+                            alternativeText="close" title="close" />
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Create Contact</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <aura:if isTrue="{!v.showSpinner}">
+                        <lightning:spinner />
+                    </aura:if>
+                    <lightning:recordEditForm aura:id="createContactForm" objectApiName="Contact"
+                        onsuccess="{!c.handleSuccess}" onload="{!c.handleLoad}" onerror="{!c.handleError}">
+                        <lightning:messages />
+                        <lightning:layout multipleRows="true">
+                            <aura:iteration items="{!v.objCase.createContactFS}" var="item">
+                                <lightning:layoutItem size="12" largeDeviceSize="6" mediumDeviceSize="6"
+                                    smallDeviceSize="12">
+                                    <!-- <c:newContactField objCase="{!v.objCase}" apiName="{!item}" /> -->
+                                    <aura:if isTrue="{!item == 'AccountId'}">
+                                        <lightning:inputField fieldName="{!item}" variant="label-stacked" onchange="{!c.handleValueChange}" value="{!v.accountID}"/>
+                                        <aura:set attribute="else">
+                                            <lightning:inputField fieldName="{!item}" variant="label-stacked" onchange="{!c.handleValueChange}" />
+                                        </aura:set>
+                                    </aura:if>
+                                    <!-- <lightning:inputField fieldName="{!item}" variant="label-stacked" onchange="{!c.handleValueChange}" /> -->
+                                </lightning:layoutItem>
+                            </aura:iteration>
+                        </lightning:layout>
+                    </lightning:recordEditForm>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick="{!c.closeModal}">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick="{!c.saveContact}">Save</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+    <!-- Change started by Aritra -->
+    <aura:if isTrue="{!v.showDupContactModal}">
+        
+        <div class="slds-modal slds-fade-in-open slds-backdrop">  
+            <div class="slds-modal__container duplicate-container-override">  
+ 
+                <div class="slds-modal__header" style="background-color:coral;">  
+                    <h2> <b>Duplicates Detected!!</b></h2>  
+                </div>  
+				<aura:if isTrue="{!v.showSpinner}">
+                        <lightning:spinner />
+                    </aura:if>
+                <div class="slds-modal__content scrollable duplicate-content-override slds-p-around_medium" >  
+                    <div class="slds-align_absolute-center">
+                        {!v.duplicateContactMessage}
+                    </div>
+                </div> 
+                    <lightning:datatable 
+                                         aura:id="contactDataTable"
+                                         keyField="id" 
+                                         data="{!v.conRecords}"
+                                         onrowselection="{!c.handleRowSelection}"
+                                         maxRowSelection="{!v.maxRowSelection}"
+                                         columns ="{!v.conColumns}" 
+                                         class ="eighty-percent"/> 
+                <div class="slds-modal__footer"> 
+                    
+                    <lightning:button iconName="utility:check" iconPosition="left" label="Associate Selected Contact in Case" variant="brand" onclick="{!c.addContactToCase}">  
+                    </lightning:button> &nbsp;
+                    <lightning:button iconName="utility:save" iconPosition="left" label="Create Duplicate" variant="brand" onclick="{!c.saveDuplicateContact}">  
+                    </lightning:button> &nbsp;
+                    <lightning:button iconName="utility:close" iconPosition="left" label="Cancel" variant="brand" onclick="{!c.cancelDuplicateContact}">  
+                    </lightning:button>  
+                </div>  
+            </div>  
+            
+        </div> 
+    </aura:if> 
+    <!-- Change End by Aritra -->
+</aura:component>

@@ -1,0 +1,5 @@
+<aura:component implements="flexipage:availableForAllPageTypes">
+   <!-- <lightning:openTab aura:id="chatbotTab" label="Chatbot" />-->
+   
+    
+</aura:component>

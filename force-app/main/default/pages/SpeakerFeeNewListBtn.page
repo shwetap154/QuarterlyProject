@@ -1,0 +1,4 @@
+<apex:page standardController="ZTS_US_Speaker_Fee__c" extensions="SpeakerFeeListController" 
+recordSetVar="spfeea" action="{!doRedirect}">
+
+</apex:page>

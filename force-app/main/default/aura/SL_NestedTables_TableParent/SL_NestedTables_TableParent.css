@@ -1,0 +1,20 @@
+/**
+ * Created by jerridkimball on 2018-06-15.
+ */
+.THIS th:first-child,
+.THIS tr.no-table-child td:first-child
+{
+    /*width: 1.5rem;*/
+   /* width: 3%; */
+}
+
+.THIS th:last-child,
+.THIS tr.no-table-child td:last-child
+{
+    /*width: 2.25rem;*/
+    /* width: 5.333333%; */
+}
+
+.THIS tbody tr:not(.no-table-child):hover > td {
+    background-color: #FFF;
+}

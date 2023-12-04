@@ -1,0 +1,20 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_DisplayContracts
+* Description   :   This vf page is shown on the account as inline page.                          
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     15th-Oct-14   Shreyas             Created the page.
+
+********************************************************************************************************************************************
+-->
+
+<apex:page standardController="Account" extensions="ZTS_EU_DisplayContractsController">
+
+<c:ZTS_EU_DisplayDataGeneric obj="contract" objId="{!account.Id}" fields="{!fieldAPIList}" accountRelationAPI="{!accountRelationId}" labelOfDisplayName="{!label_DisplayName}"/>
+
+</apex:page>

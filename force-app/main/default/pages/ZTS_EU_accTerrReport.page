@@ -1,0 +1,11 @@
+<apex:page controller="ZTS_EU_accTerrReport">
+
+    <apex:form >
+        <apex:pageBlock title="Accounts aligned to a Territory that has no Users connected to it">
+            <apex:pageBlockTable title="Accounts aligned to a Territory that has no Users connected to it " value="{!accList}" var="a">
+              <apex:column > <apex:outputLink value="https://cs16.salesforce.com/{!a.id}"> {!a.name}</apex:outputLink>   </apex:column>
+               
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form> 
+</apex:page>

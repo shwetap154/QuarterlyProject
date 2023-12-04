@@ -1,0 +1,3 @@
+<apex:page standardController="ZTS_Events__c" extensions="ZTS_EU_CustEventsredirect" action="{!eventsRedirect}">
+  
+</apex:page>

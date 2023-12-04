@@ -1,0 +1,23 @@
+<template>
+    <lightning-layout vertical-align="center" class="x-large">
+         <lightning-layout-item flexibility="auto" size="6" padding="around-small">
+
+            <span> Distributor Name</span>
+            <c-alpha-custom-lookup object-name="Account" field-name="Name"  
+                    label="Account" iconname="standard:account" 
+                    selected-record = '{selAccRecord}' 
+                    onrecselect={handleAccChange}>
+            </c-alpha-custom-lookup>
+        </lightning-layout-item>
+    </lightning-layout>
+    <div style="height: 300px;" class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <template if:true={finalresult}>
+            <lightning-datatable
+                    hide-checkbox-column
+                    key-field="id"
+                    data={finalresult}
+                    columns={columns}>
+            </lightning-datatable>
+        </template>
+    </div>
+</template>

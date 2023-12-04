@@ -1,0 +1,85 @@
+@font-face {
+  font-family: "Arboria";
+  src: url("/sfsites/c/resource/1626872099000/Zoetis_Static_Resources/fonts/FontsFree-Net-arboria2.ttf?orgId=00DF00000005zmy&orgId=00D2g0000000kkJ") format("truetype");
+}
+
+@font-face {
+  font-family: "ArboriaBold";
+  src: url("/sfsites/c/resource/1626872099000/Zoetis_Static_Resources/fonts/FontsFree-Net-Arboria-Bold.ttf?orgId=00DF00000005zmy&orgId=00D2g0000000kkJ") format("truetype");
+}
+
+@font-face {
+  font-family: "GothamNarrow";
+  src: url("/sfsites/c/resource/1626872099000/Zoetis_Static_Resources/fonts/FontsFree-Net-GothamNarrowBook.ttf?orgId=00DF00000005zmy&orgId=00D2g0000000kkJ") format("truetype");
+}
+
+.siteforcePrmBody .cCenterPanel {
+  margin-top: 2px;
+  padding: 0;
+}
+
+.siteforcePrmBody .cCenterPanel .slds-col--padded {
+  padding: 0;
+}
+
+.slider-structure .slds-carousel__content {
+  padding: 0px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  height: 100%;
+}
+
+.slider-structure .slds-carousel__panel-action.slds-text-link_reset {
+  border: none;
+}
+
+.slider-structure .slds-carousel__indicators {
+  position: absolute;
+  bottom: 0px;
+}
+
+.slider-structure .slds-box {
+  border: none;
+}
+
+.slider-structure .slds-carousel__indicator-action.slds-is-active, .slds-carousel__indicator-action.slds-is-active:hover {
+  background: #ff671e;
+}
+
+.slider-structure .slds-carousel__indicator-action {
+  background: #666666;
+}
+
+.slider-structure .slds-carousel__indicator-action {
+  background: #666666;
+  width: 8px;
+  height: 8px;
+}
+
+.slider-structure .slds-carousel__image {
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+
+.zs_next_page .slds-button.slds-button_brand {
+  width: 78px;
+  height: 30px;
+}
+
+.comm-page-custom-library .siteforcePrmBody .cCenterPanel > * > .slds-grid > .slds-col--padded:nth-child(1) {
+  padding: 0;
+  background: #fff;
+  margin-top: 1.5%;
+}
+
+.comm-page-custom-library .siteforcePrmBody .cCenterPanel > * > .slds-grid > .slds-col--padded:nth-child(2) {
+  margin-top: 1.5%;
+}
+
+.siteforceSldsTwoCol66Layout .slds-large-nowrap .slds-col--padded {
+  padding: 0 !important;
+}
+
+.siteforceSldsTwoCol66Layout .slds-large-nowrap .slds-col--padded .cCommunities_ContentNewsFeed {
+  margin-top: 4%;
+}

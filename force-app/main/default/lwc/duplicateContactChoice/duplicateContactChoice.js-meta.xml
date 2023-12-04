@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>51.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Show duplicate contact choice</masterLabel>
+    <description>Flow screen for duplicate contact selection</description>
+    <targets>
+      <target>lightning__FlowScreen</target>
+  </targets>
+<targetConfigs>
+       <targetConfig targets="lightning__FlowScreen">
+           <property name="firstName" label="First Name" type="String" role="inputOnly"/>
+           <property name="lastName" label="Last Name" type="String" role="inputOnly"/>
+           <property name="salutation" label="Salutation" type="String" role="inputOnly"/>
+           <property name="recordTypeId" label="Record Type Id" type="String" role="inputOnly"/>
+           <property name="jobFunction" label="Job Function" type="String" role="inputOnly"/>
+           <property name="profession" label="Profession" type="String" role="inputOnly"/>
+           <property name="accountId" label="Account Id" type="String" role="inputOnly"/>
+           <property name="interfaceEmail" label="Colleague Entered Email" type="String" role="inputOnly"/>
+
+           <property name="selectedContact" label="Selected Contact" type="String" role="outputOnly"/>
+       </targetConfig>
+</targetConfigs>
+</LightningComponentBundle>

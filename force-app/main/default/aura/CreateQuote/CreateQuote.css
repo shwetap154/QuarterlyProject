@@ -1,0 +1,16 @@
+.THIS .holder {
+  width: 620px;
+  height: 255px;
+  position: absolute;
+}
+
+.THIS .container {
+  min-width: 640px;
+  min-height: 255px;
+}
+
+.THIS .select-list {
+  width: 98%;
+  padding-left: 4px;
+  padding-bottom: 10px;
+}

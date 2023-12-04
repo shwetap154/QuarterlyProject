@@ -1,0 +1,8 @@
+<aura:component implements="force:lightningQuickAction,flexipage:availableForAllPageTypes" access="global">
+    <aura:attribute name="recordId" type="String" />
+    <div class="slds-is-relative" style="height:200px">
+        <c:lWC_Account_List_add_Campaign></c:lWC_Account_List_add_Campaign>
+    	<lightning:spinner alternativeText="Loading" size="medium" variant="brand" />
+    </div>
+
+</aura:component>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>RefLabs_Orders</label>
+    <protected>false</protected>
+    <values>
+        <field>Create_Fields__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Display_Fields__c</field>
+        <value xsi:type="xsd:string">Material_Description__c, Test_Receive_Date__c, Test_Completion_Date__c</value>
+    </values>
+    <values>
+        <field>Name__c</field>
+        <value xsi:type="xsd:string">RefLabs_Orders</value>
+    </values>
+    <values>
+        <field>Parent_Record_Field__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Query_Fields__c</field>
+        <value xsi:type="xsd:string">ExternalId</value>
+    </values>
+    <values>
+        <field>RecordType_Name__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>SObject__c</field>
+        <value xsi:type="xsd:string">Reference_Labs_Order__x</value>
+    </values>
+    <values>
+        <field>Where_Clause__c</field>
+        <value xsi:type="xsd:string">Accession_Number__c LIKE &apos;{@Accession__c}%&apos; AND Accession_Number__c LIKE &apos;%{@Accession__c}&apos;</value>
+    </values>
+</CustomMetadata>

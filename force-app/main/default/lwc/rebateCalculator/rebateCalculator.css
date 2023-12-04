@@ -1,0 +1,12 @@
+:host {
+    --sds-c-textarea-sizing-min-height: 10em; 
+    --slds-c-button-brand-color-background: purple;
+    --slds-c-button-brand-color-background-hover: orange;
+    --slds-c-button-brand-color-border: blue;
+    --slds-c-button-brand-color-border-hover: orange;
+   
+}
+/*table.tblColPad th{background:#ddd;}
+table.tblColPad th, table.tblColPad td {padding:5px !important;}
+ --slds-c-button-brand-text-color: var(--lwc-paletteNeutral100);
+ */

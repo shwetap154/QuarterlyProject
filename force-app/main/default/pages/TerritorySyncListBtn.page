@@ -1,0 +1,4 @@
+<apex:page standardController="ZTS_EU_Territory__c" extensions="TerritoryListController" 
+recordSetVar="territories" action="{!doTerrSyncRedirect}">
+
+</apex:page>

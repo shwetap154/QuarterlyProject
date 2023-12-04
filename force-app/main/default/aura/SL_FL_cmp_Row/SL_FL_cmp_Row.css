@@ -1,0 +1,33 @@
+.THIS .editBtnStyle .slds-icon-text-default{
+    fill: rgb(236, 235, 234);
+}
+
+.THIS .editBtnStyle .slds-icon-text-default:hover{
+    fill: rgb(0, 112, 210);
+}
+
+.THIS .editBtnStyle{
+	
+}
+
+.THIS .slds-form-element__control .value{
+    margin-top : 7px;
+}
+
+.THIS .plStyle{
+    height: 36px !important;
+}
+.THIS .paddZero{
+	padding-bottom: 0!important;
+    padding-top: 0 !important;
+}
+.THIS .textwrap{
+    white-space: pre-line !important;
+}
+.THIS .customDate{
+	padding-right: 30%;
+}
+
+.THIS .helpText div{
+	margin-top: -5px;
+}

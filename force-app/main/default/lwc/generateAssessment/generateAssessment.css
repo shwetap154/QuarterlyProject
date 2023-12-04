@@ -1,0 +1,14 @@
+.iconPadding
+{
+    margin-right: 10px;
+}
+
+/* .headerName
+{
+    background: aliceblue ;
+} */
+.THIS.slds-card__header
+{
+    background-color: lightgray!important;
+    /* background-color: rgb(243, 242, 242); */
+}

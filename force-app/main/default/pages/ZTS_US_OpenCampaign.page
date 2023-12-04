@@ -1,0 +1,35 @@
+<!--  
+* Page Name   : ZTS_US_OpenCampaign
+ * Description  : This page displays information related to recent Open Campaigns used in Homepage layout.
+ *                
+ *      
+ * Created By   : Deloitte Consulting/ Raghu
+ * Created Date : 23 April 2014.
+ *
+ * Modification Log:  
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ * Developer                Date               Description 
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ * Raghu                   04/23/2014           Created
+-->
+<apex:page standardController="Campaign" extensions="ZTS_US_OpenCampaignExtController" sidebar="false" recordSetVar="campaigns" readOnly="true" showHeader="false" readonly="true">
+<apex:pageBlock title="Open Campaigns">
+ <apex:pageBlockTable value="{!campaigns}" var="camp" width="50%" >
+<apex:column value="{!camp.name}" onclick="openLinkInTopWindow('{!camp.id}')" style="text-decoration:underline;cursor:pointer"/>
+<apex:column value="{!camp.Type}"  />
+<apex:column value="{!camp.ZTS_EU_Total_Accounts__c}"  />
+<apex:column value="{!camp.NumberOfContacts}"  />
+<apex:column value="{!camp.status}"  />
+</apex:pageBlockTable>
+
+
+</apex:pageBlock>
+<script type="text/javascript">
+function openLinkInTopWindow(id){
+window.open("/"+id,"_parent");
+//parent.window.location.replace('/'+id,'_blank');
+return false;
+
+}
+</script>
+</apex:page>

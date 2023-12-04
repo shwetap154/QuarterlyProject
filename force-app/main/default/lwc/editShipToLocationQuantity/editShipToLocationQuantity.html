@@ -1,0 +1,59 @@
+<template>
+  <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+    <thead>
+      <tr class="slds-line-height_reset">
+        <th class="" scope="col">
+          <div class="slds-truncate" title={label.Quantity}>{label.Quantity}</div>
+        </th>
+        <th class="" scope="col">
+          <div class="slds-truncate" title={label.ProductName}>{label.ProductName}</div>
+        </th>
+        <th class="" scope="col">
+          <template if:true={hasQuantityCommitment}>
+            {label.CommitmentQuantity}
+          </template>
+        </th>
+        <th class="" scope="col">
+          <template if:true={hasValueCommitment}>
+            {label.CommitmentValue}
+          </template>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <template for:each={quoteLines} for:item="quoteLine">
+        <tr class="slds-hint-parent" key={quoteLine.Id}>
+          <td data-label={label.Quantity}>
+            <template if:true={quoteLine.Is_Ancillary__c}>
+              <lightning-input
+                type="number"
+                max="10"
+                value={correctQty}
+                onchange={handleQtyOverride}
+                variant="label-hidden"
+                label={quoteLine.Id}
+              >
+              </lightning-input>
+            </template>
+            <template if:false={quoteLine.Is_Ancillary__c}>
+              {baseQuantity}
+            </template>
+          </td>
+          <td data-label={label.ProductName}>
+            {quoteLine.SBQQ__ProductName__c}
+          </td>
+          <td>
+            <template if:true={quoteLine.CPQ_Commitment_Quantity__c}>
+              {quoteLine.CPQ_Commitment_Quantity__c}
+            </template>
+          </td>
+          <td>
+            <template if:true={quoteLine.CPQ_Commitment_Value__c}>
+              {quoteLine.CPQ_Commitment_Value__c}
+            </template>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</template>

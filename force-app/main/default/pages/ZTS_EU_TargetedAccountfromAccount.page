@@ -1,0 +1,31 @@
+<!--
+/*************************************************************************************************************************
+Class Name : ZTS_EU_TargetedAccountfromAccount.vfp
+Description : Replaced the standard TA record creation from new button on Account related list (SC-008159)
+Modified By : Aritra(Cognizant)
+Edited On   : 5-Mar-2021
+**************
+* Modification Log:  
+* ---------------------------------------------------------------------------------------------------------------------------------------
+* Developer                Date               Description 
+* ---------------------------------------------------------------------------------------------------------------------------------------
+* Aritra(Cognizant)        03/05/2021         Created
+***************************************************************************************************************************/
+-->
+
+<apex:page standardController="ZTS_EU_Campaign_Account__c" extensions="ZTS_EU_TargetedAccountfromAccountctl" LightningStyleSheets="true">
+  <apex:form id="frm">
+        <apex:pageMessages ></apex:pageMessages>
+        <apex:pageBlock id="pb"  title="New Targeted Accounts :">
+            <apex:pageBlocksection id="TopSection" columns="1" collapsible="false" >
+               <apex:inputField value="{!campAccnt.ZTS_EU_Campaign__c}" required="true"/>
+               <apex:inputField value="{!campAccnt.ZTS_EU_Account__c}" required="true"/>                  
+			   <apex:inputField value="{!campAccnt.ZTS_EU_Member_Status__c}" required="true"/>                 
+            </apex:pageBlocksection>
+            <apex:pageBlockButtons location="bottom">
+            <apex:commandButton action="{!createTA}" value="Save"/>          
+            <apex:commandButton action="/{!accID}" value="Cancel" immediate="true" />       
+          </apex:pageBlockButtons>
+        </apex:pageBlock>  
+    </apex:form>
+</apex:page>

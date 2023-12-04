@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>United States</label>
+    <protected>false</protected>
+    <values>
+        <field>Column_API_Names__c</field>
+        <value xsi:type="xsd:string">Name, ZTS_US_NARC_ID__c, BillingStreet, BillingCity, BillingState, Phone, Email__c</value>
+    </values>
+    <values>
+        <field>Column_Labels__c</field>
+        <value xsi:type="xsd:string">Account Name, NARC ID, Street, City, State, Phone, Email</value>
+    </values>
+    <values>
+        <field>Market__c</field>
+        <value xsi:type="xsd:string">United States</value>
+    </values>
+</CustomMetadata>

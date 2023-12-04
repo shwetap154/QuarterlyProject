@@ -1,0 +1,122 @@
+<apex:page controller="ZTS_US_AddContactRedirect" tabStyle="ZTS_Events__c" LightningStyleSheets="true">
+    <style>
+        body input[type="submit"], body .pbButton .btn, body .pbButtonb .btn, body input.btn, body .menuButton, .slds-vf-scope input[type="submit"], 
+        .slds-vf-scope .pbButton .btn, .slds-vf-scope .pbButtonb .btn, .slds-vf-scope input.btn, .slds-vf-scope .menuButton
+        {
+            line-height: 1.75rem;
+        }
+    </style>
+    
+    <apex:form id="form">
+        <apex:pageBlock >
+         <apex:outputLabel value="Search Contact: "/> &nbsp;    
+            <apex:inputText value="{!name}" /> &nbsp;
+            <apex:commandButton value="Search" action="{!executeSearch}" reRender="panelID" status="actStatusId"/>
+            <apex:actionStatus id="actStatusId" >
+               <apex:facet name="start">
+                  <img src="/img/loading.gif"/>
+               </apex:facet>
+            </apex:actionStatus>
+            <font color="blue"><br/> 
+                <i><apex:outputLabel value="Enter a First Name, Last Name or Account Name and click Search to find the contacts you wish to add to the event"/></i></font>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:form id="theForm">
+        <apex:actionFunction name="selectAll" action="{!selectAll}" reRender="pb" status="status"/>
+        <apex:actionFunction name="handleMasterCheckBox" action="{!handleMasterCheckBox}" reRender="pb"/>
+        <apex:pageMessages />
+        <apex:outputPanel rendered="{!IF(categories.size==0, true,false)}">
+            <apex:pageMessage summary="No contacts are available. Please select account(s) which have contacts associated." severity="warning" strength="3" />
+        </apex:outputPanel>
+        
+            <apex:pageBlock id="pb">
+                <apex:actionStatus id="status">
+                    <apex:facet name="start">
+                        <apex:outputText value="Processing..."/> &nbsp;&nbsp;&nbsp;
+                        <img id="theImage1" src="/img/loading.gif"  height="40px" width="40px" style="text-align: center;padding:10px;">Updating All CheckBoxes Please Wait.........</img>
+                    </apex:facet>  
+                </apex:actionStatus>
+                <apex:pageBlockButtons location="top" style="align-left;">
+                    <apex:commandButton action="{!saveContacts}" value="Add Contacts" reRender="theForm" rendered="{!IF(categories.size==0, false, true)}"/>
+                    <apex:commandButton action="{!cancel}" value="Back to Event"/>
+                    <apex:commandButton value="Save Contacts" action="{!SaveAcc}" /> <!--Kaushik added-->
+              </apex:pageBlockButtons>
+              <apex:outputPanel rendered="{!IF(categories.size>0, true,false)}" id="panelID">
+                <apex:pageBlockTable value="{!categories}" var="c">
+                   
+                        <apex:column width="25px" >
+                            <apex:facet name="header">
+                                <apex:inputCheckbox value="{!masterCheckBox[pageNumber]}" onChange="selectAll()" id="ms"/>
+                            </apex:facet>
+                            <apex:inputCheckbox value="{!c.checked}" id="inputId" onChange="handleMasterCheckBox()"/>
+                        </apex:column>
+                    
+                   <!--Kaushik-->
+                    
+                    <apex:column >               
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!ViewSortData}" value="First Name {!IF(sortExpression=='FirstName',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort">
+                               <apex:param value="FirstName" name="column" assignTo="{!sortExpression}" ></apex:param>                          
+                            </apex:commandLink>
+                         </apex:facet>
+                         <apex:inputField value="{!c.con.FirstName}" />
+                      </apex:column>
+                          <apex:column >               
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!ViewSortData}" value="Last Name {!IF(sortExpression=='LastName',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort1">
+                               <apex:param value="LastName" name="column" assignTo="{!sortExpression}" ></apex:param>                          
+                            </apex:commandLink>
+                         </apex:facet>
+                         <apex:inputField value="{!c.con.LastName}" />
+                      </apex:column>                  
+                        
+                        <apex:column >               
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!ViewSortData}" value="Account {!IF(sortExpression=='Account.NAME',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort2">
+                               <apex:param value="Account.Name" name="column" assignTo="{!sortExpression}" ></apex:param>
+                               </apex:commandLink>
+                         </apex:facet>
+                         <apex:outputField value="{!c.con.Account.Name}" />
+                      </apex:column>
+                      
+                      <apex:column >
+                      <apex:facet Name="header">
+                         <apex:commandLink action="{!ViewSortData}" value="Profession {!IF(sortExpression=='ZTS_EU_Profession__c',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort3">
+                         <apex:param value="ZTS_EU_Profession__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+                         </apex:commandLink>
+                      </apex:facet>
+                      <apex:inputField value="{!c.con.ZTS_EU_Profession__c}" />
+                      </apex:column>
+                      
+                      <apex:column >
+                      <apex:facet Name="header">
+                         <apex:commandLink action="{!ViewSortData}" value="Email{!IF(sortExpression=='Email',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort4">
+                         <apex:param value="Email" name="column" assignTo="{!sortExpression}" ></apex:param>
+                         </apex:commandLink>
+                      </apex:facet>
+                      <apex:inputField value="{!c.con.Email}" />
+                      </apex:column>
+                    <!--Kaushik ..>
+                    
+                <!--    <apex:column value="{!c.con.Name}" headerValue="Name" onclick=""/>-->
+                 <!--   <apex:column value="{!c.con.Account.Name}" headerValue="Account"/> -->
+                <!--    <apex:column value="{!c.con.ZTS_EU_Profession__c}" headerValue="Profession"/>-->
+                    <!--<apex:column value="{!c.con.ZTS_US_Degree__c}" headerValue="Degree"/>-->
+                 <!--   <apex:column value="{!c.con.Phone}" headerValue="Phone"/>-->
+                 <!--   <apex:column value="{!c.con.Email}" headerValue="Email"/>-->
+                </apex:pageBlockTable>
+            </apex:outputPanel>
+        </apex:pageBlock>
+        <apex:outputPanel rendered="{!IF(categories.size>0, true,false)}"  >
+            <!-- <center style="padding-left:-100px;">-->
+                <apex:panelGrid columns="4" style="padding-left:530px !important;">
+                    <apex:commandButton action="{!first}" value="<<  "  style="font-weight:bold;font-size:1.2em;" disabled="{!IF(pageNumber = 1,true,false)}"/>
+                    <apex:commandButton action="{!previous}" rendered="{!hasPrevious}"  disabled="{!NOT(hasPrevious)}" value="  Previous  " style="font-weight:bold;font-size:1.2em;"/>
+                    <apex:commandButton action="{!next}" rendered="{!hasNext}"  value="  Next  " style="font-weight:bold;font-size:1.2em;" disabled="{!IF(pageNumber = noOfPages,true,false)}"/>   
+                    <apex:commandButton action="{!last}" value="  >>"  style="font-weight:bold;font-size:1.2em;" disabled="{!IF(pageNumber = noOfPages,true,false)}"/>  
+                </apex:panelGrid>
+            <!-- </center>-->
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

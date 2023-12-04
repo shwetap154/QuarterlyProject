@@ -1,0 +1,77 @@
+<template>
+  
+        <div class='loadingSpinner'>
+            <template if:true={showSpinner}>
+                <lightning-spinner alternative-text='Loading' variant='brand'></lightning-spinner>
+            </template>
+        </div>
+
+        <lightning-breadcrumbs class="zs_fc_list_breadcrumbs slds-p-bottom_medium">
+            <lightning-breadcrumb label="Forecast, Stock and Order" href=""></lightning-breadcrumb> / 
+            <lightning-breadcrumb label={componentType} href=""></lightning-breadcrumb> /
+            <lightning-breadcrumb class="zs_active_breadcrumb" label="Upload" href=""></lightning-breadcrumb> <span style="color: #9B9B9B;">&amp;</span>
+            <lightning-breadcrumb class="zs_active_breadcrumb" label="Download" href=""></lightning-breadcrumb>
+        </lightning-breadcrumbs>
+        
+        <div class="slds-text-heading_medium slds-p-bottom_small zs_fc_entry_title">{componentType} Form Excel Template</div>
+        <div class="zs_instruction_blk  slds-m-bottom_large">
+            <p>Instructions : Please download the {componentType} form Excel template to update {componentType} information for the month, then upload the file with the latest values.</p>
+        </div>
+        
+        <article class="slds-card zs_monthyear_card">
+            <div class="slds-card__body slds-card__body_inner">
+            <lightning-layout vertical-align="center" class="x-large zs_monthyear_layout">
+                <lightning-layout-item flexibility="auto" size="5" padding="around-small">
+                    <lightning-combobox
+                        data-name='objectMonth'
+                        name="month"
+                        label="Month"
+                        value={monthValue}
+                        placeholder="Select month"
+                        options={monthOptions}
+                        onchange={handleValueChange}
+                        required>
+                    </lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="2" padding="around-small">
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="5" padding="around-small">
+                    <lightning-combobox
+                        data-name='objectYear'
+                        name="year"
+                        label="Year"
+                        value={yearValue}
+                        placeholder="Select year"
+                        options={yearOptions}
+                        onchange={handleValueChange}
+                        required>
+                    </lightning-combobox>
+                </lightning-layout-item>
+                
+            </lightning-layout>
+
+            <div class="zs_fc_download_block">
+                <p class="slds-p-bottom_small">Download {componentType} Entry Form</p>
+                <a onclick={handleDownloadClick}><img class="zs_fc_downloadicon" src={zs_fc_downloadicon}/></a>
+                <!--lightning-button label='Download' class='slds-p-top_xxx-small slds-p-right_small' onclick={handleDownloadClick}></lightning-button> -->
+            </div>
+        </div>
+        </article>
+
+<br/>
+        <article class="slds-card zs_monthyear_card">
+            <div class="slds-card__body slds-card__body_inner">
+            <div class="zs_fc_upload_block">
+                <div class={disableUpload}>
+                <img class="zs_fc_uploadicon" src={zs_fc_uploadicon}/>
+              <!-- <p class="slds-p-bottom_small">Upload Forecast Entry Form</p-->
+                <lightning-input label={downloadButtonLabel} name='fileUploader' class="uploadButton" type='file' accept='.csv' onchange={handleFileSelected}></lightning-input>
+                </div>
+            </div>
+        </div>
+
+        
+        </article>
+
+       
+</template>

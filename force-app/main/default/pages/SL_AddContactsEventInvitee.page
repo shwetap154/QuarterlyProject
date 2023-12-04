@@ -1,0 +1,14 @@
+<apex:page standardController="ZTS_US_Event_Invitee__c" recordSetVar="eventInviteesLst" tabStyle="ZTS_US_Event_Invitee__c" LightningStyleSheets="true"> 
+    <script>
+        try 
+        {
+            var evntId = '{!$CurrentPage.parameters.id}';
+            sforce.one.navigateToURL("/apex/ZTS_US_AddContactRedirect?eventId="+evntId);
+        } 
+        catch(ex) 
+        {
+            alert('Exception:'+ex);
+            sforce.one.navigateToURL("/apex/ZTS_US_AddContactRedirect?eventId="+evntId);
+        }
+    </script>
+</apex:page>

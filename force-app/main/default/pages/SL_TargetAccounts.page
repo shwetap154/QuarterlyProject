@@ -1,0 +1,26 @@
+<apex:page standardController="ZTS_EU_Campaign_Account__c" recordSetVar="campAccounts" tabStyle="ZTS_EU_Campaign_Account__c" 
+            extensions="SL_TargetAccount" lightningStyleSheets="true">
+    <script>
+    
+        var statusVar = '{!strStatus}';
+        
+        if(statusVar == 'Closed') 
+        {
+            alert('You cannot add or remove Targeted Accounts if Campaign Field Targeting is Closed.');
+            sforce.one.navigateToURL("/" + '{!strCampId}');
+        }
+    </script>
+    <apex:form >
+        <apex:outputText value="Campaign" style="font-weight:bold;font-size:11px;"></apex:outputText><br/>
+        <apex:outputText value="{!campName}" style="font-weight:bold;font-size:20px;"></apex:outputText>
+        <br/>
+    </apex:form>
+    <apex:form >
+        <apex:pageMessages />
+    </apex:form>
+    <apex:enhancedList type="Account" customizable="true" height="500" width="140" rowsPerPage="50" />
+    <apex:form >
+        <br/>
+        <apex:commandButton value="Back to Campaign" action="/{!strCampId}"/>
+    </apex:form>
+</apex:page>

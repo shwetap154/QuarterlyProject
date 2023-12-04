@@ -1,0 +1,9 @@
+<apex:page standardController="Account_Segmentation_threshold__c" recordSetVar="accSegRecords" tabStyle="Account_Segmentation_threshold__c" extensions="SL_RecalculateRatings" action="{!onAction}">
+    <apex:form >
+        <apex:actionFunction name="getListView" action="{!listView}" />
+    </apex:form>
+
+    <script>
+        getListView();
+    </script>
+</apex:page>

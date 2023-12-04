@@ -1,0 +1,280 @@
+<!--
+  @description       : 
+  @author            : Unknown
+  @group             : 
+  @last modified on  : 02-26-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   02-23-2021   Morgan Marchese @ Zoetis Inc   Header Creation
+  1.1   02-24-2021   Aritra Chakraborty@Cognizant   Changed <apex:inputtext> tags to <apex:inputfield> to leverage ignoreEditPermissionForRendering attribute, (SC-008408)
+-->
+<apex:page id="mainPage" title="New Online Account" standardController="Lead" extensions="NOA_NewOnlineAccount" cache="false" 
+           showChat="false" showHeader="false" sidebar="false"> 
+    <head>
+        <style type="text/css"  >
+            th {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+            }     
+            td {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+            }
+            .btn {  
+            line-height:1.5 !important;border:2px solid transparent !important;
+            //min-width:8em !important;
+            background-color:#ff6400 !important;
+            background:#ff6400 !important;
+            color:white !important;
+            }  
+            pbSubheader{
+            background-color:#1696ad !important;
+            color:white !important;
+            }
+            .individualPalette .leadBlock .tertiaryPalette{
+            background-color:#0096AF !important;
+            border-color:#0096AF !important;
+            }
+            .individualPalette .leadBlock .secondaryPalette {
+            border-color:#0096AF !important;
+            }
+            body .bEditBlock .pbBody .pbSubheader{
+            background-image:none !important;
+            color:#ffffff !important;
+            }
+            .requiredLegend{
+            color:#ffffff !important;
+            }
+            .message{
+            background-color: #ffffff !important;
+            padding: 0px 0px 0px 0px !important;
+            margin: 2px 0px !important;
+            width: 100% !important;
+            }
+            body{
+            font-size: 85% !important;
+            }
+            body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label{
+            font-size: 1.4em;
+            }
+            input{
+            height:2em !important; 
+            font-size:1em !important; 
+            } 
+            body .bPageBlock .pbBody .labelCol{
+            vertical-align:middle !important;
+            font-size:1em !important; 
+            }
+            select{
+            height:2em !important; 
+            }
+            .custtable {
+            font-family: arial, sans-serif;
+            border-collapse: collapse; 
+            border: 1px solid black; 
+            width:100%;
+            }
+            .custtable tr:nth-child(even) {
+            background-color: #dddddd; 
+            }
+            
+            .custtable td, th {
+            border: 1px solid #dddddd !;
+            text-align: left;
+            padding: 8px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            }
+            
+             .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader h3{
+                font-size: 1.4em;
+              }
+            
+        </style>
+    </head> 
+    
+    
+    <script type='text/javascript'>
+    function noenter(ev)  {
+        if (window.event && window.event.keyCode == 13 || ev.which == 13) {
+            saveNewOnlineAccount();
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    $j = jQuery.noConflict();
+    
+    function checkboxChanged(checkbox) {
+        var changedCheckboxId = $j(checkbox).attr('name');            
+        $j(":checkbox[data-cbType='primaryVetCheckbox']").each(function(index) {
+            if (changedCheckboxId != $j(this).attr('name')) {
+                $j(this).attr('checked', false);
+            }
+        });
+    };
+    
+    /*function oneCheck(a){
+    
+        
+        
+    $('.isSelected').removeClass("isSelected");    
+    
+    
+    
+    if($(a).is(":checked")){
+        $(a).addClass("isSelected");
+    }
+
+
+    
+    $(".chk").each(function() {
+        
+        if($(this).hasClass('isSelected') == false){
+            $(this).removeAttr("checked");
+        }else{
+            $(this).attr("checked","checked");
+        }
+    });
+}*/
+    
+    /*function checkboxes(cb){
+                if($("input:checkbox[id*=looped]:checked").length > 1){
+                        alert('You can select only one Vet as Primary');
+                        $(cb).removeAttr('checked');
+                        return false; 
+                }else{
+                    return true;
+                 } 
+            }*/
+    
+    </script>
+    
+    <c:NOA_AnimalHeader />
+    
+    <c:NOA_header noaLeadObj="{!newOnlineAcc}" renderRx="{!renderRx}"></c:NOA_header>
+    
+    <table style="width:100%;"  >
+        <tr>
+            <td style="width:3%;"></td>
+            <td style="vertical-align: top; text-align: left;width:44%;">
+                <c:NOA_Page_Navigation leadId="{!LeadId}" applicationType="Basic" currStepNo="2" compStepNo="{!IF(LeadId==null,0,newOnlineAcc.Step_Number__c)}"></c:NOA_Page_Navigation>	 
+            </td>
+            <td style="width:50%;vertical-align: top;">
+                <center> 
+                    <apex:form id="mainForm" >
+                        <apex:pageMessages rendered="{!hasErrors}" ></apex:pageMessages>  
+                        <apex:outputPanel id="mainOP" style="" >
+                            <apex:pageBlock id="mainPB" mode="detail"  > 
+                                <apex:pageBlockSection id="mainPBS" title="Veterinarian Information" columns="1" collapsible="false"  >
+                                </apex:pageBlockSection>
+                                <div style="display:inline;"> 
+                                    <apex:commandButton value="Add Veterinarian" action="{!addVet}" reRender="mainPB" style="float:left;padding-left:1%;" status="addrowstatus" />
+                                    <apex:actionStatus id="addrowstatus" >
+                                        <apex:facet name="start" >
+                                            <img src="/img/loading.gif" />                    
+                                        </apex:facet>
+                                    </apex:actionStatus>
+                                </div>
+                                <br/><br/>
+                                <table class="custtable" >
+                                    <tr>
+                                        <th> First Name </th>
+                                        <th> Last Name </th>
+                                        <th> Email </th>
+                                        <!--  <th> Signature </th>    -->
+                                        <th> State License # </th>
+                                        <th> DEA # </th>
+                                        <th> Role </th>
+                                        <th> Primary </th>
+                                        <th> Delete? </th>
+                                        
+                                    </tr>
+                                    <apex:repeat value="{!vetList}" var="vet" >
+                                        <tr class="custtr">
+                                            <td>
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <apex:inputField value="{!vet.Veterinarian_First_Name__c}" label="" onkeypress="return noenter(event);" ignoreEditPermissionForRendering="true"/>
+                                                    <!--Changed <apex:inputtext> tags to <apex:inputfield> to leverage ignoreEditPermissionForRendering attribute (SC-008408) -->
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <apex:inputField value="{!vet.Veterinarian_Last_Name__c}" label="" onkeypress="return noenter(event);" ignoreEditPermissionForRendering="true"/>
+                                                    <!--Changed <apex:inputtext> tags to <apex:inputfield> to leverage ignoreEditPermissionForRendering attribute (SC-008408) -->
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <apex:inputField value="{!vet.Veterinarian_Email__c}" label=""  onkeypress="return noenter(event);" ignoreEditPermissionForRendering="true"/>
+                                                    <!--Changed <apex:inputtext> tags to <apex:inputfield> to leverage ignoreEditPermissionForRendering attribute (SC-008408) -->
+                                                </div>
+                                            </td>
+                                            <!--
+<td>
+<apex:inputText value="{!vet.Veterinarian_Signature_Tag__c}" label="" disabled="true" />
+</td>
+-->
+                                            <td>
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <apex:inputField value="{!vet.State_License__c}"  label="" onkeypress="return noenter(event);" ignoreEditPermissionForRendering="true" />
+                                                    <!--Changed <apex:inputtext> tags to <apex:inputfield> to leverage ignoreEditPermissionForRendering attribute (SC-008408) -->
+                                                </div>
+                                            </td>
+                                            <td> 
+                                                <apex:inputField value="{!vet.DEA__c}"  label="" onkeypress="return noenter(event);" ignoreEditPermissionForRendering="true" /> 
+                                                <!--Changed <apex:inputtext> tags to <apex:inputfield> to leverage ignoreEditPermissionForRendering attribute (SC-008408) -->
+                                            </td> 
+                                            <td> 
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <apex:inputField value="{!vet.Veterinarian_Role__c}" id="vrole" onkeypress="return noenter(event);" ignoreEditPermissionForRendering="true" />
+                                                    <!--Changed <apex:inputtext> tags to <apex:inputfield> to leverage ignoreEditPermissionForRendering attribute (SC-008408) -->
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <!--<apex:inputCheckbox id="looped" value="{!vet.Primary__c}" onclick="checkboxes(this);"/>-->
+                                                <apex:inputField id="looped" value="{!vet.Primary__c}" onclick="checkboxChanged(this);" html-data-cbType="primaryVetCheckbox" ignoreEditPermissionForRendering="true" />
+                                                 <!--Changed <apex:inputcheckbox> tags to <apex:inputfield> to leverage ignoreEditPermissionForRendering attribute (SC-008408) -->
+                                            </td>
+                                            <td>
+                                                <apex:inputField value="{!vet.Delete_Record__c}" id="del" onkeypress="return noenter(event);" ignoreEditPermissionForRendering="true" /> 
+                                                <!--Changed <apex:inputcheckbox> tags to <apex:inputfield> to leverage ignoreEditPermissionForRendering attribute (SC-008408) -->
+                                            </td>
+                                            
+                                        </tr>
+                                    </apex:repeat> 
+                                </table>
+                                <br/><br/>
+                                <apex:outputPanel style="width:100%" rendered="{! !readonly}">
+                                    <apex:outputPanel style="float: left; padding-left:1%;">
+                                        <apex:commandButton value="Discard Form" action="{!discard}" onclick="return confirm('Are you sure you want to discard your application? \nPlease click \'OK\' to continue.');"  immediate="true" />
+                                        <apex:commandButton value="Previous" action="{!previous}" immediate="true"/> 
+                                    </apex:outputPanel>
+                                    <apex:outputPanel style="float: right; padding-right:1%;">
+                                        <apex:commandButton value="Save & Exit" action="{!saveExit}" /> 
+                                        <apex:commandButton value="Next Page" action="{!saveNewOnlineAccount}" /> 
+                                    </apex:outputPanel> 
+                                    <br/><br/><br/>
+                                </apex:outputPanel>
+                            </apex:pageBlock>
+                        </apex:outputPanel>
+                    </apex:form>
+                </center>
+            </td>
+            <td style="width:3%;vertical-align:top;">
+                <!--
+            	<img id="liveagent_button_online_573n000000000HN" style="display: none; border: 0px none; cursor: pointer" onclick="liveagent.startChat('573n000000000HN')" src="https://ustest-zoetisus.cs30.force.com/newonlineaccount/resource/1493894281000/ChatOnline" />
+    		    <img id="liveagent_button_offline_573n000000000HN" style="display: none; border: 0px none; " src="https://ustest-zoetisus.cs30.force.com/newonlineaccount/resource/1493894281000/ChatOffline" />
+			-->
+            </td>
+        </tr>
+    </table> <br/><br/><br/><br/>
+    <c:NOA_footerpage />
+</apex:page>

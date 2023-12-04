@@ -1,0 +1,37 @@
+<template>
+<div class="slds-var-m-around_medium">
+<p> You are viewing GUR(Gross Less Returns) data for the selected account.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Sales Through &nbsp; {dateValue}</p>
+ <br>
+ <br>
+
+View Parent Account:
+
+<lightning-button label="Test Account Demo" onclick={onAccount} class="slds-m-left_x-small"></lightning-button>
+
+<!--Capsule button below -->
+<lightning-layout-item padding = "around-medium" size="12"> 
+    <lightning-button-group>
+        <lightning-button label="MAT" onclick={addhandler}></lightning-button>
+        <lightning-button label="YTD" onclick={subhandler}></lightning-button>
+    </lightning-button-group>    
+</lightning-layout-item>
+<lightning-layout-item padding = "around-medium" size="12"> 
+    <lightning-button-group>
+        <lightning-button label="Bill-To" onclick={addhandler}></lightning-button>
+        <lightning-button label="Ship-To" onclick={subhandler}></lightning-button>
+    </lightning-button-group>    
+</lightning-layout-item>       
+ 
+ <lightning-button-icon icon-name="utility:save"  alternative-text="Print"  title="Print" class="slds-m-left_x-small"></lightning-button-icon>
+<lightning-button variant="base" label="Print" title="Print" onclick={handleClick} class="slds-m-right_x-small"></lightning-button> 
+
+
+<lightning-button variant="base" label="Excel" title="Downlaod Excel" onclick={handleClick} class="slds-m-left_x-large"></lightning-button> 
+
+
+   
+</div>
+</template>

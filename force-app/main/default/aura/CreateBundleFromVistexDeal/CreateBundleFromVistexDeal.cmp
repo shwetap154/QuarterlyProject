@@ -1,0 +1,11 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="CreateBundleFromVistexDealController">
+    <aura:attribute name="loaded" type="Boolean" default="false" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />   
+    <aura:renderIf isTrue="{!v.loaded }"> 
+        <div class="slds-is-relative">
+            <div class="holder">
+                <lightning:spinner alternativeText="Working" size="medium" />
+            </div>
+        </div>
+    </aura:renderIf>
+</aura:component>

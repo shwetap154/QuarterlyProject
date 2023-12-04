@@ -1,0 +1,30 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem; 
+    border-bottom: 1px solid #d8dde6; 
+}
+
+
+.icon-container {
+    margin-right: 0.5rem; 
+}
+
+
+.card-title {
+    font-size: 1.0rem; 
+    margin: 0; 
+    flex-grow: 1; 
+}
+
+
+.button-container {
+    margin-left: auto; 
+}
+
+.alert-List {
+    display: flex;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}

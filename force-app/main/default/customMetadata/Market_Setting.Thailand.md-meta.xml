@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Thailand</label>
+    <protected>false</protected>
+    <values>
+        <field>Additional_Call_Colleague_Markets__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Coaching_Guide_Auto_Approved__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Enable_Account_DMR_Integration__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Enable_Sample_Drop_Call_Year_Limitation__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Exclude_Buying_Group_Account_Affiliation__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Integration_Id_Prefix__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Market__c</field>
+        <value xsi:type="xsd:string">Thailand</value>
+    </values>
+    <values>
+        <field>Rotor_Credit_Redemption_Email_Template__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Rotor_Notification_Email_Template__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>

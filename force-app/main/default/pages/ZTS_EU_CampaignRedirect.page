@@ -1,0 +1,4 @@
+<apex:page standardController="Campaign" extensions="ZTS_EU_CampaignRedirect" action="{!campRedirect}">
+  
+
+</apex:page>

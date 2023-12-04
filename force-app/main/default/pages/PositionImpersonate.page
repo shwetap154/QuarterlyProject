@@ -1,0 +1,6 @@
+<apex:page standardController="ZTS_EU_Position__c" extensions="PositionListController">
+    <apex:pageMessages />
+    <script>
+	    window.location.assign('/apex/PIT_BudgetAllocation?impersonationID={!ZTS_EU_Position__c.Id}');
+    </script>
+</apex:page>

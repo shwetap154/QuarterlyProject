@@ -1,0 +1,529 @@
+<!--
+ * @description       : Review & Submit Page for Zoetis for Shelters Site
+ * @author            : Unknown
+ * @group             :
+ * @last modified on  : 09-07-2022
+ * @last modified by  : Morgan Marchese @ Zoetis Inc
+ * Modifications Log
+ * Ver   Date         Author                         Modification
+ * 1.0   Unknown      Unknown                       Initial Version
+ * 1.1   05-10-2021   Morgan Marchese @ ZTS         Added JS to Support RemoteAction Method for REST Callout
+ * 1.2   05-14-2021   Morgan Marchese @ ZTS         Loading Icon, CSS, Prettier Formatter.
+ * 1.3   08-16-2023   Pooja R @Cognizant            Added TPDEV-1355 Changes
+-->
+<apex:page title="Zoetis For Shelters" standardController="Lead" extensions="ZoetisForShelters" cache="false" showChat="false"
+    showHeader="false" sidebar="false">
+    <c:ZFS_header shelterObj="{!shelter}"></c:ZFS_header>
+    <style type="text/css">
+        .btn {
+            line-height: 1.5 !important;
+            border: 2px solid transparent !important;
+            min-width: 8em !important;
+            background-color: #ff6400 !important;
+            background: #ff6400 !important;
+            color: white !important;
+        }
+
+        .ct {
+            text-align: center;
+        }
+
+        .individualPalette .leadBlock .tertiaryPalette {
+            background-color: #0096AF !important;
+        }
+
+        .individualPalette .leadBlock .secondaryPalette {
+            border-color: #0096AF !important;
+        }
+
+        body .bEditBlock .pbBody .pbSubheader {
+            background-image: none !important;
+            color: #ffffff !important;
+        }
+
+        .requiredLegend {
+            color: #ffffff !important;
+        }
+
+        table {
+            padding-top: .5em !important;
+        }
+
+        .message {
+            background-color: #ffffff !important;
+            padding: 0px 0px 0px 0px !important;
+            margin: 2px 0px !important;
+            width: 100% !important;
+        }
+
+        body {
+            font-size: 85% !important;
+        }
+
+        body .bPageBlock .pbBody .pbSubheader h3,
+        body .bWizardBlock .bPageBlock .pbBody .pbSubheader label {
+            font-size: 1.4em !important;
+        }
+
+        .loadingModal {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.75;
+            z-index: 1000;
+            background-color: #000000;
+        }
+
+        .loadingSpinner {
+            position: relative;
+            width: 50px;
+            height: 50px;
+        }
+
+        .hide {
+            display: none !important;
+        }
+
+        .jsError {
+            color: red;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+        }
+
+        /*
+        Loader CSS
+        */
+
+        .loader {
+            /*margin: 100px auto;*/
+            font-size: 10px;
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+            position: relative;
+            text-indent: -9999em;
+            -webkit-animation: load5 1.1s infinite ease;
+            animation: load5 1.1s infinite ease;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+
+        @-webkit-keyframes load5 {
+            0%,
+            100% {
+                box-shadow: 0em -2.6em 0em 0em #ff6400, 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7), 2.5em 0em 0 0em rgba(255, 102, 0, 0.7), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.7), 0em 2.5em 0 0em rgba(255, 102, 0, 0.7), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.7), -2.6em 0em 0 0em rgba(255, 102, 0, 0.8), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.9);
+            }
+            12.5% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.9), 1.8em -1.8em 0 0em #ff6400, 2.5em 0em 0 0em rgba(255, 102, 0, 0.7), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.7), 0em 2.5em 0 0em rgba(255, 102, 0, 0.7), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.7), -2.6em 0em 0 0em rgba(255, 102, 0, 0.7), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.8);
+            }
+            25% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.8), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.9), 2.5em 0em 0 0em #ff6400, 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.7), 0em 2.5em 0 0em rgba(255, 102, 0, 0.7), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.7), -2.6em 0em 0 0em rgba(255, 102, 0, 0.7), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7);
+            }
+            37.5% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.7), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.8), 2.5em 0em 0 0em rgba(255, 102, 0, 0.9), 1.75em 1.75em 0 0em #ff6400, 0em 2.5em 0 0em rgba(255, 102, 0, 0.7), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.7), -2.6em 0em 0 0em rgba(255, 102, 0, 0.7), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7);
+            }
+            50% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.7), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7), 2.5em 0em 0 0em rgba(255, 102, 0, 0.8), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.9), 0em 2.5em 0 0em #ff6400, -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.7), -2.6em 0em 0 0em rgba(255, 102, 0, 0.7), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7);
+            }
+            62.5% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.7), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7), 2.5em 0em 0 0em rgba(255, 102, 0, 0.7), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.8), 0em 2.5em 0 0em rgba(255, 102, 0, 0.9), -1.8em 1.8em 0 0em #ff6400, -2.6em 0em 0 0em rgba(255, 102, 0, 0.7), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7);
+            }
+            75% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.7), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7), 2.5em 0em 0 0em rgba(255, 102, 0, 0.7), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.7), 0em 2.5em 0 0em rgba(255, 102, 0, 0.8), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.9), -2.6em 0em 0 0em #ff6400, -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7);
+            }
+            87.5% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.7), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7), 2.5em 0em 0 0em rgba(255, 102, 0, 0.7), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.7), 0em 2.5em 0 0em rgba(255, 102, 0, 0.7), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.8), -2.6em 0em 0 0em rgba(255, 102, 0, 0.9), -1.8em -1.8em 0 0em #ff6400;
+            }
+        }
+
+        @keyframes load5 {
+            0%,
+            100% {
+                box-shadow: 0em -2.6em 0em 0em #ff6400, 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7), 2.5em 0em 0 0em rgba(255, 102, 0, 0.7), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.7), 0em 2.5em 0 0em rgba(255, 102, 0, 0.7), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.7), -2.6em 0em 0 0em rgba(255, 102, 0, 0.8), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.9);
+            }
+            12.5% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.9), 1.8em -1.8em 0 0em #ff6400, 2.5em 0em 0 0em rgba(255, 102, 0, 0.7), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.7), 0em 2.5em 0 0em rgba(255, 102, 0, 0.7), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.7), -2.6em 0em 0 0em rgba(255, 102, 0, 0.7), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.8);
+            }
+            25% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.8), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.9), 2.5em 0em 0 0em #ff6400, 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.7), 0em 2.5em 0 0em rgba(255, 102, 0, 0.7), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.7), -2.6em 0em 0 0em rgba(255, 102, 0, 0.7), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7);
+            }
+            37.5% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.7), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.8), 2.5em 0em 0 0em rgba(255, 102, 0, 0.9), 1.75em 1.75em 0 0em #ff6400, 0em 2.5em 0 0em rgba(255, 102, 0, 0.7), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.7), -2.6em 0em 0 0em rgba(255, 102, 0, 0.7), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7);
+            }
+            50% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.7), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7), 2.5em 0em 0 0em rgba(255, 102, 0, 0.8), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.9), 0em 2.5em 0 0em #ff6400, -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.7), -2.6em 0em 0 0em rgba(255, 102, 0, 0.7), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7);
+            }
+            62.5% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.7), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7), 2.5em 0em 0 0em rgba(255, 102, 0, 0.7), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.8), 0em 2.5em 0 0em rgba(255, 102, 0, 0.9), -1.8em 1.8em 0 0em #ff6400, -2.6em 0em 0 0em rgba(255, 102, 0, 0.7), -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7);
+            }
+            75% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.7), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7), 2.5em 0em 0 0em rgba(255, 102, 0, 0.7), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.7), 0em 2.5em 0 0em rgba(255, 102, 0, 0.8), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.9), -2.6em 0em 0 0em #ff6400, -1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7);
+            }
+            87.5% {
+                box-shadow: 0em -2.6em 0em 0em rgba(255, 102, 0, 0.7), 1.8em -1.8em 0 0em rgba(255, 102, 0, 0.7), 2.5em 0em 0 0em rgba(255, 102, 0, 0.7), 1.75em 1.75em 0 0em rgba(255, 102, 0, 0.7), 0em 2.5em 0 0em rgba(255, 102, 0, 0.7), -1.8em 1.8em 0 0em rgba(255, 102, 0, 0.8), -2.6em 0em 0 0em rgba(255, 102, 0, 0.9), -1.8em -1.8em 0 0em #ff6400;
+            }
+        }
+    </style>
+
+    <script type="text/javascript">
+
+        function getInputEndingWith(endsWith) {
+            // put together a new Regular Expression to match the 
+            // end of the ID because Salesforce prepends parent IDs to
+            // all elements with IDs
+            var r = new RegExp("(.*)" + endsWith + "$");
+
+            // get all of the input elements
+            var inputs = document.getElementsByTagName('input');
+
+            // initialize a target
+            var target;
+
+            // for all of the inputs
+            for (var i = 0; i < inputs.length; ++i) {
+                // if the ID of the input matches the
+                // Regular Expression (ends with)
+                if (r.test(inputs[i].id)) {
+                    // set the target
+                    target = inputs[i];
+                    // break out of the loop because target 
+                    // was found
+                    break;
+                }
+            }
+
+            // return the target element
+            return target;
+        }
+
+        function renderLoader(shouldRender) {
+            var obj = document.getElementById('loadingDiv');
+            if (shouldRender) {
+                obj.classList.remove('hide');
+            } else {
+                obj.classList.add('hide');
+            }
+        }
+
+        function returnJSError(msg) {
+            var errorBlock = document.getElementById('jsRemoteError');
+            errorBlock.innerHTML = msg;
+            errorBlock.classList.remove('hide');
+        }
+
+        function sendESign() {
+            renderLoader(true);
+            var agreementId = getInputEndingWith('agmtId').value;
+            var responseObj;
+            console.log('agreement Id:' + agreementId);
+            if (agreementId) {
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.ZoetisForShelters.sendForSignatureRemote}',
+                    agreementId,
+                    function (result, event) {
+                        console.log('Result: ' + result);
+                        console.log('Status: ' + event.status);
+                        console.log('Event Type: ' + event.type);
+                        if (event.status) {
+                            // Get DOM IDs for HTML and Visualforce elements like this
+                            responseObj = JSON.parse(result);
+                            if (responseObj.success) {
+                                console.log('Is Successful');
+                                var button = document.getElementById('sendForSign').classList.add('hide');
+                                var button2 = document.getElementById('sendForSignDisabled').classList.remove('hide');
+                                eSignRedirect();
+                            } else {
+                                renderLoader(false);
+                                returnJSError('Something went wrong, please contact CustomerAccounts@zoetis.com.');
+                            }
+                        } else if (event.type === 'exception') {
+                            renderLoader(false);
+                            returnJSError('Something went wrong, please contact CustomerAccounts@zoetis.com.');
+                        } else {
+                            renderLoader(false);
+                            returnJSError('Something went wrong, please contact CustomerAccounts@zoetis.com.');
+                        }
+                    },
+                    { escape: false }
+                );
+            } else {
+                renderLoader(false);
+                returnJSError('Document not found, please contact CustomerAccounts@zoetis.com.');
+            }
+        }
+    </script>
+
+    <script type='text/javascript'>
+        function noenter(ev) {
+            if (window.event && window.event.keyCode == 13 || ev.which == 13) {
+                return false;
+            }
+        }
+
+        function downloadPDFForm() {
+            window.open("/zoetisforshelters/apex/ZFS_DownloadForm?id={!LeadId}", "_blank");
+        }
+    </script>
+
+    <div id="loadingDiv" class="loadingModal hide" style="position: fixed; top:0; left: 0; right:0;bottom: 0;opacity:0.75;z-index:1000;background-color:#000000">
+        <div class="loadingSpinner">
+            <div class="loader">Loading...</div>
+        </div>
+    </div>
+
+    <table style="width:100%;">
+        <tr>
+            <td style="width:10%;"></td>
+            <td style="vertical-align: top; text-align: right;">
+                <c:ZFS_Page_Navigation leadId="{!LeadId}" currStepNo="7" compStepNo="{! IF(LeadId==null,0,shelter.Step_Number__c)}"></c:ZFS_Page_Navigation>
+            </td>
+            <td style="width:50%;vertical-align: top;">
+                <center>
+                    <apex:form id="finalform">
+                        <apex:actionFunction name="eSignRedirect" action="{!submittedFormRedirect}" id="eSignRedirectFunction"></apex:actionFunction>
+                        <apex:outputPanel id="finalrev">
+                            <apex:pageMessages rendered="{!hasErrors}"></apex:pageMessages>
+                            <div id="jsRemoteError" class="jsError hide"></div>
+                            <apex:pageBlock mode="detail" id="review">
+                                <apex:pageBlockSection columns="1" title="Final Review" collapsible="false">
+                                    <!-- commented for Change Request
+                                    <apex:outputPanel rendered="{! !cont}" >
+                                        You have finished the online portion of the application. Please take a moment to verify that everything is correct.<br/><br/>
+                                        After you click 'Continue' you will need to print and sign your application and submit some of your veterinarian's information.<br/><br/>
+                                        <apex:commandButton value="Continue" action="{!continueSubmit}"/><br/><br/>
+                                    </apex:outputPanel>
+                                    -->
+                                    <!--    <apex:outputPanel rendered="{!cont}" >    -->
+                                    <apex:outputPanel >
+                                        <apex:outputPanel style="font-size:1.25em">
+                                            <b> You’re almost done with your application! </b>
+                                            <br/>
+                                            <b> Please take a minute to verify that everything is correct.</b>
+                                        </apex:outputPanel>
+                                        <br/>
+                                        <br/>
+                                        <!--
+                                        <apex:outputPanel >
+                                            
+                                            <B>1. Download and print your application form:&nbsp;&nbsp; &nbsp;&nbsp;</B>
+                                            <apex:commandButton value="Download" onclick="downloadPDFForm();"/>   
+                                        </apex:outputPanel><BR/><BR/>
+                                            -->
+                                        <b> 1. Click
+                                            <apex:commandLink style="color:#ff6400" onclick="downloadPDFForm();"> here </apex:commandLink> to verify all your information is correct. If you spot
+                                            a mistake, click below to return to the application.
+                                            <br/>
+                                            <apex:commandLink style="color:#ff6400" action="{!returnToApplication}" value="Return to application" />
+                                        </b>
+                                        <br/>
+                                        <BR/>
+                                        <b>Instructions for Uploading Documents: </b> After you choose the file you want to
+                                        upload from your computer, press "Upload/Update" to save the file.
+                                        <br/>
+                                        <BR/>
+                                        <BR/>
+                                        <!-- commented for CR
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <B>4. Upload Shelter/Rescue 501(c)(3):</B></div> 
+                                        -->
+                                        <B> 2. Upload Shelter/Rescue 501(c)(3) documentation:</B>             <!-- TPDEV-1355 Added Documentation -->
+                                        <apex:pageBlockSection rendered="{! existingNpoAtt!=null}" columns="4">
+                                            <apex:outputLabel value="Uploaded Shelter/Rescue 501(c)(3):"></apex:outputLabel>
+                                            <apex:outputLink value="{! URLFOR($Action.Attachment.Download, existingNpoAtt.Id)}" target="_blank">{!existingNpoAtt.Name}</apex:outputLink>
+                                        </apex:pageBlockSection>
+
+                                        <apex:pageBlockSection columns="4">
+                                            <apex:inputFile id="myFile" value="{!npoAtt.Body}" fileName="{!npoAtt.name}" />
+                                            <apex:commandButton id="uploadfile" value="Upload" action="{!uploadNpoAtt}" rendered="{! existingNpoAtt==null && !readonly}"
+                                            />
+                                            <apex:commandButton id="updatefile" value="Update" action="{!uploadNpoAtt}" rendered="{! existingNpoAtt!=null && !readonly}"
+                                            />
+                                        </apex:pageBlockSection>
+
+                                        <br/>
+                                        <br/>
+                                        <B>3. Upload Additional Files:</B>
+                                        <br/>
+
+                                        <apex:pageBlockSection columns="1">
+                                            Upload the following supporting documents -
+                                            <br/> 1) Veterinarian of Record's state veterinary license
+                                            <br/> 2) Proof of 501(c)(3) organization or government non-profit (Sales tax will be charged until tax certificate is received)
+                                            <br/> 3) Shelter business license/permit 
+                                            <br/> 4) All additional state licenses and permits required
+                                            <br/>
+                                            <br/>
+
+                                            <apex:inputFile id="myOtherFile" value="{!otherAtt.Body}" fileName="{!otherAtt.name}" />
+                                            <apex:outputPanel >
+                                                Description&nbsp;&nbsp;
+                                                <apex:inputText label="" value="{!otherAtt.Description}" style="width:40%" onkeypress="return noenter(event);" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <apex:commandButton id="uploadOtherfile" value="Upload" action="{!uploadOtherAttachment}" rendered="{! !readonly}" />
+                                            </apex:outputPanel>
+                                        </apex:pageBlockSection>
+                                        <apex:pageBlockSection columns="4">
+
+                                        </apex:pageBlockSection>
+                                        <apex:pageBlockSection columns="1">
+                                            <b>Uploaded Additional Files:</b>
+                                            <apex:outputLabel rendered="{! existingOtherAtt==null || existingOtherAtt.size==0}" value="No additional files uploaded."></apex:outputLabel>
+                                            <apex:outputPanel rendered="{! !(existingOtherAtt==null || existingOtherAtt.size==0)}">
+                                                <br/>
+                                                <apex:dataTable value="{!existingOtherAtt}" var="exAtt" columns="4" width="90%" columnsWidth="25%,35%,15%,15%" rules="all"
+                                                    border="1" style="table-layout:fixed;">
+                                                    <apex:column headerValue="File Name" style="word-wrap:break-word; word-break: break-all;white-space: normal;">
+                                                        {!exAtt.Name}
+                                                    </apex:column>
+                                                    <apex:column headerValue="Description" style="word-wrap:break-word; word-break: break-all;white-space: normal;">
+                                                        {!exAtt.Description}
+                                                    </apex:column>
+                                                    <apex:column headerValue="View File" style="text-align:center" headerClass="ct">
+                                                        <apex:outputLink value="{! URLFOR($Action.Attachment.Download, exAtt.Id)}" target="_blank">View</apex:outputLink>
+                                                    </apex:column>
+                                                    <apex:column headerValue="Delete File" style="text-align:center" headerClass="ct" id="del">
+                                                        <apex:commandLink value="Delete" action="{!deleteOtherAtt}">
+                                                            <apex:param name="deleteAtt" value="{!exAtt.Id}" assignTo="{!deleteAtt}" />
+                                                        </apex:commandLink>
+                                                    </apex:column>
+                                                </apex:dataTable>
+                                            </apex:outputPanel>
+                                        </apex:pageBlockSection>
+                                        <br/>
+                                        <apex:outputPanel title="Electronic Signature:">
+                                            <apex:outputPanel >
+                                                <B>
+                                                    <u>4. Electronic Signature:</u> Click the 'Send for Signature' button to
+                                                    receive your completed document via email to sign electronically. This
+                                                    email will be sent to the addresses listed throughout the application.
+                                                    All parties must sign prior to submission. &nbsp;&nbsp; </B>
+                                                <apex:outputPanel rendered="{!triggerESign}">
+                                                    <apex:inputHidden id="agmtId" value="{!agreementId}" />
+                                                    <script>
+                                                        sendESign();
+                                                    </script>
+                                                </apex:outputPanel>
+                                                <div id="sendForSign">
+                                                    <br />
+                                                    <apex:commandButton action="{!adobeSendForSignature}" value="Send for Signature" onclick="if(confirm('Are you sure you want to send application for signature? \nPlease click \'OK\' to continue.')){renderLoader(true);};"
+                                                        disabled="{!shelter.Signature_Status__c == 'Out for Signature'}" />
+                                                    <!--apex:commandButton action="{!adobeSendForSignature}" reRender="idToRender" value="Send for Signature" onclick="if(confirm('Are you sure you want to send application for signature? \nPlease click \'OK\' to continue.')){renderLoader(true);};" oncomplete="sendESign();" disabled="{!shelter.Signature_Status__c == 'Out for Signature'}"  /-->
+                                                </div>
+                                                <div id="sendForSignDisabled" class="hide">
+                                                    <apex:commandButton action="{!adobeSendForSignature}" value="Send for Signature" disabled="true" />
+                                                </div>
+                                            </apex:outputPanel>
+                                            <br/>
+                                            <br/>
+                                            <apex:outputPanel >
+                                                <apex:outputText value=" &emsp; <b>Signature Status:  <span style='color:#ff6400'> {!shelter.Signature_Status__c} </span> </b> "
+                                                    escape="false" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <!-- <apex:outputLink style="color:#ff6400"  value="{!newOnlineAcc.Adobe_eSigned_PDF__c}" rendered="false" >
+                                                    <label><b>Download Signed Application</b></label>
+                                                </apex:outputLink>  -->
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                        <BR/>
+                                        <BR/>
+                                        <apex:outputPanel >
+                                            <B>5. If for any reason you cannot use Electronic Signature, download and print
+                                                your application for signatures. &nbsp;&nbsp; &nbsp;&nbsp;</B>
+                                            <apex:commandButton value="Download" onclick="downloadPDFForm();" />
+                                        </apex:outputPanel>
+                                        <br/>
+                                        <br/>
+                                        <div>
+                                            <B>
+                                                <Label>5A. Upload signed application form:</Label>
+                                            </B>
+                                        </div>
+                                        <apex:pageBlockSection rendered="{! existingSignedAtt!=null}" columns="4">
+                                            <apex:outputLabel value="Uploaded Signed Form:"></apex:outputLabel>
+                                            <apex:outputLink value="{! URLFOR($Action.Attachment.Download, existingSignedAtt.Id)}" target="_blank">{!existingSignedAtt.Name}</apex:outputLink>
+                                        </apex:pageBlockSection>
+
+                                        <apex:pageBlockSection columns="1">
+                                            <apex:outputPanel >
+                                                <apex:inputFile id="myFile" value="{!signedAtt.Body}" fileName="{!signedAtt.name}" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <apex:commandButton id="uploadfile" value="Upload" action="{!uploadSignedAtt}" rendered="{! existingSignedAtt==null && !readonly}"
+                                                />
+                                                <apex:commandButton id="updatefile" value="Update" action="{!uploadSignedAtt}" rendered="{! existingSignedAtt!=null && !readonly}"
+                                                />
+                                            </apex:outputPanel>
+                                        </apex:pageBlockSection>
+                                        <br/>
+                                        <br/>
+                                        <b>Note: </b>If you are unable to upload your signed documents on the website you may
+                                        send the requested documents via email, fax, or mail:
+                                        <br/>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <b>Email: </b>
+                                                </td>
+                                                <td>
+                                                    <apex:outputlink value="mailto:CustomerAccounts@zoetis.com" style="color:#ff6400 "> CustomerAccounts@zoetis.com </apex:outputLink>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>Fax: </b>
+                                                </td>
+                                                <td>1-844-842-2183</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%">
+                                                    <b>Mail: </b>
+                                                </td>
+                                                <td>Attn: Zoetis Customer Accounts</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>2476 Swedesford Road – Suite 250</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>Malvern, PA 19355</td>
+                                            </tr>
+                                        </table>
+                                    </apex:outputPanel>
+                                </apex:pageBlockSection>
+
+                                <br/>
+                                <br/>
+                                <apex:outputPanel rendered="{! !readonly}">
+                                    <apex:outputPanel style="float: left; padding-left:8%;">
+                                        <apex:commandButton value="Submit" onclick="return confirm('You will not be able to modify your application once submitted. \nPlease click \'OK\' to continue.');"
+                                            action="{!submitShelter}" />
+                                        <apex:commandButton value="Save & Exit" action="{!saveExit}" />
+                                    </apex:outputPanel>
+                                    <apex:outputPanel style="float: right; padding-right:8%;">
+                                        <apex:commandButton value="Discard Form" onclick="return confirm('Are you sure you want to discard your application? \nPlease click \'OK\' to continue.');"
+                                            action="{!discard}" immediate="true" />
+                                    </apex:outputPanel>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </apex:outputPanel>
+                                <br/>
+
+                            </apex:pageBlock>
+                        </apex:outputPanel>
+                    </apex:form>
+                </center>
+            </td>
+            <td style="width:25%;">
+                <apex:outputPanel ></apex:outputPanel>
+            </td>
+        </tr>
+    </table>
+    <c:ZFS_footer />
+</apex:page>

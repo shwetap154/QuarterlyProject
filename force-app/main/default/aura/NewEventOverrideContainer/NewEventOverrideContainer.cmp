@@ -1,0 +1,11 @@
+<!--
+ - Created by Aritra Chakraborty on 18-June-2021 for SC-004726.
+ -->
+<aura:component implements="lightning:actionOverride,lightning:hasPageReference,force:hasRecordId" controller = "SalesCallLWCController" >
+    <aura:attribute name="isInternationalUser" type="boolean" default="false" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+  
+    
+</aura:component>

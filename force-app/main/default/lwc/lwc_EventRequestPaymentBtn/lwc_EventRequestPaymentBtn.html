@@ -1,0 +1,28 @@
+<template>
+    <template if:true={openmodel}>
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <div class="slds-m-top_medium slds-m-bottom_x-large">
+                            <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+                                Please note if payment is requested for an event that does not have the proper documentation attached in TouchPoint, it will not be processed. 
+                                If you are requesting the meeting card for pre-payment of an event, please contact PEI support directly.
+			                    Please include any specific instructions for PEI Support in the box below.
+                            </h2>
+                            <div class="slds-p-around_medium lgc-bg">
+                                <lightning-input type="text" label="Enter some text" placeholder="type here..." name="input1"></lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Cancel" variant="neutral" onclick={closeModal}></lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <lightning-button label="Save" variant="brand" onclick={saveMethod}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </template>
+    
+</template>

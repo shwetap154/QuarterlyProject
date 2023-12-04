@@ -1,0 +1,7 @@
+<apex:page standardController="ZTS_US_Speaker__c" recordSetVar="eventInviteesLst" tabStyle="ZTS_US_Event_Invitee__c" LightningStyleSheets="true">
+    
+    <script>
+        var evntId = '{!$CurrentPage.parameters.id}';
+        sforce.one.navigateToURL("/apex/ZTS_US_AddSpeaker?eventId="+evntId);
+    </script>
+</apex:page>

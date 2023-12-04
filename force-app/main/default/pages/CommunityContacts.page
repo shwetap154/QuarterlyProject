@@ -1,0 +1,34 @@
+<apex:page showHeader="false" LightningStyleSheets="True">
+  
+    <table width="100%">
+        <tr>
+            <td style="text-align: center;color: #0096AF; font-size:18pt;font-weight: bold;">Zoetis Contacts<br/></td>
+        </tr>
+        <tr>
+            <td>
+                <div style="padding-top:20px">
+                    <table width="100%">
+                        <tr>
+                            <td style="width:10%;text-align:right;padding-right:5px">
+                                <img src="{!$Resource.CommunityContact_Joy}" height="60px" width="50px"/>
+                            </td>
+                            <td style="width:40%;color:#585858;">
+                                 <b>Joy Olisah</b> | Commercial Customer Service Coordinator - Africa &amp; Middle East <br/>  
+                                 <div style="margin-top:3px;margin-bottom:3px">Zoetis | Mercuriusstraat 20, 1930 Zaventem, Belgium </div>
+                                 Office: +32 274 68 145 | Mobile: +32 492 15 00 83 | joy.olisah@zoetis.com
+                            </td>
+                            <td style="width:10%;text-align:right;padding-right:5px">
+                                 <img src="{!$Resource.CommunityContact_Isaac}" height="60px" width="50px"/>
+                            </td>
+                            <td style="width:40%;color:#585858;">
+                                  <b>Isaac Senyondo</b> | Commercial Customer Service planner - Africa <br/>
+                                  <div style="margin-top:3px;margin-bottom:3px">Zoetis | Mercuriusstraat 20, 1930 Zaventem, Belgium </div>
+                                  Office: +32 274 68 318 Mobile: +32 468 21 99 40 | isaac.senyondo@zoetis.com  
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</apex:page>

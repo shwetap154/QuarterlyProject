@@ -1,0 +1,164 @@
+<apex:component layout="none"> 
+    <head>
+        <style> 
+            .selectedCircle {
+                height: 21px;
+                width: 21px;
+                display: table-cell;
+                text-align: center;
+                vertical-align: middle;
+                border-radius: 50%;  
+                background: #ff6400;
+                font-weight: bold; 
+                color: white;
+            } 
+            
+            .grayCircle {
+                height: 21px;
+                width: 21px;
+                display: table-cell;
+                text-align: center;
+                vertical-align: middle;
+                border-radius: 50%;  
+                background: #a29c9c;
+                font-weight: bold; 
+                color: white;
+            }
+            
+            .inlineDisp {
+                display: inline;
+                width: 100%;
+            }
+            
+            .pageText {
+                font-weight: 900;
+                font-size: 0.75em;
+                    vertical-align: top;
+            } 
+            
+        </style>        
+    </head>
+      
+    <apex:outputPanel rendered="{!applicationType == 'Basic' }" > 
+     
+        <div class="inlineDisp pageText">  
+         
+            <apex:outputText rendered="{!currStepNo == 1}" styleClass="selectedCircle" value="1" />
+            <apex:outputText rendered="{!currStepNo != 1 && compStepNo < 1}" styleClass="grayCircle" value="1" />  
+            <apex:image style="vertical-align: middle !important;" url="{!$Resource.OrangeTick}" rendered="{! currStepNo!=1 && compStepNo>=1}"/> 
+            <apex:outputLink style="text-decoration: none;color: {!IF(currStepNo == 1 || (currStepNo != 1 && compStepNo >= 1),'#ff6400 !important;', '#aaa9a9 !important;' )}"    
+                  value="/apex/NOA_BasicAndFacilityInformation?id={!leadId}" rendered="{!(currStepNo == 1 || compStepNo >= 1)}"
+            > APPLICANT &amp; FACILITY INFORMATION </apex:outputLink> 
+            <apex:outputText rendered="{!currStepNo != 1 && compStepNo < 1}" style="color: {!IF(currStepNo == 1 || (currStepNo != 1 && compStepNo >= 1),'#ff6400 !important;', '#aaa9a9 !important;' )}"  
+                             value="APPLICANT & FACILITY INFORMATION" /> 
+            <br/><br/><br/>
+                 
+            <apex:outputText rendered="{!currStepNo == 2}" styleClass="selectedCircle" value="2" />
+            <apex:outputText rendered="{!currStepNo != 2 && compStepNo < 2}" styleClass="grayCircle" value="2" />  
+            <apex:image style="vertical-align: middle !important;" url="{!$Resource.OrangeTick}" rendered="{! currStepNo!=2 && compStepNo>=2}"/> 
+            <apex:outputLink style="text-decoration: none;color: {!IF(currStepNo == 2 || (currStepNo != 2 && compStepNo >= 2),'#ff6400 !important;', '#aaa9a9 !important;' )}"    
+                  value="/apex/NOA_VeterinarianInformation?id={!leadId}" rendered="{!(currStepNo == 2 || compStepNo >= 2)}"
+            > VETERINARIAN INFORMATION </apex:outputLink> 
+            <apex:outputText rendered="{!currStepNo != 2 && compStepNo < 2}" style="color: {!IF(currStepNo == 2 || (currStepNo != 2 && compStepNo >= 2),'#ff6400 !important;', '#aaa9a9 !important;' )}"  
+                             value="VETERINARIAN INFORMATION" /> 
+            <br/><br/><br/>
+            
+            <apex:outputText rendered="{!currStepNo == 3}" styleClass="selectedCircle" value="3" />
+            <apex:outputText rendered="{!currStepNo != 3 && compStepNo < 3}" styleClass="grayCircle" value="3" />  
+            <apex:image style="vertical-align: middle !important;" url="{!$Resource.OrangeTick}" rendered="{! currStepNo!=3 && compStepNo>=3}"/> 
+            <apex:outputLink style="text-decoration: none;color: {!IF(currStepNo == 3 || (currStepNo != 3 && compStepNo >= 3),'#ff6400 !important;', '#aaa9a9 !important;' )}"    
+                  value="/apex/NOA_OwnershipInformation?id={!leadId}" rendered="{!(currStepNo == 3 || compStepNo >= 3)}"
+            > OWNERSHIP AND BANKING INFORMATION </apex:outputLink> 
+            <apex:outputText rendered="{!currStepNo != 3 && compStepNo < 3}" style="color: {!IF(currStepNo == 3 || (currStepNo != 3 && compStepNo >= 3),'#ff6400 !important;', '#aaa9a9 !important;' )}"  
+                             value="OWNERSHIP AND BANKING INFORMATION" /> 
+            <br/><br/><br/>
+            
+            
+            <apex:outputText rendered="{!currStepNo == 4}" styleClass="selectedCircle" value="4" />
+            <apex:outputText rendered="{!currStepNo != 4 && compStepNo < 4}" styleClass="grayCircle" value="4" />  
+            <apex:image style="vertical-align: middle !important;" url="{!$Resource.OrangeTick}" rendered="{! currStepNo!=4 && compStepNo>= 4}"/> 
+            <apex:outputLink style="text-decoration: none;color: {!IF(currStepNo == 4 || (currStepNo != 4 && compStepNo >= 4),'#ff6400 !important;', '#aaa9a9 !important;' )}"    
+                  value="/apex/NOA_ReviewAndSubmit?id={!leadId}" rendered="{!(currStepNo == 4 || compStepNo >= 4)}"
+            > FINAL REVIEW </apex:outputLink> 
+            <apex:outputText rendered="{!currStepNo != 4 && compStepNo < 4}" style="color: {!IF(currStepNo == 4 || (currStepNo != 4 && compStepNo >= 4),'#ff6400 !important;', '#aaa9a9 !important;' )}"  
+                             value="FINAL REVIEW" /> 
+            <br/><br/><br/>
+            
+         </div>
+      
+        </apex:outputPanel>
+        
+    <!--
+        <apex:outputPanel rendered="{!applicationType == 'Diagnostics' }" > 
+     
+        <div class="inlineDisp pageText">  
+            <apex:outputText rendered="{!currStepNo == 1}" styleClass="selectedCircle" value="1" />
+            <apex:outputText rendered="{!currStepNo != 1 && compStepNo < 1}" styleClass="grayCircle" value="1" />  
+            <apex:image style="vertical-align: middle !important;" url="{!$Resource.OrangeTick}" rendered="{! currStepNo!=1 && compStepNo>=1}"/> 
+            <apex:outputLink style="text-decoration: none;color: {!IF(currStepNo == 1 || (currStepNo != 1 && compStepNo >= 1),'#ff6400 !important;', '#aaa9a9 !important;' )}"    
+                  value="/apex/NOA_DiagnosticsorReproductiveServices?id={!leadId}" rendered="{!(currStepNo == 1 || compStepNo >= 1)}"
+            > APPLICANT INFORMATION </apex:outputLink> 
+            <apex:outputText rendered="{!currStepNo != 1 && compStepNo < 1}" style="color: {!IF(currStepNo == 1 || (currStepNo != 1 && compStepNo >= 1),'#ff6400 !important;', '#aaa9a9 !important;' )}" 
+                             value="APPLICANT & FACILITY INFORMATION" /> 
+            <br/><br/><br/>
+                 
+            <apex:outputText rendered="{!currStepNo == 2}" styleClass="selectedCircle" value="2" />
+            <apex:outputText rendered="{!currStepNo != 2 && compStepNo < 2}" styleClass="grayCircle" value="2" />  
+            <apex:image style="vertical-align: middle !important;" url="{!$Resource.OrangeTick}" rendered="{! currStepNo!=2 && compStepNo>=2}"/> 
+            <apex:outputLink style="text-decoration: none;color: {!IF(currStepNo == 2 || (currStepNo != 2 && compStepNo >= 2),'#ff6400 !important;', '#aaa9a9 !important;' )}"    
+                  value="/apex/NOA_ReviewAndSubmit?id={!leadId}" rendered="{!(currStepNo == 2 || compStepNo >= 2)}"
+            > FINAL REVIEW </apex:outputLink> 
+            <apex:outputText rendered="{!currStepNo != 2 && compStepNo < 2}" style="color: {!IF(currStepNo == 2 || (currStepNo != 2 && compStepNo >= 2),'#ff6400 !important;', '#aaa9a9 !important;' )}"  
+                             value="FINAL REVIEW" /> 
+            <br/><br/><br/>
+         
+         </div>
+      
+        </apex:outputPanel>
+     -->   
+    
+    <apex:outputPanel rendered="{!applicationType == 'Diagnostics' }" > 
+        <div class="inlineDisp pageText">  
+         
+            <apex:outputText rendered="{!currStepNo == 1}" styleClass="selectedCircle" value="1" />
+            <apex:outputText rendered="{!currStepNo != 1 && compStepNo < 1}" styleClass="grayCircle" value="1" />  
+            <apex:image style="vertical-align: middle !important;" url="{!$Resource.OrangeTick}" rendered="{! currStepNo!=1 && compStepNo>=1}"/> 
+            <apex:outputLink style="text-decoration: none;color: {!IF(currStepNo == 1 || (currStepNo != 1 && compStepNo >= 1),'#ff6400 !important;', '#aaa9a9 !important;' )}"    
+                  value="/apex/NOA_DiagnosticsorReproductiveServices?id={!leadId}" rendered="{!(currStepNo == 1 || compStepNo >= 1)}"
+            > APPLICANT &amp; FACILITY INFORMATION </apex:outputLink> 
+            <apex:outputText rendered="{!currStepNo != 1 && compStepNo < 1}" style="color: {!IF(currStepNo == 1 || (currStepNo != 1 && compStepNo >= 1),'#ff6400 !important;', '#aaa9a9 !important;' )}"  
+                             value="APPLICANT & FACILITY INFORMATION" /> 
+            <br/><br/><br/> 
+            
+            <apex:outputText rendered="{!currStepNo == 2}" styleClass="selectedCircle" value="2" />
+            <apex:outputText rendered="{!currStepNo != 2 && compStepNo < 2}" styleClass="grayCircle" value="2" />  
+            <apex:image style="vertical-align: middle !important;" url="{!$Resource.OrangeTick}" rendered="{! currStepNo!=2 && compStepNo>=2}"/> 
+            <apex:outputLink style="text-decoration: none;color: {!IF(currStepNo == 2|| (currStepNo != 2 && compStepNo >= 2),'#ff6400 !important;', '#aaa9a9 !important;' )}"    
+                  value="/apex/NOA_OwnershipInformation?id={!leadId}" rendered="{!(currStepNo == 2 || compStepNo >= 2)}"
+            > OWNERSHIP AND BANKING INFORMATION </apex:outputLink> 
+            <apex:outputText rendered="{!currStepNo != 2 && compStepNo < 2}" style="color: {!IF(currStepNo == 2 || (currStepNo != 2 && compStepNo >= 2),'#ff6400 !important;', '#aaa9a9 !important;' )}"  
+                             value="OWNERSHIP AND BANKING INFORMATION" /> 
+            <br/><br/><br/>
+            
+            
+            <apex:outputText rendered="{!currStepNo == 3}" styleClass="selectedCircle" value="3" />
+            <apex:outputText rendered="{!currStepNo != 3 && compStepNo < 3}" styleClass="grayCircle" value="3" />  
+            <apex:image style="vertical-align: middle !important;" url="{!$Resource.OrangeTick}" rendered="{! currStepNo!=3 && compStepNo>= 3}"/> 
+            <apex:outputLink style="text-decoration: none;color: {!IF(currStepNo == 3 || (currStepNo != 3 && compStepNo >= 3),'#ff6400 !important;', '#aaa9a9 !important;' )}"    
+                  value="/apex/NOA_ReviewAndSubmit?id={!leadId}" rendered="{!(currStepNo == 3 || compStepNo >= 3)}"
+            > FINAL REVIEW </apex:outputLink> 
+            <apex:outputText rendered="{!currStepNo != 3 && compStepNo < 3}" style="color: {!IF(currStepNo == 3 || (currStepNo != 3 && compStepNo >= 3),'#ff6400 !important;', '#aaa9a9 !important;' )}"  
+                             value="FINAL REVIEW" /> 
+            <br/><br/><br/>
+            
+         </div>
+      
+        </apex:outputPanel>
+    
+        
+    <apex:attribute name="compStepNo" type="Integer" description="last completed step number" required="true"/>
+    <apex:attribute name="currStepNo" type="Integer" description="current page number" required="true"/>
+    <apex:attribute name="leadId" type="Id" description="salesforce lead Id" required="true"/>
+    <apex:attribute name="applicationType" type="String" description="This is to distinguish new online application forms" required="true"/>
+     
+</apex:component>

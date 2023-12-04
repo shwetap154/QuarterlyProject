@@ -1,0 +1,56 @@
+<apex:page showHeader="false" sidebar="false" standardController="PIT_Coaching_Guide__c" extensions="PIT_NewCoachingGuideOverrideController"> 
+<!-- action="{!redirectUser}" -->
+
+<script type="text/javascript">
+    var redirectCalled = false;
+    function newWinStart()
+    {
+        if(redirectCalled){
+            return;
+        }
+        redirectCalled = true;
+        var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+is_chrome = false;
+        var id = '{!PIT_Coaching_Guide__c.Id}';
+        var win; 
+        var winOk = true;
+        var urlVal;
+        if(id != ''){
+            urlVal = "https://zero.pitcher.com/coachingForm.php?ID="+id;
+        } else {
+            urlVal = "https://zero.pitcher.com/coachingForm.php";
+        }
+        if (is_chrome)
+        {
+            window.location.href = urlVal;
+        }
+        else
+        {
+    
+            win=window.open(urlVal, '_blank');
+    
+            try{
+                winOk = !win.closed;
+            } catch (err){
+                winOk = false;
+            }
+    
+            if(winOk){
+                window.history.back();
+                win.focus();
+            } else {
+                window.location.href = urlVal;
+            }
+        }
+    }     
+
+    setTimeout(function () {
+        newWinStart();
+    }, 1000);
+    </script>
+
+<body onload="javascript: newWinStart()">
+    ... loading...
+</body>
+
+</apex:page>

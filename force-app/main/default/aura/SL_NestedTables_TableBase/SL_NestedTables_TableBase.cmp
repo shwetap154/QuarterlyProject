@@ -1,0 +1,90 @@
+<!--
+ - Created by jerridkimball on 2018-05-17.
+ -->
+
+<aura:component
+    description="SL_NestedTables_TableBase"
+    controller="SL_NestedTables"
+    implements="force:hasRecordId"
+    extensible="true"
+    abstract="true"
+>
+    <aura:attribute name="GlobId" type="String" />
+
+    <aura:attribute name="allRecs" type="Object[]"/>
+    <aura:attribute name="currentRecords" type="Object[]"/>
+    <aura:attribute name="fieldMap" type="Object[]"/>
+    <aura:attribute name="errMsg" type="String"/>
+    <aura:attribute name="invalidFldMsg" type="String"/>
+	<aura:attribute name="IsShowSpinner" type="Boolean" default="false"/>
+    
+    <aura:attribute name="totPgs" type="Integer"/>
+    <aura:attribute name="currPg" type="Integer" default="1"/>
+    <aura:attribute name="pgSize" type="Integer" default="10"/>
+    <aura:attribute name="createAccess" type="Boolean" default="false"/>
+    <!--<aura:attribute name="glblFltrEnabled" type="Boolean" default="false"/>-->
+    <aura:attribute name="displayIndexColumn" type="Boolean" default="false"/>
+
+    <aura:attribute name="nextPg" type="Aura.Action" default="{!c.nextPg}"/>
+    <aura:attribute name="lastPg" type="Aura.Action" default="{!c.lastPg}"/>
+    <aura:attribute name="prevPg" type="Aura.Action" default="{!c.prevPg}"/>
+    <aura:attribute name="firstPg" type="Aura.Action" default="{!c.firstPg}"/>
+    <!--<aura:attribute name="handleFilters" type="Aura.Action" default="{!c.handleFilters}"/>-->
+
+    <aura:attribute name="columnFilters" type="Object" />
+    <aura:attribute name="recordCount" type="Integer" default="0" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="force:showToast" action="{!c.doInit}" />
+
+    <!--<aura:handler name="change" value="{!v.fieldMap}" action="{!c.setColumnWidths}" />-->
+
+    <aura:attribute
+        name="isInfiniteScrollEnabled"
+        type="Boolean"
+        description="turn on the infinite scroll pagination"
+        access="public"
+    />
+
+    <aura:attribute
+        name="scrollCheckIntervalId"
+        type="String"
+        description="In the renderer.js, the interval id for periodically checking scroll position. Used when unrendering component to cancel interval check."
+        access="private"
+    />
+
+    <lightning:spinner aura:id="initSpinner" variant="brand" class="{!v.IsShowSpinner ? ' ' : ' slds-hide'}"/>
+
+    {!v.body}
+
+    <aura:if isTrue="{!not(v.isInfiniteScrollEnabled)}">
+        <div class="slds-card__footer slds-grid " style="margin-top:0 !important;">
+            <div class="slds-col slds-text-align_left slds-grid_vertical-align-center">
+                <span>
+                    Showing {!(v.currentRecords.length > 0 ? 1 : 0) + ((v.currPg - 1) * v.pgSize)} to {! (v.currPg * v.pgSize) > v.allRecs.length ? v.allRecs.length : (v.currPg * v.pgSize) } of {!v.allRecs.length} records
+                </span>
+            </div>
+            <div class="slds-col slds-text-align_right slds-grid_vertical-align-center">
+                <lightning:buttonGroup >
+                    <lightning:button label="First"
+                        onclick="{!v.firstPg}"
+                        disabled="{!v.currPg != 1 ? false : true}"
+                    />
+                    <lightning:button label="Previous"
+                        onclick="{!v.prevPg}"
+                        disabled="{!v.currPg != 1 ? false : true}"
+                    />
+                    <lightning:button label="Next"
+                        onclick="{!v.nextPg}"
+                        disabled="{!v.currPg &lt; v.totPgs ? false : true}"
+                    />
+                    <lightning:button label="Last"
+                        onclick="{!v.lastPg}"
+                        disabled="{!v.currPg &lt; v.totPgs ? false : true}"
+                    />
+                </lightning:buttonGroup>
+            </div>
+        </div>
+    </aura:if>
+
+</aura:component>

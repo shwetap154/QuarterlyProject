@@ -1,0 +1,80 @@
+<apex:page id="MainPage"
+           showHeader="false" 
+           cache="true"
+           standardController="Lead"
+           extensions="ZoetisForShelters" 
+           standardStylesheets="false"
+           applyHtmlTag="false" applyBodyTag="false" 
+           contentType="application/x-pdf#{!shelter.Shelter_Application_Number__c}.pdf">
+ <head>
+        
+        <style type="text/css"  >
+            
+            @page { 
+                @bottom-right {
+                content: element(footer); 
+                }
+            }
+            div.footer {
+            margin-left:640px;
+            display: block;
+            padding: 5px;
+            position: running(footer); 
+            }      
+            .headerRow .headerStyle{
+            background-color:#ADD8E6;
+            color:#000000;
+            text-align:center;
+            } 
+            .tableClass tbody{
+            text-align:center;
+            }
+            body,td {                
+            font-size: 13px;
+            font-family: Arial,Helvetica,sans-serif;
+            } 
+            td { 
+            padding: 2px;
+            }
+            .bPageBlock .detailList  {
+            padding: 2px 2px 2px 2px;
+            
+            width: 100%;
+            font-family: Arial,Helvetica,sans-serif;
+            } 
+            .pageBlockTable {
+            font-size:11.5px; 
+            font-family: Arial,Helvetica,sans-serif;
+            }
+            .pageBlockTableHeader {
+            font-size:9.5px;
+            border-color: white;
+            font-family: Arial,Helvetica,sans-serif;
+            }
+            h1, h2, h3
+            {
+            margin: 2px;
+            padding: 2px;
+            color: white;
+            background-color:#2f94bc;            
+            } 
+            .headers  {
+                color: white;
+                text-align: center;
+                position: relative;
+                text-transform: uppercase;
+                background-color: #6dd2de;
+                padding: 0.25em 0 0.1em;
+                font-family: "proxima-nova-extra-condensed", Helvetica, Arial, sans-serif;
+               
+                font-size: 1.5em;
+                line-height: 1;
+                width:100%;
+                float:left;
+            }
+            
+        </style>
+</head>
+    <!-- Here comes another page with a content to be converted to PDF -->
+    <apex:include pageName="ZFS_FinalFormPDF"/>
+</apex:page>

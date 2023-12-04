@@ -1,0 +1,137 @@
+.removeLink
+{
+	font-weight:bold;
+	color:#DC143C !important;
+	text-decoration:none;
+}
+
+.removeColumn
+{
+	width:20%;
+}
+body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+    background-color: rgba(0, 0, 0, 0);
+    border-color: #FF6400;
+    border-radius: 0;
+    border-style: solid none none;
+    border-width: 1px medium medium;
+}
+.bEditBlock .pbHeader > table, .apexp .bPageBlock.apexDefaultPageBlock .pbHeader > table, #ep.bLayoutBlock .pbHeader > table {
+    border-bottom: medium none;
+}
+body .bPageBlock .pbBody hr {
+    border: none;
+    border-bottom: 1px solid #DBDBDB;
+}
+.add {
+    color: #0096AF !important;
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+}
+.add:hover{
+   opacity: .5;
+   text-decoration: none;
+}
+body .bPageBlock .pbBody .labelCol,
+body .bPageBlock .pbBody .dataCol,
+body .bPageBlock .pbBody .data2Col,
+.apexp .detailList .list .headerRow th,
+.apexp .bPageBlock .detailList .list,
+body .pbBody table.list tr.dataRow th, 
+body .pbBody table.list tr.dataRow td,
+body .bEditBlock .pbBottomButtons, 
+body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+    border: medium none;
+}
+.apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-top: 0 none;
+    color: #000000;
+}
+.apexp .detailList .list .headerRow th {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    padding-left: 30px;
+    text-align: left;
+}
+.apexp .detailList .list .headerRow th:last-child{
+    text-align: center;
+}
+body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow td {
+    border-bottom: 1px solid #DBDBDB !important;
+    padding: 5px 0 5px 30px;
+    text-align: left;
+    vertical-align: top;
+}
+body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow td:last-child {
+    text-align: center;
+}
+body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow:last-child td {
+    border-bottom: none !important;
+}
+.pbSubheader > img {
+    display: none;
+}
+.pbSubheader > h3 {
+    font-size: 1.2em;
+}
+.pbBody > a {
+    display: block;
+    float: left;
+    font-size: 1em;
+    font-weight: bold;
+    left: 0;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    text-decoration: none;
+}
+.bPageBlock .requiredInput {
+/*    display: block;
+    height: 100%;
+    margin-left: 30%;
+    padding-left: 5px;
+    position: relative;*/
+}
+.pbBody a > i{
+ color: #0096AF;
+    display: block;
+    float: left;
+    font-size: 2.5em;
+    font-weight: normal;
+    margin-right: 2px;
+    
+    margin-top: -11px;
+
+}
+
+.listRelatedObject .bPageBlock .pbHeader .btn, .listRelatedObject .bPageBlock .pbBottomButtons .btn, .apexp .bPageBlock .pbHeader .btn, .apexp .bPageBlock .pbBottomButtons .btn, div.buttons .btn, div.pbBottomButtons > .btn,
+body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-color: #DBDBDB;
+    font-size: 1em;
+    font-weight: normal;
+    margin: 0 10px;
+}
+
+.listRelatedObject .bPageBlock .pbHeader .btn:hover, .listRelatedObject .bPageBlock .pbBottomButtons .btn:hover, .apexp .bPageBlock .pbHeader .btn:hover, .apexp .bPageBlock .pbBottomButtons .btn:hover, div.buttons .btn:hover, div.pbBottomButtons > .btn:hover,
+body button:hover, body .x-btn:hover, body .btn:hover, body .btnDisabled:hover, body .btnCancel:hover, body .menuButton .menuButtonButton:hover {
+    background: linear-gradient(to bottom, #DBDBDB 0%, #808080 99%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+
+.apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader h3 {
+    font-size: 1.3em;
+}
+.errorConsole .x-grid3-row-over, body .pbBody table.list tr.dataRow.highlight td, body .pbBody table.list tr.dataRow.highlight th {
+    background-color: #FFC19B;
+}
+ i.iSection{
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 5px;
+ }
+ i.iSection > span {
+     display: block;
+     margin-top: -12px;
+ }

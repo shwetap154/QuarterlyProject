@@ -1,0 +1,34 @@
+<apex:page id="pg" controller="USOnLoadController">
+<apex:form >
+
+<apex:actionFunction name="OpenPage" action="{!redirect}" reRender="pb">
+    <apex:param assignTo="{!Page}" value="" name="param1"/>
+</apex:actionFunction>
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:pageBlock id="pb" rendered="{!IF(check==false, true,false)}" >
+        <apex:outputlink style="float:right;" value="{!OpenPageURL}" id="theLink" target="_blank" title="See Full Screen"><apex:image url="{!URLFOR($Resource.FullScreen1)}" width="30px" height="30px"/></apex:outputlink>
+        <br/>
+        <br/>
+        <br/>
+        <apex:pageBlockButtons >
+            
+            <apex:commandButton value="My Performance" onclick="OpenPage('My_Performance'); return false;"/>
+            <apex:commandButton value="My Customers" onclick="OpenPage('my_customers'); return false;"/>
+            <apex:commandButton value="Customer 360" onclick="OpenPage('Customer_360'); return false;"  />
+            <apex:commandButton value="My Activities" onclick="OpenPage('My_Activities'); return false;"/>
+            
+            
+        </apex:pageBlockButtons>
+
+        <apex:iframe id="theIframe" height="950px" width="100%" src="{!OpenPageURL}" scrolling="true" />
+         
+       </apex:pageBlock> 
+    </apex:form>
+
+
+<script>
+function abc() {
+    window.location = 'https://www.google.com';
+}
+</script>
+</apex:page>

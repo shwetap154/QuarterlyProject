@@ -1,0 +1,7 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="CSE_AbstractSummaryController" >
+    <aura:attribute name="recordId" type="Id" />
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!--Component End-->
+</aura:component>

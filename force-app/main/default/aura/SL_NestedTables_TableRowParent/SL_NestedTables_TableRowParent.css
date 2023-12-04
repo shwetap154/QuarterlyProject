@@ -1,0 +1,10 @@
+/**
+ * Created by jerridkimball on 2018-05-31.
+ */
+.THIS td.expanded-table:hover {
+    box-shadow: none !important;
+    background-color: #FFFFFF !important;
+}
+.THIS td.slds-truncate{
+    word-break: break-word !important;
+}

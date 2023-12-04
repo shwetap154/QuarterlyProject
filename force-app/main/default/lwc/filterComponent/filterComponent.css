@@ -1,0 +1,60 @@
+.custom-data-table {
+    font-family: Arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.custom-data-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+    cursor: col-resize;
+}
+
+.custom-data-table th, .custom-data-table td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+/*.custom-data-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+} */
+
+.custom-data-table tr:hover {
+    background-color: #ddd;
+}
+
+.custom-data-table {
+    display: flex;
+    flex-direction: row;
+}
+
+.custom-data-table th, .custom-data-table td {
+    flex: 1;
+    min-width: 0; /* Allows content to overflow */
+}
+.custom-data-table th:hover {
+    background-color: #ddd;
+}
+/* Style for the resizer handle */
+.resizer {
+    width: 8px;
+    height: 100%;
+    background-color: #f4f4f4;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: col-resize;
+}
+
+/* Style for the table layout */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table th,
+table td {
+    border: 1px solid #d3d3d3;
+    padding: 8px;
+}

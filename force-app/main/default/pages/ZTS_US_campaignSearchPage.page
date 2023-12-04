@@ -1,0 +1,46 @@
+<apex:page controller="ZTS_US_campaignSearchController" showHeader="false" sidebar="false" id="myCampaignPopupPage" cache="false">
+
+<script>
+     
+    var winMain=window.opener;
+    if (null==winMain){
+       winMain=window.parent.opener;
+    } 
+    
+    function sendBackResponse(CampaignIds, Campaignname){
+        winMain.sendCampaignInfo(CampaignIds, Campaignname);
+    }
+        
+    function cancelWindow(){
+        winMain.cancelResponsePopup();
+    }
+
+
+    </script>
+    
+    <apex:form id="myPopupForm" rendered="{!lstCampaignWrapp != null}">
+
+        <apex:pageBlock id="myPageBlockSec">
+        
+            <apex:pageBlockButtons id="myPageBlockButtons">
+                <apex:commandButton action="{!saveResponse}" id="mySelectButton" value="Select" 
+                                        onComplete="sendBackResponse('{!selectedCampaignIds}', '{!selectedCampaignnames}');"/>
+                <apex:commandButton id="myCancel" value="Cancel" onclick="cancelWindow()" immediate="true"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection showHeader="false" id="myPageBlockSec" columns="1" collapsible="false">
+            
+                <apex:pageBlockTable value="{!lstCampaignWrapp}" var="CampaignWrapper" columns="3">
+                    <apex:column > 
+                        <apex:inputCheckbox value="{!CampaignWrapper.isSelected}"/>
+                    </apex:column>
+                    <apex:column headerValue="Name"> 
+                        <apex:outputField value="{!CampaignWrapper.oCampaign.name}"/>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+    </apex:form>
+
+</apex:page>

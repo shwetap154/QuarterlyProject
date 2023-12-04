@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <propertyType name="comps1" extends="SObject" label="Select a SObject as Observationed Competency" description="Select a SObject"/>
+            <property name="lstObscomprecords" type="{comps1[]}" label="Observed Competency Records" description="List of Observed Competencies" role="inputOnly"/>
+            <propertyType name="comps2" extends="SObject" label="Select a SObject as Benchmark" description="Select a SObject"/>
+            <property name="lstBenchmark" type="{comps2[]}" label="Benchmark Records" description="List of Benchmark Records" role="inputOnly"/>
+            <propertyType name="comps3" extends="SObject" label="Select a SObject as User" description="Select a SObject"/>
+            <property name="lstUser" type="{comps3[]}" label="user Records" description="List of User Records" role="inputOnly"/>
+            <property name="lstdelLessons" type="@salesforce/schema/Lesson__c[]" label="Lesson Records to Delete" description="List of Lesson Record to Delete" role="outputOnly"/>
+            <property name="lstinsLessons" type="@salesforce/schema/Lesson__c[]" label="Lesson Records to Insert" description="List of Lesson Record to Insert" role="outputOnly"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

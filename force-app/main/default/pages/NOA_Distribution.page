@@ -1,0 +1,195 @@
+<!--
+  @description       : 
+  @author            : Unknown
+  @group             : 
+  @last modified on  : 02-26-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   02-23-2021   Morgan Marchese @ Zoetis Inc   Header Creation
+-->
+<apex:page id="mainPage" title="New Online Account" standardController="Lead" extensions="NOA_NewOnlineAccount" cache="false" 
+           showChat="false" showHeader="false" sidebar="false">
+    <head>
+        <style type="text/css"  >
+            
+            .btn {  
+            line-height:1.5 !important;border:2px solid transparent !important;min-width:8em !important;
+            background-color:#ff6400 !important;
+            background:#ff6400 !important;
+            color:white !important;
+            }  
+            pbSubheader{
+            background-color:#1696ad !important;
+            color:white !important;
+            }
+            .individualPalette .leadBlock .tertiaryPalette{
+            background-color:#0096AF !important;
+            border-color:#0096AF !important;
+            }
+            .individualPalette .leadBlock .secondaryPalette {
+            border-color:#0096AF !important;
+            }
+            body .bEditBlock .pbBody .pbSubheader{
+            background-image:none !important;
+            color:#ffffff !important;
+            }
+            .requiredLegend{
+            color:#ffffff !important; 
+            }
+            .message {
+            background-color: white;
+            width: 70%;
+            border-color: red;
+            border-width: thin;
+            border-style: solid;
+            font-weight:bold;
+            }
+            body{
+            font-size: 85% !important;
+            min-height: 50% !important;	//only used for distribution page
+            }
+            body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label{
+            font-size: 1.4em;
+            }
+            .headtext{
+            text-align: left;
+            margin-left: 10%;
+            margin-right: 10%; 
+            color: #9a9797;
+            }
+            
+            .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader h3 {
+                font-size: 1.4em;
+            }
+            body{
+                font-family: "proxima-nova", Helvetica, Arial, sans-serif !important;
+            }
+        </style> 
+          
+        <script type='text/javascript'>             
+        function openSalesPolicyPopup(){
+            window.open('/newonlineaccount/NOA_SalesPolicy','_blank', 'scrollbars=yes, resizable=no, location=no, titlebar=no, top=150, left=400, width=600, height=300');
+        }
+        </script>
+    </head> 
+     
+    
+    <c:NOA_AnimalHeader />
+    
+    <!--<c:NOA_mainHeader />-->
+	<c:NOA_header noaLeadObj="{!newOnlineAcc}" renderRx="{!renderRx}" ></c:NOA_header>
+    <body>
+        
+    
+    <table style="width:100%;">
+        <tr>
+            <td style="width:10%;"></td> 
+            <td style="width:60%;vertical-align: top;">
+                <center> 
+                    <apex:form id="mainForm" rendered="{!newOnlineAcc.Customer_Sub_Type__c != 'Veterinary Services'}" >
+                        <apex:pageMessages rendered="{!hasErrors}" ></apex:pageMessages>  
+                        <apex:outputPanel id="mainOP" style=""> 
+                            <apex:pageBlock id="mainPB"   > 
+                                <apex:pageBlockSection id="mainPBS" title="Distribution Information" columns="1" collapsible="false"   >
+                                    
+                                    <apex:outputPanel >
+                                        <apex:outputText value="<b>Based on your selection it looks like you primarily purchase large animal products.  
+                                                                Our Livestock products are available through one of our authorized distributors listed below.  
+                                                                </b> " escape="false" />
+                                        <apex:outputLink rendered="false" style="color:#ff6400" onclick="openSalesPolicyPopup();return false;"><b>Sales Policy </b></apex:outputLink>
+                                        <apex:outputText rendered="false" value="<b> click here. </b>" escape="false" />
+                                    </apex:outputPanel>
+                                    <br/>
+                                    <apex:pageBlock title="Suppliers" >
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <ul>
+                                                        <li>Agro Servicios, Inc.</li>
+                                                        <li>Animal Health International, Inc.</li>
+                                                        <li>Fuller Supply Co.</li>
+                                                        <li>Henry Schein Animal Health</li>
+                                                        <li>Midwest Supply - A Division of Animart, LLC</li>
+                                                        <li>MWI Animal Health</li>
+                                                        <li>Patterson Veterinary Supply, Inc.</li>
+                                                        <li>Simplot Western Stockmen's</li>
+                                                        <li>Stockman's Supply - A Division of Animart, LLC</li>
+                                                        <li>Veterinary Service, Inc.</li>
+                                                    </ul>
+                                                </td> 
+                                                <td>
+                                                    <ul>
+                                                        <li>Alliance Animal Care, LLC</li>
+                                                        <li>Animart, LLC</li>
+                                                        <li>Hawaii Mega Cor, Inc.</li>
+                                                        <li>K&amp;K Veterinary Supply, Inc.</li>
+                                                        <li>Midwest Veterinary Supply, Inc.</li>
+                                                        <li>Northwest Vet Supply, Inc.</li>
+                                                        <li>RJ Matthews Company</li>
+                                                        <li>Southeast Milk, Inc.</li>
+                                                        <li>Veterinarian's Outlet, Inc.</li>
+                                                        <li>West Plains Veterinary Supply</li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </apex:pageBlock>
+                                    <br/>
+                                    <apex:panelGrid columns="3"  >
+                                        <label> <b>Would you still like to set up an account to order directly from Zoetis? </b></label>
+                                        <apex:inputCheckbox label="" id="overrideDist" value="{!newOnlineAcc.Override_Distribution__c}" >
+                                            <apex:actionSupport event="onclick" reRender="distQues" status="counterstatus" />
+                                        </apex:inputCheckbox>
+                                        <apex:actionStatus id="counterstatus" >
+                                            <apex:facet name="start" >
+                                                <img src="/img/loading.gif" />                    
+                                            </apex:facet>
+                                        </apex:actionStatus>
+                                    </apex:panelGrid>
+                                    
+                                    <apex:outputPanel id="distQues"  >
+                                        <apex:pageBlockSection columns="1" rendered="{!newOnlineAcc.Override_Distribution__c == true}">
+                                            <label><b>Are you a licensed veterinarian or do you employ a licensed veterinarian? </b></label>
+                                            <apex:selectRadio label="" value="{!newOnlineAcc.Do_you_have_a_licensed_veterinarian__c}" style="width:40%" >
+                                                <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                                <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                                            </apex:selectRadio>    
+                                        </apex:pageBlockSection>
+                                    </apex:outputPanel>
+                                    <br/>
+                                    
+                                    <apex:outputPanel rendered="{! !readonly}">
+                                        <apex:outputPanel style="float: left; padding-left:6%;"> 
+                                            <!--<apex:commandButton value="Previous" action="{!previous}" />	-->
+                                            <apex:commandButton value="Next" action="{!createFormOne}"/>   
+                                        </apex:outputPanel>  
+                                        <br/><br/><br/>
+                                    </apex:outputPanel>
+                                    
+                                </apex:pageBlockSection>  
+                                
+                            </apex:pageBlock>
+                        </apex:outputPanel>
+                    </apex:form> 
+                </center>
+                
+                <apex:pageBlock rendered="{!newOnlineAcc.Customer_Sub_Type__c == 'Veterinary Services'}" >
+                    
+                    <br/><br/>
+                    Thank you for your inquiry. At Zoetis, we believe the veterinarian is central to the health and care of pets. 
+                    No other individual is better positioned through training, knowledge and clinical expertise to advocate for 
+                    the health, well-being and specific needs of pets. Therefore, Zoetis sells its prescription medications only through veterinarians. 
+                    
+                    <br/><br/><br/>
+                </apex:pageBlock> 
+                
+            </td>
+            <td style="width:10%" ></td>
+        </tr>
+    </table> 
+    <br/><br/>
+    <c:NOA_footerpage />
+        
+        </body>
+</apex:page>

@@ -1,0 +1,32 @@
+<apex:page showHeader="true" standardStylesheets="true" sidebar="true">
+
+    <table border="0" width="600">
+        <tr>
+           <td> <h1 style="font-family:Georgia;font-size:200%">Salesforce<i>Events</i> 4</h1></td>
+        </tr>
+    </table>
+    
+    <table border="0" width="600">
+        <tr>
+            <td>
+                <p>You have successfully removed all sample data.</p>
+                <p>Events for Salesforce helps you manage customer conferences, partner meetings or any other type of multi-session event. Events can be as simple as a web presentation, or as complex as a multi-day conference with multiple speakers and break outs.</p>
+                <p>Using Events for Salesforce is simple, Create your Event, add one or more Tracks, then add one or more Sessions to each Track. You can also track event venus, such as a hotel or confernece center, and assign individual Speakers to each Session.</p>
+                <p>To help you get started, included is an automated "initialize" process, which creates a sample event in your system as well as a brief video to walk you through the key aspects of the system.</p>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">        
+                <iframe width="560" height="315" src="http://www.youtube.com/embed/yN-fDOigVuY" frameborder="0" allowfullscreen="1"></iframe>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://twitter.com/texasrob" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @texasrob</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                <p>Follow me on Twitter to send question or comments, as well as enhancement requests. I will implement your ideas as time allows.</p>
+                <p>Please take the time to rate this app on the AppExchange for the benefit of the community. <a href="http://appexchange.salesforce.com/listingDetail?listingId=a0N30000005vK3CEAU">Rate Events on the AppExchange</a></p>
+            </td>
+        </tr>
+    </table>
+</apex:page>

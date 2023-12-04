@@ -1,0 +1,38 @@
+.THIS .zs_name_table{
+  height: 30px;
+  border: 0.5px solid #D8D8D8;
+}
+
+.THIS .zs_name_table td{
+  text-align: center;
+  border: none;
+  font-size: 13px;
+  letter-spacing: .121875px;
+  font-family: 'GothamNarrow';
+}
+.THIS .zs_name_table td:nth-child(1) {
+  text-align: left;
+}
+.THIS .zs_name_table td a{
+  border: 0;
+}
+.THIS .zs_name_table td a:hover{
+  background: 0;
+}
+
+.THIS .slds-table thead th{
+    background: #005670;
+    font-size: 14px;
+    color: #FFFFFF;
+    letter-spacing: 0.121875px;
+    font-family: 'GothamNarrow';
+    border: 1px solid #ddd;
+    padding: 12px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: center;
+  
+  }
+  .THIS .slds-table_bordered{
+    border-collapse: collapse;
+  }

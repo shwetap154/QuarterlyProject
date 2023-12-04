@@ -1,0 +1,23 @@
+<!--
+  @description       : 
+  @author            : Morgan Marchese @ Zoetis Inc
+  @group             : 
+  @last modified on  : 08-21-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+-->
+<apex:page showheader="false" sidebar="false" controller="GigyaRegistrationController">
+    <apex:includeScript value="https://cdns.gigya.com/js/gigya.js?apikey={!apiKey}" />
+    <script>
+        function onGigyaServiceReady() {
+
+            gigya.accounts.addEventHandlers({
+                onLogout:
+                    function (response) {
+                        console.log(response);
+                        alert("You have logged out!");
+                    }
+            });
+            gigya.accounts.logout();
+        }         
+    </script>
+</apex:page>

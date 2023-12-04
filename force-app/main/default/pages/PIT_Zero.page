@@ -1,0 +1,5 @@
+<apex:page >
+  <!-- Begin Default Content REMOVE THIS -->
+  <a href="https://msddirect.pitcher.com/sfdc/generateOffline.php" target="_blank">Update Pitcher Zero</a>
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>

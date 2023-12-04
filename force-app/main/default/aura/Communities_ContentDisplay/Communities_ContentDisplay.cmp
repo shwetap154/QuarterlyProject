@@ -1,0 +1,250 @@
+<!-- 
+@author Stephanie Ralls [stephanie.ralls@atginfo.com]
+@date June 2019
+@description Lightning Component for Library Page on Partner Communities
+
+Last Modified: June 27 2019 - Updated
+Last Modified By: Stephanie Ralls 
+Last Modified: September 12 2023 - Create a Search Input Functionality
+Last Modified By: Sweta Kumari
+-->
+
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="ContentDisplayPageHandler">
+    <!-- Initialize Variables -->
+    <aura:attribute name="contentVersions" type="ContentVersion[]" default="[]" access="global" />
+    <aura:attribute name="filteredContentVersions" type="ContentVersion[]" default="[]" access="global" />
+    <aura:attribute name="contentVersionsToDisplay" type="ContentVersion[]" default="[]" access="global" />
+    <aura:attribute name="loading" type="Boolean" default="false" access="global" />
+    <aura:attribute name="errorMessage" type="String" access="global" />
+    <aura:attribute name="baseURL" type="String" access="global" />
+    <aura:attribute name="allSpecies" type="List" access="global" />
+    <aura:attribute name="totalPageNumber" type="Integer" />
+    <aura:attribute name="currentPage" type="Integer" default="1" />
+    <aura:attribute name="recordsToShow" type="Integer" default="10" />
+    <aura:attribute name="totalRecords" type="Integer" default="0" />
+    <aura:attribute name="searchInput" type="String" access="global" />
+    
+    
+    
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="Communities_SpeciesFilter_EV" event="c:Communities_SpeciesFilter_EV" action="{!c.onFilterChange}" />
+    
+    <!-- Loading Spinner -->
+    <aura:if isTrue="{!v.loading}">
+        <div>
+            <lightning:spinner variant="brand" size="large" alternativeText="loading" class="slds-m-top--xx-large slds-p-top--xx-large" />
+        </div>
+    </aura:if>
+    
+    <!-- Error Message -->
+    <aura:if isTrue="{!v.errorMessage}">
+        <lightning:icon variant="error" iconName="utility:warning" size="small" />
+        <div class="slds-text-heading_small slds-text-color_error slds-m-bottom--medium">
+            {!v.errorMessage}
+        </div>
+    </aura:if>
+    
+    <div class="zs_community_content_wrap">
+        <!-- ******* IF ON DESKTOP ******* -->
+        <aura:renderIf isTrue="{!$Browser.formFactor == 'DESKTOP'}">
+            
+            
+            <!--<div class="search_wrap_section" style="display: flex;">
+  <div class="search">
+     <input type="text" class="searchTerm" placeholder="Search  Documents"></input>
+     <button type="submit" class="searchButton">
+       <img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/search_icon.png'}"></img>
+    </button>
+  </div>
+  <button class="zs_search_button">Search</button>
+</div>-->
+            
+            <!-- TPDEV-759 created by sweta kumari ->for search Input -->    
+            <div style="width: 43%; display: flex;">
+                <label  class="search-text">Search</label>
+                <lightning:input type="Search" aura:id="searchInput" value="{!v.searchInput}" placeholder="Enter search text" onchange="{!c.handleSearchTextChange}"/>
+            </div>    
+            
+            <!-- Help text -->
+            <div class="slds-box_small">
+                <!-- <lightning:icon class="custom-help-icon" iconName="action:filter" alternativeText="Filter" size="xx-small" /> -->
+                <img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/filter_vector.png'}"></img> 
+                <img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/filter_vector.png'}"></img>
+                <img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/filter_vector.png'}"></img>
+                <span class="slds-p-left_xx-small zs_filter_text">
+                    To filter your results, select one or more species
+                </span>
+            </div>
+            
+            <!-- Species Filter Icons -->
+            <div class="slds-grid slds-wrap">
+                <aura:iteration items="{!v.allSpecies}" var="species">
+                    <div class="custom-column slds-col slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--1-of-5 slds-large-size--1-of-5">
+                        <c:Communities_SpeciesFilter label="{!species.label}" imageSrc="{!species.imageSrc}" active="{!species.active}" isPhone="false" />
+                    </div>
+                </aura:iteration>
+            </div>
+            
+            <!-- Content Version Data Table -->
+            <div class="custom-parent-div slds-wrap">
+                <table class="slds-table  slds-table_cell-buffer custom-data-table">
+                    <!-- Columns -->
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-col" title="Name">Name</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-col" title="Species">Species</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-col" title="Type">Type</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-col" title="Download">Download</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <!-- Rows -->
+                    <tbody>
+                        <aura:iteration items="{!v.contentVersionsToDisplay}" var="contentVersion">
+                            <tr class="slds-hint-parent slds-has-flexi-truncate">
+                                <td data-label="Name" scope="row" class="custom-data-column" style="width:400px">
+                                    <div title="Name">
+                                        <p class="slds-truncate">{!contentVersion.Title}</p>
+                                    </div>
+                                </td>  
+                                <td data-label="Species" scope="row">
+                                    <div class="" title="Species">
+                                        <p class="slds-truncate">
+                                            {!contentVersion.Applicable_Species__c}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td data-label="File Type" scope="row">
+                                    <div title="File Type">
+                                        <p class="slds-truncate">
+                                            {!contentVersion.Library_File_Type__c}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td data-label="Download" scope="row" class="">
+                                    <div class="" title="File Type">
+                                        <a
+                                           class="slds-button slds-button_neutral"
+                                           href="{!v.baseURL + contentVersion.Id + '?operationContext=S1'}"
+                                           download="{!contentVersion.Title}"
+                                           >
+                                            
+                                            <img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/filedownload_icon.png'}"></img>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+            </div>
+        </aura:renderIf>
+    </div>
+    <!-- ******* IF NOT ON DESKTOP (Phone, Mobile) ******* -->
+    <aura:renderIf isTrue="{!$Browser.formFactor != 'DESKTOP'}">
+        <!-- Help text -->
+        <div class="slds-box_small">
+            <lightning:icon class="custom-help-icon " iconName="action:filter" alternativeText="Filter" size="xx-small" />
+            <span class="slds-p-left_small">
+                Select one or more species to further filter results.
+            </span>
+        </div>
+        
+        <!-- Species Filter Icons -->
+        <div class="slds-grid slds-wrap">
+            <aura:iteration items="{!v.allSpecies}" var="species">
+                <div class="slds-col slds-size--1-of-1">
+                    <c:Communities_SpeciesFilter label="{!species.label}" imageSrc="{!species.imageSrc}" active="{!species.active}" isPhone="true" />
+                </div>
+            </aura:iteration>
+        </div>
+        <!-- Content Version Table -->
+        <div>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered custom-data-table">
+                <!-- Table Headers -->
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Product Name">Solutions</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Actions">Species</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Actions">Actions</div>
+                        </th>
+                    </tr>
+                </thead>
+                <!-- Table Rows -->
+                <tbody>
+                    <aura:iteration items="{!v.contentVersionsToDisplay}" var="contentVersion">
+                        <tr class="slds-hint-parent slds-has-flexi-truncate">
+                            <td data-label="Product Name" scope="row" class="">
+                                <div title="Title">
+                                    <p class="slds-truncate">{!contentVersion.Product_Line__c}</p>
+                                </div>
+                            </td>
+                            <td data-label="Product Name" scope="row" class="">
+                                <div title="Title">
+                                    <p class="slds-truncate">
+                                        {!contentVersion.Applicable_Species__c}
+                                    </p>
+                                </div>
+                            </td>
+                            <td data-label="Action" scope="row" class="">
+                                <div title="File Type">
+                                    <a
+                                       class="slds-button slds-button_neutral"
+                                       href="{!v.baseURL + contentVersion.Id + '?operationContext=S1'}"
+                                       download="{!contentVersion.Title}"
+                                       >
+                                        <p class="slds-truncate">
+                                            <lightning:icon
+                                                            class="slds-current-color"
+                                                            size="x-small"
+                                                            iconName="utility:download"
+                                                            alternativeText="Download File"
+                                                            />
+                                        </p>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        </div>
+    </aura:renderIf>
+    
+    <!-- ******* Number of Results ******* -->
+    <div class="slds-m-bottom_small">
+        <p class="custom-sub-text">Total: {!v.totalRecords}</p>
+    </div>
+    
+    <!-- Previous/Next Page buttons -->
+    <div class="slds-align_absolute-center slds-m-bottom_medium zs_next_page">
+        <lightning:button
+                          disabled="{!v.currentPage == 1}"
+                          variant="brand"
+                          name="previousPage"
+                          label="Previous"
+                          onclick="{!c.navigatePages }"
+                          />
+        <lightning:button
+                          disabled="{!v.currentPage == v.totalPageNumber}"
+                          aura:id="previousPage"
+                          name="nextPage"
+                          variant="brand"
+                          label="Next"
+                          onclick="{!c.navigatePages}"
+                          />
+    </div>
+</aura:component>

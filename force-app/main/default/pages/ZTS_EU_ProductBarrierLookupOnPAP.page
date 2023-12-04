@@ -1,0 +1,49 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_ProductBarrierLookupOnPAP
+* Description   :   This vf page is called when Product Barrier lookup icon is clicked from PAP edit page.                        
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     4th-May-15   Shreyas             Created the vf page.
+
+********************************************************************************************************************************************
+-->
+<apex:page controller="ZTS_EU_PAPController" showHeader="false" sidebar="true">
+  
+  <apex:form >
+      <apex:pageblock title="Product Barrier">
+      
+          <apex:pageblockSection >
+          
+              <apex:pageblockTable value="{!pbList}" var="pb">
+              
+              <apex:column headerValue="{!$ObjectType.ZTS_EU_Product_Barrier__c.Fields.Name.Label}">
+                  <apex:commandLink value="{!pb.Name}" onclick="selectProductBarrier('{!pb.Id}','{!pb.Name}');"/>
+              </apex:column>
+              
+              </apex:pageblockTable>
+          
+          </apex:pageblockSection>
+      
+      </apex:pageblock>
+  </apex:form>
+  
+  <script>
+      function selectProductBarrier(pbId, pbName){
+          try {
+            pbId= pbId.substring(0,15);
+            top.window.opener.lookupPick('editPage','pg:frm_edit:pb_edit:pbs_edit:productbarrier_lkid','pg:frm_edit:pb_edit:pbs_edit:productbarrier','',pbId,pbName,'null','');
+          }
+          catch (e){
+            alert(e);
+          }
+      } 
+      
+   </script>
+
+  
+</apex:page>

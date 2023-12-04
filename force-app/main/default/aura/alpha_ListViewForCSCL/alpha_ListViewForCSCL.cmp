@@ -1,0 +1,202 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global"  controller="alpha_ListViewForCSCL_Ctrl">
+	  <aura:attribute type="order[]" name="ordtList"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="monthMap" type="Map"/>
+    <aura:attribute name="yearMap" type="Map"/>
+     <aura:attribute name="ispreview" type="boolean" default="false"/>
+    <aura:attribute name="industryMap" type="Map"/>
+    <aura:attribute name="yearstr" type="string"/>
+    <aura:attribute name="monthStr" type="string"/>
+    <aura:attribute name="yearstrSave" type="string"/>
+    <aura:attribute name="monthStrSave" type="string"/>
+    <aura:attribute name="webkul" type="string" default=" " />
+    <aura:attribute name="pickliststring" type="string" />
+    <aura:attribute name="urlname" type="string"/>
+    <aura:handler name="init" value="{!this}" action="{!c.fetchOrders}"/>
+    
+    
+    <aura:attribute name="OppId" type="string" default="black"/>
+    <aura:attribute name="AccId" type="string"/>
+     <aura:attribute name="objectName" type="String" default="Account"/>
+    <aura:attribute name="fieldName" type="String" default="Name"/>
+    <aura:attribute name="selectRecordId" type="String"/>
+    <aura:attribute name="selectRecordName" type="String"/>
+    <aura:attribute name="Label" type="String"/>
+    <aura:attribute name="searchRecords" type="List"/>
+    <aura:attribute name="required" type="Boolean" default="false"/>
+    <aura:attribute name="iconName" type="String" default="action:new_user"/>
+    <aura:attribute name="LoadingText" type="Boolean" default="false"/>
+   <aura:attribute name="openModal" type="boolean" default="false"/>
+ <aura:attribute name="confirmsuccess" type="boolean" default="false"/>
+
+
+       
+    <br/> 
+    <div class="slds-box" style="width: 100%">
+        <lightning:layout multipleRows="true">
+            
+            <lightning:layoutItem  size="8">
+        <!--Modal Box Header-->
+                    
+                            <!---Part 4 [mail fourm part]-->   
+                               <div class="slds-m-around--medium">
+                                  <div class="slds-container--medium">
+                                     <div class="slds-form--stacked">
+                                        <div class="slds-form-element">
+                                           <label class="slds-form-element__label" for="CC">Distributor Name</label>
+                                           <div class="slds-form-element__control">
+                                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aura:id="resultBox" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon slds-input-has-icon_left-right" role="none">
+                            
+                            <aura:if isTrue="{!!empty(v.selectRecordId)}">
+                                <span class="slds-icon_container slds-icon-utility-search slds-input__icon iconheight">
+                                    <lightning:icon class="slds-icon slds-icon slds-icon_small slds-icon-text-default" iconName="{!v.iconName}" size="x-small" alternativeText="icon" />
+                                </span> 
+                            </aura:if>
+                            <lightning:input autocomplete="off" placeholder="Search by name" required="{!v.required}" aura:id="userinput" label="{!v.Label}" name="searchText" onchange="{!c.searchField}" value="{!v.selectRecordName}" class="leftspace"/> 
+                            <aura:if isTrue="{!empty(v.selectRecordId)}">
+                                <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right iconheight">
+                                    <lightning:icon class="slds-icon slds-icon slds-icon_small slds-icon-text-default" iconName="utility:search" size="x-small" alternativeText="icon" />
+                                </span> 
+                                <aura:set attribute="else">
+                                    <button style="    margin-left: 25%;
+    margin-top: 0.5%;" class="slds-input__icon  slds-button slds-button_icon iconheight" onclick="{!c.resetData}">
+                                        <lightning:icon class="slds-icon slds-icon slds-icon_small slds-icon-text-default" iconName="utility:clear" size="x-small" alternativeText="icon" />
+                                        <span class="slds-assistive-text">Clear</span></button>
+                                </aura:set>
+                            </aura:if>
+                        </div>
+                        
+                        <!-- Second part display result -->
+                        <div id="listbox-id-1" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid" role="listbox">
+                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                <aura:iteration items="{!v.searchRecords}" var="serecord" indexVar="hdtv">
+                                    <li role="presentation" class="slds-listbox__item">
+                                        
+                                        <div id="{!serecord.recId}" data-name="{!serecord.recName}" onclick="{!c.setSelectedRecord}" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">
+                                            <span class="slds-media__figure">
+                                                <span class="slds-icon_container slds-icon-standard-account">
+                                                    <lightning:icon iconName="{!v.iconName}" class="slds-icon slds-icon slds-icon_small slds-icon-text-default" size="x-small"/>
+                                                </span>
+                                            </span>
+                                            <span class="slds-media__body">
+                                                <span class="slds-listbox__option-text slds-listbox__option-text_entity">{!serecord.recName}</span>
+                                                <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{!v.objectName} • {!serecord.recName}</span>
+                                            </span>
+                                        </div>
+                                    </li>
+                                </aura:iteration>
+                                <aura:if isTrue="{!and(v.searchRecords.length == 0 , !v.LoadingText)}">
+                                    No result found.
+                                </aura:if>
+                                <aura:if isTrue="{!v.LoadingText}">
+                                    Loading...
+                                </aura:if>
+                            </ul>
+                        </div>
+                    </div>
+                                           </div>
+                                        </div>
+                                       
+                                     </div>
+                                  </div>
+                               </div>
+                           
+            </lightning:layoutItem>
+            <lightning:layoutItem  size="4"></lightning:layoutItem>
+            
+                
+            
+            
+        </lightning:layout>
+        <lightning:layout multipleRows="false"><br/>
+        <lightning:layoutItem  size="3">
+            <div  style="margin-left: 5%;
+    " aura:id="industryPicklist">
+            		 <lightning:select value="{!v.pickliststring}" onchange="{!c.handleCompanyOnChange}" name="industryPicklist" label="Status" >
+                    <option value="">--None--</option>
+                    <aura:iteration items="{!v.industryMap}" var="ind" indexVar="key">
+                        <option text="{!ind.value}" value="{!ind.key}" selected="{!ind.key==v.pickliststring}" />
+                    </aura:iteration>
+                </lightning:select></div>
+        </lightning:layoutItem>
+        <lightning:layoutItem  size="1"></lightning:layoutItem>
+            <lightning:layoutItem  size="2">
+                <div class="custom-box">
+                    <div class="form-group" >
+                        <lightning:select  aura:id="monthPicklist" value="{!v.monthStr}" onchange="{!c.handleCompanyOnChangeMonth}" name="Month" label="Month" required="true">
+                            <option value="null">--None--</option>
+                            <aura:iteration items="{!v.monthMap}" var="ind" indexVar="key">
+                                <option text="{!ind.value}" value="{!ind.key}"  />
+                            </aura:iteration>
+                        </lightning:select>
+                    </div>
+			 </div>
+            </lightning:layoutItem>
+        <lightning:layoutItem  size="1">
+        </lightning:layoutItem>
+            <lightning:layoutItem size="2">
+                <div class="custom-box">
+                <div class="form-group">
+                    <lightning:select aura:id="yearPicklist" value="{!v.yearstr}" onchange="{!c.handleCompanyOnChangeYear}" name="Year" label="Year" required="true">
+                        <option value="null">--None--</option>
+                        <aura:iteration items="{!v.yearMap}" var="ind" indexVar="key">
+                            <option text="{!ind.value}" value="{!ind.key}"  />
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+                </div>
+            </lightning:layoutItem>
+			<lightning:layoutItem  size="3">
+                <diV style="margin-left: 50%;
+    margin-top: 5%;"><lightning:button class="button"  variant="brand"  label="Search" onclick="{!c.handleSearch}" /></diV>
+                 
+                
+        </lightning:layoutItem>
+        
+        </lightning:layout></div>
+    <br/> <br/> <br/> <br/> <br/> <br/> 
+     
+    <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal"><!--Table must be responsive-->
+        <thead>
+            <tr class="slds-text-heading--label ">
+                <th class="slds-is-sortable" scope="col">Distributor Name</th>
+                <th class="slds-is-sortable" scope="col">SAP Order Number</th>
+                <th class="slds-is-sortable" scope="col">Purchase Order Number</th>
+                <th class="slds-is-sortable" scope="col">Purchase Order Date</th>
+                
+                <th class="slds-is-sortable" scope="col">Order Status</th>  
+                <th class="slds-is-sortable" scope="col">Requested Users</th>  
+                <th class="slds-is-sortable" scope="col">Has Attachment ?</th>  
+            </tr>  
+        </thead>
+        <aura:if isTrue="{!v.ispreview}">
+        <tbody>
+            <aura:iteration items="{!v.ordtList}" var="vehicle"><!--Dynamic Listing of Vehicles-->
+                <tr class="slds-hint-parent">
+                    <td data-label="Purchase Order Number" style="">{!vehicle.Account_Name__c}</td>
+                    
+                    <td class="" data-label="Vehicle Name" >
+{!vehicle.OrderReferenceNumber}
+                        
+                    </td>
+                    <td data-label="Purchase Order Number" style=""><a href="{! v.urlname + vehicle.Id}" target="_blank">{!vehicle.PoNumber}</a></td>
+                    <td data-label="Purchase Order Date" style="">{!vehicle.PoDate}</td>
+                    
+                    <td data-label="Order Status" style="">{!vehicle.Status}</td> 
+                    <td data-label="Requested User" style="">{!vehicle.Owner.Name}</td> 
+                    <td data-label="Has Attachment" style="">
+                        <aura:if isTrue="{!vehicle.alpha_Attachments_yes_no__c == true}">  
+           <img src="{!$Resource.CheckedBox}" width="20" height="20"/>     
+        <aura:set attribute="else"> 
+         {!v.webkul}         
+      </aura:set>     
+   </aura:if>   
+                        
+  						 </td>
+                         
+                </tr>
+            </aura:iteration>
+        </tbody></aura:if>
+        </table>
+</aura:component>

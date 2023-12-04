@@ -1,0 +1,178 @@
+<!--
+ - Created by jerridkimball on 2018-05-17.
+ -->
+
+<design:component
+    label="Nested Related List"
+>
+    <!-- -->
+    <!-- main list attributes -->
+    <!-- -->
+
+    <design:attribute
+        label="Title"
+        description="The title to display on the main table of records. It may be desirable to set this to the object label."
+        name="mainTitle"
+        required="true"
+    />
+    <!-- standard:related_list -->
+    <design:attribute
+        label="SVG Name"
+        description="The name of the SLDS icon to use. The expected format is category:icon. The list of available icons can be found at https://www.lightningdesignsystem.com/resources/icons."
+        name="mainSVGName"
+    />
+    <design:attribute
+        label="Object API Name"
+        description="The object name for the records that the table will display."
+        name="mainObjectName"
+        default="FinServ__FinancialAccount__c"
+    />
+    <design:attribute
+        label="Lookup Field Name"
+        description="The link to the parent record. e.g.: To show Contacts for an Account, this value should be AccountId as that is the field on Contact that references the Account."
+        name="mainLookupFieldName"
+    />
+    <design:attribute
+        label="Field List"
+        description="A comma-separated list of field API names of the object to display."
+        name="mainFieldList"
+    />
+    <design:attribute
+        label="Sort Field"
+        description="The field API name by which to sort the main table when it loads. The default is the first field in the Field List."
+        name="mainSortField"
+    />
+    <design:attribute
+        label="Sort Direction"
+        description="Sort in either ascending (A-Z, 0-9) or descending (Z-A, 9-0) order."
+        name="mainSortDirection"
+        datasource="ASC, DESC"
+    />
+    <design:attribute
+        label="Filter Criteria"
+        description="A SOQL filter condition, i.e., what follows a WHERE keyword."
+        name="mainQueryFilter"
+    />
+    <design:attribute
+        label="Enable New Button"
+        description="If true, show the New button on the main table."
+        name="mainEnableNew"
+    />
+    <design:attribute
+        label="Enable Edit Button"
+        description="If true, show the Edit button on the record rows of the main table for which the user has permission to edit."
+        name="mainEnableEditButton"
+        default="true"
+    />
+    <design:attribute
+        label="Enable Delete Button"
+        description="If true, show the Edit button on the record rows of the main table for which the user has permission to delete."
+        name="mainEnableDeleteButton"
+        default="false"
+    />
+    <design:attribute
+        label="Column Widths"
+        description="A comma-separated list specifying the widths of the respective fields in the field list. Widths can be any number from 1 - 11, but the sum of all the widths should be no more than 11."
+        name="mainColumnWidths"
+    />
+    <design:attribute
+        label="Rows Expanded By Default"
+        description="If true, the nested table will be shown for rows for which related records exist."
+        name="mainRowsExpanded"
+    />
+    <!--<design:attribute-->
+        <!--label="Number Of Records"-->
+        <!--description="Number of records to show per page."-->
+        <!--name="mainNumberOfRecords"-->
+        <!--dataSource="5,10,15,20"-->
+        <!--default="10"-->
+    <!--/>-->
+
+    <!-- -->
+    <!-- nested list attributes -->
+    <!-- -->
+
+    <design:attribute
+        label="Nested List Title"
+        description="The title to display on the nested tables of records. It may be desirable to set this to the nested object label."
+        name="nestedTitle"
+    />
+    <!-- standard:related_list -->
+    <design:attribute
+        label="Nested SVG Name"
+        description="The name of the SLDS icon to use on the nested tables. The expected format is category:icon. The list of available icons can be found at https://www.lightningdesignsystem.com/resources/icons."
+        name="nestedSVGName"
+    />
+    <design:attribute
+        label="Nested Object API Name"
+        description="The object name for the records that the nested tables will display."
+        name="nestedObjectName"
+    />
+    <design:attribute
+        label="Nested Lookup Field Name"
+        description="The link to the record of the row of the main table. e.g.: To show Assets for an Account, this value should be ContactId as that is the field on Contact that references the Contact."
+        name="nestedLookupFieldName"
+    />
+    <design:attribute
+        label="Nested Field List"
+        description="A comma-separated list of field API names of the nested object to display."
+        name="nestedFieldList"
+    />
+    <design:attribute
+        label="Nested Sort Field"
+        description="The field API name by which to sort when the nested table loads. The default is the first field in the Nested Field List."
+        name="nestedSortField"
+    />
+    <design:attribute
+        label="Nested Sort Direction"
+        description="Sort in either ascending (A-Z, 0-9) or descending (Z-A, 9-0) order."
+        name="nestedSortDirection"
+        datasource="ASC, DESC"
+    />
+    <design:attribute
+        label="Nested Filter Criteria"
+        description="A SOQL filter condition, i.e., what follows a WHERE keyword."
+        name="nestedQueryFilter"
+    />
+
+    <design:attribute
+        label="Nested Column Widths"
+        description="A comma-separated list specifying the widths of the respective fields in the field list. Widths can be any number from 1 - 11, but the sum of all the widths should be no more than 11."
+        name="nestedColumnWidths"
+    />
+    <!--<design:attribute-->
+        <!--label="Nested Enable New Button"-->
+        <!--description="If true, show the New button on the main table."-->
+        <!--name="nestedEnableNew"-->
+    <!--/>-->
+
+    <design:attribute
+        label="Nested Enable New Button"
+        description="If true, show the New button on the Nested table."
+        name="nestedEnableNew"
+    />
+
+    <design:attribute
+        label="Nested Enable Edit Button"
+        description="If true, show the Edit button on the record rows of the nested table for which the user has permission to edit."
+        name="nestedEnableEditButton"
+        default="true"
+    />
+    <design:attribute
+        label="Nested Enable Delete Button"
+        description="If true, show the Edit button on the record rows of the main table for which the user has permission to delete."
+        name="nestedEnableDeleteButton"
+        default="false"
+    />
+     <design:attribute
+        label="Nested Number Of Records"
+        description="The number of visible records to show at once in the nested table."
+        name="nestedNumberOfRecords"
+        dataSource="5,10,15,20"
+        default="10"
+    />
+    <design:supportedFormFactors>
+        <design:supportedFormFactor type="Large"/>
+        <design:supportedFormFactor type="Small"/>
+    </design:supportedFormFactors>
+</design:component>

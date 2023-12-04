@@ -1,0 +1,81 @@
+<!--
+
+* Name: Account_Hierarchy_Page_PrintPDF.vfp
+* Description: This page will render the full account hierarchy in PDF format when called from "Download PDF" button of VF page "Account_Hierarchy_Page.vfp" (SC-009096/SC-008493)
+* Created By: Aritra (Cognizant)
+* Created: January 14 2022
+
+-->
+<apex:page controller="hierarchyComponentController" renderAs="pdf"> 
+    <head>
+        
+        <!--<apex:includescript value="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" / >
+        <apex:stylesheet value=" https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <apex:stylesheet value=" https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/css/jquery.treegrid.css" />
+        <apex:includescript value="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/js/jquery.treegrid.js" / > 
+        <apex:includescript value="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/js/jquery.treegrid.bootstrap3.js" />
+        <apex:includescript value="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"/>-->
+        <script>
+        </script>
+        <style>
+            .table-bordered {
+                border: 2px solid #fff;
+                border-collapse : collapse;
+                font-size : .7em;
+            }
+            thead>tr>th {
+                vertical-align: bottom;
+                border: 1px solid #fff;
+                border-spacing: 0;
+                text-align:center;
+                border-collapse: collapse;
+                background : #202d79;
+                color:white;
+            }
+            td {
+                vertical-align: bottom;
+                border: 1px solid #fff;
+                border-spacing: 0;
+                border-collapse: collapse;
+                text-align:center;
+            }
+        </style>
+        
+    </head>
+    <body>
+    <div align="center">
+        <span>  <apex:image value="{! $Resource.ZoetisLogo}"  width="220" height="70" />       </span>
+    </div>
+    <div align="center">
+        
+        <div class="heading">
+            <h4 style="font-family: Arial,Helvetica,sans-serif;">Account Hierarchy View of "{!accountname}"</h4>
+        </div>
+    </div>
+    <div>
+        <table width="100%" class="table-bordered">
+            <thead>
+            <tr height="20px" style="color: #ffffff; background: #0099cc; font-family: Arial,Helvetica,sans-serif; text-align: center">
+                <apex:repeat value="{!ColumnsLabelListForUI}" var="label">
+                    <th style="font-size: 14px"><b><apex:outputtext value="{!label}" /></b> </th> 
+                </apex:repeat>
+            </tr>
+            </thead>
+            <tbody>
+            <apex:repeat value="{!sortedHierarchyData}" var="obj">
+                <tr  height="20px" style="font-family: Arial,Helvetica,sans-serif"  class="{!obj.idForNode}">
+                    <apex:repeat value="{!obj.recordtDetails}" var="ColValue">
+                        <td style="font-size: 11px;word-wrap: break-word">                         
+                                <apex:outputtext value="{!obj.accountLevel} {!ColValue}" rendered="{!if(AND(obj.hyperlinkColumnValue==ColValue,obj.accountLevel!=''), true, false )}"/>
+                                <apex:outputtext value="{!ColValue}" rendered="{!if(AND(obj.hyperlinkColumnValue==ColValue,obj.accountLevel!=''), false, true )}"/>
+                            
+                        </td>
+                    </apex:repeat>
+                </tr>
+            </apex:repeat>
+            </tbody>
+        </table> 
+        
+    </div>
+            </body>
+</apex:page>

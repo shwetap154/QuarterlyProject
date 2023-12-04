@@ -1,0 +1,4 @@
+<apex:page standardController="Address__c" extensions="ZTS_EU_AddressOverride" action="{!addRedirect}">
+
+             
+</apex:page>

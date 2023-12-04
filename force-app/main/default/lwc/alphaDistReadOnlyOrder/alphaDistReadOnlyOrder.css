@@ -1,0 +1,37 @@
+.zs_order_card{
+    margin: 0 auto;
+    border: 0;
+    border-radius: 0;
+    padding: 5px;
+    box-shadow: 0px 4px 2px rgb(0 0 0 / 25%);
+    background: #DEDEDE;
+}
+.zs_order_layout{
+    margin: 2% 8%;
+}
+.zs_or{
+    padding-top: 18px;
+    font-family: GothamNarrow;
+    font-size: 13px;
+    line-height: 16px;
+    color: #080D1C;
+}
+.zs_fc_listview_title{
+    font-size: 18px;
+    color: #005670;
+}
+.zs_fc_listview_table{
+    height: 400px;
+}
+.zs_entry_table tr th{
+    background: #005670;
+    color: #fff;
+    letter-spacing: normal;
+    text-align: center;
+    font-family: "GothamNarrow";
+    border-right: .5px solid #d8d8d8;
+    font-weight: normal;
+}
+.zs_entry_table tr th div{
+    padding:12px;
+}

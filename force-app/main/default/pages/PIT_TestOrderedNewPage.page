@@ -1,0 +1,166 @@
+<apex:page standardController="PIT_Test_Ordered__c" extensions="PIT_TestOrderedNewController">
+      
+        <!-- PIG SEROLOGY -->
+        <apex:form rendered="{!rtypeName='PIT_Pig_Serology'}">
+            <apex:pageBlock title="Test Ordered Edit" mode="edit">
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save"/>
+                <apex:commandButton action="{!saveAndNew}" value="Save & New"/>
+                <apex:commandButton action="{!cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Information" columns="2">
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_STOMP__c}" />
+                <apex:selectList id="test" value="{!PIT_Test_Ordered__c.PIT_Test__c}" size="1" required="true" >
+                    <apex:selectOptions value="{!Tests}"></apex:selectOptions>
+                </apex:selectList>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Weeks" columns="2">
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_1__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_14__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_2__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_15__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_3__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_16__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_4__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_17__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_5__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_18__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_6__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_19__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_7__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_20__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_8__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_21__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_9__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_22__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_10__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_23__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_11__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_24__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_12__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_25__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_13__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_26__c}" />
+            </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:form>
+        <!-- SOW SEROLOGY -->
+        <apex:form rendered="{!rtypeName='PIT_Sow_Serology'}">
+            <apex:pageBlock title="Test Ordered Edit" mode="edit">
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save"/>
+                <apex:commandButton action="{!saveAndNew}" value="Save & New"/>
+                <apex:commandButton action="{!cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Information" columns="2">
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_STOMP__c}" />
+                <apex:selectList id="test" value="{!PIT_Test_Ordered__c.PIT_Test__c}" size="1" required="true">
+                    <apex:selectOptions value="{!Tests}"></apex:selectOptions>
+                </apex:selectList>
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Sow_Stage__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_P_O__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Parity_1__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Parity_2__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Parity_gt_eq_3__c}" />
+            </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:form>
+        <!-- SWAB -->
+        <apex:form rendered="{!rtypeName='PIT_Swab'}">
+            <apex:pageBlock title="Test Ordered Edit" mode="edit">
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save"/>
+                <apex:commandButton action="{!saveAndNew}" value="Save & New"/>
+                <apex:commandButton action="{!cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Information" columns="2">
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_STOMP__c}" />
+                <apex:selectList id="test" value="{!PIT_Test_Ordered__c.PIT_Test__c}" size="1" required="true">
+                    <apex:selectOptions value="{!Tests}"></apex:selectOptions>
+                </apex:selectList>
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Swab_Type__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Weeks" columns="2">
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_1__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_14__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_2__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_15__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_3__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_16__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_4__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_17__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_5__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_18__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_6__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_19__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_7__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_20__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_8__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_21__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_9__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_22__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_10__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_23__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_11__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_24__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_12__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_25__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_13__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_26__c}" />
+            </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:form>
+        <!-- TISSUE -->
+        <apex:form rendered="{!rtypeName='PIT_Tissue'}">
+            <apex:pageBlock title="Test Ordered Edit" mode="edit">
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save"/>
+                <apex:commandButton action="{!saveAndNew}" value="Save & New"/>
+                <apex:commandButton action="{!cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Information" columns="2">
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_STOMP__c}" />
+                <apex:selectList id="test" value="{!PIT_Test_Ordered__c.PIT_Test__c}" size="1" required="true">
+                    <apex:selectOptions value="{!Tests}"></apex:selectOptions>
+                </apex:selectList>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Weeks" columns="2">
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_1__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_14__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_2__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_15__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_3__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_16__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_4__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_17__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_5__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_18__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_6__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_19__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_7__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_20__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_8__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_21__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_9__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_22__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_10__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_23__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_11__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_24__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_12__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_25__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_13__c}" />
+                <apex:inputField value="{!PIT_Test_Ordered__c.PIT_Week_26__c}" />
+            </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:form>
+</apex:page>

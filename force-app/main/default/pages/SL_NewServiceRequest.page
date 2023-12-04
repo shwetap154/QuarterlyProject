@@ -1,0 +1,32 @@
+<apex:page standardController="Case" tabStyle="Case" recordSetVar="caseRecords" extensions="SL_NewServiceRequestController" lightningStylesheets="true">
+    
+    <apex:form >
+        <apex:actionFunction action="{!backToView}" name="exit"/>
+    </apex:form>
+    <apex:form >
+        <apex:actionFunction action="{!redirectToURL}" name="redirectToUrl"/>
+    </apex:form>
+    <apex:slds />
+    <div id="lightningscope" class="slds-scope slds-hide">
+        <article class="slds-card">
+            <div class="slds-card__header slds-grid">
+                
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <div style="text-align:right; margin-right: .5rem;">
+                    <button class="slds-button slds-button_brand" onclick="exit()">Exit from Service Request Creation Wizard</button>
+                </div>
+            </div>
+        </article>
+    </div>
+    <script>
+    
+        if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
+            document.getElementById('lightningscope').classList.remove("slds-hide");
+	        sforce.one.createRecord('Case',null,{!defaultValues}); 
+        } else{
+            redirectToUrl();
+        }
+        
+    </script>
+</apex:page>

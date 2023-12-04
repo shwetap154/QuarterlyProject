@@ -1,0 +1,50 @@
+<aura:component controller="SL_RxNewCaseController">
+    <aura:attribute name="objCase" type="Object" />
+    <aura:attribute name="showSpinner" type="Boolean" default="true" />
+    <aura:attribute name="showModal" type="boolean" default="false" />
+    <aura:attribute name="activeSectionName" type="string" />
+    <aura:attribute name="displayCaseComponent" type="Boolean" />
+    <aura:attribute name="recordType" type="string" />
+
+    <button class="slds-button slds-button_neutral" onclick="{!c.openModal}">New Pet Owner Contact</button>
+
+    <aura:if isTrue="{!v.showModal}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close">
+                        <lightning:buttonIcon onclick="{!c.closeModal}" iconName="utility:close" size="small"
+                            alternativeText="close" title="close" />
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Create Pet Owner Contact</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <aura:if isTrue="{!v.showSpinner}">
+                        <lightning:spinner />
+                    </aura:if>
+                    <lightning:recordEditForm aura:id="createPetOwnerContactForm" objectApiName="Contact"
+                        onsuccess="{!c.handleSuccess}" onload="{!c.handleLoad}" onerror="{!c.handleError}"
+                                       recordTypeId="{!v.recordType}">
+                                      
+                        <lightning:messages />
+                        <lightning:layout multipleRows="true">
+                            <aura:iteration items="{!v.objCase.createPetOwnerContactFS}" var="item">
+                                <lightning:layoutItem size="12" largeDeviceSize="6" mediumDeviceSize="6"
+                                    smallDeviceSize="12">
+                                    <c:newContactField objCase="{!v.objCase}" apiName="{!item}" />
+                                </lightning:layoutItem>
+                            </aura:iteration>
+                        </lightning:layout>
+                    </lightning:recordEditForm>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick="{!c.closeModal}">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick="{!c.saveContact}">Save</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

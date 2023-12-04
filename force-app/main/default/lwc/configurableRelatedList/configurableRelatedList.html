@@ -1,0 +1,190 @@
+<template>
+   <!-- start of component name header -->
+   <div class="slds-box slds-theme_default slds-text-heading_small info-card">
+      <div class="icon-name">
+         <lightning-icon icon-name={listIcon} class="slds-avatar_small"></lightning-icon>
+         <div class="object-name">
+            <h2>
+               <b>
+               {displayedName}
+               </b>
+            </h2>
+            <h2 class="number-objects">
+               <b>
+               ({numberOfObjects})
+               </b>
+            </h2>
+         </div>
+      </div>
+      <template if:true={canCreate}>
+         <lightning-button  label="New" title="Download action with brand variant"  class="slds-s-left_x-small" onclick={openCreateModal} ></lightning-button>
+      </template>
+   </div>
+   <!-- end of component name header -->
+
+   <!-- start of data table and pagination -->
+   <div class="slds-box slds-theme_default">
+      <lightning-card >
+         <lightning-layout multiple-rows="true" class="main-layout">
+            <lightning-layout-item  size="12" padding="around-medium" class="slds-scrollable--x">
+               <!-- data table start -->
+               <div>
+                  <lightning-datatable
+                     data={currentPageData}
+                     columns={columns}
+                     key-field="id"
+                     hide-checkbox-column
+                     class="slds-m-top_xx-small slds-scrollable"
+                     default-sort-direction={defaultSortDirection}
+                     sorted-direction={sortDirection}
+                     sorted-by={sortedBy}
+                     onsort={onHandleSort}
+                     onrowaction={handleRowAction}
+                     >
+                  </lightning-datatable>
+               </div>
+               <!-- data table end -->
+
+            </lightning-layout-item>
+            <!-- pagination start -->
+            <template if:true={needsPagination}>
+               <lightning-layout-item size="12" margin="around-small">
+                  <div class="slds-align_absolute-center">
+                     <ul class="slds-button-group-row">
+                        <template if:true={hasPrev}>
+                           <li class="slds-button-group-item" >
+                              <button class="slds-button slds-button_neutral" onclick ={onPrev}> prev
+                              </button>
+                           </li>
+                        </template>
+                        <template for:each={pagesList} for:item= "pageNumber">
+                           <li class="slds-button-group-item" key={pageNumber}>
+                              <button data-id={pageNumber} class="slds-button slds-button_neutral" onclick={onPageClick}>
+                              {pageNumber}
+                              </button>
+                           </li>
+                        </template>
+                        <template if:true={hasNext}>
+                           <li class="slds-button-group-item" >
+                              <button class="slds-button slds-button_neutral" onclick={onNext}>
+                              next
+                              </button>
+                           </li>
+                        </template>
+                     </ul>
+                  </div>
+               </lightning-layout-item>
+            </template>
+            <!-- pagination end -->
+         </lightning-layout>
+      </lightning-card>
+   </div>
+   <!-- end of data table and pagination -->
+   
+   <!-- start of modal create  -->
+   <template if:true={createModal}>
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+         <div class="slds-modal__container">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+               <button class="slds-button slds-button_icon slds-modal__close modal-button-delete" title="Close" onclick={closeCreateModal}>
+                  <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small" ></lightning-icon>
+                  <span class="slds-assistive-text">Close</span>
+               </button>
+               <h2 id="modal-heading-012" class="slds-text-heading_medium slds-hyphenate">New {objectLabel}</h2>
+            </header>
+            <!-- modal body start -->
+            <div class="slds-modal__content slds-p-around_medium slds-m-bottom_large" id="modal-content-id-10">
+
+               <template if:true={hasRecordType}>
+                  <lightning-record-edit-form  object-api-name={objectName} onsuccess={handleNewRecord}  record-type-id={RecordTypeId}>
+                     <lightning-input-field field-name={parentRecordField} value={recordId} ></lightning-input-field>
+                     <template for:each={createFields} for:item="field">
+                        <lightning-input-field field-name={field} key={field}></lightning-input-field>
+                     </template>
+                     <lightning-button class="slds-m-top_small" type="submit" label="Save">
+                     </lightning-button>
+                  </lightning-record-edit-form>
+               </template>
+
+               <template if:false={hasRecordType}>
+                  <lightning-record-edit-form  object-api-name={objectName} onsuccess={handleNewRecord}>
+                     <lightning-input-field field-name={parentRecordField} value={recordId} ></lightning-input-field>
+                     <template for:each={createFields} for:item="field">
+                        <lightning-input-field field-name={field} key={field}></lightning-input-field>
+                     </template>
+                     <lightning-button class="slds-m-top_small" type="submit" label="Save">
+                     </lightning-button>
+                  </lightning-record-edit-form>
+               </template>
+
+            </div>
+            <!-- modal footer start-->
+         </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+   </template>
+   <!-- end of modal create -->
+
+   <!-- start of delete modal -->
+   <template if:true={deleteModal}>
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+         <div class="slds-modal__container">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+               <button class="slds-button slds-button_icon slds-modal__close modal-button-delete" title="Close" onclick={closeModalDelete}>
+                  <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small" ></lightning-icon>
+                  <span class="slds-assistive-text">Close</span>
+               </button>
+               <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Delete {objectLabel}</h2>
+            </header>
+            <!-- modal body start -->
+            <div class="slds-modal__content slds-p-around_medium " id="modal-content-id-1">
+               <p>
+                  Are you sure you want to delete this {objectLabel}?
+               </p>
+            </div>
+            <!-- modal footer start-->
+            <footer class="slds-modal__footer">
+               <button class="slds-button slds-button_neutral" onclick={closeModalDelete}>Cancel</button>
+               <lightning-button variant="brand"
+                  label="Delete"
+                  title="Delete"
+                  onclick={deleteRowRecord}
+                  class="slds-m-left_x-small"></lightning-button>
+            </footer>
+         </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+   </template>
+   <!-- end of modal delete -->
+
+   <!-- start of modal edit -->
+   <template if:true={updateModal}>
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+         <div class="slds-modal__container">
+            <!-- modal header start -->
+            <header class="slds-modal__header">
+               <button class="slds-button slds-button_icon slds-modal__close modal-button-delete" title="Close" onclick={closeModalUpdate}>
+                  <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small" ></lightning-icon>
+                  <span class="slds-assistive-text">Close</span>
+               </button>
+               <h2 id="modal-heading-010" class="slds-text-heading_medium slds-hyphenate">Update {objectLabel}</h2>
+            </header>
+            <!-- modal body start -->
+            <div class="slds-modal__content slds-p-around_medium " id="modal-content-id-11">
+               <lightning-record-form
+                  record-id={currentRecord}
+                  object-api-name={objectName}
+                  layout-type="Full"
+                  mode="view">
+               </lightning-record-form>
+            </div>
+            <!-- modal footer start-->
+         </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+   </template>
+   <!-- end of modal edit -->
+
+</template>

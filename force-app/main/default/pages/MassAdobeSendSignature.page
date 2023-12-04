@@ -1,0 +1,23 @@
+<apex:page standardController="Contract" action="{!executeSignBatch}" recordSetVar="contracts" extensions="MassAdobeSendSignatureController" showHeader="true" sidebar="true"> 
+    
+    <html>
+        <body> 
+             <apex:form >
+                <apex:pageBlock > 
+                    <apex:pageBlockSection title="Contracts Batch Status" collapsible="false" >
+                        <apex:pageBlockTable value="{!statusList}" var="row" >
+                            <apex:column headerValue="Contrat Number" >
+                                <apex:outputLink value="/{!row.contractId}" > {!row.contractNumber} </apex:outputLink>
+                            </apex:column>     
+                            <apex:column value="{!row.contractName}" headerValue="Contract Name" />
+                            <apex:column value="{!row.CurrentTier}" headerValue="Current Tier" />
+                            <apex:column value="{!row.statusMsg}" headerValue="Status" />
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>  
+                    <br/>
+                    <apex:commandButton value="Back to Contracts" onclick="window.history.back();" /> 
+                </apex:pageBlock>
+            </apex:form> 
+        </body>
+    </html>
+</apex:page>

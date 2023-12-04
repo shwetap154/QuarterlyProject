@@ -1,0 +1,54 @@
+<!--
+  @description       : 
+  @author            : Unknown
+  @group             : 
+  @last modified on  : 02-23-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   02-23-2021   Morgan Marchese @ Zoetis Inc   Header Creation
+-->
+<apex:component layout="none">   
+    <apex:attribute name="noaLeadObj" description="This is the value for New Online Account Lead" type="Lead" required="true" />
+    <apex:attribute name="renderRx" description="Used to determine which header to render" type="String" required="false" default="" />
+    <head>
+        <style>
+            .headers  {
+            color: white;
+            text-align: center;
+            background-color: #6dd2de; 
+            padding: 0.5em 0em 0.5em;
+            font-family: Arial,Helvetica,sans-serif;
+            font-size: 1.75em;
+            line-height: 1.5;
+            width:100%;
+            float:left;
+            }
+            .appid { 
+            font-size: 0.75em ; 
+            }
+            .spanapp {
+            font-weight: 200;
+            font-family: Arial,Helvetica,sans-serif !important;
+            } 
+            .status{
+            font-size: 0.65em !important;
+            text-transform: initial !important;
+            }
+            
+        </style>
+    </head>
+    <div class="headers">  
+        <apex:outputText value="<b>NEW {!renderRx} ACCOUNT APPLICATION</b> " escape="false" rendered="true"/> 
+        <!--<apex:outputText value="<b>NEW POULTRY ACCOUNT APPLICATION</b>" escape="false" rendered="{!renderRx}" />-->
+        <!--<apex:outputText styleClass="spanapp" value="Application" />    -->
+        <br/>
+        <apex:outputText styleClass="appid" value="Application Number: {!noaLeadObj.NOA_Application_Number__c}" rendered="{!noaLeadObj.NOA_Application_Number__c != null}" />
+        <br/>
+        <!-- added for SC-009254 -->
+        <span class="status"> 
+            <apex:outputText value="Application Status: {!noaLeadObj.Status}" rendered="{!noaLeadObj.Status != null}" />
+        </span> 
+    </div>
+    
+</apex:component>

@@ -1,0 +1,50 @@
+<template>
+	<lightning-card variant="Narrow" title="Contacts" icon-name="standard:contact">
+		<div slot="actions">
+			<lightning-button label="Save" variant="brand" onclick={handleSave}></lightning-button>
+		</div>
+		<div class="slds-p-around_small">
+			<div>
+				<lightning-input type="search" label="Search Contacts" value={searchText} onchange={handleSearch}>
+				</lightning-input>
+			</div>
+			<div class="slds-p-top_small">
+				<div class="scrollable-container">
+				<table cellpadding="2">
+					<tbody>
+						<tr>
+							<td class="cell">
+								<input type="radio" name="contact-selection" value="no-contact" checked={isNoContact}
+									onchange={handleSelection}></input>
+							</td>
+							<td class="cell">
+								No Contact
+							</td>
+						</tr>
+						<template for:each={resultData} for:item="con">
+							<tr key={con.Id}>
+								<td>
+									<div class="cell">
+										<input type="radio" name="contact-selection" value={con.Id}
+											checked={con.isChecked} onchange={handleSelection}></input>
+									</div>
+								</td>
+								<td>
+									<div class="cell">
+										<div><span class="slds-text-link" data-id={con.Id} onclick={redirectToRecord}
+												onchange={handleSelection}>{con.Name}</span></div>
+										<div>Status: {con.ZTS_EU_Contact_Status__c}</div>
+										<div>Email: {con.Email}</div>
+										<div>Phone: {con.Phone}</div>
+									</div>
+								</td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
+			</div>
+			</div>
+		</div>
+	</lightning-card>
+	<lightning-spinner alternative-text="Loading" size="large" if:true={showLoading}></lightning-spinner>
+</template>

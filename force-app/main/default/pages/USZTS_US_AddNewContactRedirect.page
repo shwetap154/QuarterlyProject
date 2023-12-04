@@ -1,0 +1,177 @@
+<!---
+/****************************************************************************************************************************************** 
+* Page Name       : ZTS_US_AddContactRedirect
+* Description      : The Visual force is used to do the following 
+1. Retrieve the Contacts associated to Account on that Event
+2. Add Contact to the event as Invitee
+3. Add New contact to the Account
+4. Sort the Contact data on all Columns
+
+* Created By   : Deloitte Consulting
+* Created Date : 
+*
+* Modification Log:  
+* ---------------------------------------------------------------------------------------------------------------------------------------
+* Developer                Date               Description 
+* ---------------------------------------------------------------------------------------------------------------------------------------
+* Sohil shah(Cloud Sense)  12/03/2014         Added code for DEF-DEF-001535 (Sorting purpose on contact Name and Profession Columns)
+* Sohil Shah(Cloud Sense)  7/8/2015           Added Search logic for DEF-001663 + Removed Name,Degree and Phone column and added FirstName LastName and Job Function
+* Mounica                  20/01/2021         Added New Contact button for SC-006387 for adding of new contact to the account
+* Aritra (Cognizant)       13/12/2021         Added Section to show duplicate Contact matching result table (SC-008149)
+*****************************************************************************************************************************************/
+-->
+<apex:page controller="USZTS_US_AddNewContactRedirect" tabStyle="ZTS_Events__c" id="pgid">
+    <apex:slds />
+    <style>
+        .overlay {
+        display: none;
+        height: 100%;
+        left: 0;
+        position: fixed;
+        top: 0;
+        opacity: 0.3;
+        -moz-opacity: 0.3;
+        width: 100%;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+        filter: alpha(opacity=30);
+        background: #000;
+        -khtml-opacity: 0.3;
+        z-index: 1000;
+        }
+        
+        .loader {
+        background: url('/img/loading32.gif') scroll no-repeat 0 0;
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        left: 50%;
+        }
+        .hide {
+        display: none !important;
+        }
+        
+    </style>
+    <apex:pageMessages />
+    <apex:form id="theForm">      
+        <div id="load_scrl" class="loadingBox loader" style="display:none"> </div>
+        <apex:actionStatus onstart="startLoading();" onstop="stopLoading();" id="loadStatus" />
+        <div class="loadingBox overlay"> </div>
+        <apex:pageBlock >
+            <apex:outputPanel id="backbutton">
+                <div style="position: relative;left: 42%;" >
+                    <apex:commandButton action="{!cancel}" value="Back to Event" immediate="true"  /> 
+                </div>
+            </apex:outputPanel>
+            <br/>
+            <!--Added BY Mounica for SC-006387-->
+            <apex:outputPanel id="newConId" style="slds-scope">
+                <apex:pageBlockSection title="New Contact"  collapsible="false">
+                    <apex:inputField value="{!objCon.FirstName}" required="true" />
+                    <apex:inputField value="{!objCon.ZTS_US_Account_influence__c}"/>
+                    <apex:inputField value="{!objCon.LastName}"/>
+                    <apex:inputField value="{!objCon.ZTS_US_Profession__c}" required="true" />
+                    <apex:inputField value="{!objCon.Interface_Email__c}"/>
+                    <apex:inputField value="{!objCon.ZTS_US_Job_Function__c}"/>
+                    <apex:inputField value="{!objCon.Phone}"/>  
+                    <!--<apex:inputField value="{!objCon.AccountId}"/>-->
+                    <apex:selectList size="1" value="{!strAccountId}" required="true" label="Account">
+                        <apex:selectOptions value="{!AllAccountbyEvent}"></apex:selectOptions>
+                    </apex:selectList>
+                    
+                </apex:pageBlockSection>
+                <apex:outputPanel id="firstSave" rendered="{!showFirstSaveSection}">
+                    <div style="position: relative;left: 42%;"  >
+                        <apex:commandButton onclick="startLoading();" value="Save" action="{!customSaveContact}">
+                            <apex:actionSupport event="onclick" rerender="firstSave,duplicateContact" />
+                        </apex:commandButton>
+                        &nbsp;&nbsp;
+                        <!--<apex:actionStatus id="actStatusId">
+                            <apex:facet name="start" >
+                            <img src="/img/loading.gif" />               
+                            </apex:facet>
+                            </apex:actionStatus>-->
+                        <apex:commandButton value="Cancel" action="{!customCancelContact}"  immediate="true"/>
+                    </div>
+                </apex:outputPanel>
+                
+                <br/>
+                
+                <!-- Below part will be shown if a duplicate is detected -->
+                <apex:outputPanel rendered="{!showDupSaveSection}" id="duplicateContact" >
+                    <p align = "center" >
+                        <!-- TPDEV-320 Update info text -->
+                        <span style ="color:red;font-weight:bold"> Potential Duplicates(s) have been detected. Select one of the matching entries and click 
+                            <span style = "background-color: yellow">"Add Selected Contact"</span> contact to add a contact below. If the contact you select is showing a different account name, it will create a new affiliation to the account you selected above. <br/>
+                            Or you can click on <span style = "background-color: yellow">"Create Duplicate"</span> button if you still want to create a new contact.<br/>
+                            You can also click <span style = "background-color: yellow">"Cancel"</span> to go back.</span>
+                    </p>
+                    <br/>
+                   <apex:pageblocktable id="allcons" value="{!AllContacts}" var="allcon" title="All Matching Contacts" style="slds-table slds-table_bordered slds-table_cell-buffer">
+                       <apex:column headervalue="Select">
+                           <apex:inputCheckbox value="{!allcon.isSelected}" onclick="AF('{!allcon.con.Id}')"/>
+                       </apex:column>
+                        <apex:column headervalue="Contact Name">
+                            <apex:outputfield value="{!allcon.con.Full_Contact_Name__c}">
+                            </apex:outputfield></apex:column> 
+                        <apex:column headervalue="Account Name">
+                            <apex:outputfield value="{!allcon.con.Account_Name__c}">
+                            </apex:outputfield></apex:column>  
+                       <apex:column headervalue="Status">
+                            <apex:outputfield value="{!allcon.con.ZTS_EU_Contact_Status__c}">
+                            </apex:outputfield></apex:column>  
+                        <apex:column headervalue="Email">
+                            <apex:outputfield value="{!allcon.con.Interface_Email__c}">
+                            </apex:outputfield></apex:column>  
+                        <apex:column headervalue="Phone">
+                            <apex:outputfield value="{!allcon.con.Phone}">
+                            </apex:outputfield></apex:column>
+                       <apex:column headervalue="Profession">
+                            <apex:outputfield value="{!allcon.con.ZTS_US_Profession__c}">
+                            </apex:outputfield></apex:column>  
+                       <apex:column headervalue="Job Function">
+                            <apex:outputfield value="{!allcon.con.ZTS_US_Job_Function__c}">
+                            </apex:outputfield></apex:column>  
+                    </apex:pageblocktable>
+                    <br/>
+                    
+                    <div align="center" draggable="false">
+                        <apex:commandButton value="Add Selected Contact" onclick="startLoading();" action="{!associateSelectedCon}"/> &nbsp;&nbsp;
+                        <apex:commandButton value="Create Duplicate" onclick="startLoading();" action="{!saveDuplicateContact}"/> &nbsp;&nbsp;
+                        <apex:actionStatus id="actStatusId2" >
+                            <apex:facet name="start" >
+                                <img src="/img/loading.gif" />               
+                            </apex:facet>
+                        </apex:actionStatus>
+                        
+                        <apex:commandButton value="Cancel" action="{!customCancelContact}"  immediate="true"/>
+                    </div>
+                </apex:outputPanel>
+                
+                
+            </apex:outputPanel> 
+        </apex:pageBlock>
+        <apex:actionFunction name="AF" action="{!disableCheckbox}"  rerender="allcons">
+            <apex:param name="selectItemId" value="" assignTo="{!selectedContactId}" />       
+        </apex:actionFunction>
+    </apex:form>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+        function javaScrpt(){
+        ViewSortDataScript(); 
+    }
+    
+    function startLoading() {
+        $('#load_scrl').css('top', $(document).scrollTop() + 200);
+        $('.loadingBox').show();
+    }
+    
+    function stopLoading() {
+        $('.loadingBox').hide();
+    }
+    
+    
+    
+    </script>
+    
+    
+</apex:page>

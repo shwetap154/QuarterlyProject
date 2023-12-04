@@ -1,0 +1,415 @@
+<!--
+/******************************************************//**
+@component  NavajoTranslator
+@brief      component for Navajo Error Code Translator
+    Displays error input screens, translates input codes to error descriptions and updates case with translation results.
+
+@revision   2020-07-21 Rajnikanth
+    Created.
+@modifications
+   2021-12-21     Nilanjan(Cognizant)	 Added markup to show HEM/LIP/ICT/RQC details on Error translation modal(SC-008782)
+**********************************************************/
+ -->
+
+<aura:component implements="force:appHostable,force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,lightning:actionOverride,lightning:isUrlAddressable,lightning:utilityItem"
+                controller="NavajoController" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="record" type="Case" />
+    <aura:attribute name="caseRecord" type="Case" />
+    <aura:attribute name="sObjectName" type="String" />
+    <lightning:workspaceAPI aura:id="workspace" />
+    <aura:handler name="change" value="{!v.recordId}" action="{!c.onRecordIdChange}"/>
+    <aura:attribute name="supportsPopOut" type="Boolean" default="false" />
+    <aura:attribute name="fields" type="String[]" default="['Id', 'Account.Name','Serial__c','Primary_Lot_Num__c',
+                                                           'Specimen__c','Sample__c','Primary_Error_Code__r.Name']" />
+    <aura:attribute name="clinicName" type ="String" default="{!v.caseRecord.Account.Name}"/>
+    <aura:attribute name="serialNumber" type ="String" default="{!v.caseRecord.Serial__c}"/>
+    <aura:attribute name="lotNumber" type ="String" default="{!v.caseRecord.Primary_Lot_Num__c}"/>
+    <aura:attribute name="manufactureDate" type ="String" />
+    <aura:attribute name="expiryDate" type ="String" />
+    <aura:attribute name="description" type ="String" />
+    <aura:attribute name="usage" type ="String" />
+    <aura:attribute name="operatingMode" type="String" />
+    <aura:attribute name="materialNumber" type="String" />
+    <aura:attribute name="chemistries" type="String[]" />
+    <aura:attribute name="cancellationLabels" type="String[]" />
+    <aura:attribute name="inputValue" type="String" />
+    <aura:attribute name="errorCodeValues" type="Object[]" />
+    <aura:attribute name="toastType" type="String" />
+    <aura:attribute name="utilityIconType" type="String" /> <!--utility:warning" -->
+    <aura:attribute name="divForToast" type = "String" /> <!-- slds-notify slds-notify_toast slds-theme_warning-->
+    <aura:attribute name="showWarningToast" type="boolean" default="False"/>
+    <aura:attribute name="toastHeadMsg" type="String" />
+    <aura:attribute name="showLotInput" type="boolean" default="False"/>
+    <aura:attribute name="showNextButton" type="boolean" default="False"/>
+    <aura:attribute name="lotNumberFound" type="boolean" default="False"/>
+    <aura:attribute name="lotExpired" type="boolean" default="False"/>
+    <aura:attribute name="gotLotInfo" type="boolean" default="False"/>
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <aura:attribute name="showProcessButton" type="boolean" default="false" />
+    <aura:attribute name="makeReadOnly" type="boolean" default="false" />
+    <aura:attribute name="showResults" type="boolean" default="false" />
+    <aura:attribute name="showCancellationResults" type="boolean" default="false" />
+    <aura:attribute name="showThisTable" type="boolean" default="false" />
+    <aura:attribute name="showCancellationTable" type="boolean" default="false" />
+    <aura:attribute name="translatedResults" type="Object[]" />
+    <aura:attribute name="cancellationResults" type="Object" />
+    <aura:attribute name="resultTextToCase" type="String" />
+
+    <!--  this tag sets modal width -->
+    <aura:html tag="style">
+        .slds-modal__container {
+        max-width: 60rem !important;
+        width:60% !important;
+        }
+    </aura:html>
+    <div class="slds-box slds-theme_default slds-theme_backgroundColor-white"
+         style="height:75px;">
+        <div class="slds-m-around_xx-medium ">
+            <lightning:button variant="brand"
+                              label="Translate Errors"
+                              title="Translate Errors"
+                              onclick="{! c.openModal }" />
+            <aura:if isTrue="{!v.isOpen}">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                         aria-describedby="modal-content-id-1"
+                         class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container ">
+                        <header class="slds-modal__header">
+                            <lightning:buttonIcon iconName="utility:close"
+                                                  onclick="{! c.closeModal }"
+                                                  alternativeText="close"
+                                                  variant="bare-inverse"
+                                                  class="slds-modal__close"/>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Error Code Translator</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <div>
+                                <div>
+                                    <aura:if isTrue="{!v.showWarningToast}">
+                                        <div aura:id="statusSec" class="demo-only">
+                                            <div class="slds-notify_container slds-is-relative">
+                                                <div class="{!v.divForToast}" role="status">
+                                                    <span class="slds-assistive-text">{!v.toastType}</span>
+                                                    <span class="slds-icon_container slds-icon-utility-info slds-m-right_small slds-no-flex slds-align-top">
+                                                        <lightning:icon class="slds-show"  iconName="{!v.utilityIconType}" size="x-small" alternativeText="Indicates warning"/>
+                                                    </span>
+                                                    <div class="slds-notify__content">
+                                                        <h2 class="slds-text-heading_small">{!v.toastHeadMsg}</h2>
+                                                    </div>
+                                                    <div class="slds-notify__close">
+                                                        <button onclick="{!c.closeToast}" class="slds-button slds-button_icon-inverse" title="Close">
+                                                            <lightning:icon  iconName="utility:close" size="x-small" alternativeText="Indicates close"/>
+                                                            <span class="slds-assistive-text">Close</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </aura:if>
+                                </div>
+                                <div class="slds-page-header" style="cursor: pointer;" onclick="{!c.toggleCaseDetails}">
+                                    <section class="slds-clearfix">
+                                        <div class="slds-float--left ">
+                                            <lightning:icon class="slds-show" aura:id="caseDetails" iconName="utility:chevronright"
+                                                            size="x-small" alternativeText="Indicates add"/>
+                                            <lightning:icon class="slds-hide" aura:id="caseDetails" iconName="utility:chevrondown"
+                                                            size="x-small" alternativeText="Indicates dash"/>
+                                        </div>
+                                        <div class="slds-m-left--large">Case Information</div>
+                                    </section>
+                                </div>
+                                <div class="slds-hide slds-p-around--medium" aura:id="caseDetails">
+                                    <div class="slds-text-align_left">
+                                        <p>
+                                            <label class="slds-form-element__label" id="inline-text-label">ACCOUNT :</label>
+                                            <lightning:formattedText value="{!v.caseRecord.Account.Name}" />
+                                        </p>
+                                        <p>
+                                            <label class="slds-form-element__label" id="inline-text-label">SERIAL NUMBER :</label>
+                                            <lightning:formattedText value="{!v.caseRecord.Serial__c}" />
+                                        </p>
+                                        <p>
+                                            <label class="slds-form-element__label" id="inline-text-label">SPECIMEN :</label>
+                                            <lightning:formattedText value="{!v.caseRecord.Specimen__c}" />
+                                        </p>
+                                        <p>
+                                            <label class="slds-form-element__label" id="inline-text-label">SAMPLE :</label>
+                                            <lightning:formattedText value="{!v.caseRecord.Sample__c}" />
+                                        </p>
+                                        <p>
+                                            <label class="slds-form-element__label" id="inline-text-label">LOT NUMBER :</label>
+                                            <lightning:formattedText value="{!v.caseRecord.Primary_Lot_Num__c}"  />
+                                        </p>
+                                        <p>
+                                            <label class="slds-form-element__label" id="inline-text-label">MARKET :</label>
+                                            <lightning:formattedText value="VET" />
+                                        </p>
+                                        <p>
+                                            <label class="slds-form-element__label" id="inline-text-label">EXPIRATION DATE :</label>
+                                            <lightning:formattedText value="{!v.expiryDate}" />
+                                        </p>
+                                        <p>
+                                            <label class="slds-form-element__label" for="accName" id="inline-text-label">MANUFACTURE DATE :</label>
+                                            <lightning:formattedText value="{!v.manufactureDate}" />
+                                        </p>
+                                    </div>
+                                </div>
+                                <aura:if isTrue="{!v.showLotInput}">
+                                    <div style="width:150px;">
+                                        <lightning:input name="lot" placeholder="Lot Number" label="Lot Number"                                                         
+                                                         value="{!v.lotNumber}" > </lightning:input>
+                                    </div>
+                                    <div class="slds-align_absolute-center">
+                                        <aura:if isTrue="{!v.showNextButton}">
+                                            <lightning:button variant="brand" label="Next"
+                                                              title="Brand action" onclick="{! c.handleNextButton }" />
+                                        </aura:if>
+                                    </div>
+                                </aura:if>
+                                <!-- SUPPRESSION TABLE -->
+                                <aura:if isTrue="{!and(v.operatingMode == 'suppression', v.showThisTable)}">
+                                    <div class="slds-box slds-grow slds-cell-wrap">
+                                        <b>ERROR INPUTS:</b>
+                                        <div class="slds-align_absolute-center">
+                                            <table class="slds-table slds-table--bordered
+                                                          slds-table--striped
+                                                          slds-table--cell-buffer">
+                                                <tbody>
+                                                    <aura:iteration items="{!v.chemistries}" var="chem">
+                                                        <tr >
+                                                            <td style="vertical-align:bottom" class="slds-text-align_center">
+                                                                <b>
+                                                                    <lightning:formattedText value="{!chem}" name="chemistry" />
+                                                                </b>
+                                                            </td>
+                                                            <div>
+                                                                <td style="vertical-align:center">
+                                                                    <lightning:input label="{!chem}"
+                                                                                     variant="label-hidden"
+                                                                                     name="result"
+                                                                                     maxlength="{! if(chem=='HEM/LIP/ICT',4,if(chem=='RQC',3,5))}"
+                                                                                     readonly="{!v.makeReadOnly }"
+                                                                                     onchange="{!c.loadErrorCodes}"/>
+                                                                </td>
+                                                                <td style="vertical-align:center">
+                                                                    <lightning:input label="{!chem}"
+                                                                                     variant="label-hidden"
+                                                                                     name="errorCode1"
+                                                                                     maxlength="4"
+                                                                                     readonly="{!v.makeReadOnly }"
+                                                                                     onchange="{!c.loadErrorCodes}"
+                                                                                     disabled="{!chem=='RQC'}"/>
+                                                                </td>
+                                                                <td style="vertical-align:center">
+                                                                    <lightning:input aura:id="{!chem}"
+                                                                                     label="{!chem}"
+                                                                                     variant="label-hidden"
+                                                                                     name="errorCode2"
+                                                                                     maxlength="4"
+                                                                                     readonly="{!v.makeReadOnly }"
+                                                                                     onchange="{!c.loadErrorCodes}"
+                                                                                     disabled="{!chem=='RQC'}"/>
+                                                                </td>
+                                                            </div>
+                                                        </tr>
+                                                    </aura:iteration>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </aura:if>
+                                <!-- CANCELLATION TABLE -->
+                                <aura:if isTrue="{! and(v.operatingMode=='cancellation',v.showCancellationTable)}">
+                                    <div class="slds-box slds-grow slds-cell-wrap slds-scrollable--x">
+                                        <b>ERROR INPUTS:</b>
+                                        <div class="slds-align_absolute-center ">
+                                            <table class="slds-table slds-table--bordered
+                                                          slds-table--striped
+                                                          slds-table--cell-buffer">
+                                                <tbody>
+                                                    <aura:iteration items="{!v.cancellationLabels}" var = "eachLabel">
+                                                        <tr>
+                                                            <td style="vertical-align:bottom">
+                                                                <b>{!eachLabel}</b>
+                                                            </td>
+                                                            <div >
+                                                                <td style="vertical-align:center">
+                                                                    <lightning:input style="width: 80px"
+                                                                                     variant="label-hidden"
+                                                                                     name="{!eachLabel +'+column1'}"
+                                                                                     maxlength="4"
+                                                                                     readonly="{!v.makeReadOnly }"
+                                                                                     onchange="{!c.loadCancellationErrorCodes}"/>
+                                                                </td>
+                                                                <td style="vertical-align:center">
+                                                                    <lightning:input style="width: 80px"
+                                                                                     variant="label-hidden"
+                                                                                     name="{!eachLabel +'+column2'}"
+                                                                                     maxlength="4"
+                                                                                     readonly="{!v.makeReadOnly }"
+                                                                                     onchange="{!c.loadCancellationErrorCodes}"
+                                                                                     disabled="{!eachLabel=='QC Flags'}"/>
+                                                                </td>
+                                                                <td style="vertical-align:center">
+                                                                    <lightning:input style="width: 80px"
+                                                                                     variant="label-hidden"
+                                                                                     name="{!eachLabel +'+column3'}"
+                                                                                     maxlength="4"
+                                                                                     readonly="{!v.makeReadOnly }"
+                                                                                     onchange="{!c.loadCancellationErrorCodes}"
+                                                                                     disabled="{!eachLabel=='QC Flags'}"/>
+                                                                </td>
+                                                                <td style="vertical-align:center">
+                                                                    <lightning:input style="width: 80px"
+                                                                                     variant="label-hidden"
+                                                                                     name="{!eachLabel+'+column4'}"
+                                                                                     maxlength="4"
+                                                                                     readonly="{!v.makeReadOnly }"
+                                                                                     onchange="{!c.loadCancellationErrorCodes}"
+                                                                                     disabled="{!eachLabel=='QC Flags'}"/>
+                                                                </td>
+                                                            </div>
+                                                        </tr>
+                                                    </aura:iteration>
+                                                    <tr>
+                                                        <td style="vertical-align:bottom">
+                                                            <b>Error Code</b>
+                                                        </td>
+                                                        <div>
+                                                            <td style="vertical-align:center">
+                                                                <lightning:input aura:id="errorcode"
+                                                                                 style="width: 80px"
+                                                                                 variant="label-hidden"
+                                                                                 name="errorcode"
+                                                                                 maxlength="4"
+                                                                                 readonly="{!v.makeReadOnly }"
+                                                                                 onchange="{!c.loadCancellationErrorCodes}"
+                                                                                 value="{!v.inputValue}"/>
+                                                            </td>
+                                                        </div>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </aura:if>
+                                <aura:if isTrue="{!v.showResults}">
+                                    <div class="slds-box slds-grow slds-cell-wrap" aura:id="resultsId">
+                                        <b>TRANSLATION RESULTS : </b>
+                                        <aura:iteration items="{!v.translatedResults}" var="eachResult">
+                                            <div>
+                                                <tr>
+                                                    <!--<b>Chemistry Specific Results : </b> -->
+                                                    <div style="font-weight: bold;">
+                                                        <p><u>{!eachResult.displayLabel} : </u></p>
+                                                    </div>
+                                                    <div style="color:red">
+                                                        <div>
+                                                            <b>Chemistry Specific Flags :</b>
+                                                            <aura:iteration items="{!eachResult.specificMessage}" var="eachMessage">
+                                                                <p>{!eachMessage}</p>
+                                                            </aura:iteration>
+                                                        </div>
+                                                        <div>
+                                                            <b>General Chemistry Flags :</b>
+                                                            <p>{!eachResult.genericMessage}</p>
+                                                        </div>
+                                                    </div>
+                                                </tr>
+                                            </div>
+                                        </aura:iteration>
+                                        <!--Nilanjan Ganguly Added the below part for SC-008782-->
+                                        <aura:iteration items="{!v.errorCodeValues}" var="eachResult">
+                                            <div>
+                                                <aura:if isTrue="{!or(eachResult.chemistry == 'HEM/LIP/ICT' , eachResult.chemistry == 'RQC')}">
+                                                    <tr>
+                                                        <!--<b>Chemistry Specific Results : </b> -->
+                                                        <div style="font-weight: bold;">
+                                                            <p><u>{!eachResult.chemistry} : </u></p>
+                                                        </div>
+                                                        <div style="color:red">
+                                                             <aura:if isTrue="{!eachResult.chemistry == 'HEM/LIP/ICT'}">
+                                                                <div> 
+                                                                    <p>{!eachResult.result} / {!eachResult.errorCode1} / {!eachResult.errorCode2}</p>
+                                                                </div> 
+                                                            </aura:if>
+                                                            <aura:if isTrue="{!eachResult.chemistry == 'RQC'}">
+                                                                <div> 
+                                                                    <p>{!eachResult.result}</p>
+                                                                </div> 
+                                                            </aura:if>
+                                                        </div>
+                                                    </tr>
+                                                </aura:if>
+                                            </div>
+                                        </aura:iteration>
+                                        <!--(EOC) Nilanjan Ganguly Added the below part for SC-008782-->
+                                        
+                                    </div>
+                                </aura:if>
+                                <aura:if isTrue="{!v.showCancellationResults}">
+                                    <div class="slds-box slds-grow slds-cell-wrap" aura:id="resultsId">
+                                        <b>TRANSLATION RESULTS : </b>
+                                        <!--{!v.cancellationResults.labelToMessage}-->
+                                        <aura:iteration items="{!v.cancellationResults}" var="eachResult">
+                                            <div>
+                                                <aura:if isTrue="{!eachResult.name != 'errorcode' }">
+                                                    <aura:if isTrue="{! eachResult.name == 'Flag' }">
+                                                        <p><b><u>{!eachResult.label} : </u></b></p>
+                                                        <aura:iteration items="{!eachResult.value}" var="message">
+                                                            <div style="color:red">
+                                                                {!message}
+                                                            </div>
+                                                        </aura:iteration>
+                                                    </aura:if>
+                                                    <aura:if isTrue="{! eachResult.name != 'Flag' }">
+                                                        <p><b><u>{!eachResult.label} : </u></b></p>
+                                                        <div style="color:red">
+                                                            {!eachResult.value}
+                                                        </div>
+                                                    </aura:if>
+                                                </aura:if>
+                                                <aura:if isTrue="{!eachResult.name == 'errorcode' }">
+                                                    <div style="font-weight: bold;">
+                                                        <p><b>Error Code : </b></p>
+                                                    </div>
+                                                    <div style="color:red">
+                                                        <b>{!eachResult.label}</b>
+
+                                                        <p>{!eachResult.value}</p>
+                                                    </div>
+                                                </aura:if>
+                                            </div>
+                                        </aura:iteration>
+                                    </div>
+                                </aura:if>
+                            </div>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <div class="slds-align_absolute-center">
+                                <aura:if isTrue="{!or(v.showResults,v.showCancellationResults) }">
+                                    <lightning:button variant="brand" label="Previous"
+                                                      onclick="{! c.goBackToInputScreen }" />
+                                    <lightning:button variant="brand" label="Add Results to Case"
+                                                      onclick="{! c.updateCaseRecord }"/>
+                                    <lightning:button variant="brand" label="Close"
+                                                             onclick="{! c.closeModal }" />
+                                    <aura:set attribute="else">
+                                        <aura:if isTrue="{! or(v.operatingMode=='cancellation',v.operatingMode=='suppression') }">
+                                            <lightning:button variant="brand" label="Cancel"
+                                                              title="Brand action" onclick="{! c.closeModal }" />
+                                            <lightning:button variant="brand" label="Process Results"
+                                                              title="Brand action" onclick="{! c.processErrorCodes }" />
+                                        </aura:if>
+                                    </aura:set>
+                                </aura:if>
+                            </div>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,204 @@
+<template>
+    <lightning-breadcrumbs class="zs_fc_list_breadcrumbs slds-p-bottom_medium">
+        <lightning-breadcrumb label="Forecast, Stock and Order" href=""></lightning-breadcrumb> / 
+        <lightning-breadcrumb label="Stock" href=""></lightning-breadcrumb> /
+        <lightning-breadcrumb class="zs_active_breadcrumb" label="Stock Entry Form" href=""></lightning-breadcrumb>
+    </lightning-breadcrumbs>
+
+    <div class="slds-text-heading_medium slds-p-bottom_small zs_sk_entry_title">Stock Entry Form</div>
+        <article class="slds-card zs_monthyear_card">
+            <div class="slds-card__body slds-card__body_inner">
+
+             <lightning-layout vertical-align="center" class="x-large zs_monthyear_layout">
+         <lightning-layout-item flexibility="auto" size="5" padding="around-small">
+            <lightning-combobox
+                    data-name='forecastMonth'
+                    name="month"
+                    label="Stock Month"
+                    value={monthValue}
+                    placeholder="Select month"
+                    options={monthOptions}
+                    onchange={handleValueChange} 
+                    required>
+            </lightning-combobox>
+         </lightning-layout-item>
+         <lightning-layout-item flexibility="auto" size="2" padding="around-small">
+        </lightning-layout-item>
+          <lightning-layout-item flexibility="auto" size="5" padding="around-small">
+                <lightning-combobox
+                    data-name='forecastYear'
+                    name="year"
+                    label="Stock year"
+                    value={yearValue}
+                    placeholder="Select year"
+                    options={yearOptions}
+                    onchange={handleValueChange} 
+                    required>
+            </lightning-combobox>
+         </lightning-layout-item>
+             </lightning-layout>
+             </div>
+             </article>
+        <br/>           
+        <br/>
+
+
+        <div class="zs_fc_addupdate_wrapper zc_sk_addupdate_wrapper">
+            <lightning-card title="+ Add/Update Stock">
+    
+                <div class="slds-grid slds-grid_align-center slds-p-bottom_medium">
+                    <div class="slds-col slds-p-horizontal_xx-small slds-size_5-of-12">
+                        <div class="slds-m-top_xx-small">
+                            <span class="zs_prod_desc">Product Description</span>
+                            <c-alpha-custom-lookup  data-id={index} object-name="Product2" field-name="Name"  label="Product2" iconname="standard:product" selected-record = {prodStock.prod} onrecselect={handleProdChange}></c-alpha-custom-lookup>
+                        </div>   
+                    </div>
+                    <div class="slds-col slds-p-horizontal_xx-small slds-size_1-of-12">
+                        <lightning-input data-name="SAPCode" type="text" label="SAP Code" value={prodStock.stock.SAP_Product_Code__c}  disabled></lightning-input>
+                    </div>
+                    <div class="slds-col slds-p-horizontal_xx-small slds-size_1-of-12">
+                        <lightning-input  type=text label="UOM"  value={prodStock.stock.Unit_of_Measure__c} disabled></lightning-input> 
+                    </div>
+                    <div class="sk_batch slds-col slds-p-horizontal_xx-small slds-size_1-of-12">
+                        <lightning-input data-name="BatchLot" type="text" label="Batch No" value={prodStock.stock.Batch_Lot_Number__c} onchange={handleValueChange} required></lightning-input>
+                    </div>
+                    <div class="sk_expiry slds-col slds-p-horizontal_xx-small slds-size_1-of-12">
+                        <lightning-input data-name="ExpDate" type=date label="Expiry Date"  value={prodStock.stock.Expiration_Date__c} onchange={handleValueChange} required></lightning-input>
+                        </div>
+                        
+                    <div class="sk_quantity slds-col slds-p-horizontal_xx-small slds-size_1-of-12">
+                        <lightning-input data-name="Quantity" type=number label="Quantity"  value={prodStock.stock.Quantity__c} onchange={handleValueChange} required></lightning-input>
+                    </div>
+                    
+                    </div>
+    
+                    <div class="slds-grid slds-grid_align-center">
+                        <div class="slds-col slds-m-right_small slds-p-horizontal_xx-small slds-size_4-of-12">
+                            <span class="zs_label_right">Optional</span>
+                            <lightning-input data-name="DistCode" type=text label="Distributor Product Code"  value={prodStock.stock.Distributor_Product_Code__c} onchange={handleValueChange}  ></lightning-input>
+                            </div>
+                            <div class="slds-col slds-m-left_small slds-p-horizontal_xx-small slds-size_4-of-12">
+                                <span class="zs_label_right">Optional</span>
+                                <lightning-input data-name="DistName" type=text label="Distributor Product Name"  value={prodStock.stock.Distributor_Product_Name__c} onchange={handleValueChange} ></lightning-input>
+                            </div>
+                    </div>
+    
+                    <div class="slds-grid slds-p-top_large slds-p-bottom_large slds-grid_align-center">
+                        <div class="slds-col slds-p-horizontal_xx-small slds-size_1-of-12">
+                            <lightning-button class="fc_add_update_btn slds-m-top_medium slds-m-bottom_medium" name="Save" variant="brand" label="Save" onclick={addToGrid} ></lightning-button>
+                            </div>
+                            
+                    </div>
+    
+    
+                   
+            </lightning-card>
+        </div>
+
+
+    
+    <template if:true={isDataPresent}>
+
+  <div class="slds-m-top_medium slds-p-top_none slds-table--header-fixed_container" style="height:300px;">
+            <div class="slds-scrollable_y" style="height:100%;">
+                <table class="slds-table slds-table--header-fixed zs_entry_table">
+                <thead>
+                    <tr class="slds-text-title_caps">
+                        <!-- <th>
+                            <div class="slds-truncate required-field" title="SL No">SL No</div>
+                        </th> -->
+                        <th scope="col">
+                            <div style="word-wrap: break-word; white-space: normal;"  class="slds-truncate required-field" title="SAP Material Code">SAP Material Code</div>
+                        </th>
+                        <th scope="col">
+                            <div style="word-wrap: break-word; white-space: normal;"  class="slds-truncate required-field" title="Product Description">Product Description</div>
+                        </th>
+                        <th scope="col">
+                            <div style="word-wrap: break-word; white-space: normal;" class="slds-truncate" title="Distributor Product Code">Distributor Product Code</div>
+                        </th>
+                        <th scope="col">
+                            <div style="word-wrap: break-word; white-space: normal;" class="slds-truncate" title="Distributor Product Name">Distributor Product Name</div>
+                        </th>
+                        <th scope="col">
+                            <div style="word-wrap: break-word; white-space: normal;" class="slds-truncate required-field" title="Batch/lot no">Batch/lot no</div>
+                        </th>
+                        <th scope="col">
+                            <div style="word-wrap: break-word; white-space: normal;" class="slds-truncate required-field" title="Expiry date">Expiry date</div>
+                        </th>
+                        <th scope="col">
+                            <div style="word-wrap: break-word; white-space: normal;"  class="slds-truncate required-field" title="Stock quantity">Quantity</div>
+                        </th>
+                        <th scope="col">
+                            <div style="word-wrap: break-word; white-space: normal;"  class="slds-truncate" title="Unit of Measure (UoM)">UoM</div>
+                        </th>
+                        <template if:false={isSaved}>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Action">Action</div>
+                            </th>
+                        </template>
+                    </tr>
+                </thead>   
+                <tbody>      
+                    
+                    <template for:each={initList} for:item="acc" for:index="index">
+                        <tr key={acc.Id} id={acc.key}> 
+                            <!-- <td>
+                                <lightning-input  data-name="SlNo" data-id={index} variant="label-hidden" label="Name" value={index} required disabled></lightning-input>                        
+                            </td>  -->
+                            <td style="width: 80px;">
+                                <lightning-input   data-id={index} variant="label-hidden" label="Name" value={acc.stock.SAP_Product_Code__c}   disabled></lightning-input>                        
+                            </td>                                                  
+                            <td style="width: 300px;">                                 
+                                 <lightning-input data-id={index} variant="label-hidden" label="Name" value={acc.prod.Name} disabled></lightning-input>                              
+                            </td>
+                            <td>
+                                <lightning-input  data-id={index} variant="label-hidden" label="Name" value={acc.stock.Distributor_Product_Code__c} disabled ></lightning-input>                        
+                            </td>
+                            <td>
+                                <lightning-input data-id={index} variant="label-hidden" label="Name" value={acc.stock.Distributor_Product_Name__c} disabled></lightning-input>                        
+                            </td>
+                            <td>
+                                <lightning-input  data-id={index} variant="label-hidden" label="Name" value={acc.stock.Batch_Lot_Number__c} disabled ></lightning-input>
+                            </td>
+                             <td style="width: 130px;">
+                                <lightning-input  type=Date data-id={index} variant="label-hidden" label="Name" value={acc.stock.Expiration_Date__c} disabled></lightning-input>                        
+                            </td>
+                            <td style="width: 75px;">
+                                <lightning-input  data-id={index} variant="label-hidden" label="Name" value={acc.stock.Quantity__c} disabled></lightning-input>                        
+                            </td>
+                             <td style="width: 60px;">
+                                <lightning-input  data-id={index} variant="label-hidden" label="Name" value={acc.stock.Unit_of_Measure__c} disabled></lightning-input>                        
+                            </td>
+                            <template if:false={isSaved}>
+                             <td>
+                                <lightning-button-icon icon-name="utility:edit"
+																		  data-id={index}       
+																		  alternative-text="Add"     
+																		  class="slds-var-m-left_xx-small"
+																		  onclick={editRow} 
+																		  title="Add">
+                                </lightning-button-icon>
+                                <lightning-button-icon icon-name="utility:delete"
+																		  data-id={index}       
+																		  alternative-text="Delete"     
+																		  class="slds-var-m-left_xx-small"
+																		  onclick={removeRow} 
+																		  title="Delete">
+                                </lightning-button-icon>
+                            </td> 
+
+                            </template>
+                           
+                        </tr>
+                    </template>   
+                </tbody>
+            </table>        
+        </div>
+    </div> 
+
+   
+    <div class="slds-grid slds-p-top_large slds-p-bottom_large slds-grid_align-center">
+     <lightning-button class="zs_review_submit_btn slds-m-top_medium slds-m-bottom_medium" name="Save" variant="brand" label="Review & Submit" onclick={saveRecord} ></lightning-button>   
+    </div>
+     </template>
+    </template>

@@ -1,0 +1,13 @@
+/**
+ * Created by jerridkimball on 2018-06-13.
+ */
+.THIS thead, 
+.THIS tbody, 
+.THIS thead tr, 
+.THIS tbody tr {
+/*    display: block; */
+}
+
+.THIS td div {
+    display: inline;
+}

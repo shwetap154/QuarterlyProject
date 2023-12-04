@@ -1,0 +1,4 @@
+<apex:page standardController="ZTS_EU_Species__c" extensions="ZTS_EU_speciesRedirect" action="{!speciesRedirect}">
+  
+
+</apex:page>

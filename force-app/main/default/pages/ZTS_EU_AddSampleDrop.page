@@ -1,0 +1,81 @@
+<apex:page controller="ZTS_EU_AddSampleDrop_Controller" sidebar="flase" showHeader="false" id="pg">
+     <style>
+        .activeTab {background-color: #FFFFFF; background-image:none}
+        .inactiveTab { background-color: #DFDFDF; background-image:none}
+    </style>
+    <apex:form id="frm">
+        <apex:pageBlock title="Search for a Sample" id="searchPB">
+            <apex:outputText value="Enter the search text: "/>
+            <apex:inputText value="{!searchString}" id="srchTxt"/>
+            <apex:commandButton value="Search" action="{!searchSample}"  onclick=" return checkSearchBox();"/><br/>
+             <div style="padding-top:20px;">
+                <div><apex:outputText value="Sample can be searched by Sample ID or Product Name." style=" font-style: italic"/></div>
+            </div>  
+        </apex:pageBlock>
+        <apex:pageBlock id="samplePgID" rendered="{!NOT(ISNULL(Samples)) && Samples.size > 0}">
+            <apex:outputPanel id="SearchedSamples">
+                <apex:pageBlockTable id="sampleTb" value="{!Samples}" var="s" title="Sample" >
+                    <apex:column headerValue="{!$ObjectType.ZTS_EU_Sample__c.Fields.Name.Label}">
+                        <apex:outputLink value="/{!s.Id }" target="_blank">{!s.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.ZTS_EU_Sample__c.Fields.ZTS_EU_Product__c.Label}">
+                        <apex:outputLink value="/{!s.ZTS_EU_Product__r.Id}" target="_blank">{!s.ZTS_EU_Product__r.Name}</apex:outputLink>
+                    </apex:column>
+                     <apex:column value="{!s.ZTS_EU_Lot__c}"/>
+                    <apex:column value="{!s.ZTS_EU_On_Hand_Balance__c}"/>
+                   
+                    <apex:column >
+                        <apex:commandLink value="Add" style="text-decoration:none" styleClass="btn" action="{!addSampleDrop}" reRender="SearchedSamples,outCall" rendered="{!mapSearchedSampleIdBool[s.Id]}">
+                            <apex:param name="ProductId" assignTo="{!addSampleId}" value="{!s.Id}" />                            
+                        </apex:commandLink>
+                    </apex:column>
+                </apex:pageBlockTable>
+             </apex:outputPanel>
+             <apex:outputPanel layout="block" styleClass="pSearchShowMore" id="otpNav1" rendered="{!NOT(ISNULL(setSDropCont))}">   
+                  Total Products: <apex:outputText rendered="{!IF(setSDropCont.resultSize==10000,true,false)}">10000 +</apex:outputText>
+                  <apex:outputText rendered="{!IF(setSDropCont.resultSize < 10000,true,false)}">{!setSDropCont.resultSize}</apex:outputText>
+                  <apex:image url="/img/search_prevarrow_disabled.gif" styleClass="prevArrow" rendered="{!NOT(setSDropCont.hasPrevious)}"/>
+                  <apex:image url="/img/search_prevarrow.gif" title="Previous Page" styleClass="prevArrow" rendered="{!setSDropCont.hasPrevious}"/>   
+                  <apex:commandLink action="{!setSDropCont.previous}" rendered="{!setSDropCont.hasPrevious}" reRender="prodPgID">Previous</apex:commandLink>
+                  <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(setSDropCont.hasPrevious)}">Previous Page</apex:outputPanel>
+                  &nbsp;({!IF(setSDropCont.PageNumber == 1,1,((setSDropCont.PageNumber -1) * setSDropCont.PageSize)+1)}-{!IF(setSDropCont.resultSize < setSDropCont.PageSize,setSDropCont.resultSize,setSDropCont.PageNumber * setSDropCont.pageSize)})&nbsp;   
+                  <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(setSDropCont.hasNext)}">Next Page</apex:outputPanel>
+                  <apex:commandLink value="Next Page" rendered="{!setSDropCont.hasNext}" action="{!setSDropCont.next}" reRender="prodPgID"/>&nbsp;   
+                  <apex:image url="/img/search_nextarrow.gif" title="Next Page" styleClass="nextArrow" rendered="{!setSDropCont.hasNext}"/>   
+                  <apex:image url="/img/search_nextarrow_disabled.gif" rendered="{!NOT(setSDropCont.hasNext)}"/>                                  
+             </apex:outputPanel> 
+             <apex:outputPanel id="outCall">
+            <apex:pageBlock title="Currently added to this Call:" rendered="{!NOT(ISNULL(sDropObj)) && sDropObj.size > 0}">
+                <apex:pageBlockTable value="{!sDropObj}" var="sam">
+                    <apex:column headerValue="{!$ObjectType.ZTS_EU_Sample__c.Fields.ZTS_EU_Product__c.Label}">
+                         <apex:outputField value="{!sam.ZTS_EU_Sample__r.ZTS_EU_Product__r.Name}"/>
+                    </apex:column>
+                    <apex:column value="{!sam.ZTS_EU_Sample__r.ZTS_EU_On_Hand_Balance__c}"/>                   
+                    <apex:column >
+                      <apex:commandLink action="{!removeSamples}" value="Remove" status="" style="text-decoration:none" styleClass="btn" immediate="" reRender="outCall,SearchedSamples">
+                          <apex:param name="sampleDropId" assignTo="{!sampleDropId }" value="{!sam.Id}" />                      
+                      </apex:commandLink>
+                      </apex:column>                             
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+        </apex:outputPanel>
+        <apex:commandButton value="Done" onclick="closeWindow();" style="margin-left:33%" /> 
+        </apex:pageBlock>
+        <script type = "text/javascript">
+            function checkSearchBox(){      
+                var search = document.getElementsByName("pg:frm:searchPB:srchTxt");            
+                    if(search[0].value == '' || search[0].value == null){
+                        alert('Search Text Cannot be Blank');  
+                        return false;
+                    } 
+            }
+            
+            function closeWindow(){
+                //window.parent.location.reload();
+                opener.location.reload(true);
+                window.close();
+                return;
+            }
+        </script>   
+    </apex:form> 
+</apex:page>

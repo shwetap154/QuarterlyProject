@@ -1,0 +1,30 @@
+<template>
+   <lightning-modal-header label="New Account Alert"></lightning-modal-header>
+    <lightning-modal-body>
+      <div if:true={errors} class="slds-notify slds-notify_alert slds-alert_error">
+        {errors}
+      </div>
+    <!--<lightning-record-form
+      object-api-name="Account_Alert__c"
+      fields={accountAltFields}
+      columns="2"
+      onsuccess={closePopupSuccess}
+      oncancel={closePopup}>
+    </lightning-record-form> -->
+    <lightning-record-edit-form object-api-name="Account_Alert__c">
+        <lightning-messages></lightning-messages>
+        <div class="slds-m-around_medium">             
+            <lightning-input-field field-name='Account_Alert__c'></lightning-input-field>
+            <lightning-input-field field-name='Account__c'> value = {AccountName}disabled</lightning-input-field>
+
+        </div>
+    </lightning-record-edit-form>
+    <footer class="slds-modal__footer">
+
+
+        <lightning-button label="Cancel" variant="neutral" onclick={handleOkay}></lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <lightning-button label="Save" variant="brand" type="submit" name="save" onclick={saveMethod}></lightning-button>
+    </footer>
+   
+    </lightning-modal-body>    
+</template>

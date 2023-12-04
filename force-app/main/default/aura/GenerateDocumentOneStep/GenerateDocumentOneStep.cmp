@@ -1,0 +1,41 @@
+<aura:component implements="force:hasRecordId,force:lightningQuickActionWithoutHeader"
+                access="global"
+                controller="GenerateDocumentOneStepController">
+    
+    <aura:attribute name="recordId" type="string" />
+    <aura:attribute name="saveDocumentJobId" type="string" />
+    <aura:attribute name="quoteDocumentId" type="string" />
+
+    <aura:attribute name="loading" type="boolean" default="true" />
+    <aura:attribute name="statusText" type="string" default="{! $Label.c.Generating_Document }" />
+    <aura:attribute name="errorText" type="string"/>
+    <aura:attribute name="messageType" type="string" default="warning"/>
+
+    <!-- Event handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+      
+    <aura:if isTrue="{! v.loading }">
+      <div style="position: relative; display: block; height: 80px; white-space: nowrap;">
+        <lightning:spinner variant="brand" alternative-text="Loading"></lightning:spinner>
+      </div>
+      <div class="slds-align_absolute-center slds-text-heading_small">{! v.statusText }</div>
+      <div class="slds-m-top_medium slds-scoped-notification slds-media slds-media_center slds-scoped-notification_light" role="status">
+        <div style="margin-right: 10px;">
+          <lightning:icon iconName="utility:info" alternativeText="Info" title="Info" size="small"></lightning:icon>
+        </div>
+        <div class="slds-media__body">
+          <p>{! $Label.c.Redirect_Information }</p>
+        </div>
+      </div>
+      <aura:set attribute="else">
+        <div class="{! 'slds-scoped-notification slds-media slds-media_center slds-theme_' + v.messageType }" role="status">
+          <div style="margin-right: 20px;">
+            <lightning:icon iconName="{! 'utility:' + v.messageType }" alternativeText="Warning" title="Warning" size="medium"></lightning:icon>
+          </div>
+          <div class="slds-media__body">
+            <p>{! v.errorText }</p>
+          </div>
+        </div>
+      </aura:set>
+    </aura:if>
+</aura:component>

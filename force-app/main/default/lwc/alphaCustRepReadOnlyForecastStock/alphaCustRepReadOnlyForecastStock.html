@@ -1,0 +1,15 @@
+<template>
+
+    <div class="slds-grid slds-grid_align-center zs_cb_distname_wrap">
+        <div class="slds-col slds-size_2-of-2">
+    <p class="slds-m-bottom_xx-small"> Distributor Name</p>
+    <c-alpha-custom-lookup object-name="Account" field-name="Name"  
+        label="Account" iconname="standard:account" 
+        selected-record = '{selAccRecord}' 
+        onrecselect={handleAccChange}>
+    </c-alpha-custom-lookup>
+    </div>
+    </div>
+    <c-alpha-dist-read-only-forecast obj-name = {objName}
+        acc-record = {selAccRecordId} mode='CSCL'></c-alpha-dist-read-only-forecast>
+    </template>

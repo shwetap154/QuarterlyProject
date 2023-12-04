@@ -1,0 +1,227 @@
+<apex:page title="Zoetis For Shelters" standardController="Lead"  extensions="ZoetisForShelters" action="{!createShelterFromWebSite}" cache="false" showChat="false" showHeader="false" sidebar="false" standardStylesheets="true">
+    <c:ZFS_header shelterObj="{!shelter}" ></c:ZFS_header>
+    <style type="text/css"  >
+        .btn {  
+        line-height:1.5 !important;border:2px solid transparent !important;min-width:8em !important;
+        background-color:#ff6400 !important;
+        background:#ff6400 !important;
+        color:white !important;
+        }  
+        .individualPalette .leadBlock .tertiaryPalette{
+        background-color:#0096AF !important;
+        }
+        .individualPalette .leadBlock .secondaryPalette {
+        border-color:#0096AF !important;
+        }
+        body .bEditBlock .pbBody .pbSubheader{
+        background-image:none !important;
+        color:#ffffff !important;
+        }
+        .requiredLegend{
+        color:#ffffff !important;
+        }
+        table{
+        padding-top: .5em !important;
+        }
+        .message{
+        background-color: #ffffff !important;
+        padding: 0px 0px 0px 0px !important;
+        margin: 2px 0px !important;
+        width: 100% !important;
+        }
+        body{
+        font-size: 85% !important;
+        }
+        body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label{
+        font-size: 1.4em;
+        }
+        
+    </style>
+    <script type='text/javascript'>
+    function noenter(ev)  {
+        if (window.event && window.event.keyCode == 13 || ev.which == 13) {
+            saveShelter();
+            return false;
+        } else {
+            return true;
+        }
+    }
+    </script>
+    
+    <table style="width:100%;">
+        <tr>
+            <td style="width:10%;"></td>
+            <td style="vertical-align: top; text-align: right;">
+                <c:ZFS_Page_Navigation leadId="{!LeadId}" currStepNo="2" compStepNo="{! IF(LeadId==null,0,shelter.Step_Number__c)}"></c:ZFS_Page_Navigation>
+            </td>
+            <td style="width:50%; vertical-align: top;">
+                <center>
+                    <apex:form >
+                        <apex:pageMessages rendered="{!hasErrors}"></apex:pageMessages>
+                        <apex:outputPanel id="qual_criteria">
+                            <apex:pageBlock mode="edit" id="qcBlock" >
+                                <apex:pageBlockSection columns="1" title="Qualification Criteria" > 
+                                    
+                                    <apex:outputPanel id="op1">
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <label> <b>Which of the following describes your shelter? </b></label>
+                                        </div>
+                                        (Please choose one)
+                                        <apex:selectRadio label="" value="{!shelter.Type_of_Organization__c}" layout="pageDirection" immediate="true" onkeypress="return noenter(event);">
+                                        <!--    <apex:selectOptions value="{!shelterType}" />   Pooja TPDEV-1355 Change -->
+                                            <apex:selectOption itemLabel="Privately Licensed Shelter" itemValue="Privately Licensed Shelter"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Publicly Funded Licensed Shelter" itemValue="Publicly Funded Licensed Shelter"></apex:selectOption>
+            								<apex:selectOption itemLabel="Rescue Group" itemValue="Rescue Group"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Animal Sanctuary" itemValue="Animal Sanctuary"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Foster Group" itemValue="Foster Group"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Spay/Neuter Group" itemValue="Spay/Neuter Group"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Other" itemValue="Other"></apex:selectOption>
+                                            <apex:actionSupport event="onchange" reRender="op1"/>
+                                        </apex:selectRadio>
+                                        
+                                        <apex:pageBlockSection columns="1" rendered="{!shelter.Type_of_Organization__c == 'Other'}">
+                                            <label>If other, please describe:</label>
+                                            <apex:inputField id="other" label="" value="{!shelter.If_Other_please_describe__c}" style="width:50%;" onkeypress="return noenter(event);" /><br/>
+                                        </apex:pageBlockSection>  
+                                        
+                                        <apex:panelGrid rendered="{!shelter.Type_of_Organization__c == 'Animal Sanctuary'}" >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <label> <b>What types of animals receive sanctuary with your organization? </b></label>
+                                            </div> 
+                                            <apex:selectRadio label="" value="{!shelter.Type_of_Sanctuary_Animals__c}" layout="pageDirection" immediate="true" onkeypress="return noenter(event);">
+                                                <apex:selectOptions value="{!typeOfSancAnimals}" /> 
+                                                <apex:actionSupport event="onchange" reRender="op1"/>
+                                            </apex:selectRadio> 
+                                            
+                                            <apex:pageBlockSection columns="1" rendered="{!shelter.Type_of_Sanctuary_Animals__c == 'Other'}">
+                                                <label>If Other, Please Specify:</label>
+                                                <apex:inputField id="other" label="" value="{!shelter.Type_of_Sanctuary_Animals_Other__c}" style="width:50%;" onkeypress="return noenter(event);" /><br/>
+                                            </apex:pageBlockSection>
+                                            
+                                        </apex:panelGrid>
+                                    </apex:outputPanel>
+                                    
+                                    
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <label><b>Does your organization adopt out cats and/or dogs?</b></label>
+                                        <apex:selectRadio label="" value="{!shelter.annual_cat_dog__c}" style="width:40%" onkeypress="return noenter(event);">
+                                            <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                            <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                                        </apex:selectRadio>
+                                    </div>
+                                    
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <label><b>Do you currently purchase from Zoetis?</b></label>
+                                        <apex:selectRadio label="" value="{!shelter.Do_you_currently_purchase_from_Zoetis__c}" style="width:40%" onkeypress="return noenter(event);">
+                                            <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                            <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                                        </apex:selectRadio>
+                                    </div>
+                                    <apex:outputPanel id="op2">
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div> 
+                                            <label><b>Is there currently an account with Zoetis at this location?</b></label>
+                                        </div>
+                                        <apex:selectRadio label="" value="{!shelter.Existing_account_with_Zoetis__c}" immediate="true" style="width:40%" onkeypress="return noenter(event);">
+                                            <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                            <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                                            <apex:actionSupport event="onchange" reRender="op2"/>
+                                        </apex:selectRadio>
+                                        
+                                        <apex:pageBlockSection columns="1" rendered="{! shelter.Existing_account_with_Zoetis__c == 'Yes'}">
+                                            <label><b>Please provide your Zoetis account information below:</b></label> <br/>
+                                            <label>Prefix</label>
+                                            <apex:outputPanel >
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <apex:selectList value="{!shelter.Account_Prefix__c}" label="" multiselect="false" size="1" style="width:50%" onkeypress="return noenter(event);">
+                                                        <apex:selectOptions value="{!prefix}" ></apex:selectOptions>
+                                                    </apex:selectList></div></apex:outputPanel><br/>
+                                            
+                                            <label>First Name</label>
+                                            <apex:outputPanel >
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <apex:inputField value="{!shelter.Account_First_Name__c}" label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel><br/>
+                                            
+                                            <label>Last Name</label>
+                                            <apex:outputPanel >
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <apex:inputField value="{!shelter.Account_Last_Name__c}" label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel><br/>
+                                            
+                                            <label>Account Name</label>
+                                            <apex:outputPanel >
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <apex:inputField value="{!shelter.Shelter_Account_Name__c}" label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel><br/>
+                                            
+                                            <label>Zoetis Account#</label>
+                                            <apex:outputPanel >
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <apex:inputField value="{!shelter.Zoetis_Account__c}" label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel><br/>
+                                        </apex:pageBlockSection>
+                                    </apex:outputPanel>
+                                   <apex:outputPanel id="op3">
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <label><b>How did you hear about Zoetis for Shelters?</b></label>
+                                    </div>
+                                    
+                                                
+                                                    <apex:selectList value="{!shelter.How_did_you_hear_about_us2__c}" label="" multiselect="false" size="1" style="width:50%" onkeypress="return noenter(event);">
+                                                        <apex:selectOptions value="{!hearAboutZoeties}" ></apex:selectOptions>
+                                                        
+                                                        <apex:actionSupport event="onchange" reRender="op3"/>
+                                       </apex:selectList><br/>
+                                <apex:pageBlockSection columns="1" rendered="{!shelter.How_did_you_hear_about_us2__c == 'Zoetis Representative' || shelter.How_did_you_hear_about_us2__c == 'Veterinarian' ||shelter.How_did_you_hear_about_us2__c == 'Other'}">    <!--Pooja Added TPDEV-1355 -->  
+          							<apex:outputPanel >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+             							 <label><b>How did you hear about us details</b></label>
+              							</div>
+              							<apex:inputField label="" value="{!shelter.Enter_the_details_for_the_value_selected__c}" style="width:40%;height:30px;"/>
+             						</apex:outputPanel>
+                                </apex:pageBlockSection>  
+                              </apex:outputPanel><br/> <!--Pooja Added TPDEV-1355 --> 
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <label><b>Do you work with a licensed veterinarian who understands and agrees to Zoetis shipping products against their veterinary license AND who oversees the use and administration of all products?</b></label>  <!--Pooja TPDEV-1355 Updated the Label -->
+                                    </div>
+                                    <apex:selectRadio label="" value="{!shelter.Do_you_have_a_licensed_veterinarian__c}" immediate="true" style="width:40%" onkeypress="return noenter(event);">
+                                        <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                        <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                                    </apex:selectRadio>
+                                </apex:pageBlockSection>
+                                
+                                <br/><br/>
+                                <apex:outputPanel rendered="{! !readonly}">
+                                    <apex:outputPanel style="float: left; padding-left:6%;">
+                                        <apex:commandButton value="Previous" action="{!previous}" immediate="true"/> 
+                                        <apex:commandButton value="Save & Next" action="{!saveShelter}"/> 
+                                        <apex:commandButton value="Save & Exit" action="{!saveExit}" /> 
+                                    </apex:outputPanel>
+                                    <apex:outputPanel style="float: right; padding-right:6%;">
+                                        <apex:commandButton value="Reset Form" onclick="return confirm('Are you sure you want to remove all entered details? \nPlease click \'OK\' to continue.')" action="{!reset}" immediate="true" />
+                                        <apex:commandButton value="Discard Form" onclick="return confirm('Are you sure you want to discard your application? \nPlease click \'OK\' to continue.');" action="{!discard}" immediate="true" />
+                                    </apex:outputPanel>
+                                    <apex:actionFunction name="saveShelter" action="{!saveShelter}"/>
+                                    <br/><br/><br/>
+                                </apex:outputPanel>
+                                <br/>
+                                
+                            </apex:pageBlock>
+                        </apex:outputPanel>
+                    </apex:form>
+                </center>
+            </td>
+            <td style="width:25%;"><apex:outputPanel ></apex:outputPanel></td>
+        </tr>
+    </table>
+    <c:ZFS_footer /> 
+</apex:page>

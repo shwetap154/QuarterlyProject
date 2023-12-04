@@ -1,0 +1,317 @@
+<apex:page Controller="ZTS_US_Mass_Add_Account_New_Ext" sidebar="false" LightningStyleSheets="true" title="Add Accounts from Events">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    
+    <style>
+        .tableContainer {height:100%;width: 100%;overflow:auto;}  
+        .form .panelID .pageBlockId .dataTable .oPnal .pageBlockTableId th {white-space: normal;} tr:nth-child(even) {background-color: #f2f2f2;}
+        .form .panelID .pageBlockId .dataTable .oPnal .pageBlockTableId .header {position:fixed;width: auto width;height: Auto Height;color: #CC0000 !important;top: auto;left: auto; scrollx:500px; scrollx:500px;}
+        
+    </style>
+    
+    <script type='text/javascript'>
+    function waitForElement(querySelector, timeout){
+        return new Promise((resolve, reject)=>{
+            var timer = false;
+            if(document.querySelectorAll(querySelector).length) return resolve();
+            const observer = new MutationObserver(()=>{
+            if(document.querySelectorAll(querySelector).length){
+            observer.disconnect();
+            if(timer !== false) clearTimeout(timer);
+            return resolve();
+        }
+                           });
+        observer.observe(document.body, {
+            childList: true, 
+            subtree: true
+        });
+        if(timeout) timer = setTimeout(()=>{
+            observer.disconnect();
+            reject();
+        }, timeout);
+        });
+        }
+            
+            
+            function noenter(ev,val)  {
+            	if (ev.which == 13) {
+            		this.showSpinnerHideTable();
+            		executeSearch(val);
+            		waitForElement("dataTable", 6000).then(function(){
+            			this.hideSpinnerReleadTable();
+        			});
+            
+            		return false;
+        		} else{
+            		return true;
+        		}
+        	}
+            
+        function searched(){
+            this.showSpinnerHideTable();
+            executeSearch2();
+            waitForElement("dataTable", 6000).then(function(){
+            	this.hideSpinnerReleadTable();
+        	});
+            return false;
+        }
+            
+        function pageNavigations(buttonName,offsetVal,limVal){
+            this.showSpinnerHideTable();
+            if(buttonName == "First"){
+            	reloadDataTable(0);
+        	}else if(buttonName == "Previous"){
+            	reloadDataTable(offsetVal - limVal);
+        	}else if(buttonName == "Next"){
+            	reloadDataTable(offsetVal + limVal);
+        	}else if(buttonName == "End"){
+            	let dividend = {!countTotalRecords};
+				let divResult = dividend % limVal;
+            	let result = dividend - divResult;
+            	reloadDataTable(result);
+        	}
+            waitForElement("dataTable", 6000).then(function(){
+            	this.hideSpinnerReleadTable();
+        	});
+            return false;
+        }
+            
+        function SaveCheckedAccountAction(){
+            this.showSpinnerHideTable();
+            SaveCheckedAccounts();
+            waitForElement("dataTable", 6000).then(function(){
+            	this.hideSpinnerReleadTable();
+        	});
+            return false;
+        }
+            
+        function SaveApexCallCompleted(val){
+            alert(val);
+            return false;
+        }
+            
+        function showSpinnerHideTable(){
+            document.getElementById('noAccMsg').className += ' slds-hide';
+            document.getElementById('dataTable').className += ' slds-hide';
+            document.getElementById('spinner').className -= ' slds-hide';
+        }
+            
+        function hideSpinnerReleadTable(){
+            document.getElementById('noAccMsg').className -= ' slds-hide';
+            document.getElementById('dataTable').className -= ' slds-hide';
+            document.getElementById('spinner').className += ' slds-hide';
+        }
+            </script>
+    <apex:slds />
+    
+    
+    <apex:form id="form" html-autocomplete="off">
+        <apex:actionFunction name="reloadDataTable" reRender="panelID,time,pagemessagePanel,tableContainer">
+            <apex:param name="setOffSetSize" value="" assignTo="{!offSetSize}" />
+            <apex:param name="setMasterChechBoxVal" value="false" assignTo="{!masterChechBoxVal}" />
+            <apex:param name="setButtontf" value="true" assignTo="{!buttontf}" />
+            <apex:param name="setIsNavigationAttempted" value="true" assignTo="{!isNavigationAttempted}" />
+        </apex:actionFunction>
+        <apex:actionFunction name="selectAll" reRender="pb,time,pageBlockId,pageBlockTableId" status="status" />
+        
+        <apex:actionFunction name="executeSearch" reRender="panelID,time,pagemessagePanel,tableContainer">
+            <apex:param name="ChildQuery" value="" assignTo="{!searchKey}"/>
+            <apex:param name="buttontf" value="true" assignTo="{!buttontf}" />
+            <apex:param name="resetQueryLimit" value="20" assignTo="{!QueryLimit}" />
+            <apex:param name="resetoffSetSize" value="0" assignTo="{!offSetSize}" />
+            <apex:param name="setMasterChechBoxValOnEnter" value="false" assignTo="{!masterChechBoxVal}" />
+            <apex:param name="setIsSearchAttemtFromEnter" value="true" assignTo="{!isSearchAttemped}" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="executeSearch2"  reRender="panelID,time,pagemessagePanel,tableContainer">
+            <apex:param name="buttontf" value="true" assignTo="{!buttontf}" />
+            <apex:param name="resetQueryLimit" value="20" assignTo="{!QueryLimit}" />
+            <apex:param name="resetoffSetSize" value="0" assignTo="{!offSetSize}" />
+            <apex:param name="setMasterChechBoxValOnSearchClick" value="false" assignTo="{!masterChechBoxVal}" />
+            <apex:param name="setIsSearchAttemtFromClick" value="true" assignTo="{!isSearchAttemped}" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="SaveCheckedAccounts" action="{!saveAccounts}" reRender="pb,pageBlockButtons,time,pageBlockId,pageBlockTableId" oncomplete="return SaveApexCallCompleted('{!MessageOnAddAcc}');">
+            <apex:param name="buttontfA" value="true" assignTo="{!buttontf}" />
+            <apex:param name="resetQueryLimitA" value="20" assignTo="{!QueryLimit}" />
+            <apex:param name="resetoffSetSizeA" value="0" assignTo="{!offSetSize}" />
+            <apex:param name="setMasterChechBoxValOnEnterA" value="false" assignTo="{!masterChechBoxVal}" />
+        </apex:actionFunction>
+        
+        <apex:pageBlock >
+            <apex:outputLabel value="Click to Search for Account(s) with Name or Hit Enter: "/> &nbsp;
+            <apex:inputText value="{!searchKey}" id="searchKey" onkeypress="return noenter(event,value);"></apex:inputText> &nbsp;
+            <apex:commandButton value="Search" onclick="return searched();" status="actStatusId" styleClass="slds-button slds-button--brand">
+                <apex:param name="passSearchKey" value="" assignTo="{!searchKey}"/>
+            </apex:commandButton>
+            <apex:actionStatus id="actStatusId" >
+                <apex:facet name="start">
+                    <img src="/img/loading.gif"/>
+                </apex:facet>
+            </apex:actionStatus>
+            
+        </apex:pageBlock>
+        
+        <apex:pageBlock id="pb">
+            <apex:actionStatus id="status">
+                <apex:facet name="start">
+                    <apex:outputText value="Processing..."/> &nbsp;&nbsp;&nbsp;
+                    <img id="theImage1" src="/img/loading.gif"  height="40px" width="40px" style="text-align: center;padding:10px;">Updating All CheckBoxes Please Wait.........</img>
+            </apex:facet>
+            &nbsp;
+        </apex:actionStatus>
+        
+        <apex:pageBlockButtons location="top" style="align-left;" id="pageBlockButtons">
+            <!--<apex:actionStatus id="refreshstatus" startstyle="color:green;" startText="Refreshing...."></apex:actionStatus>-->
+            <apex:outputpanel id="time">
+                <apex:outputLabel value="Choose Account(s) to Add to the Event"/> &nbsp;
+                <apex:commandButton onclick="return SaveCheckedAccountAction();" value="Add Account(s)" disabled="{!buttontf}"  styleClass="slds-button slds-button--brand" />
+                <apex:commandButton action="{!cancel}" value="Back to Event" styleClass="slds-button slds-button--brand" />
+            </apex:outputpanel>
+        </apex:pageBlockButtons>
+    </apex:pageBlock>
+    
+    <apex:outputPanel id="panelID">
+        <apex:pageBlock id="pageBlockId">
+            
+            <div id="spinner" class="slds-spinner_container slds-is-relative slds-hide" style="height:6rem;position:relative;">
+                <div role="status" class="slds-spinner slds-spinner--large slds-spinner--brand">
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+            <div id="noAccMsg">
+                <apex:outputPanel id="pagemessagePanel" rendered="{!IF(AccountCounts > 0,false,true)}">
+                    <apex:pageMessage summary="No Assignable Account(s) available at the User Assigned Territories" severity="error" strength="1" />
+                </apex:outputPanel>
+            </div>
+            <div id="dataTable">
+                <apex:outputPanel id="oPnal" styleClass="tableContainer" layout="block" rendered="{!IF(AccountCounts > 0,true,false)}">
+                    <apex:pageBlockTable value="{!categories}" var="c" id="pageBlockTableId" cellpadding="10" cellspacing="-10"  border="1">
+                        <apex:column style="border:1px solid black;font-weight:800;">
+                            <apex:facet name="header">
+                                <apex:inputCheckbox id="ms" value="{!masterChechBoxVal}" onchange="selectAll()" />
+                            </apex:facet>
+                            <apex:inputCheckbox id="InputId" value="{!selected[c.acc.Id]}"  >
+                                <apex:actionSupport event="onclick" rerender="pb,time" status="refreshstatus" >
+                                    <apex:param name="AccId" value="{!c.acc.Id}" assignTo="{!AccId}"/>
+                                    <apex:param name="AccChecked" value="{!selected[c.acc.Id]}" assignTo="{!AccChecked}"/>
+                                </apex:actionSupport>
+                            </apex:inputCheckbox>
+                        </apex:column>
+                        <apex:column style="border:1px solid black;font-weight:800;">               
+                            <apex:facet name="header">
+                                <apex:commandLink value="Name" id="cmdSort">
+                                    <apex:param value="Name" name="column"  ></apex:param>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.Name}" />
+                        </apex:column>
+                        <apex:column rendered="{!ISPICKVAL($User.ZTS_EU_Market__c,'United States')}" style="border:1px solid black;font-weight:800;">
+                            <apex:facet Name="header">
+                                <apex:commandLink value="NARC ID" id="cmdSort1">
+                                    <apex:param value="ZTS_US_NARC_ID__c" name="column" ></apex:param>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.ZTS_US_NARC_ID__c}" />
+                        </apex:column>
+                        <apex:column style="border:1px solid black;font-weight:800;">
+                            <apex:facet name="header">
+                                <apex:commandLink value="Street" id="cmdSort2">
+                                    <apex:param value="BillingStreet" name="column" ></apex:param>                          
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.BillingStreet}" />
+                        </apex:column>                  
+                        
+                        <apex:column rendered="{!ISPICKVAL($User.ZTS_EU_Market__c,'United States')}" style="border:1px solid black;font-weight:800;">               
+                            <apex:facet name="header">
+                                <apex:commandLink value="City " id="cmdSort3">
+                                    <apex:param value="ZTS_US_City__c" name="column"  ></apex:param>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.ZTS_US_City__c}" />
+                        </apex:column>
+                        
+                        <apex:column rendered="{!NOT(ISPICKVAL($User.ZTS_EU_Market__c,'United States'))}" style="border:1px solid black;font-weight:800;">               
+                            <apex:facet name="header">
+                                <apex:commandLink value="City" id="cmdSort4">
+                                    <apex:param value="ZTS_EU_City__c" name="column"  ></apex:param>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.ZTS_EU_City__c}" />
+                        </apex:column>
+                        <apex:column style="border:1px solid black;font-weight:800;">               
+                            <apex:facet name="header">
+                                <apex:commandLink value="Phone" id="cmdSort6">
+                                    <apex:param value="Phone" name="column"  ></apex:param>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.Phone}" />
+                        </apex:column>
+                        
+                        <apex:column style="border:1px solid black;font-weight:800;">               
+                            <apex:facet name="header">
+                                <apex:commandLink value="Email" id="cmdSort7">
+                                    <apex:param value="Email__c" name="column"  ></apex:param>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.Email__c}" />
+                        </apex:column>
+                        <apex:column rendered="{!ISPICKVAL($User.ZTS_EU_Market__c,'United States')}" style="border:1px solid black;font-weight:800;">
+                            <apex:facet Name="header">
+                                <apex:commandLink value="State/Province" id="cmdSort5">
+                                    <apex:param value="ZTS_US_State_Province__c" name="column" ></apex:param>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.ZTS_US_State_Province__c}" />
+                        </apex:column>
+                        
+                        <apex:column rendered="{!ISPICKVAL($User.ZTS_EU_Market__c,'United States')}" style="border:1px solid black;font-weight:800;">               
+                            <apex:facet name="header">
+                                <apex:commandLink value="Business Class" id="cmdSort8">
+                                    <apex:param value="ZTS_US_Business_Class__c" name="column"  ></apex:param>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.ZTS_US_Business_Class__c}" />
+                        </apex:column>
+                        <apex:column rendered="{!NOT(ISPICKVAL($User.ZTS_EU_Market__c,'United States'))}" style="border:1px solid black;font-weight:800;">               
+                            <apex:facet name="header">
+                                <apex:commandLink value="State- Country" id="cmdSort11">
+                                    <apex:param value="ZTS_EU_State_County__c" name="column"  ></apex:param>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.ZTS_EU_State_County__c}" />
+                        </apex:column>
+                        
+                        <apex:column rendered="{!NOT(ISPICKVAL($User.ZTS_EU_Market__c,'United States'))}" style="border:1px solid black;font-weight:800;">               
+                            <apex:facet name="header">
+                                <apex:commandLink value="Business Class" id="cmdSort9">
+                                    <apex:param value="ZTS_Business_Class__c" name="column"  ></apex:param>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.ZTS_Business_Class__c}" />
+                        </apex:column>
+                        
+                        <apex:column style="border:1px solid black;font-weight:800;">               
+                            <apex:facet name="header">
+                                <apex:commandLink value="Sub Class" id="cmdSort10">
+                                    <apex:param value="ZTS_US_Sub_Class_1__c" name="column"  ></apex:param>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!c.acc.ZTS_US_Sub_Class_1__c}" />
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <apex:panelGrid columns="4" style="padding-left:530px !important;">
+                        <apex:commandButton value="First" onclick="return pageNavigations(value,{!offSetSize},{!QueryLimit});" disabled="{!prv}" styleClass="slds-button slds-button--brand"/>
+                        <apex:commandButton value="Previous" onclick="return pageNavigations(value,{!offSetSize},{!QueryLimit});" disabled="{!prv}" styleClass="slds-button slds-button--brand"/>
+                        <apex:commandButton value="Next" onclick="return pageNavigations(value,{!offSetSize},{!QueryLimit});"  disabled="{!nxt}" styleClass="slds-button slds-button--brand"/>
+                        <apex:commandButton value="End" onclick="return pageNavigations(value,{!offSetSize},{!QueryLimit});" disabled="{!nxt}" styleClass="slds-button slds-button--brand"/>
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </div>
+        </apex:pageBlock>
+    </apex:outputPanel>
+</apex:form>
+
+</apex:page>

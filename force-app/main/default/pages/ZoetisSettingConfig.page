@@ -1,0 +1,95 @@
+<apex:page controller="ZoetisSettingsControllerExtension" sidebar="false" tabStyle="Territory__tab">
+    <apex:sectionHeader title="Zoetis App Configuration" subtitle="Console"/>
+    <apex:pageMessages ></apex:pageMessages> 
+    
+    <apex:form >
+    <apex:pageBlock >
+     <apex:pageBlockButtons location="bottom">
+         <apex:commandButton action="{!updateSettings}" value="Update"/>
+     </apex:pageBlockButtons>
+        <apex:pageBlockSection title="Notification Settings" columns="2">
+            <apex:pageBlockSectionItem >
+     <apex:outputLabel for="mass_align_notify" value="{!$ObjectType.ZTS_Settings__c.fields.ZTS_Mass_Alignment_Email_Notification__c.label}">
+         &nbsp;<img src="../img/func_icons/util/mailCloseEnv16.gif" alt="email-icon"/>
+                </apex:outputLabel>
+        <apex:inputField id="mass_align_notify" value="{!zoetisSettings.ZTS_Mass_Alignment_Email_Notification__c}"/>
+                </apex:pageBlockSectionItem>
+            
+             <apex:pageBlockSectionItem >
+     <apex:outputLabel for="mass_align_notify" value="{!$ObjectType.ZTS_Settings__c.fields.ZTS_VMIPS_Case_Task_Notification__c.label}">
+         &nbsp;<img src="../img/func_icons/util/mailCloseEnv16.gif" alt="email-icon"/>
+                </apex:outputLabel>
+        <apex:inputField id="mass_align_notify" value="{!zoetisSettings.ZTS_VMIPS_Case_Task_Notification__c}"/>
+                </apex:pageBlockSectionItem>
+
+             <apex:pageBlockSectionItem >
+     <apex:outputLabel for="mass_align_notify" value="{!$ObjectType.ZTS_Settings__c.fields.ZTS_AccountTeamsAutoFollowChatterFeed__c.label}">
+         &nbsp;<img src="../img/func_icons/util/mailCloseEnv16.gif" alt="email-icon"/>
+                </apex:outputLabel>
+        <apex:inputField id="mass_align_notify" value="{!zoetisSettings.ZTS_AccountTeamsAutoFollowChatterFeed__c}"/>
+                </apex:pageBlockSectionItem>
+       </apex:pageBlockSection>
+       
+      <apex:pageBlockSection title="Batch Executions" columns="2">
+        <apex:pageBlockSectionItem >
+        <apex:outputLabel for="currentFYCallCreditCal" StyleClass="labelCol" value="CurrentFY CallCredit Batch Updater"> <apex:commandLink style="text-decoration: none;" action="{!executeCurrentFYCallCreditUpdateBatch}">
+         &nbsp;<img src='../img/func_icons/cal/rightArrow.gif'/>
+        </apex:commandLink>
+        </apex:outputLabel>
+        </apex:pageBlockSectionItem>
+       
+       <apex:pageBlockSectionItem >
+        <apex:outputLabel for="removeUsrTerr" StyleClass="labelCol" value="Remove UserTerritory" title="Removes UserTerritory Access for 24Hrs changes"> <apex:commandLink style="text-decoration: none;" action="{!executeRemoveUserTerrBatch}" title="Removes UserTerritory Access for 24Hrs changes">
+         &nbsp;<img src='../img/func_icons/cal/rightArrow.gif'/>
+        </apex:commandLink>
+        </apex:outputLabel>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem >
+        <apex:outputLabel for="accteamExceptionFlag" StyleClass="labelCol" value="AccountTeams-ExceptionAlignmentFlag Batch" title="Updates AccountTeams with AccountTerritories"> <apex:commandLink style="text-decoration: none;" action="{!executeExceptionAlignFlagUpdateBatch}" title="Updates AccountTeams with AccountTerritories">
+         &nbsp;<img src='../img/func_icons/cal/rightArrow.gif'/>
+        </apex:commandLink>
+        </apex:outputLabel>
+        </apex:pageBlockSectionItem>
+        
+      </apex:pageBlockSection>
+       <!-- Remove User Territory batch -->
+      <apex:pageBlockSection title="Job Schedulers">
+      <apex:pageBlockSectionItem >
+        <apex:outputLabel for="removeUsrTerr" StyleClass="labelCol" value="Remove UserTerritory" title="Removes UserTerritory Access for Daily changes"> <apex:commandLink style="text-decoration: none;" action="{!executeRemoveUserTerrScheduler}" title="Removes UserTerritory Access for Daily changes">
+         &nbsp;<img src='../img/icon/dashboards16.png'/>
+        </apex:commandLink>
+        </apex:outputLabel>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem >
+        <apex:outputLabel for="closeJob" StyleClass="labelCol" value="Clear Closed Jobs"> <apex:commandLink style="text-decoration: none;" action="{!closeJobScheduler}">
+         &nbsp;<img src='../img/icon/dashboards16.png'/>
+        </apex:commandLink>
+        </apex:outputLabel>
+        </apex:pageBlockSectionItem>
+        
+        
+        <apex:pageBlockSectionItem >
+        <apex:outputLabel for="accteamExceptionFlagJob" StyleClass="labelCol" value="AccountTeams-ExceptionAlignmentFlag" title="Updates AccountTeams with AccountTerritories"> <apex:commandLink style="text-decoration: none;" action="{!executeExceptionAlignFlagUpdateScheduler}" title="Updates AccountTeams with AccountTerritories everyday">
+         &nbsp;<img src='../img/icon/dashboards16.png'/>
+        </apex:commandLink>
+        </apex:outputLabel>
+        </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>
+      
+      
+       <!-- Trigger Activation Settings -->
+      <apex:pageBlockSection title="Trigger Activation-({!triggerActivationList.size} )" columns="3" >
+      <apex:repeat value="{!triggerActivationList}" var="TASetting">
+      <apex:pageBlockSectionItem >
+      <apex:panelGroup >
+        <apex:outputLabel for="trigActive" StyleClass="labelCol" value="{!TASetting.Name}" > <apex:inputcheckBox value="{!TASetting.isActive__c}"></apex:inputcheckBox>
+        </apex:outputLabel>
+        </apex:panelGroup>
+        </apex:pageBlockSectionItem>
+        </apex:repeat>
+      </apex:pageBlockSection>
+        </apex:pageBlock>
+        </apex:form>
+</apex:page>

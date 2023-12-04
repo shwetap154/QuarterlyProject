@@ -1,0 +1,20 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId,lightning:utilityItem" controller="ACP_StatusUpdateAndNotify">
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="toastType" type="String" />
+    <aura:attribute name="utilityIconType" type="String" /> <!--utility:warning" -->
+    <aura:attribute name="divForToast" type = "String" /> <!-- slds-notify slds-notify_toast slds-theme_warning-->
+    <aura:attribute name="showWarningToast" type="boolean" default="False"/>
+    <aura:attribute name="toastHeadMsg" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="slds-notify_container slds-is-relative">
+        <div class="{!v.divForToast}" role="status">
+            <span class="slds-assistive-text">{!v.toastType}</span>
+            <span class="slds-icon_container slds-icon-utility-info slds-m-right_small slds-no-flex slds-align-top">
+                <lightning:icon class="slds-show"  iconName="{!v.utilityIconType}" size="x-small" alternativeText="Indicates warning"/>
+            </span>
+            <div class="slds-notify__content">
+                <h2 class="slds-text-heading_small">{!v.toastHeadMsg}</h2>
+            </div>
+        </div>
+    </div>
+</aura:component>

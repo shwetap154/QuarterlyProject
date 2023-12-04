@@ -1,0 +1,20 @@
+<!--
+ - Created by jerridkimball on 2018-06-05.
+ -->
+
+<aura:component
+    controller="SL_NestedTables"
+    description="SL_NestedTables_TableRowBase"
+    extensible="true"
+    abstract="true"
+>
+    <aura:attribute name="fieldMap" type="Object[]" />
+    <aura:attribute name="currentRecord" type="Object" />
+
+    <aura:attribute name="hasEditPermission" type="Boolean" default="false" />
+    <aura:attribute name="hasDeletePermission" type="Boolean" default="false" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    {!v.body}
+</aura:component>

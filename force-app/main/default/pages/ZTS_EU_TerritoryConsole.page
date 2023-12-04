@@ -1,0 +1,400 @@
+<apex:page controller="ZTS_EU_TerritoryConsoleController" action="{!terrCount}" sidebar="false">
+    <style>
+         .loading-icon{
+          background-image: url('../img/loading32.gif');
+           width:18px;
+           background-repeat: no-repeat;
+           }
+           .modal {
+            /* some styles to position the modal at the center of the page */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            line-height: 200px;
+            height: 200px;
+            margin-left: -150px;
+            margin-top: -100px;
+            background-color: #f1c40f;
+            text-align: center;
+            border-radius: 5px;
+           
+            /* needed styles for the overlay */
+            z-index: 10; /* keep on top of other elements on the page */
+            box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
+        }
+    </style>
+    <apex:sectionHeader title="{!$Label.ZTS_EU_TerritoryConsole}">
+    </apex:sectionHeader>
+     <script type="text/javascript">
+        var intervalTime=4000;
+        var poller;
+        function show(ele_id){
+            document.getElementById(ele_id).style.display='';
+         }
+   
+        function hide(ele_id){
+            document.getElementById(ele_id).style.display='none';
+        }
+   
+        function addUsertoTerritory(){
+        //remote call to add user in standard territory
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ZTS_EU_TerritoryConsoleController.addUserToTerritory}',
+                batchHandler
+            ); 
+            return false;
+        }
+        function addAssignmentRules(){
+         //remote call to create assignment rule
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ZTS_EU_TerritoryConsoleController.addAssignmentRules}',
+                batchHandler1
+            );
+             
+            return false;
+        }
+        function addAssignmentRuleItems(){
+        //remote call to create assignment rule item
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ZTS_EU_TerritoryConsoleController.addAssignmentRuleItems}',
+                batchHandler2
+            ); 
+        
+            //remote call to update assignment rules Filter Condition
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.ZTS_EU_TerritoryConsoleController.updateAssignmentRules}',batchHandler2_updateRules); 
+
+            return false;
+        }
+        
+        function doCheckStatus(jobId,batchId){
+            var s='check';
+            // remote call to checks status of batch
+            //console.log('Polling started ...');
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ZTS_EU_TerritoryConsoleController.checkStatus}',
+                jobId,batchId, 
+                batchStatusHandler
+            );    
+        }
+        function doCheckStatus1(jobId,batchId){
+            var s='check';
+            // remote call to checks status of batch
+            //console.log('Polling started ...');
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ZTS_EU_TerritoryConsoleController.checkStatus}',
+                jobId,batchId, 
+                batchStatusHandler1
+            );    
+        }
+        function doCheckStatus2(jobId,batchId){
+            var s='check';
+            // remote call to checks status of batch
+            //console.log('Polling started ...');
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ZTS_EU_TerritoryConsoleController.checkStatus}',
+                jobId,batchId, 
+                batchStatusHandler2
+            );    
+        }
+        function batchHandler(result,event){
+            if(event.status && event.type!=='exception'){
+                if(result[0].batchInfoMap!=='undefined' && result[0].batchInfoMap['jobId']!==''){
+                 var jobId=result[0].batchInfoMap['jobId'];
+                 var batchId=result[0].batchInfoMap['id'];
+                 show('ut_load');
+                 //do poll to check status
+                 poller=setInterval(doCheckStatus(jobId,batchId),intervalTime);
+                 //console.log('Polling started poller id: '+poller);
+                }
+            }
+            else{
+                alert('{!$Label.ZTS_EU_TerritoryConsoleUserExMsg} '+event.message);
+            }
+        }
+        function batchHandler1(result,event){
+            if(event.status && event.type!=='exception'){
+                if(result[0].batchInfoMap!=='undefined' && result[0].batchInfoMap['jobId']!==''){
+                 var jobId=result[0].batchInfoMap['jobId'];
+                 var batchId=result[0].batchInfoMap['id'];
+                 show('assign_load');
+                 //do poll to check status
+                 poller=setInterval(doCheckStatus1(jobId,batchId),intervalTime);
+                 //console.log('Polling started poller id: '+poller);
+                }
+                showalert1();
+            }
+            else{
+                alert('{!$Label.ZTS_EU_TerritoryConsoleAMsg} '+event.message);
+            }
+        }
+        function batchHandler2(result,event){
+            if(event.status && event.type!=='exception'){
+                if(result[0].batchInfoMap!=='undefined' && result[0].batchInfoMap['jobId']!==''){
+                 var jobId=result[0].batchInfoMap['jobId'];
+                 var batchId=result[0].batchInfoMap['id'];
+                 show('assign_itemload');
+                 //do poll to check status
+                 poller=setInterval(doCheckStatus2(jobId,batchId),intervalTime);
+                 //console.log('Polling started poller id: '+poller);
+                }
+            }
+            else{
+                alert('{!$Label.ZTS_EU_TerritoryConsoleAssignRuleMsg} '+event.message);
+            }
+        }
+        
+        function batchHandler2_updateRules(result,event){
+            if(event.status && event.type!=='exception'){
+                if(result[0].batchInfoMap!=='undefined' && result[0].batchInfoMap['jobId']!==''){
+                 var jobId=result[0].batchInfoMap['jobId'];
+                 var batchId=result[0].batchInfoMap['id'];
+                 show('assign_itemload');
+                 //do poll to check status
+                 poller=setInterval(doCheckStatus2(jobId,batchId),intervalTime);
+                 //console.log('Polling started poller id: '+poller);
+                }
+            }
+            else{
+                alert('{!$Label.ZTS_EU_TerritoryConsoleAssignRuleMsg} '+event.message);
+            }
+        }
+        
+        function batchStatusHandler(result,event){
+           // console.log(' batch status result : '+result.batchInfoMap['state']);
+            if(event.status && event.type!=='exception'){
+                if(result.batchInfoMap['state']==='Completed'){
+                     Visualforce.remoting.Manager.invokeAction(
+                            '{!$RemoteAction.ZTS_EU_TerritoryConsoleController.closeJob}',
+                            result.batchInfoMap.jobId,
+                            jobCloseHandler
+                        ); 
+                    
+                        if(poller){
+                          clearInterval(poller);
+                          poller=null;
+                      }
+                  
+                }
+            }
+            else{
+            alert('{!$Label.ZTS_EU_TerritoryConsoleBSMsg}'+event.message);
+            }
+        }
+         function batchStatusHandler1(result,event){
+            //console.log(' batch status result : '+result.batchInfoMap['state']);
+            if(event.status && event.type!=='exception'){
+                if(result.batchInfoMap['state']==='Completed'){
+                     Visualforce.remoting.Manager.invokeAction(
+                            '{!$RemoteAction.ZTS_EU_TerritoryConsoleController.closeJob}',
+                            result.batchInfoMap.jobId,
+                            jobCloseHandler1
+                        ); 
+                    
+                        if(poller){
+                          clearInterval(poller);
+                          poller=null;
+                      }
+                  
+                }
+            }
+            else{
+            alert('{!$Label.ZTS_EU_TerritoryConsoleBSMsg}'+event.message);
+            }
+        }
+        function batchStatusHandler2(result,event){
+            //console.log(' batch status result : '+result.batchInfoMap['state']);
+            if(event.status && event.type!=='exception'){
+                if(result.batchInfoMap['state']==='Completed'){
+                     Visualforce.remoting.Manager.invokeAction(
+                            '{!$RemoteAction.ZTS_EU_TerritoryConsoleController.closeJob}',
+                            result.batchInfoMap.jobId,
+                            jobCloseHandler2
+                        ); 
+                    
+                        if(poller){
+                          clearInterval(poller);
+                          poller=null;
+                      }
+                  
+                }
+            }
+            else{
+            alert('{!$Label.ZTS_EU_TerritoryConsoleBSMsg}'+event.message);
+            }
+        }
+        function jobCloseHandler(result,event){
+            if(event.status){
+               hide('ut_load');
+                alert('UserTerritory records created');
+                
+                window.location.reload(true);
+               // alert('Closed Job');
+            }
+            else{
+                alert('Job Close Request Failed - '+event.message);
+            }
+        }
+        function jobCloseHandler1(result,event){
+            if(event.status){
+                 hide('assign_load');               
+                alert('Assignment Rule is created');                
+                var url=window.location.href;              
+                 window.location.reload(true);
+               // alert('Closed Job');
+            }
+            else{
+                alert('{!$Label.ZTS_EU_TerritoryConsoleExMsg}'+event.message);
+            }
+        }
+        function jobCloseHandler2(result,event){
+            if(event.status){
+                hide('assign_itemload');               
+                alert('Assignment Rule Item is created');                
+                var url=window.location.href;              
+                //window.location.href=url+'&reload=true'+'&assignItem=true';
+               // alert('Closed Job');
+            }
+            else{
+                alert('{!$Label.ZTS_EU_TerritoryConsoleExMsg}'+event.message);
+            }
+        }
+   
+        function showNotification(){
+            alert('Request completed ! ');
+        }
+        function showStatus(){
+            show('syncTerr');
+        }
+        function hideStatus(){
+            hide('syncTerr');
+        }
+        
+    
+   </script>
+   
+   
+   <!-- Added by Pankaj -->
+   
+   
+    <div id="ut_load" style="display:none">{!$Label.ZTS_EU_TerritoryConsoleCUserTerr}<img src="../img/loading32.gif" width="18px" alt="loading-icon" /></div>
+    <div id="assign_load" style="display:none">{!$Label.ZTS_EU_TerritoryConsoleCAssignRule} <img src="../img/loading32.gif" width="18px" alt="loading-icon" /></div>
+    <div id="assign_itemload" style="display:none">{!$Label.ZTS_EU_TerritoryConsoleCAssignItem} <img src="../img/loading32.gif" width="18px" alt="loading-icon" /></div>
+     <div id="syncTerr" style="display:none">{!$Label.ZTS_EU_TerritoryConsoleSync}<img src="../img/loading32.gif" width="18px" alt="loading-icon" /></div>
+   
+    <apex:form >
+    <!-- Territory Sync Section. Create standard territory and display total count of sync/unsync territory -->
+        <apex:actionStatus id="loadinggraphic" onstart="showStatus();" onstop="hideStatus()"></apex:actionStatus>
+        <apex:actionFunction name="CreateStdTerritorityCtrl" action="{!createTerr}" oncomplete="call()" status="loadinggraphic"/>
+        <apex:actionFunction name="call" action="{!updateStdTerr}" oncomplete="alert('Syncing Complete');window.location.reload(false);" rerender="pb"/>
+        <apex:pageBlock id="pb"> 
+            <apex:pageBlockSection title="{!$Label.ZTS_EU_TerritoryConsoleSync}" columns="1">  
+                <apex:panelGroup > 
+                    <!--<apex:commandButton rerender="status" value="Start Territory Syncing" action="{!createTerr}" oncomplete="call()"/>-->
+                     <apex:outputLink rendered="{!unSyncedTerr !=0}" onclick="CreateStdTerritorityCtrl(); return false;"> {!$Label.ZTS_EU_TerritoryConsoleSync}
+                     </apex:outputlink>
+                 </apex:panelGroup>            
+             </apex:pageBlockSection>
+             <apex:pageBlockSection >
+                 <apex:pageBlockSectionItem >
+                      {!$Label.ZTS_EU_TerritoryConsoleTotalCount}      {!totalTerr}     
+                 </apex:pageBlockSectionItem> <br/>
+                 <apex:pageBlockSectionItem >
+                    {!$Label.ZTS_EU_TerritoryConsoleSyncCount} {!syncedTerr}
+                 </apex:pageBlockSectionItem> <br/>
+                 <apex:pageBlockSectionItem >
+                    {!$Label.ZTS_EU_TerritoryConsoleUnSyncCount}{!unSyncedTerr}
+                 </apex:pageBlockSectionItem>             
+             </apex:pageBlockSection>
+        </apex:pageBlock>       
+    </apex:form>
+    <!-- End of territory sync section ------------------------------------------------------------>   
+      
+    <apex:pageBlock >
+        <!----------- Create assignment rules----------------------------------------------------> 
+        <apex:pageBlockSection title="{!$Label.ZTS_EU_TerritoryConsoleAddAssign}" columns="1">            
+            <apex:panelGroup >           
+                <div id="assign_show" >            
+                <apex:outputlink onclick="return addAssignmentRules();" rendered="{!$CurrentPage.Parameters.reload==null}">{!$Label.ZTS_EU_TerritoryConsoleAddAssignRule}
+                </apex:outputlink>
+                </div>
+            </apex:panelGroup>
+        </apex:pageBlockSection>
+        <!--------- End of assignment rule section------------------------------------------------------->
+        <!-------------- Create assignment rule items----------------------------------------------------> 
+        <apex:pageBlockSection title="{!$Label.ZTS_EU_TerritoryConsoleAddAssignItem}" columns="1">            
+            <apex:panelGroup >               
+                <apex:outputlink onclick="return addAssignmentRuleItems();">{!$Label.ZTS_EU_TerritoryConsoleAddAssignItemRule}
+                </apex:outputlink>
+            </apex:panelGroup>
+        </apex:pageBlockSection>
+        <!---------------End of assignment rule items section---------------------------------------------->
+        <!---------------Insert user(s) in the standrad userterritory table-------------------------------->
+        <apex:pageBlockSection title="{!$Label.ZTS_EU_TerritoryConsoleUserTResult}" columns="1">
+            <apex:pageBlockSectionItem >
+                <image src="../img/group_event.gif"/>
+                {!$Label.ZTS_EU_TerritoryConsoleTUserCount}{!totalUsrTerrCount} 
+                <br/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                {!$Label.ZTS_EU_TerritoryConsoleTAssignUser} {!totalUsrTerrCount - totalUnassignedUsrTerrCount}
+            </apex:pageBlockSectionItem>
+            <apex:panelGroup >
+                {!$Label.ZTS_EU_TerritoryConsoleUnAssignUser}{!totalUnassignedUsrTerrCount} 
+                &nbsp;&nbsp;
+                <apex:outputlink rendered="{!totalUnassignedUsrTerrCount > 0}" onclick="return addUsertoTerritory();">{!$Label.ZTS_EU_TerritoryConsoleAddUser}
+                </apex:outputlink>        
+            </apex:panelGroup>
+        </apex:pageBlockSection>  
+        <apex:form >
+         &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+          &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+           &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+             &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+              &nbsp;&nbsp; &nbsp;&nbsp; 
+             <apex:outputText rendered="{!RemoveUsershowMsg}" >
+                        {!$Label.ZTS_EU_TerritoryConsoleRUserMsg}
+                </apex:outputText>
+             <apex:commandlink action="{!updateUserTerritory}"> {!$Label.ZTS_EU_TerritoryConsoleRUser}
+                </apex:commandlink>
+        <!--<apex:pageBlockSection title="{!$Label.ZTS_EU_TerritoryConsoleFinish}" columns="1">
+            <apex:commandLink action="{!finish}">{!$Label.ZTS_EU_TerritoryConsoleFinish}
+            </apex:commandLink>
+        </apex:pageBlockSection>-->
+         </apex:form>
+    </apex:pageBlock>
+    <!------------ End of userterritory section------------------------------------------------------------>
+    <!-------------RE-Alignment Section--------------------------------------------------------------------->   
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection title="{!$Label.ZTS_EU_TerritoryConsoleRealign}" columns="1"> 
+                <apex:outputText rendered="{!showMsg}" >
+                        {!$Label.ZTS_EU_TerritoryConsoleBMsg} 
+                </apex:outputText>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel > 
+                   {!$Label.ZTS_EU_TerritoryConsoleSelectMarket}&nbsp;&nbsp;<apex:selectList value="{!marketType}" size="1" id="MS"  >
+                             <apex:selectOptions value="{!MarketList}"/>                             
+                     </apex:selectList>              
+                     </apex:outputPanel>            
+                 </apex:pageblocksectionitem> 
+                  <!-----------------------Full re-alignment section--------------------------------------------------->
+                 <apex:pageblocksectionitem >    
+                 <apex:commandLink action="{!fullReAlignment}" >{!$Label.ZTS_EU_TerritoryConsoleFullRAlig} </apex:commandLink>              
+                  </apex:pageblocksectionitem>
+                 <!-----------------------End of full re-alignment section--------------------------------------------------->
+                 <!-----------------------Zip re-alignment section--------------------------------------------------->
+                 <apex:pageblocksectionitem >
+                   <apex:commandLink action="{!zipAlignment}" >{!$Label.ZTS_EU_TerritoryConsoleZIpAlign} </apex:commandLink>     
+                 </apex:pageblocksectionitem>
+              <!----------------------- End of zip re-alignment section--------------------------------------------------->
+              <!------------------------Brick re-alignment section--------------------------------------------------->
+               <apex:pageblocksectionitem >
+                   <apex:commandLink action="{!zipAlignment}" >{!$Label.ZTS_EU_TerritoryConsoleBrick} </apex:commandLink>     
+             </apex:pageblocksectionitem>
+            </apex:pageBlockSection>
+            <!------------------------End of brick re-alignment section--------------------------------------------------->  
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

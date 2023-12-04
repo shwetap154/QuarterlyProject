@@ -1,0 +1,12 @@
+<aura:component>
+    <aura:attribute name="objCase" type="Object"/>
+    
+    <lightning:card title="Choose Case Type" iconName="standard:case">
+        <c:caseTypeSelection objCase="{!v.objCase}"/>
+    </lightning:card>
+
+    <aura:if isTrue="{!or(equals(v.objCase.RecordTypeName, 'Diagnostics'), not(empty(v.objCase.Type))) }">
+        <c:launchCaseScreen objCase="{!v.objCase}" />
+    </aura:if>
+
+</aura:component>

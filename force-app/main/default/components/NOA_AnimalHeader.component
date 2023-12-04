@@ -1,0 +1,237 @@
+<apex:component layout="none">
+    <head>
+        <title>Zoetis US</title> 
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+        
+        <apex:stylesheet value="{!URLFOR($Resource.NOA_ZoetisHeader, 'css/style.css')}"/>
+        <style type="text/css">
+            .navigationIcons {
+                float: right;
+                padding: 0px 10px 0px 10px;
+            }
+            .zoetisus>a {
+                border-right: 1px solid #333;
+            }
+            .moreInfo, .mailId, .phoneText{
+                color:#ff6400;
+            }  
+            #popUp{
+                margin-top: -30px;
+            } 
+            .feedback{
+                font-family: proxima-nova-extra-condensed, Helvetica, Arial, sans-serif;
+                border-right: none;
+                background-color: #FF6400;
+                margin-left: 12px;
+                text-transform: uppercase;
+                color: white !important;
+                padding: 3px 6px 3px 6px !important;
+                margin-left: 10px;
+                margin-right: 20px;
+            }
+            
+            
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                padding-top: 100px; /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+            
+            /* Modal Content */
+            .modal-content {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 30%;
+            }
+            
+            /* The Close Button */
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            
+            .fixheader {
+                position: fixed !important;
+                width: 100%;
+                background-color: lightyellow;
+            }
+            
+            .browsermsg{
+                text-align: center;
+                color:black;
+            }
+            
+               /* Hide the company field and label */
+            .fieldList .Company{
+                display: none !important;
+            }
+                
+            label[for="Company"]{
+                display:none !important;;
+            }
+            
+            /* Hide the complete Market field, drop down and label */
+            .fieldList .inputSelect{
+                display: none !important;
+            }
+            
+            /* Fix the button color that is being overridden with background image from second page in NOA */
+            .embedded-service .fab, .embedded-service .fab:hover, .embedded-service .fab:focus, .embedded-service .fab:active {
+                background: #ff671f !important;
+            }
+
+            
+        </style>
+          
+<script type="text/javascript" >
+
+        /*   var orgOpen = window.open;
+            window.open = function (url, windowName, windowFeatures) { 
+                if(windowName != null && windowName != undefined && windowName.includes('liveagent')){                    
+                    /* Width of the chat window. Use your own value. */
+        /*    var chatWindowHeight=250;
+            
+                    /* Height of the chat window. Use your own value. */
+        /*        var chatWindowWidth=377;
+            
+                    /* Calculate the left position to keep the chatwindow in center */ 
+        /*        var left = parseInt((screen.availWidth/2) - (chatWindowWidth/2));
+            
+                    /* Calculate the top position to keep the chatwindow in center */
+        /*          var top = parseInt((screen.availHeight/2) - (chatWindowHeight/2));
+            
+                    /* Create the arguments for window.open method. */
+        /*          var windowFeatures = "width=" + chatWindowWidth + ",height=" + chatWindowHeight + ",status,resizable,left=" + left + ",top=" + top + "screenX=" + left + ",screenY=" + top;
+            
+                    return orgOpen(url, windowName, windowFeatures); 
+                }else{
+                    return orgOpen(url, windowName, windowFeatures); 
+                }
+            }    */
+            
+            function openContactUs(){ 
+                // Get the modal
+                var modal = document.getElementById('contactModal');   
+                var span = document.getElementsByClassName("close")[0]; 
+                    modal.style.display = "block"; 
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+                
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            }
+        </script>
+
+
+
+    </head>
+    <body class="mainContent">
+    <div class="fixheader">
+        <nav >            
+            <div class="navigationIcons">
+                <div>
+
+                </div>
+                <div class="contact"><apex:outputLink value="#" onclick="openContactUs();" >Contact Us</apex:outputLink>
+                    <!--
+                    <div id="popUp">
+                        <div class="moreInfo">FOR MORE INFORMATION</div>
+                        <apex:outputLink styleClass="mailId" value="mailto:CustomerAccounts@zoetis.com" >CustomerAccounts@zoetis.com</apex:outputLink>
+                        <div class="phone phoneText">1-855-721-0078</div>
+                    </div>
+                    -->
+                </div>
+                <div class="zoetisus">
+                    <apex:outputLink value="https://www.zoetisus.com" target="_blank" >ZoetisUS.com</apex:outputLink>
+                </div>
+                <!--
+                <div class="zoetisDot">
+                    <apex:outputLink styleClass="feedback" value="http://o.zoetisus.com/customer-satisfaction-survey-ver-2-lp2.html" target="_blank" >Feedback</apex:outputLink>
+                </div>    
+                -->
+            </div>  
+        </nav>
+        
+        <div id="contactModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>
+                <div class="moreInfo">FOR MORE INFORMATION:</div>
+                <apex:outputLink styleClass="mailId" value="mailto:CustomerAccounts@zoetis.com" >CustomerAccounts@zoetis.com</apex:outputLink>
+                <div class="phone phoneText">1-855-721-0078</div>
+            </p>
+          </div>
+        
+        </div>
+        
+        <br/>
+        <apex:outputText style="color: #0096af; font-size: 15px; text-align: left; float: left;" value="<b>Do not use browser buttons when navigating. <br/>Loss of information will occur.</b>" escape="false" />
+      </div>
+            <br/><br/><br/>
+            
+    <apex:image url="{!URLFOR($Resource.NewOnlineAccount, 'images/ZoetisBanner_left.jpg')}" alt="Zoetis" width="100%"  />           
+    <apex:image url="{!URLFOR($Resource.NewOnlineAccount, 'images/ZoetisSpecies.png')}" alt="Zoetis" width="100%" /> 
+    
+                                <!-- Start of service menu code -->
+    <script type='text/javascript' src='https://service.force.com/embeddedservice/menu/fab.min.js'></script>
+<script type='text/javascript'>
+    var initESW = function(gslbBaseURL) {
+        // Required if you want labels in a language that’s different from your user’s context.
+        //embedded_svc.menu.settings.language = ''; //For example, enter 'en' or 'en-US'
+
+        embedded_svc.menu.init(
+            'https://touchpointeca.my.salesforce.com',
+            'https://d.la4-c3-ph2.salesforceliveagent.com/chat',
+            gslbBaseURL,
+            '00DF00000005zmy',
+            'NOA_Channel_Menu',
+            {
+                pageName: "PreChatJS"
+            }
+        );
+    };
+
+    if (!window.embedded_svc || !window.embedded_svc.menu) {
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://touchpointeca.my.salesforce.com/embeddedservice/menu/fab.min.js');
+        s.onload = function() {
+            initESW(null);
+        };
+        document.body.appendChild(s);
+    } else {
+        initESW('https://service.force.com');
+    }
+</script>
+                                 <!-- end of service menu code -->
+
+    </body> 
+    
+</apex:component>

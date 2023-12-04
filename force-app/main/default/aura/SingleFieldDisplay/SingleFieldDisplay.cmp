@@ -1,0 +1,67 @@
+<!-- 
+/******************************************************//**
+@component	SingleFieldDisplay
+@brief		Displays a single field on a record page with edit capabilities. 
+
+@revision	2020-06-03	Glyn Anderson
+    Created.
+    
+@revision   2020-06-10  Aleksandar Basic
+    Added edit functionality for the field and customizable header title + icon displayed in the component.
+**********************************************************/
+ -->
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	<!-- **************************************************
+					public attributes
+	************************************************** -->
+    <aura:attribute access="public" type="String" name="objectName" default="Account" required="true"
+        description="The API name of the object to be displayed." />
+    <aura:attribute access="public" type="String" name="fieldName" default="Name" required="true"
+        description="The API name of the field to be displayed." />
+    <aura:attribute access="public" type="String" name="titleText" default="Account Alert" required="true"
+        description="Text that appears at the header of the component" />
+    <aura:attribute access="public" type="String" name="titleIcon" default="standard:announcement" required="false"
+        description="Icon that appears at the header of the component (input as type:name format)." />
+
+	<!--**************************************************
+                View/Edit form visibility attributes
+    ************************************************** -->
+    <aura:attribute type="String" name="viewFormVisible" default="slds-show"
+    description="Drives whether the recordViewForm is visible on the component" />
+    <aura:attribute type="String" name="editFormVisible" default="slds-hide"
+    description="Drives whether the recordViewForm is visible on the component" />
+
+
+    <div class="slds-grid slds-grid_align-space slds-box slds-theme_default" >
+        <div class="slds-col slds-size_12-of-12 slds-p-horizontal_x-small">
+            <div class="slds-grid slds-grid--vertical-align-center">
+                <aura:if isTrue="{!not(empty(v.titleIcon))}">
+                    <div class="slds-p-right_small">
+                        <lightning:icon iconName="{!v.titleIcon}" alternativeText="Announcement" title="Announcement" size="small" />
+                    </div>
+                </aura:if>
+                <lightning:formattedText class="slds-text-title_bold" value="{!v.titleText}" align="middle" />
+            </div>
+            <div class = "slds-p-top_medium">
+                <!-- **************************************************
+                            Display the specified field
+                ************************************************** -->
+                <lightning:recordViewForm aura:id="recordViewForm" class="{!v.viewFormVisible}" recordId="{!v.recordId}" objectApiName="{!v.objectName}" density="comfy">
+                    <lightning:outputField fieldName="{!v.fieldName}" variant="label-hidden" />
+                    <lightning:button aura:id="edit" class="slds-float_right" label="Edit" onclick="{!c.toggleView}" />
+                </lightning:recordViewForm>
+            
+                <!-- **************************************************
+                            Edit the specified field 
+                ************************************************** -->
+                <lightning:recordEditForm aura:id="recordEditForm" class="{!v.editFormVisible}" recordId="{!v.recordId}" objectApiName="{!v.objectName}" density="comfy">
+                    <lightning:inputField aura:id="inputField" fieldName="{!v.fieldName}" variant="label-hidden" />
+                    <div class="slds-float_right">
+                        <lightning:button aura:id="cancel" label="Cancel" onclick="{!c.toggleView}" /> 
+                        <lightning:button aura:id="submit" label="Save" onclick="{!c.toggleView}"  type="submit" variant="brand" />
+                    </div>
+                </lightning:recordEditForm>
+            </div>
+        </div>
+    </div>
+</aura:component>

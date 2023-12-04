@@ -1,0 +1,534 @@
+<!--
+  @description       : 
+  @author            : Morgan Marchese @ Zoetis Inc
+  @group             : 
+  @last modified on  : 08-17-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   07-16-2021   Morgan Marchese @ Zoetis Inc   Initial Version
+  1.1   09-26-2023   Sweta Kumari                    Display and Download all attachments 
+                                                      for an Order on Order Details(showAttachments)  
+  1.2   10-02-2023   Sweta Kumari                    add product button to the Order when we are editing                                                      
+-->
+<template>
+    <template if:false={openModal}> 
+        <template if:true={loaded}>
+          
+            <!-- <template if:false={isReadOnly}>
+                 <template if:false={isEdit}>
+                    <lightning-breadcrumbs class="zs_fc_list_breadcrumbs slds-p-bottom_medium">
+                    <lightning-breadcrumb label="Forecast, Stock and Order" href=""></lightning-breadcrumb> / 
+                    <lightning-breadcrumb label=Order href=""></lightning-breadcrumb> /
+                    <lightning-breadcrumb class="zs_active_breadcrumb" label="Order Entry Form" href=""></lightning-breadcrumb> /
+                
+            </lightning-breadcrumbs>
+                 </template>
+            </template> -->
+            
+
+            <div class="slds-text-heading_medium slds-m-bottom_large slds-p-top_small zs_co_entry_title">Order Entry Form</div>
+            <!--<div class="zs_instruction_blk slds-m-bottom_large">
+                <p>Instructions : The order form is prepopulated with the forecast for the month. 
+                    Please review your quantities before submission.</p>
+            </div>-->
+            <div class="slds-card zs_company_card slds-p-top_medium slds-p-bottom_xx-large">
+                <div class="slds-card__header slds-grid">
+                        <h2 class="slds-card__header-title">
+                            <span>Company Information</span>
+                          
+                        </h2>
+                  </div>
+
+            <div class="slds-grid slds-gutters slds-m-around_small">
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input type="text" label="Company Name" value={orderData.companyName.Name} disabled></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <template if:false={isReadOnly}>
+                        <lightning-combobox
+                            data-name="conOptions"
+                            name="progress"
+                            label="Contact Name"
+                            value={orderData.userId}
+                            placeholder="Select Contact Name"
+                            options={contactOptions}
+                            onchange={handleValueChange}>
+                        </lightning-combobox>  
+                    </template>
+                    <template if:true={isReadOnly}>
+                        <lightning-input type="text" label="Contact Name"  value={orderData.contactName} style='padding-bottom : 20px' disabled></lightning-input>
+                    </template>
+                </div>
+                </div>
+                <div class="slds-grid slds-gutters slds-m-around_small">
+                <div class="slds-col slds-size_1-of-2">
+                    <template if:false={isReadOnly}>
+                        <lightning-input data-name="tel" type="tel"  label="Tel" value={orderData.tel} onchange={handleValueChange} required={telrequired}></lightning-input>
+                  </template>
+                   <template if:true={isReadOnly}>
+                        <lightning-input data-name="tel" type="tel"  label="Tel" value={orderData.tel} disabled></lightning-input>
+                  </template>
+                    
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <template if:false={isReadOnly}>
+                            <lightning-input data-name="fax" type="tel"  label="Fax" value={orderData.fax} onchange={handleValueChange}></lightning-input>
+                        </template>
+                        <template if:true={isReadOnly}>
+                            <lightning-input data-name="fax" type="tel"  label="Fax" value={orderData.fax} disabled></lightning-input>
+                        </template>
+                    </div>
+              </div>
+            </div>
+
+
+            <div class="slds-card zs_order_card slds-p-top_medium slds-p-bottom_x-large">
+                <div class="slds-card__header slds-grid">
+                    <h2 class="slds-card__header-title">
+                        <span>Order Details</span>
+                      
+                    </h2>
+              </div>
+                <div class="slds-grid slds-gutters slds-m-around_small">
+                    
+                    <div class="slds-col slds-size_1-of-2">
+                        <template if:false={isReadOnly}>
+                            <lightning-input data-name="purOrdNo" type="text" label="Purchase Order No" value={orderData.purchaseOrderNo} onchange={handleValueChange} placeholder="type here..." required></lightning-input>
+                        </template>
+                        <template if:true={isReadOnly}>
+                            <lightning-input data-name="purOrdNo" type="text" label="Purchase Order No" value={orderData.purchaseOrderNo} disabled></lightning-input>
+                        </template>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input type="text" label="Purchase Order Date" value={orderData.purchaseOrderDate} placeholder="type here..." disabled></lightning-input>
+                    </div>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-m-around_small">
+                    <div class="slds-col slds-size_1-of-2">
+                        <template if:true={isReadOnly}>
+                            <lightning-input type="text" label="Ship To Address" value={orderData.shipToAddr.Full_Address__c} disabled></lightning-input>
+                       </template>
+                        <template if:false={isReadOnly}>
+                           <lightning-combobox
+                               data-name="shipToAddr"
+                               name="progress"
+                               label="Ship To Address"
+                               value={orderData.shipToAddr.Id}
+                               placeholder="Select Ship to address"
+                               options={shipToAddrOptions}
+                               onchange={handleValueChange}>
+                           </lightning-combobox>  
+                       </template>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input type="text" label="Sold To Address" value={orderData.soldToAddr.Full_Address__c} placeholder="type here..." style='padding-bottom : 20px' disabled></lightning-input>
+                        </div>
+                  </div>
+            <template if:true={isEdit}>
+            <div style="overflow: auto;">
+            <lightning-button icon-name="standard:Product2"
+                                    variant=brand
+                                    label="Add Product"       
+                                    class="slds-text-heading_small slds-var-m-left_xx-large slds-p-bottom_small slds-float_right "
+                                    onclick={addProduct} 
+                                    title="Add Product">
+            </lightning-button> 
+            </div>
+            </template>
+
+
+            <div class="slds-m-top_medium slds-p-top_none slds-table--header-fixed_container" style="height:auto;">
+                <div class="slds-scrollable_y" style="height:100%;">
+                    <table class="slds-table slds-table--header-fixed zs_orderdetails_table"> <thead>
+                            <tr class="slds-text-title_caps">
+                                <th scope="col" style="width: 170px;">
+                                    <div class="slds-truncate required-field" title="SAP Material Code">SAP Material No</div>
+                                </th>
+                                <th scope="col" style="width: 190px;">
+                                    <div class="slds-truncate required-field" title="Product Description">Product Description</div>
+                                </th>
+                                <th scope="col" style="width: 75px;">
+                                    <div class="slds-truncate required-field" title="Quantity">Quantity</div>
+                                </th>
+                                <th scope="col" style="width: 80px;">
+                                    <div class="slds-truncate" title="Unit of Measure (UoM)">UoM</div>
+                                </th>
+                                <template if:true={showReqdeliveryDate}>
+                                <th scope="col" style="width: 150px;">
+                                    <div style="word-wrap: break-word; white-space: normal;" class="slds-truncate required-field" title="Requested Delivery Date">Requested Delivery Date</div>
+                                </th>
+                                </template>
+                                <th scope="col" style="width: 85px;">
+                                    <div class="slds-truncate" title="Unit Price">Unit Price</div>
+                                </th>
+                                <template if:true ={showPercentageFOC}>
+                                    <th scope="col" style="width: 75px;">
+                                        <div style="word-wrap: break-word; white-space: normal;" class="slds-truncate required-field" title="Per Free of Charge">Percentage Free of Charge</div>
+                                    </th>
+                                </template>
+                                <template if:true ={showFOCQuantity}>
+                                    <th scope="col" style="width: 75px;">
+                                        <div style="word-wrap: break-word; white-space: normal;" class="slds-truncate" title="Free of Charge Quantity">Free of Charge Quantity</div>
+                                    </th>
+                                </template>
+                                <template if:true ={showDiscount}>
+                                    <th scope="col" style="width: 75px;">
+                                        <div class="slds-truncate required-field" title="Discount">Discount</div>
+                                    </th>
+                                </template>
+                                <th scope="col" style="width: 85px;">
+                                    <div class="slds-truncate" title="Total price">Total price</div>
+                                </th>
+                            </tr>
+                        </thead>   
+                        <tbody>                         
+                            <template for:each={orderData.lstOrdItm} for:item="item" for:index="index">                    
+                                <tr key={item.Id} id={item.Id}> 
+                                    <td>
+                                        <lightning-input    variant="label-hidden" label="Name" value={item.sapMaterialNo}  disabled></lightning-input>                        
+                                    </td>
+                                    <td>
+                                        <lightning-input   variant="label-hidden" label="Name" value={item.prodName.Name} disabled></lightning-input>
+                                    </td>
+                                    <template if:false={isReadOnly}>
+                                        <td>
+                                            <lightning-input  type="number"  step=".01" data-name="quantity" data-id={index} variant="label-hidden" label="Name" value={item.quantity} onchange={handleValueChange} required></lightning-input>                        
+                                        </td>
+                                    </template>
+                                    <template if:true={isReadOnly}>
+                                        <td>
+                                            <lightning-input  type="number"  step=".01" data-name="quantity" data-id={index} variant="label-hidden" label="Name" value={item.quantity} disabled></lightning-input>                        
+                                        </td>
+                                    </template>
+                                    <td>
+                                        <lightning-input   variant="label-hidden" label="Name" value={item.uom} disabled></lightning-input>                        
+                                    </td>
+                                    <template if:true={showReqdeliveryDate}>
+                                        <template if:false={isReadOnly}>
+                                        <td>
+                                            <lightning-input   data-name="reqDeliveryDate" data-id={index} type=Date variant="label-hidden" label="Name" value={item.reqDeliveryDate} onchange={handleValueChange} required></lightning-input>                        
+                                        </td>
+                                        </template>
+                                        <template if:true={isReadOnly}>
+                                        <td>
+                                            <lightning-input   data-name="reqDeliveryDate" data-id={index} type=Date variant="label-hidden" label="Name" value={item.reqDeliveryDate} disabled></lightning-input>                        
+                                        </td>
+                                        </template>
+                                    </template>
+                                    <td>
+                                        <lightning-input  step=".01"  type=number variant="label-hidden" label="Name" value={item.unitPrice}  disabled></lightning-input>                        
+                                    </td>
+                                    <template if:true ={showPercentageFOC}>
+                                        <td>
+                                            <lightning-input   variant="label-hidden" label="Name" value={item.percentageOfFreeCharge} disabled></lightning-input>                        
+                                        </td>
+                                    </template>
+                                    <template if:true ={showFOCQuantity}>
+                                        <td>
+                                            <lightning-input   variant="label-hidden" label="Name" value={item.freeOfChargeQuantity} disabled></lightning-input>                        
+                                        </td>
+                                    </template>
+                                    <template if:true ={showDiscount}>
+                                        <td>
+                                            <lightning-input   variant="label-hidden" label="Name" value={item.discount} disabled></lightning-input>                        
+                                        </td>
+                                    </template>
+                                    <td>
+                                        <lightning-input step=".01"  type=number variant="label-hidden" label="Name" value={item.totalprice}  disabled></lightning-input>                        
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                        </table>        
+                    </div>
+                </div>     
+                
+                <div class="slds-grid slds-m-around_x-small zs_remarks_total">
+                    <div class="slds-col slds-size_5-of-8 slds-p-right_xx-small">
+                        <template if:false={isReadOnly}>
+                                <lightning-input data-name="remarks" type="text" label="Remarks" value={orderData.remarks} placeholder="Remarks:" onchange={handleValueChange} ></lightning-input>
+                          </template>
+                        <template if:true={isReadOnly}>
+                                <lightning-input data-name="remarks" type="text" label="Remarks" value={orderData.remarks} placeholder="Grand Total:" disabled></lightning-input>
+                         </template>
+                        </div>
+                        <div class="slds-col slds-size_3-of-8 slds-p-left_xx-small">
+                            <lightning-input step=".01"  type=number label="Grand Total"  value={orderData.grandTotal} disabled></lightning-input> 
+                        </div>
+                  </div>
+
+                  <p class="slds-m-around_x-small slds-p-top_small zs_moreinfo_title">More Information</p>
+
+                  <div class="slds-grid slds-m-around_x-small">
+                    <div class="slds-col slds-size_1-of-2 slds-p-right_medium">
+                        <lightning-input type="text" label="Currency" placeholder="type here..." value= {orderData.currencyValue} disabled></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-left_medium">
+                        <lightning-input type="text" label="Incoterms" value={orderData.incoterms} disabled></lightning-input>
+                    </div>
+                    </div>
+                    <div class="slds-grid slds-m-around_x-small">
+                    <div class="slds-col slds-size_1-of-2 slds-p-right_medium">
+                        <template if:false={isReadOnly}>
+                            <lightning-combobox
+                                data-name="transportMode"
+                                name="progress"
+                                label="Mode of Transport"
+                                value={orderData.modeOfTransport}
+                                placeholder="Select Transport Mode"
+                                options={modeOptions}
+                                onchange={handleValueChange}
+                                required>
+                            </lightning-combobox> 
+                              </template> 
+                              <template if:true={isReadOnly}>
+                                <lightning-input type="text"  label="Mode of Transport" value={orderData.modeOfTransport} disabled></lightning-input>
+                              </template> 
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-left_medium">
+                            <lightning-input type="text" label="Terms of Payment" value={orderData.termsOfPayment} placeholder="type here..." disabled></lightning-input> 
+                        </div>
+                  </div>
+
+
+            </div>
+         
+       
+            <template if:true={showShippingDoc}>
+            <div class="slds-card zs_shipping_doc slds-p-bottom_x-large">
+                <div class="slds-card__header slds-grid">
+                    <h2 class="slds-card__header-title">
+                        <span>Shipping Documents</span>
+                      
+                    </h2>
+              </div>
+
+                    <div class="zs_shipping_table_wrap">        
+                        <table  style="height:max-content;" class="slds-scrollable_y slds-table slds-table_cell-buffer"> 
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col">
+                                        <div class="slds-truncate required-field" title="Documents Types">Documents Types</div>
+                                    </th>
+                                     <th scope="col">
+                                        <div class="slds-truncate required-field" title="Original by courier">Original by courier</div>
+                                    </th>
+                                     <th scope="col">
+                                        <div class="slds-truncate required-field" title="Electronic by email">Electronic by email</div>
+                                    </th>
+                                     <!-- <th scope="col">
+                                        <div class="slds-truncate required-field" title="Other Documents">Other Documents</div>
+                                    </th> -->
+                                </tr>
+                            </thead>
+                            <tbody>      
+                    
+                        <template for:each={orderData.lstShippingDocs} for:item="acc" for:index="index">
+                            <tr key={acc.Id} id={acc.Id}> 
+                            <td>
+                                <lightning-input  data-name="DocType" data-id={index} variant="label-hidden" label="Name" value={acc.docType} disabled></lightning-input>   
+                                <template if:true={acc.isOtherVisible}>
+                                    <template if:true={isReadOnly}>
+                                         <lightning-input  data-name="otherdoc" data-id={index} label="Other Documents" value={acc.docRemarks} disabled></lightning-input>
+                                    </template>
+                                    <template if:false={isReadOnly}>
+                                        <lightning-input  data-name="otherdoc" data-id={index}  label="Other Documents" value={acc.docRemarks} onchange={handleValueChange}></lightning-input>                        
+                                    </template>
+                                </template>                     
+                            </td>
+                              <template if:false={isReadOnly}>
+                                <td>
+                                    <lightning-input  data-name="byCourier" type="number" data-id={index} variant="label-hidden" label="Name" value={acc.originalByCourier} onchange={handleValueChange} ></lightning-input>                        
+                                </td>
+                                <td>
+                                    <lightning-input class="checkbox" type="checkbox" data-name="elecEmail" data-id={index} variant="label-hidden" label="Name" checked={acc.elecByEmail} onchange={handleValueChange} ></lightning-input>                        
+                                </td>
+                            </template>
+                            <template if:true={isReadOnly}>
+                                <td>
+                                    <lightning-input  data-name="byCourier" type="number" data-id={index} variant="label-hidden" label="Name" value={acc.originalByCourier} disabled></lightning-input>                        
+                                </td>
+                                <td>
+                                    <lightning-input class="checkbox" type="checkbox" data-name="elecEmail" data-id={index} variant="label-hidden" label="Name" checked={acc.elecByEmail} disabled></lightning-input>                        
+                                </td>                                    
+                            </template>
+                            </tr>
+                        </template>
+                
+                        </tbody>  
+                        </table>
+                   
+                    </div>                     
+                
+            </div>
+            </template>
+<!--TPDEV-710--Added by Sweta Kumari--Download all attachments for an Order on Order Details-->
+            <template if:true={showAttachments}>
+                <div class="slds-card zs_attachments_card slds-p-bottom_x-large">
+                    <div class="slds-card__header slds-grid">
+                        <h2 class="slds-card__header-title">
+                            <span>Attachments</span>
+                        </h2>
+                    </div>
+                    <div class="zs_attachments_table_wrap">
+                        <table  style="height:max-content;" class="slds-scrollable_y slds-table slds-table_cell-buffer">
+                            <thead>
+                                <tr class="slds-text-title_caps">
+                                    <th scope="col">
+                                        <div class="slds-truncate required-field" title="Name">Name</div>
+                                    </th>
+                                     <th scope="col">
+                                        <div class="slds-truncate required-field" title="Extension">Extension</div>
+                                    </th>
+                                     <th scope="col">
+                                        <div class="slds-truncate required-field" title="Size">Size</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate required-field" title="Download">Download</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={orderData.attachmentDetails} for:item="attachment">
+                                    <tr key={attachment.Id}>
+                                        <td>{attachment.name}</td>
+                                        <td>{attachment.contentType}</td>
+                                        <td>{attachment.contentSize}</td>
+                                        <td>
+                                            <lightning-button-icon
+                                            style="margin-left:32px"
+                                            icon-name="utility:download"
+                                            alternative-text="Download"
+                                            variant="bare"
+                                            size="small"
+                                            title="Download"
+                                            data-id={attachment.Id}
+                                            onclick={handleDownload}>
+                                            </lightning-button-icon>
+                                            
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </template>
+
+            <!--template if:false={isReadOnly}>
+            <div>
+                <template if:false={esignPresent}>
+                    <p class="validation">E-Signature is mandatory before every save and submit.</p>
+                </template>
+                <lightning-card title="E-Signature" data-name="esign">
+                    <c-alpha-esignature onfinalsign = {handleEsign}></c-alpha-esignature>
+                </lightning-card>
+            </div>
+            </template-->
+            <div class="slds-align_absolute-center slds-var-p-top_small zs_createorder_submit"> 
+                <lightning-button-group> 
+                    <template if:false={isReadOnly}> 
+                         <template if:false={isEdit}>
+                             <template if:false={isSaved}>
+                                <lightning-button name="Save" variant="brand" label="Save"  onclick={saveRecord} ></lightning-button>
+                             </template>          
+                        </template> 
+                    </template> 
+
+                <template if:true={isSaved}>
+                    <template if:false={isEdit}>
+                        <template if:true={showEdit}>
+                            <lightning-button name="Edit" variant="brand" label="Edit" style='padding-left : 10px ; padding-right : 10px' onclick={makeEditable} ></lightning-button>
+                        </template>
+                        <template if:true={showSendSignature}>
+                            <lightning-button name="Send for Signature" data-id="adobeSignBtn" variant="brand" label="Send for Signature" onclick={adobeSendForSignature} ></lightning-button>  &nbsp;&nbsp;&nbsp;
+                        </template> <!-- icon-name="utility:download" Added by NamrataP [7/13]  AdobeSign Implemetation -->
+                        <template lwc:if={showSubmit}>
+                            <lightning-button name="submit" data-id="submitBtn" variant="brand" label="Submit" onclick={submitHandler} ></lightning-button>  &nbsp;&nbsp;&nbsp;
+                        </template>
+                        <template if:true={showDownload}>
+                            <lightning-button name="Download" variant="brand" label="Download Copy" onclick={download} ></lightning-button>
+                        </template>
+                    </template>
+                </template>
+                <template if:true={isEdit}>
+                     <lightning-button name="Update" variant="brand" label="Update" style='padding-left : 10px ; padding-right : 10px' onclick={updateRecord} ></lightning-button>
+                </template>               
+                </lightning-button-group>    
+            </div>
+        </template>
+         <template if:false={modalClosedNoSelection}>
+            <template if:false={loaded}>
+                <div class="slds-spinner_container">
+                    <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                    <!-- <lightning-spinner alternative-text="Please Wait, processing request"></lightning-spinner> -->
+                    </div>
+                </div>
+            </template>
+        </template>
+    </template>
+
+    <!-- modal for supply point -->
+    <template if:true={openModal}>  
+        <div class="slds-modal slds-fade-in-open slds-backdrop">  
+            <div class="slds-modal__container">  
+                <div class="slds-modal__header">
+                    <h2>Select Supply Point</h2>
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </div>
+                <div style="height: 150px;" class="slds-modal__content slds-var-p-around_medium">  
+                    <lightning-combobox
+                        data-name="supplypoint"
+                        name="progress"
+                        label="Supply Point"
+                        value={supplyPoint}
+                        placeholder="Select Supply Point"
+                        options={supplyPoint}
+                        onchange={handleSupplyPoint}>
+                    </lightning-combobox> 
+                </div>  
+            </div>  
+        </div>  
+    </template>  
+
+<!---TPDEV-708 modal for add product -->
+      <template if:true={showAddProductModal}> 
+        <div class="slds-modal slds-fade-in-open slds-backdrop">  
+            <div class="slds-modal__container">  
+                <div class="slds-modal__header">
+                    <h2>Please select an additional Product to add to the Order</h2>
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </div>
+                <div style="height: 150px;" class="slds-modal__content slds-var-p-around_medium">  
+                      <div style="width: 65%;" class="slds-product"> 
+                            <span class="zs_prod_desc">Select a product to add:</span>
+                            <c-alpha-custom-lookup data-id={index} object-name="Product2" field-name="Name"  label="Product2" iconname="standard:product"  onrecselect={handleProdChange}></c-alpha-custom-lookup>
+                        </div> 
+                        </div>     
+                 <footer class="slds-modal__footer">
+                    <lightning-button style="margin-right:10px"  variant="brand"  label="Save" onclick={saveUpdateRecord}></lightning-button>
+                    <lightning-button variant="brand"  label="Cancel" onclick={closeModal}></lightning-button>
+                </footer> 
+            </div>  
+        </div>    
+    </template> 
+     <template if:true={loading}>
+                    <lightning-spinner alternative-text="Loading"></lightning-spinner>
+            </template>
+        
+</template>

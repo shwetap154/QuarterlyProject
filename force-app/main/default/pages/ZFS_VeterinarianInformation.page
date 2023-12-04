@@ -1,0 +1,208 @@
+<apex:page title="Zoetis For Shelters" standardController="Lead" extensions="ZoetisForShelters" cache="false" showChat="false" showHeader="false" sidebar="false" standardStylesheets="true">
+    <c:ZFS_header shelterObj="{!shelter}" ></c:ZFS_header>
+    <style type="text/css"  >
+        .btn {  
+        line-height:1.5 !important;border:2px solid transparent !important;min-width:8em !important;
+        background-color:#ff6400 !important;
+        background:#ff6400 !important;
+        color:white !important;
+        }  
+        th {
+        padding-top: .5em !important;
+        padding-bottom: .5em !important;
+        }     
+        td {
+        padding-top: .5em !important;
+        padding-bottom: .5em !important;
+        }
+        .individualPalette .leadBlock .tertiaryPalette{
+        background-color:#0096AF !important;
+        }
+        .individualPalette .leadBlock .secondaryPalette {
+        border-color:#0096AF !important;
+        }
+        body .bEditBlock .pbBody .pbSubheader{
+        background-image:none !important;
+        color:#ffffff !important;
+        }
+        .requiredLegend{
+        color:#ffffff !important;
+        }
+        .message{
+        background-color: #ffffff !important;
+        padding: 0px 0px 0px 0px !important;
+        margin: 2px 0px !important;
+        width: 100% !important;
+        }
+        body{
+        font-size: 85% !important;
+        }
+        body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label{
+        font-size: 1.4em;
+        }
+        input{
+            height:2em !important; 
+            font-size:1em !important; 
+        } 
+        body .bPageBlock .pbBody .labelCol{
+            vertical-align:middle !important;
+            font-size:1em !important; 
+        }
+        select{
+            height:2em !important; 
+        }
+
+    </style>
+    <script type='text/javascript'>
+    function noenter(ev)  {
+        if (window.event && window.event.keyCode == 13 || ev.which == 13) {
+            saveShelter();
+            return false;
+        } else {
+            return true;
+        }
+    }
+    </script>
+    
+    <table style="width:100%;">
+        <tr>
+            <td style="width:10%;"></td>
+            <td style="vertical-align: top; text-align: right;">
+                <c:ZFS_Page_Navigation leadId="{!LeadId}" currStepNo="5" compStepNo="{! IF(LeadId==null,0,shelter.Step_Number__c)}"></c:ZFS_Page_Navigation>
+            </td>
+            <td style="width:50%;vertical-align: top;">
+                <center>
+                    <apex:form >
+                        <apex:pageMessages rendered="{!hasErrors}"></apex:pageMessages>
+                        <apex:outputPanel id="basic_info" >
+                            <apex:pageBlock mode="edit" >
+                                <apex:pageBlockSection columns="1"  title="Veterinarian of Record  Information" collapsible="false" >  
+                                    <apex:pageBlockSectionItem >
+                                        <label>Prefix</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:selectList value="{!shelter.Vet_Prefix__c}" label="Prefix" multiselect="false" size="1" style="width:50%" onkeypress="return noenter(event);">
+                                                    <apex:selectOptions value="{!prefix}" ></apex:selectOptions>
+                                                </apex:selectList>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>First Name</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.Vet_First_Name__c}" label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel></apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Last Name</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.Vet_Last_Name__c}" label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel></apex:pageBlockSectionItem>
+                                    
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Phone</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.DVM_Phone__c}" label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel></apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Street 1</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.DVM_Address__c}" label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel></apex:pageBlockSectionItem>
+                                    
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Street 2</label>
+                                        <apex:outputPanel >
+                                            <apex:inputField value="{!shelter.DVM_Address_2__c}"  label="" style="width:50%" onkeypress="return noenter(event);"/>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
+                                        <label>City</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.DVM_City__c}"   label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel></apex:pageBlockSectionItem>
+                                    
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>County</label>
+                                        <apex:outputPanel >
+                                            <apex:inputField value="{!shelter.DVM_County__c}"  label="" style="width:50%" onkeypress="return noenter(event);"/>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>State</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:selectList value="{!shelter.DVM_State__c}" label="" multiselect="false" size="1" style="width:50%" onkeypress="return noenter(event);">
+                                                    <apex:selectOption itemValue="Select" itemLabel="--Select--"></apex:selectOption>
+                                                    <apex:selectOptions value="{!statePicklist}" ></apex:selectOptions>
+                                                </apex:selectList></div></apex:outputPanel></apex:pageBlockSectionItem>
+                                    
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Zip Code</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.DVM_Zip__c}"  label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel></apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Email</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.DVM_Email__c}" label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel></apex:pageBlockSectionItem>
+                                    
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Fax</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.DVM_Fax__c}"   label="" style="width:50%" onkeypress="return noenter(event);"/></div></apex:outputPanel></apex:pageBlockSectionItem>
+                                    
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>State Veterinarian License Number</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.DVM_ST__c}"   label="" style="width:50%" onkeypress="return noenter(event);"/> </div></apex:outputPanel></apex:pageBlockSectionItem>
+                                </apex:pageBlockSection>
+                                <br/><br/>
+                                <apex:outputPanel rendered="{! !readonly}">
+                                    <apex:outputPanel style="float: left; padding-left:0.5%;">
+                                        <apex:commandButton value="Previous" action="{!previous}" immediate="true"/> 
+                                        <apex:commandButton value="Save & Next" action="{!saveShelter}"/> 
+                                        <apex:commandButton value="Save & Exit" action="{!saveExit}" /> 
+                                    </apex:outputPanel>
+                                    <apex:outputPanel style="float: right; padding-right:0.5%;">
+                                        <apex:commandButton value="Reset Form" onclick="return confirm('Are you sure you want to remove all entered details? \nPlease click \'OK\' to continue.')" action="{!reset}" immediate="true" />
+                                        <apex:commandButton value="Discard Form" onclick="return confirm('Are you sure you want to discard your application? \nPlease click \'OK\' to continue.');" action="{!discard}" immediate="true" />
+                                    </apex:outputPanel>
+                                    <apex:actionFunction name="saveShelter" action="{!saveShelter}"/>
+                                    <br/><br/><br/>
+                                </apex:outputPanel>
+                                <br/>
+                            </apex:pageBlock>
+                        </apex:outputPanel>
+                    </apex:form>
+                </center>
+            </td>
+            <td style="width:25%;"><apex:outputPanel ></apex:outputPanel></td>
+        </tr>
+    </table>
+    <c:ZFS_footer /> 
+</apex:page>

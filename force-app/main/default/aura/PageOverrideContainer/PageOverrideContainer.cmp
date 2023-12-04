@@ -1,0 +1,6 @@
+<aura:component implements="lightning:actionOverride,force:hasRecordId,force:hasSObjectName" controller="SalesCallLWCController">
+
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+
+    <c:salesCall recordId="{!v.recordId}" onclose="{!c.closeChildLWC}"></c:salesCall>
+</aura:component>

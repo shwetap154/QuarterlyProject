@@ -1,0 +1,21 @@
+<aura:component controller="SL_RxNewCaseController">
+
+    <aura:attribute name="searchTerm" type="String"/>
+    
+    <aura:registerEvent name="acctsLoaded" type="c:acctsLoaded"/>
+    <aura:registerEvent name="resetCase" type="c:NewCaseReset"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+
+    <lightning:card title="Account Search" iconName="standard:search">
+        <div class="slds-form slds-p-around_x-small">
+            <lightning:input
+                label="Search"
+                variant="label-hidden"
+                value="{!v.searchTerm}"
+                placeholder="Search by Account Name, SAP #, or DMR #"
+                onchange="{!c.onSearchTermChange}"/>
+        </div>
+            <div aura:id="msg" class="slds-hide">No search Result found!</div>
+    </lightning:card>
+</aura:component>

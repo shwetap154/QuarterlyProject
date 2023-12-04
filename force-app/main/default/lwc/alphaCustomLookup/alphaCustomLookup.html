@@ -1,0 +1,44 @@
+<template>
+    <div class="slds-m-padding_around slds-m-top_xxx-small">
+        <template if:false={selectedRecord.Id} >
+            <c-alpha-child-search-bar-comp onsearch={handleSearch} search-label={label}
+                isrequired="false" ></c-alpha-child-search-bar-comp>
+        </template>
+    </div>
+    <div class="slds-m-padding_around zs_listdropdown_box">
+        <template if:false={selectedRecord.Id} >
+            <template if:true={records}>
+                <div class="zs_record_list">
+                <template for:each={records} for:item="rec" for:index="index">
+                    <ul key={rec.Id} 
+                        class="slds-listbox " >
+                    <c-alpha-child-record-collection-comp key={rec.Id} rec={rec}
+                         iconname={iconname}
+                         onselect={handleSelect}>
+                    </c-alpha-child-record-collection-comp>
+                    </ul>
+                </template>
+            </div>
+            </template>
+        </template>
+        <template if:true={selectedRecord.Id} >
+            <!--<label class="slds-form-element__label" for="unique-id-of-input">
+                    {label}
+            </label>-->
+            <div class="slds-pill-container">
+                <lightning-pill class="pillSize" 
+                        href="JavaScript:void(0);"
+                        label={selectedRecord.Name} 
+                        name={selectedRecord.Name} 
+                        onremove={handleRemove}>
+                    <lightning-icon icon-name={iconname} variant="circle"  
+                            alternative-text={objectName}></lightning-icon>        
+                </lightning-pill>
+            </div>
+        </template>
+    </div>
+
+    <!-- how to use in parent!!!
+    <c-alpha-custom-lookup object-name="Lead" field-name="Name"
+    label="Lead" iconname="standard:lead" ></c-alpha-custom-lookup> -->
+</template>

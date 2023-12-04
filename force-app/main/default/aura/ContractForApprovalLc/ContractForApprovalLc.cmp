@@ -1,0 +1,19 @@
+<aura:component implements="lightning:isUrlAddressable,force:lightningQuickActionWithoutHeader,force:hasRecordId,lightning:hasPageReference" controller="ContractDetailViewController">
+
+    <aura:attribute name="contrId" type="String" />
+    <aura:attribute name="showConfirmDialog" type="boolean" default="false"/>
+    <aura:attribute name="currentContent" type="String" />
+    <aura:attribute name="isValid" type="boolean" default="true"/>
+    <aura:attribute name="showCalcCard" type="boolean" default="true"/>
+
+    <aura:handler name="cmpEvent" event="c:ContractAcknowledgeEvt" action="{!c.handleComponentEvent}"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.pageReference}" action="{!c.reInit}" />
+
+    <div>
+        <lightning:spinner alternativeText="Loading" size="large" />
+    </div>
+        {! v.currentContent }
+
+</aura:component>

@@ -1,0 +1,74 @@
+<template>
+    <lightning-breadcrumbs class="zs_fc_list_breadcrumbs slds-p-bottom_medium">
+        <lightning-breadcrumb label="Contact Us" href=""></lightning-breadcrumb> / 
+        <lightning-breadcrumb class="zs_active_breadcrumb" label="Create A Case" href=""></lightning-breadcrumb> 
+    </lightning-breadcrumbs>
+    
+    <div class="slds-text-heading_medium slds-p-bottom_small zs_fc_entry_title">Create A Case</div>
+    <div class="zs_instruction_blk">
+        <p><b>Instructions:</b> *Please enter below information for faster response for the related inquiries..</p>
+        <p>
+        <b>Shipment:</b> Product Description, SAP Material No, Quantity, Invoice Number<br/>
+        <b>Forecast:</b> Month and Product Description<br/>
+        <b>Distributor Stock Report:</b> Month and Product Description<br/>
+        <b>Order Change Request:</b> Purchase Order Number<br/>
+        </p>    
+    </div>
+
+    <article class="slds-card zs_caseform_card">
+            <div class="slds-grid slds-p-bottom_medium">
+                <div class="slds-col slds-p-horizontal_xx-small slds-size_1-of-2">
+  
+              <lightning-combobox
+                                    data-name="caseType"
+                                    name="progress"
+                                    label="Case Type"
+                                    value={options}
+                                    placeholder="Select Case Type"
+                                    options={options}
+                                    onchange={handleValueChange}
+                                    required
+                            ></lightning-combobox>
+                            </div>
+                            </div>
+              <template if:true={showMessage}>
+                 <div class="zs_caseform_msg">
+                    <h3 slot="title">
+                        <lightning-icon icon-name="utility:info_alt" size="small"></lightning-icon> Message 
+                    </h3>
+                    <p>{displaymessage}</p>
+                    <template if:true={showPharmaMessage}>
+                        <ul>
+                            <li>Sub-Saharan Africa: PVAfrica@zoetis.com.</li>
+                            <li>Maghreb: PVMaghreb@zoetis.com </li>
+                            <li>Middle East: PVMiddleEast@zoetis.com.</li>
+                        </ul>
+                        <p>
+                            Please go to the
+                            <a style="color: blue" href={baseURL}> Legal and Regulatory</a>  page to download the report template.
+                        </p>
+                    </template>
+                   
+                </div>
+
+              </template>
+              <template if:false={showMessage}>
+                <div class="slds-grid slds-p-bottom_medium">
+                    <div class="slds-col slds-p-horizontal_xx-small slds-size_1-of-2">
+                             <lightning-input data-name="caseSub" type="text" label="Case Subject" placeholder="type here..." required onchange={handleValueChange}></lightning-input>
+                         </div>
+                         </div>   
+                         <div class="slds-grid slds-p-bottom_medium">
+                            <div class="slds-col slds-p-horizontal_xx-small slds-size_2-of-2">
+                             <lightning-textarea class="zs_case_desc" data-name="caseDesc" label=" Case Description" onchange={handleValueChange} required></lightning-textarea>
+                            </div>
+                            </div>
+                            <div class="zs_case_submit">
+                                <lightning-button variant="brand" label="Submit"  onclick={handleClick}></lightning-button>
+                            </div>
+                            
+                        
+              </template>
+           
+        </article>
+</template>

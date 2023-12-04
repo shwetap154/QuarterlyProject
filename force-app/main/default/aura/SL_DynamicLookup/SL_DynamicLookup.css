@@ -1,0 +1,56 @@
+.THIS .inputCustomLookup {
+
+    display:inline-block;
+    width: 100%;
+    overflow: hidden;
+    margin: 0px 2px;
+    min-height: 1.625rem;
+    height: 1.625rem;
+    padding: 0;
+    outline: 0;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none;border-radius: 0;
+}
+
+.THIS .hide {
+    display: none;
+}
+
+.THIS .minHeight {
+    min-height: 2.2rem!important;
+}
+
+.THIS .inputCustomLookup:focus{
+    outline: none;
+    box-shadow: 0 0 3px transparent;
+}
+
+.THIS .disabledLi {
+    pointer-events:none;
+    opacity:0.6;
+}
+
+.THIS .liContactImage {
+    margin-right: 5px!important;
+    width: 25px!important;
+}
+
+.THIS .borderRed {
+        border-color:red;
+}
+.THIS .borderStand {
+        border-color:#d8dde6;
+}
+
+.THIS .AddNewBtn {
+    background-color: rgb(65, 149, 222);
+    border: none;
+}
+
+.THIS .AddNewBtn:hover {
+    outline: none;
+    background-color : rgb(0, 57, 107);
+    color: white;
+    text-decoration: none;
+}

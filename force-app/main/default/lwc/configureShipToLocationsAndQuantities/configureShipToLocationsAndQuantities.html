@@ -1,0 +1,29 @@
+<template>
+  <lightning-card title={label.ConfigureShipToTitle} icon-name="custom:custom19">
+    <lightning-button label={label.Cancel} slot="actions" onclick={handleCancel}></lightning-button>
+    <lightning-button label={label.Save} onclick={handleSave} class="slds-m-left_small" variant="brand" slot="actions"></lightning-button>
+    <p class="slds-p-horizontal_small">
+      <template for:each={shipToLocations} for:item="shipTo" for:index="i">
+        <c-edit-ship-to-location
+          key={shipTo.RecordId}
+          ship-to={shipTo}
+          ship-to-quote-lines={quoteLines}
+          quantity-overrides={quantityOverrides}
+          selected-ship-to-address-ids={selectedShipToAddressIds}
+          index={i}
+          quote-id={quoteId}
+          onlocationremoved={handleLocationRemoved}
+          onshiptoaddresschange={handleShipToAddressChange}
+          onqtychange={handleQtyChange}
+          onshiptoqtyoverride={handleQtyOverride}
+          onselectionremoved={handleSelectionRemoved}
+          initial-over-qty={initialOverQty}
+        ></c-edit-ship-to-location>
+      </template>
+      <lightning-button class="slds-m-top_medium" label={label.AddShipToLocation} onclick={handleAddShipToLocationClick}></lightning-button>
+    </p>
+    <template if:true={isLoading}>
+      <lightning-spinner variant="brand" size="large"></lightning-spinner>
+    </template>
+  </lightning-card>
+</template>

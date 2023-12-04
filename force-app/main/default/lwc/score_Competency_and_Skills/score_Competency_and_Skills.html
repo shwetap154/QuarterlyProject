@@ -1,0 +1,56 @@
+<template>
+  <div>
+    <lightning-accordion class="competency-accordion"
+        active-section-name={activeSections} onsectiontoggle={handleSectionToggle}> 
+      <div>
+          <template for:each={lstCompSkill} for:item="competencies2">
+              <lightning-accordion-section class={competencies2.cssClass} key={competencies2.Name} id={competencies2.Name} name={competencies2.Name} value={competencies2.Name} label={competencies2.Name}>
+                <div class="panel">
+                  <h1 class="heading">{Learning_Descriptionval} :</h1>
+                  <p class="para">{competencies2.Learning_Description__c}<br><br></p>
+                  <h1 class="heading">{Applying_Descriptionval} :</h1>
+                  <p class="para">{competencies2.Applying_Description__c}<br><br></p>
+                  <h1 class="heading">{Mastery_Descriptionval} :</h1>
+                  <p class="para">{competencies2.Mastery_Description__c}<br><br></p>
+                    
+                    <table class="table">
+                      <tr>
+                        <td>
+                          <input type="range" min="1" max="9" value={competencies2.Score__c} class="slider" id={competencies2.Id} onload={handleChange}
+                          onchange={handleChange}>
+                        </td>
+                      </tr>
+                    </table>
+                    <table style="width: 96%;" class="table">
+                      <tr>
+                        <td class="learning-nopadding">1</td>
+                        <td class="learning-meter2">2</td>
+                        <td class="learning-meter3">3</td>
+                        <td class="applying-meter4">4</td>
+                        <td class="applying-meter5">5</td>
+                        <td class="applying-meter6">6</td>
+                        <td class="mastery-meter7">7</td>
+                        <td class="mastery-meter8">8</td>
+                        <td class="mastery-meter9">9</td>
+                      </tr>
+                    </table>
+                    <table style="margin-left: 1%;width: 95.4%;" class="table">
+                      <tr style="width: 100%;">
+                        <th class="th_Learning">{Learningval}</th>
+                        <th class="th_Applying">{Applyingval}</th>
+                        <th class="th_Mastery">{Masteryval}</th>
+                      </tr>
+                    </table>
+                    <br><br>
+                    <button class="verify_button" onclick={handleclick} id={competencies2.Id} value={competencies2.Name}>{next}</button>
+                  </div>
+              </lightning-accordion-section>
+          </template>
+      </div>
+  </lightning-accordion>
+  </div> 
+  <footer class="slds-modal__footer">
+            <lightning-button class="slds-m-left_x-small" onclick={handlePrevious} name="update" label= {previous}>
+            </lightning-button>
+  </footer>
+</template>

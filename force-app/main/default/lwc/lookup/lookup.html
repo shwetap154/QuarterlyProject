@@ -1,0 +1,774 @@
+<template>
+    <div class="slds-form-element">
+        <label if:true={label} class="slds-form-element__label" for="combobox"
+        >{label}</label
+        >
+        <div class="slds-form-element__control">
+            <div class={getContainerClass}>
+                <div
+                        class={getDropdownClass}
+                        aria-expanded={isExpanded}
+                        aria-haspopup="listbox"
+                        role="combobox"
+                >
+                    <!-- Search input start -->
+                    <div class={getComboboxClass} role="none">
+                        <template if:false={isMultiEntry}>
+                            <lightning-icon
+                                    icon-name={getSelectIconName}
+                                    size="small"
+                                    alternative-text="Selected item icon"
+                                    class={getSelectIconClass}
+                            >
+                            </lightning-icon>
+                        </template>
+
+                        <!-- Text input -->
+                        <input
+                            type="text"
+                            class={getInputClass}
+                            aria-autocomplete="list"
+                            aria-controls="listbox"
+                            autocomplete="off"
+                            role="textbox"
+                            id="combobox"
+                            placeholder={placeholder}
+                            value={getInputValue}
+                            title={getInputTitle}
+                            readonly={isInputReadonly}
+                            onfocus={handleFocus}
+                            onblur={handleBlur}
+                            oninput={handleInput}
+                            disabled={isDisabled}
+                        />
+
+                        <!-- Search icon -->
+                        <lightning-icon
+                                icon-name="utility:search"
+                                size="x-small"
+                                alternative-text="Search icon"
+                                class={getSearchIconClass}
+                        ></lightning-icon>
+
+                        <!-- Clear selection button icon for single entry lookups -->
+                        <template if:false={isMultiEntry}>
+                            <button
+                                    disabled={isDisabled}
+                                    title="Remove selected option"
+                                    type="button"
+                                    onclick={handleClearSelection}
+                                    class={getClearSelectionButtonClass}
+                            >
+                                <lightning-icon
+                                        icon-name="utility:close"
+                                        size="x-small"
+                                        alternative-text="Remove selected option"
+                                        class="slds-button__icon"
+                                ></lightning-icon>
+                            </button>
+                        </template>
+                    </div>
+                    <!-- Search input end -->
+
+                    <!-- Result list box start -->
+                    <div
+                            id="listbox"
+                            role="listbox"
+                            onclick={handleComboboxClick}
+                    >
+                        <ul class={getListboxClass} role="presentation">
+                            <!-- Spinner to display when waiting for results of search -->
+                            <div if:true={loading}>
+                                <lightning-spinner
+                                        alternative-text="Loading"
+                                        size="small"
+                                ></lightning-spinner>
+                            </div>
+
+                            <!-- Display if results are present -->
+                            <template
+                                    for:each={searchResults}
+                                    for:item="result"
+                                    if:true={isExpanded}
+                            >
+                                <li
+                                        key={result.id}
+                                        role="presentation"
+                                        class="slds-listbox__item"
+                                >
+                                    <span
+                                            class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                            role="option"
+                                            onclick={handleResultClick}
+                                            data-recordid={result.id}
+                                    >
+                                        <span class="slds-media__figure">
+                                            <lightning-icon
+                                                    icon-name={result.icon}
+                                                    size="small"
+                                                    alternative-text="Result item icon"
+                                            ></lightning-icon>
+                                        </span>
+                                        <span class="slds-media__body">
+                                            <span
+                                                    class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                            >{result.title}</span
+                                            >
+                                            <span
+                                                    class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                                            >{result.subtitle}</span
+                                            >
+                                        </span>
+                                    </span>
+                                </li>
+                            </template>
+                            <!-- Display that there are no results -->
+                            <template if:false={isExpanded}>
+                                <li
+                                        role="presentation"
+                                        class="slds-listbox__item"
+                                >
+                                    <span
+                                            class="slds-media slds-listbox__option_entity"
+                                            role="option"
+                                    >
+                                        <span class="slds-media__body">
+                                            No results.
+                                        </span>
+                                    </span>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <!-- Result list box end -->
+                </div>
+            </div>
+
+            <!-- Multi-selection start -->
+            <template if:true={isMultiEntry}>
+                <div
+                        id="selection"
+                        role="listbox"
+                        aria-orientation="horizontal"
+                >
+                    <ul
+                            class="slds-listbox slds-listbox_inline slds-p-top_x-small"
+                            role="group"
+                            aria-label="Selected Options:"
+                            if:true={showPill}
+                    >
+                        <template for:each={selection} for:item="item" for:index="itemIndex">
+                            <li
+                                    key={item.id}
+                                    role="presentation"
+                                    class="slds-listbox__item"
+                            >
+                                <lightning-pill
+                                        data-index={itemIndex}
+                                        data-record-id={item.id}
+                                        label={item.title}
+                                        title={item.title}
+                                        onremove={handleRemoveSelectedItem}
+                                        name={item.id}
+                                >
+                                
+                                    <lightning-icon
+                                            icon-name={item.icon}
+                                    ></lightning-icon>
+                                </lightning-pill>
+                            </li>
+                        </template>
+                    </ul>
+                    <!-- Table to display table with editable columns for contacts related to attendees -->
+                    <div
+                        class="followup-container"
+                        aria-label="Selected Options:"
+                        if:true={showAttendeeTable}
+                    >
+                        <div class="followup-header row">
+                            <div class="slds-grid">
+                                <div class="name-column">
+                                    <span class="header-span header-span-padding">Name</span>
+                                </div>
+                                <div class="email-column">
+                                    <span class="header-span header-span-padding">Email</span>
+                                </div>
+                                <div class="opt-out-column">
+                                    <div class="wrap-padding">
+                                        <span class="header-span">Email Opt Out</span>
+                                    </div>
+                                </div>
+                                <div class="invalid-email-column">
+                                    <div class="wrap-padding">
+                                    <span class="header-span">Invalid Email</span>
+                                </div>
+                                </div>
+                                <div class="profession-column">
+                                    <span class="header-span header-span-padding">Profession</span>
+                                </div>
+                                <div class="job-function-column">
+                                    <span class="header-span header-span-padding">Job Function</span>
+                                </div>
+                                <div class="button-column">
+                                </div>
+                            </div>
+                        </div>
+                        <template for:each={selection} for:item="item" for:index="itemInd">
+                            
+                            <template if:true={item.record.ZTS_EU_Contact__c}>  <!-- attendee record -->
+                                <lightning-record-edit-form
+                                    key={item.Id}
+                                    data-index={itemInd}
+                                    object-api-name="Contact"
+                                    density="Comfy"
+                                    record-id={item.record.ZTS_EU_Contact__c}
+                                    onsubmit={handleSaveSubmit}
+                                    onsuccess={handleSaveSuccess}
+                                    onerror={handleSaveError}
+                                >
+                                    <div class="row task-row">
+                                        <div class="slds-grid">
+                                            <div class="name-column">
+                                                <lightning-output-field variant="label-hidden" field-name="Name">
+                                                </lightning-output-field>
+                                            </div>
+                                            <div class="email-column">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="Email" data-index={itemInd} data-item={item.record.ZTS_EU_Contact__c} onfocusout={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="opt-out-column opt-out-checkbox">
+                                                <lightning-output-field variant="label-hidden" field-name="Interface_Email_Opt_Out__c">
+                                                </lightning-output-field>
+                                            </div>
+                                            <div class="invalid-email-column invalid-email-checkbox">
+                                                <lightning-output-field variant="label-hidden" field-name="ZTS_Invalid_Email__c">
+                                                </lightning-output-field>
+                                            </div>
+                                            <div class="profession-column">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_US_Profession__c" data-index={itemInd} data-item={item.record.ZTS_EU_Contact__c} onchange={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="job-function-column">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_US_Job_Function__c" data-index={itemInd} data-item={item.record.ZTS_EU_Contact__c} onchange={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="button-column">
+                                                <!-- <div class="button-column slds-m-left_xx-small slds-m-top_x-small"> -->
+                                                    <lightning-button-icon
+                                                        variant="bare"
+                                                        size="large"
+                                                        icon-name="utility:delete"
+                                                        alternative-text="Delete"   
+                                                        class="slds-m-left_xx-small" 
+                                                        title="Delete"
+                                                        value={item.Id}
+                                                        data-index={itemInd}
+                                                        data-record-id={item.id}
+                                                        onclick={handleRemoveSelectedItem}
+                                                        disabled={isDisabled}>
+                                                    </lightning-button-icon>
+                                                <!-- </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </lightning-record-edit-form>
+                            </template>
+                            <template if:false={item.record.ZTS_EU_Contact__c}> <!-- new contact record -->
+                                <lightning-record-edit-form
+                                    key={item.Id}
+                                    data-item={itemInd}
+                                    object-api-name="Contact"
+                                    density="Comfy"
+                                    record-id={item.record.Id}
+                                    onsubmit={handleSaveSubmit}
+                                    onsuccess={handleSaveSuccess}
+                                    onerror={handleSaveError}
+                                >
+                                    <div class="row task-row">
+                                        <div class="slds-grid">
+                                            <div class="name-column">
+                                                <lightning-output-field variant="label-hidden" field-name="Name">
+                                                </lightning-output-field>
+                                            </div>
+                                            <div class="email-column">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="Email" data-index={itemInd} data-item={item.record.Id} onfocusout={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="opt-out-column opt-out-checkbox">
+                                                <lightning-output-field variant="label-hidden" field-name="Interface_Email_Opt_Out__c">
+                                                </lightning-output-field>
+                                            </div>
+                                            <div class="invalid-email-column invalid-email-checkbox">
+                                                <lightning-output-field variant="label-hidden" field-name="ZTS_Invalid_Email__c">
+                                                </lightning-output-field>
+                                            </div>
+                                            <div class="profession-column">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_US_Profession__c" data-index={itemInd} data-item={item.record.Id} onchange={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="job-function-column">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_US_Job_Function__c" data-index={itemInd} data-item={item.record.Id} onchange={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="button-column">
+                                                <!-- <div class="button-column slds-m-left_xx-small slds-m-top_x-small"> -->
+                                                    <lightning-button-icon
+                                                        variant="bare"
+                                                        size="large"
+                                                        icon-name="utility:delete"
+                                                        alternative-text="Delete"   
+                                                        class="slds-m-left_xx-small" 
+                                                        title="Delete"
+                                                        value={item.Id}
+                                                        data-index={itemInd}
+                                                        data-record-id={item.id}
+                                                        onclick={handleRemoveSelectedItem}
+                                                        disabled={isDisabled}>
+                                                    </lightning-button-icon>
+                                                <!-- </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </lightning-record-edit-form>
+                            </template>
+                        </template>
+                    </div>
+                    <!-- Table to dispaly the attendees selected for international market (SC-004726) -->
+                    <div
+                        class="followup-container"
+                        aria-label="Selected Options:"
+                        if:true={showINTLAttendeeTable}
+                    >
+                        <div class="followup-header row">
+                            <div class="slds-grid">
+                                <div class="name-column">
+                                    <span class="header-span header-span-padding">{AttendeeNameLabel}</span>
+                                </div>
+                                <div class="email-column">
+                                    <span class="header-span header-span-padding">{EmailLabel}</span>
+                                </div>
+                                <div class="opt-out-column">
+                                    <div class="wrap-padding">
+                                        <span class="header-span">{OptOutEMailLabel}</span>
+                                    </div>
+                                </div>
+                                <div class="invalid-email-column">
+                                    <div class="wrap-padding">
+                                    <span class="header-span">{OptOutPhoneLabel}</span>
+                                </div>
+                                </div>
+                                <div class="profession-column">
+                                    <span class="header-span header-span-padding">{ContactTypeLabel}</span>
+                                </div>
+                                <div class="job-function-column">
+                                    <span class="header-span header-span-padding">{ProfessionLabel}</span>
+                                </div>
+                                <div class="button-column">
+                                </div>
+                            </div>
+                        </div>
+                        <template for:each={selection} for:item="item" for:index="itemInd">
+                            
+                            <template if:true={item.record.ZTS_EU_Contact__c}>  <!-- attendee record -->
+                                <lightning-record-edit-form
+                                    key={item.Id}
+                                    data-index={itemInd}
+                                    object-api-name="Contact"
+                                    density="Comfy"
+                                    record-id={item.record.ZTS_EU_Contact__c}
+                                    onsubmit={handleSaveSubmit}
+                                    onsuccess={handleSaveSuccess}
+                                    onerror={handleSaveError}
+                                >
+                                    <div class="row task-row">
+                                        <div class="slds-grid">
+                                            <div class="name-column">
+                                                <lightning-output-field variant="label-hidden" field-name="Name">
+                                                </lightning-output-field>
+                                            </div>
+                                            <div class="email-column">
+                                                <lightning-input-field  disabled={isDisabled} variant="label-hidden" field-name="Email" data-index={itemInd} data-item={item.record.ZTS_EU_Contact__c} onfocusout={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="opt-out-column opt-out-checkbox">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_EU_Opt_Out_Email__c" data-index={itemInd} data-item={item.record.ZTS_EU_Contact__c} onfocusout={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="invalid-email-column invalid-email-checkbox">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_EU_Opt_Out_Phone__c" data-index={itemInd} data-item={item.record.ZTS_EU_Contact__c} onfocusout={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="profession-column">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_EU_Contact_type__c" data-index={itemInd} data-item={item.record.ZTS_EU_Contact__c} onchange={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="job-function-column">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_EU_Profession__c" data-index={itemInd} data-item={item.record.ZTS_EU_Contact__c} onchange={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="button-column">
+                                                <!-- <div class="button-column slds-m-left_xx-small slds-m-top_x-small"> -->
+                                                    <lightning-button-icon
+                                                        variant="bare"
+                                                        size="large"
+                                                        icon-name="utility:delete"
+                                                        alternative-text="Delete"   
+                                                        class="slds-m-left_xx-small" 
+                                                        title="Delete"
+                                                        value={item.Id}
+                                                        data-index={itemInd}
+                                                        data-record-id={item.id}
+                                                        onclick={handleRemoveSelectedItem}
+                                                        disabled={isDisabled}>
+                                                    </lightning-button-icon>
+                                                <!-- </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </lightning-record-edit-form>
+                            </template>
+                            <template if:false={item.record.ZTS_EU_Contact__c}> <!-- new contact record -->
+                                <lightning-record-edit-form
+                                    key={item.Id}
+                                    data-item={itemInd}
+                                    object-api-name="Contact"
+                                    density="Comfy"
+                                    record-id={item.record.Id}
+                                    onsubmit={handleSaveSubmit}
+                                    onsuccess={handleSaveSuccess}
+                                    onerror={handleSaveError}
+                                >
+                                    <div class="row task-row">
+                                        <div class="slds-grid">
+                                            <div class="name-column">
+                                                <lightning-output-field variant="label-hidden" field-name="Name">
+                                                </lightning-output-field>
+                                            </div>
+                                            <div class="email-column">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="Email" data-index={itemInd} data-item={item.record.Id} onfocusout={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="opt-out-column opt-out-checkbox">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_EU_Opt_Out_Email__c" data-index={itemInd} data-item={item.record.Id} onfocusout={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="invalid-email-column invalid-email-checkbox">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_EU_Opt_Out_Phone__c" data-index={itemInd} data-item={item.record.Id} onfocusout={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="profession-column">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_EU_Contact_type__c" data-index={itemInd} data-item={item.record.Id} onchange={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="job-function-column">
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_EU_Profession__c" data-index={itemInd} data-item={item.record.Id} onchange={handleContactUpdate}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="button-column">
+                                                <!-- <div class="button-column slds-m-left_xx-small slds-m-top_x-small"> -->
+                                                    <lightning-button-icon
+                                                        variant="bare"
+                                                        size="large"
+                                                        icon-name="utility:delete"
+                                                        alternative-text="Delete"   
+                                                        class="slds-m-left_xx-small" 
+                                                        title="Delete"
+                                                        value={item.Id}
+                                                        data-index={itemInd}
+                                                        data-record-id={item.id}
+                                                        onclick={handleRemoveSelectedItem}
+                                                        disabled={isDisabled}>
+                                                    </lightning-button-icon>
+                                                <!-- </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </lightning-record-edit-form>
+                            </template>
+                        </template>
+                    </div>
+                    <!-- Table to display table with columns for samples that have been dropped -->
+                    <div
+                        class="followup-container"
+                        aria-label="Selected Options:"
+                        if:true={showSampleTable}
+                    >
+                        <div class="followup-header row">
+                            <div class="slds-grid">
+                                <div class="sample-id-column">
+                                    <span class="header-span header-span-padding">Sample ID</span>
+                                </div>
+                                <div class="product-name-column">
+                                    <span class="header-span header-span-padding">Product Name</span>
+                                </div>
+                                <div class="lot-number-column">
+                                    <div class="wrap-padding">
+                                        <span class="header-span">Lot #</span>
+                                    </div>
+                                </div>
+                                <div class="on-hand-balance-column">
+                                    <div class="wrap-padding">
+                                    <span class="header-span">On Hand Balance</span>
+                                </div>
+                                </div>
+                                <div class="quantity-dropped-column">
+                                    <span class="header-span header-span-padding">Quantity Dropped</span>
+                                </div>
+                                <div class="button-column">
+                                </div>
+                            </div>
+                        </div>
+                        <template for:each={selection} for:item="item" for:index="itemInd"> 
+                            <template if:true={item.record.ZTS_US_Sample__r}> <!-- sample drop record -->
+                                <lightning-record-edit-form
+                                    key={item.Id}
+                                    data-index={itemInd}
+                                    object-api-name="ZTS_US_Sample_Drop__c"
+                                    density="Comfy"
+                                    record-id={item.id}
+                                    onsubmit={handleSaveSubmit}
+                                    onsuccess={handleSaveSuccess}
+                                    onerror={handleSaveError}
+                                >
+                                    <div class="row task-row">
+                                        <div class="slds-grid">
+                                            <div class="sample-id-column">
+                                                <span>{item.record.ZTS_US_Sample__r.Name}</span>
+                                            </div>
+                                            <div class="product-name-column">
+                                                <span>{item.record.ZTS_US_Sample__r.Product_Name_Title__c}</span>
+                                            </div>
+                                            <div class="lot-number-column">
+                                                <span>{item.record.ZTS_US_Sample__r.ZTS_US_Lot__c}</span>
+                                            </div>
+                                            <div class="on-hand-balance-column">
+                                                <span>{item.record.ZTS_US_Sample__r.ZTS_US_On_Hand_Balance__c}</span>
+                                            </div>
+                                            <div class="quantity-dropped-column">
+                                                <span>{item.record.ZTS_US_Quantity__c}</span>
+                                            </div>
+                                            <div class="button-column">
+                                                <lightning-button-icon
+                                                    variant="bare"
+                                                    size="large"
+                                                    icon-name="utility:delete"
+                                                    alternative-text="Delete"   
+                                                    class="slds-m-left_xx-small" 
+                                                    title="Delete"
+                                                    value={item.Id}
+                                                    data-index={itemInd}
+                                                    data-record-id={item.id}
+                                                    onclick={handleRemoveSelectedItem}
+                                                    disabled={isDisabled}>
+                                                </lightning-button-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </lightning-record-edit-form>
+                            </template>
+                            <template if:false={item.record.ZTS_US_Sample__r}>  <!-- sample record -->
+                                <lightning-record-edit-form
+                                    key={item.Id}
+                                    data-index={itemInd}
+                                    object-api-name="ZTS_US_Sample_Drop__c"
+                                    density="Comfy"
+                                    record-id=""
+                                    onsubmit={handleSaveSubmit}
+                                    onsuccess={handleSaveSuccess}
+                                    onerror={handleSaveError}
+                                >
+                                    <div class="row task-row">
+                                        <div class="slds-grid">
+                                            <div class="sample-id-column">
+                                                <span>{item.record.Name}</span>
+                                            </div>
+                                            <div class="product-name-column">
+                                                <span>{item.record.Product_Name_Title__c}</span>
+                                            </div>
+                                            <div class="lot-number-column">
+                                                <span>{item.record.ZTS_US_Lot__c}</span>
+                                            </div>
+                                            <div class="on-hand-balance-column">
+                                                <span>{item.record.ZTS_US_On_Hand_Balance__c}</span>
+                                            </div>
+                                            <div class="quantity-dropped-column">
+                                                <span onkeypress={handleKeyDown}>
+                                                    <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_US_Quantity__c" data-index={itemInd} data-item={item.Id} onchange={validateQuantityDrop}>
+                                                    </lightning-input-field>
+                                                </span>
+                                            </div>
+                                            <div class="button-column">
+                                                <lightning-button-icon
+                                                    variant="bare"
+                                                    size="large"
+                                                    icon-name="utility:delete"
+                                                    alternative-text="Delete"   
+                                                    class="slds-m-left_xx-small" 
+                                                    title="Delete"
+                                                    value={item.Id}
+                                                    data-index={itemInd}
+                                                    data-record-id={item.id}
+                                                    onclick={handleRemoveSelectedItem}
+                                                    disabled={isDisabled}>
+                                                </lightning-button-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </lightning-record-edit-form>
+                            </template>
+                        </template>
+                    </div>
+                    <!-- for SC-004726 Table to display table with columns for INTL samples that have been dropped -->
+                    <div
+                        class="followup-container"
+                        aria-label="Selected Options:"
+                        if:true={showINTLSampleTable}
+                    >
+                    <div class="followup-header row">
+                        <div class="slds-grid">
+                            <div class="sample-id-column">
+                                <span class="header-span header-span-padding">{SampleIdLabel}</span>
+                            </div>
+                            <div class="intl-product-name-column">
+                                <span class="header-span header-span-padding">{ProductNameLabel}</span>
+                            </div>
+                            <div class="intl-contact-name-column">
+                                <div class="wrap-padding">
+                                    <span class="header-span">{ContactNameLabel}</span>
+                                </div>
+                            </div>
+                            <div class="on-hand-balance-column">
+                                <div class="wrap-padding">
+                                <span class="header-span">{OnHandBalanceLabel}</span>
+                            </div>
+                            </div>
+                            <div class="quantity-dropped-column">
+                                <span class="header-span header-span-padding">{QtyDroppedLabel}</span>
+                            </div>
+                            <div class="button-column">
+                            </div>
+                        </div>
+                    </div>
+                    <template for:each={selection} for:item="item" for:index="itemInd"> 
+                        <template if:true={item.record.ZTS_EU_Sample__r}> <!-- sample drop record -->
+                            <lightning-record-edit-form
+                                key={item.Id}
+                                data-index={itemInd}
+                                object-api-name="Sample_Drop__c"
+                                density="Comfy"
+                                record-id={item.id}
+                                onsubmit={handleSaveSubmit}
+                                onsuccess={handleSaveSuccess}
+                                onerror={handleSaveError}
+                            >
+                                <div class="row task-row">
+                                    <div class="slds-grid">
+                                        <div class="sample-id-column">
+                                            <span>{item.record.ZTS_EU_Sample__r.Name}</span>
+                                        </div>
+                                        <div class="intl-product-name-column">
+                                            <span>{item.record.ZTS_EU_Sample__r.ZTS_EU_Product__r.Name}</span>
+                                        </div>
+                                        <div class="intl-contact-name-column">
+                                            <span>{item.record.ZTS_EU_Sample__r.ZTS_EU_Contact__r.Name}</span>
+                                        </div>
+                                        <div class="on-hand-balance-column">
+                                            <span>{item.record.ZTS_EU_Sample__r.ZTS_EU_On_Hand_Balance__c}</span>
+                                        </div>
+                                        <div class="quantity-dropped-column">
+                                            <span>{item.record.ZTS_EU_Quantity__c}</span>
+                                        </div>
+                                        <div class="button-column">
+                                            <lightning-button-icon
+                                                variant="bare"
+                                                size="large"
+                                                icon-name="utility:delete"
+                                                alternative-text="Delete"   
+                                                class="slds-m-left_xx-small" 
+                                                title="Delete"
+                                                value={item.Id}
+                                                data-index={itemInd}
+                                                data-record-id={item.id}
+                                                onclick={handleRemoveSelectedItem}
+                                                disabled={isDisabled}>
+                                            </lightning-button-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </lightning-record-edit-form>
+                        </template>
+                        <template if:false={item.record.ZTS_EU_Sample__r}> 
+                            <lightning-record-edit-form
+                                key={item.Id}
+                                data-index={itemInd}
+                                object-api-name="Sample_Drop__c"
+                                density="Comfy"
+                                record-id=""
+                                onsubmit={handleSaveSubmit}
+                                onsuccess={handleSaveSuccess}
+                                onerror={handleSaveError}
+                            >
+                                <div class="row task-row">
+                                    <div class="slds-grid">
+                                        <div class="sample-id-column">
+                                            <span>{item.record.Name}</span>
+                                        </div>
+                                        <div class="intl-product-name-column">
+                                            <span>{item.record.ZTS_EU_Product__r.Name}</span>
+                                        </div>
+                                        <div class="intl-contact-name-column">
+                                            <span>{item.record.ZTS_EU_Contact__r.Name}</span>
+                                        </div>
+                                        <div class="on-hand-balance-column">
+                                            <span>{item.record.ZTS_EU_On_Hand_Balance__c}</span>
+                                        </div>
+                                        <div class="quantity-dropped-column">
+                                            <span onkeypress={handleKeyDown}>
+                                                <lightning-input-field disabled={isDisabled} variant="label-hidden" field-name="ZTS_EU_Quantity__c" data-index={itemInd} data-item={item.Id} onchange={validateQuantityDropINTL}>
+                                                </lightning-input-field>
+                                            </span>
+                                        </div>
+                                        <div class="button-column">
+                                            <lightning-button-icon
+                                                variant="bare"
+                                                size="large"
+                                                icon-name="utility:delete"
+                                                alternative-text="Delete"   
+                                                class="slds-m-left_xx-small" 
+                                                title="Delete"
+                                                value={item.Id}
+                                                data-index={itemInd}
+                                                data-record-id={item.id}
+                                                onclick={handleRemoveSelectedItem}
+                                                disabled={isDisabled}>
+                                            </lightning-button-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </lightning-record-edit-form>
+                        </template>
+                    </template>
+                </div>
+                </div>
+            </template>
+            <!-- Multi-selection end -->
+
+            <!-- Errors start -->
+            <template for:each={errors} for:item="error">
+                <label
+                        key={error.id}
+                        role="alert"
+                        class="slds-form-element__label slds-m-top_xx-small form-error"
+                >{error.message}</label
+                >
+            </template>
+            <!-- Errors end -->
+        </div>
+        <div if:true={isProcessing}>
+            <lightning-spinner
+                    alternative-text="Processing"
+                    size="small"
+            ></lightning-spinner>
+        </div>
+    </div>
+</template>

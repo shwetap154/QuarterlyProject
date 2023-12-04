@@ -1,0 +1,305 @@
+<apex:page standardController="Account" extensions="ZTS_US_IXHsalesDataReportingController" id="page" showHeader="false" Sidebar="false" cache="true" expires="1200" 
+contentType="application/x-xls.sheet#UnitSales.xls" >
+    <!-- Schema added to add autofilter for header row in Excel sheet -->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    </head>    
+    <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+        <body > 
+            
+                
+                <table id="tb1" style="border-style: solid;width: 100%;">
+    
+        <tr> 
+            <td>
+            <apex:outputText rendered="{!IF(accntchild.Id <> null, FALSE, TRUE)}">{!accntCurrent.Name}-{!$Label.ZTS_US_Account_Sales_Analysis}: {!$Label.ZTS_US_Unit_Sales}</apex:outputtext>
+            <apex:outputText rendered="{!IF(accntchild.Id <> null, TRUE, FALSE)}">{!accntCurrent.Name}-{!$Label.ZTS_US_Account_Sales_Analysis}: {!$Label.ZTS_US_Unit_Sales}-{!$Label.ZTS_US_Aggregated}</apex:outputtext>    
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <apex:outputText value="{!$Label.ZTS_US_Generated_On} {!NOW()}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <apex:outputText value="{!$Label.ZTS_US_Sales_Through} {!apStartDate}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <apex:outputText value=""/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <apex:outputText value="{!$Label.ZTS_US_Filter_By} "/>
+            </td>
+        </tr>
+        <tr>
+            
+            <td style="padding-left:3cm;">
+                <apex:outputText value="{!selectedMATYTD}"/>
+            </td>
+        </tr>
+        <tr>            
+            <td style="padding-left:3cm;">
+                <apex:outputText value="{!$Label.ZTS_US_Species} :N/A" rendered="{!IF(AND(selectedSpecies == '<Species>',selectedPreset == '--None--'),true, false)}"/>
+                <apex:outputText value="{!$Label.ZTS_US_Species} :{!selectedSpecies}" rendered="{!IF(AND(selectedSpecies != '<Species>',selectedPreset == '--None--'),true, false)}"/>
+                <apex:outputText value="{!$Label.ZTS_US_Species} :{!salesPresets.ZTS_EU_Selected_Preferred_Species__c}" rendered="{!IF(AND(selectedSpecies == '<Species>',selectedPreset != '--None--'),true, false)}"/>               
+            </td>
+        </tr>
+        <tr>            
+            <td style="padding-left:3cm;">
+                
+                <apex:outputText value="{!$Label.ZTS_US_Therapeutic_Group} :N/A" rendered="{!IF(AND(selectedTherapeuticGrp == '<Therapeutic Group>',selectedPreset == '--None--'),true, false)}"/>
+                <apex:outputText value="{!$Label.ZTS_US_Therapeutic_Group} :{!selectedTherapeuticGrp}" rendered="{!IF(AND(selectedTherapeuticGrp != '<Therapeutic Group>',selectedPreset == '--None--'),true, false)}"/>
+                <apex:outputText value="{!$Label.ZTS_US_Therapeutic_Group} :{!salesPresets.ZTS_EU_Selected_Preferred_Thera_Grps__c}" rendered="{!IF(AND(selectedTherapeuticGrp == '<Therapeutic Group>',selectedPreset != '--None--'),true, false)}"/>
+            </td>
+        </tr>
+        <tr>            
+            <td style="padding-left:3cm;">
+               
+               <apex:outputText value="{!$Label.ZTS_US_Product} :N/A" rendered="{!IF(AND(selectedProduct == '<Product>',selectedPreset == '--None--'),true, false)}"/>
+                <apex:outputText value="{!$Label.ZTS_US_Product} :{!selectedProduct}" rendered="{!IF(AND(selectedProduct != '<Product>',selectedPreset == '--None--'),true, false)}"/>
+                <apex:outputText value="{!$Label.ZTS_US_Product} :{!salesPresets.ZTS_EU_Selected_Preferred_Brands__c}" rendered="{!IF(AND(selectedProduct == '<Product>',selectedPreset != '--None--'),true, false)}"/>
+            </td>
+        </tr>
+    
+</table>
+
+<br/> <br/> <br/>
+<apex:pageBlock >
+                
+                <!-- HTML Table used to display Total Sales Data in Excel Sheet with Grid Lines -->
+                <table border="1" cellpadding="1" cellspacing="0" style="width:100%;border:1px solid #000000;font-familyans-serif;font-size:10px">
+                       
+                        <tr style="font-family:verdana;color:Black;font-size:12px;height=18px;width:100%" >
+                        <!-- Autofilter added for header row in Excel sheet -->
+                           
+                            <td x:autofilter='all' style="background-color: #819FF7" ><b> <apex:outputText value="{!$Label.ZTS_US_Account_Name}"/></b> </td>
+                            <td x:autofilter='all' style="background-color: #819FF7" ><b><apex:outputText value="{!$Label.ZTS_US_Therapeutic_Group}"/></b> </td>                            
+                            <td x:autofilter='all' style="background-color: #819FF7" ><b> <apex:outputText value="{!$Label.ZTS_US_Product}"/></b> </td>
+                            <td x:autofilter='all' style="background-color: #819FF7" ><b><apex:outputText value="{!$Label.ZTS_US_Item}"/></b> </td>
+                            <td x:autofilter='all' style="background-color: #819FF7" ><b> <apex:outputText value="{!$Label.ZTS_US_Unit_Sales}"/></b> </td> 
+                            <td x:autofilter='all' style="background-color: #819FF7" ><b><apex:outputText value="{!$Label.ZTS_US_Grand_Total}"/></b> </td>
+                            
+                            <apex:outputText >
+                               
+                <apex:repeat value="{!monthAPTitleList}" var="monthName">
+                                    <td style="width: 70px;background-color: #819FF7" align="middle"><b><apex:outputText value="{!monthName}" /></b> </td> 
+                                </apex:repeat>
+                            </apex:outputText>
+                            
+                                    
+                        </tr>
+                        
+                        
+                        <apex:repeat value="{!customSetList}" var="salesDataRec" id="theTable3c"> 
+                            <tr border="1" style="font-family:verdana;color:Black;font-size:12px;width:100%" > 
+                              
+                                <td>
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:repeat value="{!str1.valueType}" var="str">
+                                        <apex:panelGrid columns="1" id="pg1">
+                                        <apex:outputText >{!salesDataRec.accntName}</apex:outputtext>
+                                        </apex:panelGrid>
+                                    </apex:repeat>
+                                    <br/>
+                                </apex:repeat>
+                                </td>
+                                <td>
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:repeat value="{!str1.valueType}" var="str">
+                                        <apex:panelGrid columns="1" id="pg1" rendered="{!IF((str1.therapeuticGrp != Null && str1.therapeuticGrp.size>0),True, False)}">
+                                            <apex:outputText >{!str1.therapeuticGrp[0]}</apex:outputtext>           
+                                        </apex:panelGrid>
+                                        <apex:panelGrid columns="1" id="pg2" rendered="{!IF((str1.therapeuticGrp == Null || str1.therapeuticGrp.size<=0),True, False)}">
+                                            <apex:outputText > </apex:outputtext>                                    
+                                        </apex:panelGrid>
+                                    </apex:repeat>
+                                    <br/>
+                                </apex:repeat>
+                                </td>
+                                
+                                <td>
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:repeat value="{!str1.valueType}" var="str">
+                                        <apex:panelGrid columns="1" id="pg1" rendered="{!IF((str1.prodValue != Null && str1.prodValue.size>0),True, False)}">
+                                        <apex:outputText >{!str1.prodValue[0]}</apex:outputtext>
+                                        </apex:panelGrid>
+                                        <apex:panelGrid columns="1" id="pg2" rendered="{!IF((str1.prodValue == Null || str1.prodValue.size<=0),True, False)}">
+                                            <apex:outputText > </apex:outputtext>                                    
+                                        </apex:panelGrid>
+                                    </apex:repeat>
+                                    <br/>
+                                </apex:repeat>
+                                </td> 
+                                <td>
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:repeat value="{!str1.valueType}" var="str">
+                                        <apex:panelGrid columns="1" id="pg1" rendered="{!IF((str1.prodLineItem != Null && str1.prodLineItem.size>0),True, False)}">
+                                        <apex:outputText >{!str1.prodLineItem[0]}</apex:outputtext>
+                                        </apex:panelGrid>
+                                        <apex:panelGrid columns="1" id="pg2" rendered="{!IF((str1.prodLineItem == Null || str1.prodLineItem.size<=0),True, False)}">
+                                            <apex:outputText > </apex:outputtext>                                    
+                                        </apex:panelGrid>
+                                    </apex:repeat>
+                                    <br/>
+                                </apex:repeat>
+                                </td>
+                                <td>
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:repeat value="{!str1.valueType}" var="str">
+                                        <apex:panelGrid columns="1" id="pg1">
+                                        <apex:outputText >{!str}</apex:outputtext>
+                                        </apex:panelGrid>
+                                    </apex:repeat>
+                                    <br/>
+                                </apex:repeat>
+                                </td>
+                                <td>
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:repeat value="{!str1.grandTotal}" var="str">
+                                        <apex:panelGrid columns="1" id="pg1">
+                                        <apex:outputText >{!str}</apex:outputtext>
+                                        </apex:panelGrid>
+                                    </apex:repeat>
+                                    <br/>
+                                </apex:repeat>
+                                </td>
+
+                                <apex:outputText >
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthOne}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthTwo}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthThree}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthFour}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthFive}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthSix}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthSeven}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthEight}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthNine}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthTen}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthEleven}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                    <td  >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.monthTwelve}" var="str">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                            <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </apex:repeat>
+                                        <br/>
+                                    </apex:repeat>
+                                    </td>
+                                </apex:outputText>
+
+                                 
+                            </tr> 
+                        </apex:repeat>
+
+                    </table>
+                    <apex:outputText rendered="{!IF(customSetList.size == 0,TRUE,FALSE)}" > <br/><b style="font-size: 15px;">{!$Label.ZTS_US_Based_on_the_current_report_selections_no_data_is_available}</b></apex:outputText>
+                    <br/><br/><br/>
+            </apex:pageBlock>
+        </body >
+    </html>
+</apex:page>

@@ -1,0 +1,127 @@
+.slds-combobox__input,
+.slds-combobox_container {
+    transition: border 0.1s linear, box-shadow 0.1 linear;
+}
+
+.slds-combobox__input {
+    box-shadow: none;
+}
+
+.slds-combobox__input.has-custom-border {
+    box-shadow: 0 0 0 2px #fff inset, 0 0 0 3px rgb(221, 219, 218) inset;
+}
+
+.slds-combobox__input.has-custom-error {
+    border: 1px solid rgb(194, 57, 52);
+    box-shadow: rgb(194, 57, 52) 0 0 0 1px inset;
+}
+
+.slds-combobox_container.has-custom-error {
+    border: none !important;
+}
+
+.slds-combobox__input.has-custom-height {
+    height: 32px !important;
+}
+
+.form-error {
+    color: rgb(194, 57, 52);
+    display: block;
+}
+
+.name-column, .email-column  {
+    width: 20%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.job-function-column, .profession-column {
+    width: 18%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.opt-out-checkbox, .invalid-email-checkbox {
+    padding-left: 1.125rem;
+}
+
+.opt-out-column, .invalid-email-column {
+    width: 10%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.sample-id-column {
+    width: 13%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+
+.product-name-column  {
+    width: 50%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.lot-number-column {
+    width: 13%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.intl-contact-name-column, .intl-product-name-column {
+    width: 33%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.on-hand-balance-column, .quantity-dropped-column {
+    width: 10%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.button-column {
+    width: 4%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.task-row {
+    border-bottom: 1px solid rgb(235,235,235);
+}
+
+.header-span {
+    font-weight: bold;
+    color: rgb(93,93,91);
+}
+
+.header-span-padding {
+    padding-left: 0.385rem;
+}
+
+.wrap-padding {
+    padding-left: 0.385rem;
+}
+
+.followup-header {
+    border-top: 1px solid rgb(232,232,232);
+    border-bottom: 1px solid rgb(232,232,232);
+    background-color: rgb(244,243,241);
+}
+
+.followup-container {
+    padding-top:0.5rem;
+    padding-left: .5rem;
+    padding-right: .5rem;
+}

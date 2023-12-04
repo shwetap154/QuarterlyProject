@@ -1,0 +1,50 @@
+<apex:component >
+    <head>
+        <style>
+             .legal { 
+                Font: 0.7em Arial,Helvetica,sans-serif !important;
+                text-align: left; 
+            }
+        </style>
+    </head>
+    <footer>
+         <table style="padding-left: 8em;" >
+             <tr>
+                 <td>
+                     <span class="legal">
+            <span style="float:left !important;">
+                This site is intended for U.S. Animal Healthcare Professionals.<br/>
+                All trademarks are the property of Zoetis Services LLC or a related company or a licensor unless otherwise noted. <br/>
+                © 2018 Zoetis Services LLC. All rights reserved.
+            </span>
+             
+        </span>
+                 </td>
+             </tr>
+            
+             
+             <tr>
+                 <td>
+                     <div class="legal">
+            <ul style="float: left;color:#ff671f !important;padding: inherit;">
+                <li style="float: left; list-style: none; margin: 0; padding: 0;" >
+                    
+                    <a href="https://www.zoetisus.com/responsibility/policies/privacy_policy.aspx" target="_blank" style=" font-size: 0.9em! important; color:#ff671f !important;" >
+                        Privacy Policy
+                    </a>
+                    <span style="letter-spacing: 0;">&nbsp; | &nbsp;</span>
+                    <a href="https://www.zoetisus.com/responsibility/policies/terms_of_use.aspx" target="_blank" style="  font-size: 0.9em! important; color:#ff671f !important;" >
+                        Terms Of Use
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+                 </td>
+             </tr>
+         </table> 
+        
+        <br/> 
+        
+    </footer>
+</apex:component>

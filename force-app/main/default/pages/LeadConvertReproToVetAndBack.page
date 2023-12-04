@@ -1,0 +1,25 @@
+<apex:page standardController="Lead" extensions="LeadListController">
+    <apex:pageMessages />
+    <apex:form >
+        <apex:actionFunction action="{!switchRecordTypes}" name="switchRecordType" rerender="myPageId" oncomplete="showAlert();"/>
+    </apex:form>
+    <apex:form >
+        <apex:actionFunction action="{!goBackToLead}" name="switchPage" />
+    </apex:form>
+    <script>
+    var r = confirm('Are you sure you want to switch?');
+    if (r == true) 
+    {
+        switchRecordType();
+    }     
+    </script>
+    <apex:pageBlock id="myPageId">
+        <script>
+        function showAlert() 
+        {
+            alert("{!returnValue}");
+            switchPage();
+        }
+        </script>
+    </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,23 @@
+<template>
+	<lightning-layout multiple-rows>
+		<template for:each={data} for:item="item" for:index="index">
+			<lightning-layout-item size="12" key={item.Id}>
+				<div class="slds-m-around_small slds-p-around_small item-section">
+					<c-create-editi-coach-form-objective-item record-id={recordId} default-values={defaultValues} item={item} index={index}>
+					</c-create-editi-coach-form-objective-item>
+				</div>
+			</lightning-layout-item>
+		</template>
+    <lightning-layout-item size="12">
+      <div class="slds-align_absolute-center slds-p-around_medium">
+        <lightning-button label="Cancel" variant="brand-outline" onclick={handleCancel}></lightning-button>
+        <lightning-button class="slds-m-left_small" variant="brand" label="Save" onclick={handleSave}></lightning-button>
+      </div>
+    </lightning-layout-item>
+	</lightning-layout>
+  
+	<template if:true={loading}>
+		<lightning-spinner alternative-text="Loading"></lightning-spinner>
+	</template>
+
+</template>

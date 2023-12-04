@@ -1,0 +1,1628 @@
+<!--
+  @description       : 
+  @author            : Morgan Marchese @ Zoetis Inc
+  @group             : 
+  @last modified on  : 07-03-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   07-03-2021   Morgan Marchese @ Zoetis Inc   Initial Version
+-->
+<apex:page standardController="Account" extensions="ZTS_US_IXHsalesDataReportingController" id="thePage" standardStylesheets="false" action="{!redirect}" sidebar="false" showHeader="false">
+    <!--ZTS_US_IXHsalesDataReportingController    SalesAnalysisUSA--> 
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <apex:includeScript value="{!URLFOR($Resource.jQuerySites, '/jQuery/jquery_1_11_1.js')}"/>
+    <script type="text/javascript">
+    /* Added by Naresh Pentapati<npentapati@deloitte.com> */
+        $(document).ready(function(){
+            //alert("~jQuery~");
+        });
+    </script>
+    -->
+    <script type="text/javascript">
+        var browserName=navigator.appName;
+        
+        function chromePrintDelay(){ 
+            setTimeout("checkvalues()", 500); 
+        }  
+        if (browserName=="Microsoft Internet Explorer"){
+         checkvalues();
+        } 
+        else{ 
+          if (browserName=="Netscape"){ //google chrome app.Name 
+              chromePrintDelay(); 
+          } 
+          else { 
+           window.onload = checkvalues; // helps with Opera 
+           } 
+       } 
+     function doRefresh(){
+         window.location.reload();
+         }
+    
+        function checkvalues(){
+            if(document.getElementById('htmlTable1') != null && document.getElementById('htmlTable1') != undefined){
+                var table = document.getElementById('htmlTable1');
+                rows = document.getElementById('htmlTable1').getElementsByTagName('tr');
+                for(var i=0; i < rows.length; i++){
+                    col = rows[i].getElementsByTagName('td');
+                    for (var d = 0; d < col.length;d++) {                   
+                        var contents = col[d].innerHTML;
+                        if(contents.indexOf("-") > -1 && (contents.indexOf("-") == 0 || contents.indexOf("-") == 2)){ 
+                            col[d].style = 'color:red';
+                            if (browserName=="Netscape"){
+                                col[d].setAttribute('style','color:red !important;');
+                            }
+                        }else if(contents.indexOf("<label>") == 0 && contents.indexOf("-") == 7){ 
+                            col[d].style = 'color:red';
+                            if (browserName=="Netscape"){
+                                col[d].setAttribute('style','color:red !important;');
+                            }
+                        }
+                    }
+                }
+            }
+            if(document.getElementById('htmlTable2') != null && document.getElementById('htmlTable2') != undefined){
+                rows = document.getElementById('htmlTable2').getElementsByTagName('tr');
+                for(var i=0; i < rows.length; i++){
+                    col = rows[i].getElementsByTagName('td');
+                   for (var d = 0; d < col.length;d++) {                   
+                        var contents = col[d].innerHTML;
+                        if(contents.indexOf("-") > -1 && (contents.indexOf("-") == 0 || contents.indexOf("-") == 2)){ 
+                            col[d].style = 'color:red';
+                            if (browserName=="Netscape"){
+                                col[d].setAttribute('style','color:red !important;');
+                            }
+                        }else if(contents.indexOf("<label>") == 0 && (contents.indexOf("-") == 7 || contents.indexOf("-") == 8)){ 
+                            col[d].style = 'color:red';
+                            if (browserName=="Netscape"){
+                                col[d].setAttribute('style','color:red !important;');
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if(document.getElementById('htmlTable3') != null && document.getElementById('htmlTable3') != undefined){
+                rows = document.getElementById('htmlTable3').getElementsByTagName('tr');
+                for(var i=0; i < rows.length; i++){
+                    col = rows[i].getElementsByTagName('td');
+                    for (var d = 0; d < col.length;d++) {                   
+                        var contents = col[d].innerHTML;
+                        if(contents.indexOf("-") > -1 && (contents.indexOf("-") == 0 || contents.indexOf("-") == 2)){ 
+                            col[d].style = 'color:red';
+                            if (browserName=="Netscape"){
+                                col[d].setAttribute('style','color:red !important;');
+                            }
+                        }else if(contents.indexOf("<label>") == 0 && contents.indexOf("-") == 7){ 
+                            col[d].style = 'color:red';
+                            if (browserName=="Netscape"){
+                                col[d].setAttribute('style','color:red !important;');
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+    </script>
+         <style>
+                    .activeTab {background-color: #236FBD; color:white; background-image:none; font-size: 15px; font-weight: bold}
+                    .inactiveTab { background-color: lightgrey; color:black; background-image:none}
+                    .custPopup{
+                        background-color: white;
+                        border-width: 2px;
+                        border-style: solid;
+                        z-index: 9999;
+                        left: 50%;
+                        padding:10px;
+                        position: absolute;
+                        /* These are the 3 css properties you will need to change so the popup 
+                        displays in the center of the screen. First set the width. Then set 
+                        margin-left to negative half of what the width is. You can add 
+                        the height property for a fixed size pop up if you want.*/
+                        width: 800px;
+                        height : 500px;
+                        margin-left: -350px;
+                        top:100px;
+                        overflow:scroll;
+                    }
+                    .custPopupDel{
+                        background-color: white;
+                        border-width: 2px;
+                        border-style: solid;
+                        z-index: 9999;
+                        left: 50%;
+                        padding:10px;
+                        position: absolute;
+                        /* These are the 3 css properties you will need to change so the popup 
+                        displays in the center of the screen. First set the width. Then set 
+                        margin-left to negative half of what the width is. You can add 
+                        the height property for a fixed size pop up if you want.*/
+                        width: 500px;
+                        height : 50px;
+                        margin-left: -350px;
+                        top:100px;
+                    }
+                    .popupBackground{
+                        background-color:black;
+                        opacity: 0.20;
+                        filter: alpha(opacity = 20);
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        top: 0;
+                        left: 0;
+                        z-index: 9998;
+                    }
+                    .cell {
+                        border-bottom: 1px solid grey;
+                        padding: 5px;
+                    }
+                    .cell1 {
+                        border-bottom: 1px solid grey;
+                        padding: 5px;
+                        height:20px;
+                        vertical-align:middle;
+                    }
+                    .cell2 {
+                        border-bottom: 1px solid grey;
+                        height:92px;
+                        vertical-align:middle;
+                    }
+                    .cell3 {
+                        border-bottom: 1px solid grey;
+                        padding: 5px;
+                        height:18px;
+                        vertical-align:middle;
+                    }
+                    .cell4 {
+                        border-bottom: 1px solid grey;
+                        height:57px;
+                        vertical-align:middle;
+                        width:150px;
+                        
+                    }
+                </style>   
+    
+        <apex:form id="theForm">  
+            <!--
+            <h3>
+               <apex:commandLink action="{!refreshTable}"> Refresh Page!</apex:commandLink> 
+            </h3>
+            -->
+            <!-- <apex:pagemessage summary="{!$Label.ZTS_EU_AddOrderDetailFootnoteForTurkey}" severity="info" strength="1"  rendered="{!showFootNote}"/> -->
+            <apex:outputPanel id="prefPopUp">
+                <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}"/>
+                <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayErrPopup}"/>
+                <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayErrPopup}">
+                    <b style="font-size:15px;">Please choose the filter value from Saved Filters dropdown.</b><br/><br/>
+                    <apex:commandButton value="Ok" action="{!closePopup}" rerender="prefPopUp"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!AND(IF(salesPresetAction=='New',TRUE,FALSE),displayPopUp)}">
+                    <b style="font-size:15px;">Account Sales Analysis Preferences : </b><br/><br/>
+                    <apex:outputLabel value="Filter Name :" style="font-weight:bold;"></apex:outputLabel>
+                    <apex:inputField value="{!salesPresets.Name}"/><br/>
+                    <apex:outputLabel value="Sales Preferred Time Range :" style="font-weight:bold;"></apex:outputLabel>
+                    <apex:inputField value="{!salesPresets.ZTS_EU_Selected_Preferred_Time__c}"/><br/>
+                    <apex:outputLabel value="Sales Preferred GLR Type :" style="font-weight:bold;"></apex:outputLabel>
+                    <apex:inputField value="{!salesPresets.ZTS_EU_Selected_GLR_Type__c}" /><br/><br/>
+                    
+                    <apex:outputLabel value="Sales Preferred Therapeutic Groups :" style="font-weight:bold;"></apex:outputLabel>
+                    
+                    <c:ZTS_US_Custom_Multiselect leftLabel="Available Therapeutic Groups"
+                    leftOptionsVal="{!therapeuticGroup}"
+                    rightLabel="Selected Therapeutic Groups"
+                    rightOptionsVal="{!selectedMultiTherapeuticGrpOpt}"
+                    size="10"
+                    width="150px"/>
+                    
+                    
+                    <br/>
+                    <apex:outputLabel value="Sales Preferred Brands :" style="font-weight:bold;"></apex:outputLabel>
+                    <c:ZTS_US_Custom_Multiselect leftLabel="Available Products"
+                    leftOptionsVal="{!salesProductList}"
+                    rightLabel="Selected Products"
+                    rightOptionsVal="{!selectedMultiProductOpt}"
+                    size="10"
+                    width="150px"/>
+                    
+                    <br/>
+                    <apex:outputLabel value="Sales Preferred Species :" style="font-weight:bold;"></apex:outputLabel>
+                    <c:ZTS_US_Custom_Multiselect leftLabel="Available Species"
+                    leftOptionsVal="{!salesProductSpecies}"
+                    rightLabel="Selected Species"
+                    rightOptionsVal="{!selectedMultiSpeciesOpt}"
+                    size="10"
+                    width="150px"/>
+                    <br/><br/><br/>
+                    
+                    <apex:commandButton value="Save Preferences" action="{!savePreferences}" rerender="prefPopUp,theTabPanel"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Cancel" action="{!closePopup}" rerender="prefPopUp"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!AND(IF(salesPresetAction=='Edit',TRUE,FALSE),displayPopUp)}">
+                    <b style="font-size:15px;">Account Sales Analysis Preferences : </b><br/><br/>
+                    <apex:outputLabel value="Filter Name :" style="font-weight:bold;"></apex:outputLabel>
+                    <apex:inputField value="{!salesPresets.Name}"/><br/>
+                    <apex:outputLabel value="Sales Preferred Time Range :" style="font-weight:bold;"></apex:outputLabel>
+                    <apex:inputField value="{!salesPresets.ZTS_EU_Selected_Preferred_Time__c}"/><br/>
+                    <apex:outputLabel value="Sales Preferred GLR Type :" style="font-weight:bold;"></apex:outputLabel>
+                    <apex:inputField value="{!salesPresets.ZTS_EU_Selected_GLR_Type__c}"/><br/>
+                    <apex:outputText value="{!selectedMultiTherapeuticGrpOpt.size}" />
+                    <apex:outputLabel value="Sales Preferred Therapeutic Groups :" style="font-weight:bold;"> </apex:outputLabel>
+                    
+                    <c:ZTS_US_Custom_Multiselect id="custCom" leftLabel="Available Therapeutic Groups"
+                    leftOptionsVal="{!therapeuticGroup}"
+                    rightLabel="Selected Therapeutic Groups"
+                    rightOptionsVal="{!selectedMultiTherapeuticGrpOpt}"
+                    size="10"
+                    width="150px"/><br/>
+                    
+                    
+                    <apex:outputText value="{!selectedMultiProductOpt.size}" />
+                    <apex:outputLabel value="Sales Preferred Brands :" style="font-weight:bold;"></apex:outputLabel>
+                    <c:ZTS_US_Custom_Multiselect leftLabel="Available Products"
+                    leftOptionsVal="{!salesProductList}"
+                    rightLabel="Selected Products"
+                    rightOptionsVal="{!selectedMultiProductOpt}"
+                    size="10"
+                    width="150px"/><br/>
+                    <apex:outputLabel value="Sales Preferred Species :" style="font-weight:bold;"></apex:outputLabel>
+                    
+                    <c:ZTS_US_Custom_Multiselect leftLabel="Available Species"
+                    leftOptionsVal="{!salesProductSpecies}"
+                    rightLabel="Selected Species"
+                    rightOptionsVal="{!selectedMultiSpeciesOpt}"
+                    size="10"
+                    width="150px"/><br/><br/><br/>          
+                    <apex:commandButton value="Save Preferences" action="{!savePreferences}" rerender="prefPopUp,theTabPanel"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Cancel" action="{!closePopup}" rerender="prefPopUp"/>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="custPopupDel" layout="block" rendered="{!AND(IF(salesPresetAction=='Delete',TRUE,FALSE),displayPopUp)}">
+                    <apex:outputLabel value="Are you sure, you want to delete this Filter ?" style="font-weight:bold;"></apex:outputLabel>
+                    <apex:commandButton value="OK" action="{!savePreferences}" rerender="prefPopUp,theTabPanel"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Cancel" action="{!closePopup}" rerender="prefPopUp"/>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <apex:outputPanel id="theTabPanel">
+            <apex:pageMessages id="errorMsg" /><!--severity="error" summary="Error: Invalid Date for Sales" strength="3"/>-->
+                    
+            <apex:tabPanel id="theTabPanel1" selectedTab="{!selectedReport}" switchType="client" value="{!selectedReport}" tabClass="activeTab" inactiveTabClass="inactiveTab">
+                <apex:tab name="TotalSales" label="{!$Label.ZTS_EU_Total_Sales}" id="tab1" ontabenter="selectTabActionFunction('TotalSales')" style="background-color: #FFFFFF;">          
+                    <apex:outputPanel id="op1">
+                        <apex:outputPanel style="width:1250px;display: block;">
+                            <b style="display: block;float: left;"><apex:outputText value="{!$Label.ZTS_EU_SalesLabel}" 
+                            rendered="{!IF(selectedLevelValue == 'CHILD', True, False)}"/></b>
+                            <b style="display: block;float: left;"><apex:outputText value="{!$Label.ZTS_EU_SalesAggregatedLabel}" 
+                            rendered="{!IF(OR(selectedLevelValue == 'L1',selectedLevelValue == 'L2'), True, False)}"/></b>
+                            <b style="display: block;float: right;"><apex:outputText value="{!$Label.ZTS_EU_Sales_Through} {!apStartDate}"/></b>
+                        </apex:outputPanel>
+                        <br/><br/>
+                        <apex:outputPanel ><!-- Added Code for Aggregation buttons : Shefali Vinchurkar -->
+                                <table>
+                                    <tr style="display: {!IF((isChild), 'none', 'table-row')};">
+                                        <td style="font-weight:bold;"><apex:outputLabel >{!$Label.ZTS_EU_Aggregated}:</apex:outputLabel></td>
+                                        <td>
+                                            <apex:selectRadio value="{!selectedLevelValue}" onchange="selectedAggValue(this.value)" id="radio1">
+                                                <apex:selectOptions value="{!radioOptions3}" />            
+                                            </apex:selectRadio>
+                                        </td>
+                                    </tr>
+                                </table>
+                        </apex:outputPanel>
+                            
+                        <apex:outputPanel rendered="{!NOT(noParent)}">
+                            <apex:outputLabel value="{!$Label.ZTS_EU_View_Parent_Account}" />        
+                            <apex:commandLink action="{!queryAccData}" value="{!accntParent.Name}" id="accNamePar1" reRender="theTabPanel" oncomplete="checkvalues()" status="loading">
+                                <apex:param value="{!accntParent.Name}" name="accNameColumn" assignTo="{!queryAccName}" ></apex:param>
+                                <apex:param value="{!accntParent.Id}" name="accIDColumn" assignTo="{!queryAccID}" ></apex:param>
+                                <apex:param value="false" name="childColumn" assignTo="{!isChildSelected}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        
+                        
+                        <apex:outputPanel rendered="{!AND(IF(queryAccName <> null, TRUE, FALSE),accntchild.Id <> null)}">
+                            <br/>
+                            <apex:outputLabel value="{!$Label.ZTS_EU_View_Child_Account}" />                
+                            <apex:commandLink action="{!queryAccData}" value="{!accntchild.Name}" id="accNameChld1" reRender="theTabPanel" oncomplete="checkvalues()" status="loading">
+                                <apex:param value="{!accntchild.Name}" name="accNameColumn" assignTo="{!queryAccName}" ></apex:param>
+                                <apex:param value="{!accntchild.Id}" name="accIDColumn" assignTo="{!queryAccID}" ></apex:param>
+                                <apex:param value="true" name="childColumn" assignTo="{!isChildSelected}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel id="noParentId1" rendered="{!noParent} && (isChild)">
+                            <!-- <apex:outputLabel value="{!$Label.ZTS_EU_View_Parent_Account}" rendered="{!NOT(toggleFlagParent)}"/> -->
+                            <apex:outputLabel value="{!$Label.ZTS_EU_View_Child_Account}" rendered="{!toggleFlagParent}"/>
+                            <apex:commandLink action="{!queryAccData}" value="{!accntCurrent.Name}" id="accNamePar4" reRender="theTabPanel" oncomplete="checkvalues()" status="loading">
+                                <apex:param value="{!accntCurrent.Name}" name="accNameColumn" assignTo="{!queryAccName}" ></apex:param>
+                                <apex:param value="{!accntCurrent.Id}" name="accIDColumn" assignTo="{!queryAccID}" ></apex:param>
+                                <apex:param value="false" name="childColumn" assignTo="{!isChildSelected}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        <br/>
+                        
+                        
+                                
+                        <table cellpadding="0" cellspacing="0" id="tb1">                    
+                            <tr>
+                                <td style="font-weight:bold;">
+                                    <apex:selectRadio value="{!selectedMATYTD}" onchange="selectMatYtdShipAF(this.value)">
+                                        <apex:selectOptions value="{!radioOptions1}"/>
+                                    </apex:selectRadio>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td style="font-weight:bold;">
+                                    <apex:selectRadio value="{!selectedSalesType}" onchange="selectRadioSalesAF(this.value)" id="radioSales1" rendered="{!toDisplayGross}">
+                                        <apex:selectOptions value="{!radioOptions2}"/>
+                                    </apex:selectRadio>
+                                </td>
+                                <!--<td style="font-weight:bold;">
+                                    <apex:selectRadio value="{!selectedBillToShipTo}" onchange="selectRadioBillShipAF(this.value)" id="radioBillShip1" >
+                                        <apex:selectOptions value="{!radioOptions2}"/>
+                                    </apex:selectRadio>
+                                </td>-->
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td style="font-weight:bold;">
+                                    <apex:commandLink action="{!generateTotalSalesPdf}" target="_blank" value="{!$Label.ap_Print}">
+                                    <apex:image url="{!URLFOR($Resource.PrintSalesData, '/pdfIcon.png')}" width="20" height="20" />
+                                    </apex:commandLink>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td style="font-weight:bold;">
+                                    <apex:commandLink action="{!DownloadTotalSalesExcel}" value="{!$Label.ap_Export}">
+                                    <apex:image url="{!URLFOR($Resource.PrintSalesData, '/export.png')}" width="20" height="20" />
+                                    </apex:commandLink>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>                             
+                            </tr>
+                        </table>
+                    </apex:outputPanel>
+                    
+                    <table border="1" cellpadding="0" cellspacing="0" class="dataTable" style="width:1250px;border:1px solid #000000;font-family:sans-serif;font-size:10px;" id="htmlTable1">
+                           
+                        <tr style="font-weight:bold;background-color: #E5E4E2;font-size: 13px;">
+                            <td style="width: 110px;" align="center"><b><apex:outputText value="{!$Label.ZTS_EU_Account_Name}"/></b></td>    
+                            <td style="width: 130px;" align="center"><b> <apex:outputText value="{!$Label.ZTS_EU_Total_Sales}"/></b> </td> 
+                            <td style="width: 170px; text-align:center;" align="center"><b><apex:outputText value="{!$Label.ZTS_EU_Grand_Total}"/></b> </td>                 
+                            <apex:outputText >
+                                <apex:repeat value="{!monthAPTitleList}" var="monthName">
+                                    <td style="width: 70px;" align="center"><b><apex:outputText value="{!monthName}" /></b> </td> 
+                                </apex:repeat>
+                            </apex:outputText>
+<!-- Commented out by Ali to retro month names from service result 
+                            <apex:outputText rendered="{!IF((selectedMATYTD != 'MAT'),false, true)}">
+                                <apex:repeat value="{!monthAPList}" var="monthName">
+                                    <td style="width: 70px;" align="center"><b><apex:outputText value="{!monthName}" /></b> </td> 
+                                </apex:repeat>
+                            </apex:outputText>
+                            
+                            <apex:repeat value="{!monthList}" var="colItem">                        
+                                <apex:outputText rendered="{!IF((selectedMATYTD != 'YTD'),false, true)}">
+                                    <td align="center" style="width: 70px;">
+                                        <b><apex:outputText value="{!colItem}" ></apex:outputText></b>
+                                    </td>
+                                </apex:outputText>    
+                            </apex:repeat>
+-->
+                        </tr>                       
+                            
+                        <apex:repeat value="{!customSetList}" var="salesDataRec" id="theTable3c"> 
+                            <tr border="1" style="font-family:verdana;color:Black;font-size:12px;text-align:center !important;width:100%" > 
+                                <td>                               
+                                <apex:outputLink value="/{!salesDataRec.accntId}" target="_blank" rendered="{!IF(salesDataRec.accntId!=NULL,TRUE,FALSE)}">{!salesDataRec.accntName} - {!salesDataRec.narcId}</apex:outputLink>
+                                </td>                                                                                
+                                <td align="center" style="white-space: nowrap;">
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.valueType}" var="str">
+                                        <div class="cell">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                                <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </div>
+                                        </apex:repeat>                                  
+                                    </apex:repeat>
+                                </td>
+                                <!-- Added Currency type for Grand Total also and removed standrd CurrcnyIso code from controller DEF - 001063 -->
+                                <!--  Sohil Shah Removed Currency from Last row %Diff Sales Ref : INC0427452 only For Germany Regions(Market = Germany/Austria/Switzerland)-->
+                                <td align="center" style="white-space: nowrap;">
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable value="{!1}" var="rowNum"/>
+                                        <apex:repeat value="{!str1.grandTotal}" var="str">
+                                        <div class="cell">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                               <apex:outputText style="text-align:center !important;" rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputtext>
+                                                <apex:outputText style="text-align:center !important;" rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputtext>
+                                                <!--<apex:outputText style="text-align:center !important;" rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputtext>-->
+                                            </apex:panelGrid>
+                                        </div>
+                                        <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                        </apex:repeat>                              
+                                    </apex:repeat>
+                                </td>                           
+
+
+                                <apex:outputText >
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:variable value="{!1}" var="rowNum"/>  
+                                            <apex:repeat value="{!str1.monthOne}" var="str">
+                                             <div class="cell">
+                                                <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                     <apex:outputText style="display:none;" rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputText>
+                                                    <apex:outputText style="display:none;" rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputText>
+                                                    <!--<apex:outputText style="display:none;" rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputText> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                  
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:variable value="{!1}" var="rowNum"/>
+                                            <apex:repeat value="{!str1.monthTwo}" var="str">
+                                            <div class="cell">
+                                                <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                     <apex:outputText style="display:none;" rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputText>
+                                                    <apex:outputText style="display:none;" rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputText>
+                                                   <!-- <apex:outputText style="display:none;" rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputText> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                  
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:variable value="{!1}" var="rowNum"/>
+                                            <apex:repeat value="{!str1.monthThree}" var="str">
+                                            <div class="cell">
+                                                <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText style="display:none;" rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputText>
+                                                   <apex:outputText style="display:none;" rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputText>
+                                                   <!-- <apex:outputText style="display:none;" rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputText> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                      
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:variable value="{!1}" var="rowNum"/>
+                                            <apex:repeat value="{!str1.monthFour}" var="str">
+                                            <div class="cell">
+                                                <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                   <apex:outputText rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputtext>
+                                                    <apex:outputText rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputtext>
+                                                    <!--<apex:outputText rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputtext> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                  
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:variable value="{!1}" var="rowNum"/>
+                                            <apex:repeat value="{!str1.monthFive}" var="str">
+                                            <div class="cell">
+                                                <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                   <apex:outputText rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputtext>
+                                                    <apex:outputText rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputtext>
+                                                  <!--  <apex:outputText rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputtext> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                      
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:variable value="{!1}" var="rowNum"/>
+                                            <apex:repeat value="{!str1.monthSix}" var="str">
+                                            <div class="cell">
+                                                <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                   <apex:outputText rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputtext>
+                                                    <apex:outputText rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputtext>
+                                                   <!-- <apex:outputText rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputtext> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                  
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:variable value="{!1}" var="rowNum"/>
+                                            <apex:repeat value="{!str1.monthSeven}" var="str">
+                                            <div class="cell">
+                                               <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputtext>
+                                                    <apex:outputText rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputtext>
+                                                    <!-- <apex:outputText rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputtext> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                      
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:variable value="{!1}" var="rowNum"/>
+                                            <apex:repeat value="{!str1.monthEight}" var="str">
+                                            <div class="cell">
+                                                <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputtext>
+                                                    <apex:outputText rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputtext>
+                                                   <!-- <apex:outputText rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputtext> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                      
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:variable value="{!1}" var="rowNum"/>
+                                            <apex:repeat value="{!str1.monthNine}" var="str">
+                                            <div class="cell">
+                                                <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                  <apex:outputText rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputtext>
+                                                    <apex:outputText rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputtext>
+                                                    <!--<apex:outputText rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputtext> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                      
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:variable value="{!1}" var="rowNum"/>
+                                            <apex:repeat value="{!str1.monthTen}" var="str">
+                                            <div class="cell">
+                                                <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                 <apex:outputText rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputtext>
+                                                    <apex:outputText rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputtext>
+                                                    <!--<apex:outputText rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputtext> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                      
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:variable value="{!1}" var="rowNum"/>
+                                            <apex:repeat value="{!str1.monthEleven}" var="str">
+                                            <div class="cell">
+                                                <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                   <apex:outputText rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputtext>
+                                                    <apex:outputText rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputtext>
+                                                    <!--<apex:outputText rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputtext> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                  
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center" style="white-space: nowrap;">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:variable value="{!1}" var="rowNum"/>
+                                            <apex:repeat value="{!str1.monthTwelve}" var="str">
+                                            <div class="cell">
+                                                <apex:panelGrid columns="1" id="pg1">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText rendered="{!If(rowNum<4,true,false)}">{!currencyType} {!str}</apex:outputtext>
+                                                    <apex:outputText rendered="{!If(rowNum==4,true,false)}">{!str}</apex:outputtext>
+                                                    <!--<apex:outputText rendered="{!If(isGermanyRegion==false,true,false)}">{!currencyType}{!str}</apex:outputtext> -->
+                                                </apex:panelGrid>
+                                            </div>
+                                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                            </apex:repeat>                                      
+                                        </apex:repeat>
+                                    </td>
+                                </apex:outputText>                                
+                            </tr> 
+                        </apex:repeat>
+                    </table>
+                    <!--EOC  Sohil Shah Removed Currency from Last row %Diff Sales Ref : INC0427452 -->
+                    <apex:outputText rendered="{!IF(customSetList.size == 0,TRUE,FALSE)}" > <br/><b style="font-size: 15px;">{!$Label.ZTS_EU_Based_on_the_current_report_selections_no_data_is_available}</b></apex:outputText><br/><br/><br/>         
+                </apex:tab>
+      
+                <apex:tab label="{!$Label.ZTS_EU_Product_Sales}" name="ProductSales" id="tab2" ontabenter="selectTabActionFunction('ProductSales')" style="background-color: #FFFFFF;">              
+                    <apex:outputPanel id="op2">
+                        <apex:outputPanel style="width:1250px;display: block;">
+                            <b style="display: block;float: left;"><apex:outputText value="{!$Label.ZTS_EU_SalesLabel}" rendered="{!IF(selectedLevelValue == 'CHILD', True, False)}"/></b>
+                            <b style="display: block;float: left;"><apex:outputText value="{!$Label.ZTS_EU_SalesAggregatedLabel}" rendered="{!IF(OR(selectedLevelValue == 'L1',selectedLevelValue == 'L2'), True, False)}"/></b>
+                            <b style="display: block;float: right;"><apex:outputText value="{!$Label.ZTS_EU_Sales_Through} {!apStartDate}"/></b>
+                        </apex:outputPanel>
+                        <br/>
+                        <apex:outputPanel >
+                                <table>
+                                    <tr style="display: {!IF((isChild), 'none', 'table-row')};">
+                                        <td style="font-weight:bold;"><apex:outputLabel >{!$Label.ZTS_EU_Aggregated}:</apex:outputLabel></td>
+                                        <td>
+                                            <apex:selectRadio value="{!selectedLevelValue}" onchange="selectedAggValue(this.value)" id="radio2" disabled="{!isChild}">
+                                                <apex:selectOptions value="{!radioOptions3}"  />            
+                                            </apex:selectRadio>
+                                        </td>
+                                    </tr>
+                                </table>
+                        </apex:outputPanel>
+                        <br/>
+                        <apex:outputPanel rendered="{!NOT(noParent)}">
+                            <apex:outputLabel value="{!$Label.ZTS_EU_View_Parent_Account}" />        
+                            <apex:commandLink action="{!queryAccData}" value="{!accntParent.Name}" id="accNamePar2" reRender="theTabPanel,errorMsg" oncomplete="checkvalues()" status="loading">
+                                <apex:param value="{!accntParent.Name}" name="accNameColumn" assignTo="{!queryAccName}" ></apex:param>
+                                <apex:param value="{!accntParent.Id}" name="accIDColumn" assignTo="{!queryAccID}" ></apex:param>
+                                <apex:param value="false" name="childColumn" assignTo="{!isChildSelected}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel rendered="{!AND(IF(queryAccName <> null, TRUE, FALSE),accntchild.Id <> null)}">
+                            <br/>
+                            <apex:outputLabel value="{!$Label.ZTS_EU_View_Child_Account}" />                
+                            <apex:commandLink action="{!queryAccData}" value="{!accntchild.Name}" id="accNameChld2" reRender="theTabPanel,errorMsg" oncomplete="checkvalues()" status="loading">
+                                <apex:param value="{!accntchild.Name}" name="accNameColumn" assignTo="{!queryAccName}" ></apex:param>
+                                <apex:param value="{!accntchild.Id}" name="accIDColumn" assignTo="{!queryAccID}" ></apex:param>
+                                <apex:param value="true" name="childColumn" assignTo="{!isChildSelected}" ></apex:param>
+                            </apex:commandLink>
+                           
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel id="noParentId2" rendered="{!noParent} && (isChild)">
+                            <!-- <apex:outputLabel value="{!$Label.ZTS_EU_View_Parent_Account}" rendered="{!NOT(toggleFlagParent)}"/> -->
+                            <apex:outputLabel value="{!$Label.ZTS_EU_View_Child_Account}" rendered="{!toggleFlagParent}"/>
+                            <apex:commandLink action="{!queryAccData}" value="{!accntCurrent.Name}" id="accNamePar5" reRender="theTabPanel,errorMsg" oncomplete="checkvalues()" status="loading">
+                                <apex:param value="{!accntCurrent.Name}" name="accNameColumn" assignTo="{!queryAccName}" ></apex:param>
+                                <apex:param value="{!accntCurrent.Id}" name="accIDColumn" assignTo="{!queryAccID}" ></apex:param>
+                                <apex:param value="false" name="childColumn" assignTo="{!isChildSelected}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        <br/>
+                        
+                       
+                        
+                        <table cellpadding="2" cellspacing="2" id="tbb" style="font-weight:bold;">
+                            <tr>
+                                <td>
+                                    <apex:outputLabel value="{!$Label.ZTS_EU_Saved_Filters}" />
+                                </td>
+                                <td>
+                                    <apex:selectList id="preset2" value="{!selectedPreset}" size="1" title="presetData" onchange="selectSalesPresetAF(this.value)">
+                                        <apex:selectOptions value="{!SalesPresetsData}"></apex:selectOptions>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                    
+                                    <apex:commandLink action="{!salesPreference}" value="[{!$Label.ap_New}]" rerender="prefPopUp">
+                                        <apex:param value="New" name="salesPreset" assignTo="{!salesPresetAction}" ></apex:param>
+                                    </apex:commandLink>
+                                </td>
+                                <td>
+                                    
+                                    <apex:commandLink action="{!salesPreference}" value="[{!$Label.ap_Edit}]" rerender="prefPopUp,theTabPanel,custCom">
+                                        <apex:param value="Edit" name="salesPreset" assignTo="{!salesPresetAction}" ></apex:param>
+                                    </apex:commandLink>
+                                </td>
+                                <td>
+                                    
+                                    <apex:commandLink action="{!salesPreference}" value="[{!$Label.ap_Delete}]" rerender="prefPopUp">
+                                        <apex:param value="Delete" name="salesPreset" assignTo="{!salesPresetAction}" ></apex:param>
+                                    </apex:commandLink>
+                                </td>                               
+                                <td style="margin-left: 5px">                                    
+                                    <apex:commandLink onclick="resetActionFunction('ProductSales', '--None--', 'MAT', 'Bill-To', '<Therapeutic Group>' , '<Species>','<Product>')" value="[Reset Filter]" rerender="prefPopUp,theTabPanel">                                        
+                                    </apex:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <table cellpadding="2" cellspacing="2" id="tb3">                        
+                            <tr>
+                                <td style="font-weight:bold;">                        
+                                    <apex:outputLabel value="{!$Label.ZTS_EU_Filter_By}" />
+                                </td>
+                                <!-- <td>
+                                    <apex:selectList id="species2" value="{!selectedSpecies}" size="1" title="Species" onchange="selectedValueQuerySpeciesAF(this.value)">
+                                        <apex:selectOptions value="{!SalesSpeciesList}"></apex:selectOptions>
+                                    </apex:selectList>
+                                </td>-->
+                                <td>
+                                    <apex:selectList id="species2" value="{!selectedSpecies}" size="1" title="BusinessUnit" onchange="selectedValueQueryBusinessAF(this.value)">
+                                        <apex:selectOptions value="{!BusinessUnitsList}"></apex:selectOptions>
+                                    </apex:selectList>
+                                </td>
+                                
+                                <td>
+                                    <apex:selectList id="therGrp2" value="{!selectedTherapeuticGrp}" size="1" title="TherapeuticGroup" onchange="selectedValueQueryThGrpAF(this.value)">
+                                        <apex:selectOptions value="{!TherapeuticGrpList}"></apex:selectOptions>                                 
+                                    </apex:selectList>
+                                </td>
+                                <td>                                   
+                                    <apex:selectList id="prod2" value="{!selectedProduct}" size="1" title="Product" onchange="selectedValueQueryProdAF(this.value)" rendered="{!showProductPicklist}">
+                                       <apex:selectOptions value="{!SalesDataProdList}"></apex:selectOptions>
+                                    </apex:selectList>
+                                </td>                                
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td style="font-weight:bold;">
+                                    <apex:selectRadio value="{!selectedMATYTD}" onchange="selectMatYtdShipAF(this.value)" >
+                                        <apex:selectOptions value="{!radioOptions1}"/>
+                                    </apex:selectRadio>
+                                </td>
+                                <td style="font-weight:bold;">
+                                    <apex:selectRadio value="{!selectedSalesType}" onchange="selectRadioSalesAF(this.value)" id="radioSales2" rendered="{!toDisplayGross}">
+                                        <apex:selectOptions value="{!radioOptions2}"/>
+                                    </apex:selectRadio>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <!--<td style="font-weight:bold;">
+                                    <apex:selectRadio value="{!selectedBillToShipTo}" onchange="selectRadioBillShipAF(this.value)" id="radioBillShip2">
+                                        <apex:selectOptions value="{!radioOptions2}"/>
+                                    </apex:selectRadio>
+                                </td>-->
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td style="font-weight:bold;">
+                                    <apex:commandLink action="{!generateProductSalesPdf}" target="_blank" value="{!$Label.ap_Print}">
+                                    <apex:image url="{!URLFOR($Resource.PrintSalesData, '/pdfIcon.png')}" width="20" height="20" />
+                                    </apex:commandLink>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td style="font-weight:bold;">
+                                    <apex:commandLink action="{!DownloadProductSalesExcel}" value="{!$Label.ap_Export}">
+                                    <apex:image url="{!URLFOR($Resource.PrintSalesData, '/export.png')}" width="20" height="20" />
+                                    </apex:commandLink>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                               
+                            </tr>
+                        </table>
+                    </apex:outputPanel>
+                        
+                    <table border="1" cellpadding="0" cellspacing="0" style="width:1250px;border:1px solid #000000;font-familyans-serif;font-size:10px" id="htmlTable2">
+                           
+                        <tr style="font-weight:bold;background-color: #E5E4E2;font-size: 13px;">
+                            <td style="width: 100px;" align="center"><b><apex:outputText value="{!$Label.ZTS_EU_Account_Name}"/></b></td>
+                           
+                            <td style="width: 100px;" align="center"><b>
+                            <apex:commandLink action="{!ViewSortData}" value="{!$Label.ZTS_EU_Therapeutic_Group}{!IF(sortExpression=='ZTS_EU_Therapeutic_Group__c',IF(sortDirection='ASC','?','?'),'')}" id="cmdSort3" reRender="theTabPanel">
+             <apex:param value="ZTS_EU_Therapeutic_Group__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+</apex:commandLink></b> </td>
+                            <td style="width: 100px;" align="center"><b> <!--<apex:outputText value="Product"/>-->
+                            <apex:commandLink action="{!ViewSortData}" value="{!$Label.ZTS_EU_Product}{!IF(sortExpression=='ZTS_EU_Brand__c',IF(sortDirection='ASC','?','?'),'')}" id="cmdSort4" reRender="theTabPanel">
+             <apex:param value="ZTS_EU_Brand__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+</apex:commandLink></b> </td>                            
+                            <td style="width: 125px;white-space: nowrap;" align="center"><b> <apex:outputText value="{!$Label.ZTS_EU_Product_Sales}"/></b> </td> 
+                            <td style="width: 131px;white-space: nowrap;" align="center"><b><apex:outputText value="{!$Label.ZTS_EU_Grand_Total}"/></b> </td>                      
+ 
+                            <apex:outputText >
+                                <apex:repeat value="{!monthAPTitleList}" var="monthName">
+                                    <td style="width: 70px;" align="center"><b><apex:outputText value="{!monthName}" /></b> </td> 
+                                </apex:repeat>
+                            </apex:outputText>
+                        </tr>
+                        
+                        <apex:repeat value="{!customSetList}" var="salesDataRec" id="theTable3b"> 
+                            
+                            
+                            <tr border="1" style="font-family:verdana;color:Black;font-size:12px;width:100%" >                            
+                                <td style="padding-left: 5px;">
+                                <apex:outputLink value="/{!salesDataRec.accntId}" target="_blank" rendered="{!IF(salesDataRec.accntId!=NULL,TRUE,FALSE)}">{!salesDataRec.accntName} - {!salesDataRec.narcId}</apex:outputLink>
+                                </td>
+                                <td align="center">
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:outputPanel rendered="{!IF(str1.therapeuticGrp.size==0,TRUE,FALSE)}">
+                                    <div class="cell2">
+                                        <apex:panelGrid columns="1" id="pg1">
+                                                    <apex:outputText ></apex:outputtext>
+                                        </apex:panelGrid>
+                                    </div>
+                                    </apex:outputPanel>
+                                        <apex:repeat value="{!str1.therapeuticGrp}" var="str">
+                                        <div class="cell2">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                                <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </div>
+                                        </apex:repeat>
+                                        
+                                    </apex:repeat>
+                                </td>
+                                <td align="center" >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1" >
+                                    <apex:outputPanel rendered="{!IF(str1.prodValue.size==0,TRUE,FALSE)}">
+                                    <div class="cell2">
+                                    <apex:panelGrid columns="1" id="pg1">
+                                                <apex:outputText ></apex:outputtext>
+                                            </apex:panelGrid></div></apex:outputPanel>
+                                        <apex:repeat value="{!str1.prodValue}" var="str">
+                                        <div class="cell2">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                                <apex:outputText >{!str}</apex:outputtext>
+                                                
+                                                
+                                            </apex:panelGrid></div>
+                                        </apex:repeat>
+                                        
+                                    </apex:repeat>
+                                </td>                                
+                                <td align="center">
+                                    
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.valueType}" var="str">
+                                        <div class="cell1">
+                                            <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                                                <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </div>
+                                        </apex:repeat>
+                                        
+                                    </apex:repeat>
+                                </td>   
+                                <td align="center">
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.grandTotal}" var="str">
+                                        <div class="cell1">
+                                            <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </div>
+                                        </apex:repeat>
+                                        
+                                    </apex:repeat>
+                                </td>                           
+                                <apex:outputText >
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthOne}" var="str">
+                                                <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                                </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthTwo}" var="str">
+                                            <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                                </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthThree}" var="str">
+                                            <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                                </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthFour}" var="str">
+                                            <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthFive}" var="str">
+                                            <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthSix}" var="str">
+                                            <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthSeven}" var="str">
+                                            <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthEight}" var="str">
+                                            <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthNine}" var="str">
+                                            <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthTen}" var="str">
+                                            <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthEleven}" var="str">
+                                            <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                    <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthTwelve}" var="str">
+                                            <div class="cell1">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!currencyType} {!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+                                </apex:outputText>
+                            </tr> 
+                        </apex:repeat>
+                    </table>
+                    <br/>
+                    <br/>                   
+                    <apex:outputPanel rendered="{!AND(IF(queryAccName <> null, TRUE, FALSE),accntchild.Id <> null)}"> 
+                       <apex:commandButton value="First Page" action="{!FirstPage}" disabled="{!prev}" status="loading" reRender="theTabPanel"/> &nbsp;&nbsp;
+<apex:commandButton value="Previous" action="{!previous}" disabled="{!prev}" status="loading" reRender="theTabPanel"/> &nbsp;&nbsp;
+<apex:commandButton value="Next" action="{!next}" disabled="{!nxt}" status="loading" reRender="theTabPanel"/> &nbsp;&nbsp;
+<apex:commandButton value="Last Page" action="{!LastPage}" disabled="{!nxt}" status="loading" reRender="theTabPanel"/>
+                    </apex:outputPanel>
+                                  <apex:outputText rendered="{!IF(customSetList.size == 0,TRUE,FALSE)}" > <br/><b style="font-size: 15px;">{!$Label.ZTS_EU_Based_on_the_current_report_selections_no_data_is_available}</b></apex:outputText><br/><br/><br/>
+                </apex:tab>
+      
+                <apex:tab label="{!$Label.ZTS_EU_Unit_Sales}" name="UnitSales" id="tab3" ontabenter="selectTabActionFunction('UnitSales')" style="background-color: #FFFFFF;">    
+                    <apex:outputPanel id="op3" rendered="{!IF(selectedReport == 'UnitSales', TRUE,FALSE)}">
+                        <apex:outputPanel style="width:1250px;display: block;">
+                            <b style="display: block;float: left;"><apex:outputText value="{!$Label.ZTS_EU_SalesLabel}" rendered="{!IF(selectedLevelValue == 'CHILD', True, False)}"/></b>
+                            <b style="display: block;float: left;"><apex:outputText value="{!$Label.ZTS_EU_SalesAggregatedLabel}" rendered="{!IF(OR(selectedLevelValue == 'L1',selectedLevelValue == 'L2'), True, False)}"/></b>
+                            <b style="display: block;float: right;"><apex:outputText value="{!$Label.ZTS_EU_Sales_Through} {!apStartDate}"/></b>
+                        </apex:outputPanel>
+                        <br/>
+                        <apex:outputPanel ><!-- Added Code for Aggregation buttons : Shefali Vinchurkar -->
+                                <table>
+                                    <tr style="display: {!IF((isChild), 'none', 'table-row')};">
+                                        <td style="font-weight:bold;"><apex:outputLabel >{!$Label.ZTS_EU_Aggregated}:</apex:outputLabel></td>
+                                        <td>
+                                            <apex:selectRadio value="{!selectedLevelValue}" onchange="selectedAggValue(this.value)" id="radio3" disabled="{!isChild}">
+                                                <apex:selectOptions value="{!radioOptions3}" />            
+                                            </apex:selectRadio>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                          <br/>
+                        <apex:outputPanel rendered="{!NOT(noParent)}">
+                            <apex:outputLabel value="{!$Label.ZTS_EU_View_Parent_Account}" />        
+                            <apex:commandLink action="{!queryAccData}" value="{!accntParent.Name}" id="accNamePar3" reRender="theTabPanel,errorMsg" oncomplete="checkvalues()" status="loading">
+                                <apex:param value="{!accntParent.Name}" name="accNameColumn" assignTo="{!queryAccName}" ></apex:param>
+                                <apex:param value="{!accntParent.Id}" name="accIDColumn" assignTo="{!queryAccID}" ></apex:param>
+                                <apex:param value="false" name="childColumn" assignTo="{!isChildSelected}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel rendered="{!AND(IF(queryAccName <> null, TRUE, FALSE),accntchild.Id <> null)}">
+                            <br/>
+                            <apex:outputLabel value="{!$Label.ZTS_EU_View_Child_Account}" />                
+                            <apex:commandLink action="{!queryAccData}" value="{!accntchild.Name}" id="accNameChld3" reRender="theTabPanel,errorMsg" oncomplete="checkvalues()" status="loading">
+                                <apex:param value="{!accntchild.Name}" name="accNameColumn" assignTo="{!queryAccName}" ></apex:param>
+                                <apex:param value="{!accntchild.Id}" name="accIDColumn" assignTo="{!queryAccID}" ></apex:param>
+                                <apex:param value="true" name="childColumn" assignTo="{!isChildSelected}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel id="noParentId3" rendered="{!noParent && (isChild)}">
+                            <!-- <apex:outputLabel value="{!$Label.ZTS_EU_View_Parent_Account}" rendered="{!NOT(toggleFlagParent)}"/> -->
+                            <apex:outputLabel value="{!$Label.ZTS_EU_View_Child_Account}" rendered="{!toggleFlagParent}"/>
+                            <apex:commandLink action="{!queryAccData}" value="{!accntCurrent.Name}" id="accNamePar6" reRender="theTabPanel,errorMsg" oncomplete="checkvalues()" status="loading">
+                                <apex:param value="{!accntCurrent.Name}" name="accNameColumn" assignTo="{!queryAccName}" ></apex:param>
+                                <apex:param value="{!accntCurrent.Id}" name="accIDColumn" assignTo="{!queryAccID}" ></apex:param>
+                                <apex:param value="false" name="childColumn" assignTo="{!isChildSelected}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        <br/>
+                        <table cellpadding="0" cellspacing="0" id="tbc" style="font-weight:bold;">
+                            <tr>
+                                <td>
+                                    <apex:outputLabel value="{!$Label.ZTS_EU_Saved_Filters}" />
+                                </td>
+                                <td>
+                                    <apex:selectList id="preset3" value="{!selectedPreset}" size="1" title="presetData" onchange="selectSalesPresetAF(this.value)">
+                                        <apex:selectOptions value="{!SalesPresetsData}"></apex:selectOptions>
+                                    </apex:selectList>
+                                </td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>
+                                    
+                                    <apex:commandLink action="{!salesPreference}" value="[{!$Label.ap_New}]" rerender="prefPopUp">
+                                        <apex:param value="New" name="salesPreset" assignTo="{!salesPresetAction}" ></apex:param>
+                                    </apex:commandLink>
+                                </td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>
+                                    
+                                    <apex:commandLink action="{!salesPreference}" value="[{!$Label.ap_Edit}]" rerender="prefPopUp,theTabPanel,custCom">
+                                        <apex:param value="Edit" name="salesPreset" assignTo="{!salesPresetAction}" ></apex:param>
+                                    </apex:commandLink>
+                                </td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>
+                                    
+                                    <apex:commandLink action="{!salesPreference}" value="[{!$Label.ap_Delete}]" rerender="prefPopUp">
+                                        <apex:param value="Delete" name="salesPreset" assignTo="{!salesPresetAction}" ></apex:param>
+                                    </apex:commandLink>
+                                </td>
+                                
+                                <td style="padding-left: 7px">                                    
+                                    <apex:commandLink onclick="resetActionFunction('UnitSales', '--None--', 'MAT', 'Bill-To', '<Therapeutic Group>' , '<Species>','<Product>')" value="[Reset Filter]" rerender="prefPopUp,theTabPanel">                                        
+                                    </apex:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <table cellpadding="2" cellspacing="2" id="tb3">                        
+                            <tr>
+                                <td style="font-weight:bold;">                        
+                                    <apex:outputLabel value="{!$Label.ZTS_EU_Filter_By}" />
+                                </td>
+                                <!--  <td>
+                                    <apex:selectList id="species3" value="{!selectedSpecies}" size="1" title="Species" onchange="selectedValueQuerySpeciesAF(this.value)">
+                                        <apex:selectOptions value="{!SalesSpeciesList}"></apex:selectOptions>
+                                    </apex:selectList>
+                                </td>-->
+                                <td>
+                                    <apex:selectList id="species3" value="{!selectedSpecies}" size="1" title="BusinessUnits" onchange="selectedValueQueryBusinessAF(this.value)">
+                                        <apex:selectOptions value="{!BusinessUnitsList}"></apex:selectOptions>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                    <apex:selectList id="therGrp3" value="{!selectedTherapeuticGrp}" size="1" title="TherapeuticGroup" onchange="selectedValueQueryThGrpAF(this.value)">
+                                        <apex:selectOptions value="{!TherapeuticGrpList}"></apex:selectOptions>                                 
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                    <apex:selectList id="prod3" value="{!selectedProduct}" size="1" title="{!$Label.ZTS_EU_Product}" onchange="selectedValueQueryProdAF(this.value)">
+                                       <apex:selectOptions value="{!SalesDataProdList}"></apex:selectOptions> 
+                                    </apex:selectList>
+                                </td>                                
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td style="font-weight:bold;">
+                                    <apex:selectRadio value="{!selectedMATYTD}" onchange="selectMatYtdShipAF(this.value)">
+                                        <apex:selectOptions value="{!radioOptions1}"/>
+                                    </apex:selectRadio>
+                                </td>
+                               <!-- 
+                                <td style="font-weight:bold;">
+                                    <apex:selectRadio value="{!selectedSalesType}" onchange="selectRadioBillShipAF(this.value)" id="radioSales3" rendered="{!toDisplayGross}">
+                                        <apex:selectOptions value="{!radioOptionsSalesForUnitSales}"/>
+                                    </apex:selectRadio>
+                                </td> -->
+                                <td style="font-weight:bold;">
+                                    <apex:selectRadio value="{!selectedSalesType}" onchange="selectRadioSalesAF(this.value)" id="radioSales3" rendered="{!toDisplayGross}">
+                                        <apex:selectOptions value="{!radioOptions2}"/>
+                                    </apex:selectRadio>
+                                </td>
+                                
+                                
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <!--<td style="font-weight:bold;">
+                                    <apex:selectRadio value="{!selectedBillToShipTo}" onchange="selectRadioBillShipAF(this.value)" id="radioBillShip3">
+                                        <apex:selectOptions value="{!radioOptions2}"/>
+                                    </apex:selectRadio>
+                                </td>-->
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td style="font-weight:bold;">
+                                    <apex:commandLink action="{!generateUnitSalesPdf}" target="_blank" value="{!$Label.ap_Print}">
+                                    <apex:image url="{!URLFOR($Resource.PrintSalesData, '/pdfIcon.png')}" width="20" height="20" />
+                                    </apex:commandLink>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td style="font-weight:bold;">
+                                    <apex:commandLink action="{!DownloadUnitSalesExcel}" value="{!$Label.ap_Export}">
+                                    <apex:image url="{!URLFOR($Resource.PrintSalesData, '/export.png')}" width="20" height="20" />
+                                    </apex:commandLink>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                
+                            </tr>
+                        </table>
+                    </apex:outputPanel>
+                           
+                    <table border="1" cellpadding="0" cellspacing="0" style="width:1250px;border:1px solid #000000;font-familyans-serif;font-size:10px" id="htmlTable3" >
+                           
+                        <tr style="font-weight:bold;background-color: #E5E4E2;font-size: 13px;">
+                            <td style="width: 100px;" align="center"><b><apex:outputText value="{!$Label.ZTS_EU_Account_Name}"/></b></td>
+                           
+                            <td style="width: 100px;" align="center"><b>
+                            <apex:commandLink action="{!ViewSortData}" value="{!$Label.ZTS_EU_Therapeutic_Group}{!IF(sortExpression=='ZTS_EU_Therapeutic_Group__c',IF(sortDirection='ASC','?','?'),'')}" id="cmdSort6" reRender="theTabPanel">
+             <apex:param value="ZTS_EU_Therapeutic_Group__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+</apex:commandLink></b> </td> 
+                            <td style="width: 125px;white-space: nowrap;" align="center" ><b> 
+                            <apex:commandLink action="{!ViewSortData}" value="{!$Label.ZTS_EU_Product}{!IF(sortExpression=='ZTS_EU_Brand__c',IF(sortDirection='ASC','?','?'),'')}" id="cmdSort7" reRender="theTabPanel">
+             <apex:param value="ZTS_EU_Brand__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+</apex:commandLink></b> </td> 
+                            <td style="width: 150px;white-space: nowrap;" align="center" ><b>
+                            <apex:commandLink action="{!ViewSortData}" value="{!$Label.ZTS_EU_Item}{!IF(sortExpression=='ZTS_EU_Product_Line_Item__c',IF(sortDirection='ASC','?','?'),'')}" id="cmdSort8" reRender="theTabPanel">
+             <apex:param value="ZTS_EU_Product_Line_Item__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+</apex:commandLink></b> </td> 
+                            <td style="width: 125px;" align="center"><b> <apex:outputText value="{!$Label.ZTS_EU_Unit_Sales}"/></b> </td> 
+                            <td style="width: 113px;" align="center"><b><apex:outputText value="{!$Label.ZTS_EU_Grand_Total}"/></b> </td>
+                            <apex:outputText >
+                                <apex:repeat value="{!monthAPTitleList}" var="monthName">
+                                    <td style="width: 51px;white-space: nowrap;" align="center"><b><apex:outputText value="{!monthName}" /></b> </td> 
+                                </apex:repeat>
+                            </apex:outputText>                            
+                            
+                        </tr>
+                        <apex:repeat value="{!customSetList}" var="salesDataRec" id="theTable3a"> 
+                            <tr border="1" style="font-family:verdana;color:Black;font-size:12px;width:100%" > 
+     
+                                <td style="padding-left: 5px;">
+                                    <!--<apex:outputLink value="/{!salesDataRec.accntId}" target="_blank">{!salesDataRec.accntName}</apex:outputLink>-->
+                                <apex:commandLink action="{!queryAccData}" value="{!salesDataRec.accntName} - {!salesDataRec.narcId}" id="accName" reRender="theTabPanel">
+                                    <apex:param value="{!salesDataRec.accntName}" name="accNameColumn" assignTo="{!queryAccName}" ></apex:param>
+                                </apex:commandLink>
+                                <!--<apex:outputText >{!salesDataRec.accntName}</apex:outputtext>-->
+                                </td>                                
+
+                                <td align="center">
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:outputPanel rendered="{!IF(str1.therapeuticGrp.size==0,TRUE,FALSE)}">
+                                    <div class="cell4">
+                                        <apex:panelGrid columns="1" id="pg1">
+                                                    <apex:outputText ></apex:outputtext>
+                                        </apex:panelGrid>
+                                    </div>
+                                    </apex:outputPanel>
+                                        <apex:repeat value="{!str1.therapeuticGrp}" var="str">
+                                        <div class="cell4">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                                <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </div>
+                                        </apex:repeat>
+                                        
+                                    </apex:repeat>
+                                </td>
+
+                                <td align="center" >
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1" >
+                                    <apex:outputPanel rendered="{!IF(str1.prodValue.size==0,TRUE,FALSE)}">
+                                    <div class="cell4">
+                                    <apex:panelGrid columns="1" id="pg1">
+                                                <apex:outputText ></apex:outputtext>
+                                            </apex:panelGrid></div></apex:outputPanel>
+                                        <apex:repeat value="{!str1.prodValue}" var="str">
+                                        <div class="cell4">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                                <apex:outputText >{!str}</apex:outputtext>
+                                                
+                                                
+                                            </apex:panelGrid></div>
+                                        </apex:repeat>
+                                        
+                                    </apex:repeat>
+                                </td>                                
+
+                                <td align="center">
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:outputPanel rendered="{!IF(str1.prodLineItem.size==0,TRUE,FALSE)}">
+                                    <div class="cell4">
+                                    <apex:panelGrid columns="1" id="pg1">
+                                                <apex:outputText ></apex:outputtext>
+                                                
+                                            </apex:panelGrid>
+                                            </div>
+                                            </apex:outputPanel>        
+                                        <apex:repeat value="{!str1.prodLineItem}" var="str">
+                                        <div class="cell4">
+                                            <apex:panelGrid columns="1" id="pg1">
+                                                <apex:outputText >{!str}</apex:outputtext>
+                                                
+                                            </apex:panelGrid>
+                                            </div>
+                                        </apex:repeat>
+                                        
+                                    </apex:repeat>
+                                </td>
+
+                                <td align="center">
+                                    
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.valueType}" var="str">
+                                        <div class="cell3">
+                                            <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                                                <apex:outputText >{!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </div>
+                                        </apex:repeat>
+                                        
+                                    </apex:repeat>
+                                </td>   
+                                <td align="center">
+                                    <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                        <apex:repeat value="{!str1.grandTotal}" var="str">
+                                        <div class="cell3">
+                                            <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                <apex:outputText > {!str}</apex:outputtext>
+                                            </apex:panelGrid>
+                                        </div>
+                                        </apex:repeat>
+                                        
+                                    </apex:repeat>
+                                </td>                           
+
+                                <apex:outputText rendered="{!IF(selectedReport == 'UnitSales', TRUE,FALSE)}">
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthOne}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthTwo}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthThree}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthFour}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthFive}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthSix}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthSeven}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthEight}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthNine}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthTen}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthEleven}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+                                   <td align="center">
+                                        <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                            <apex:repeat value="{!str1.monthTwelve}" var="str">
+                                            <div class="cell3">
+                                                <apex:panelGrid columns="1" id="pg1" style="white-space:nowrap;">
+                        <!-- Modified by Srinivas in order to give space between currency and values INC0499139-->
+                                                    <apex:outputText >{!str}</apex:outputtext>
+                                                </apex:panelGrid>
+                                            </div>
+                                            </apex:repeat>
+                                            
+                                        </apex:repeat>
+                                    </td>
+
+
+                                </apex:outputText>
+                            </tr> 
+                        </apex:repeat>
+                    </table>
+                    <br/>
+                    <br/>    
+                    <!--selectedLevelValue value conditions addded for pagenation - by Sreekanth SC-010111 on 23/03 -->
+                    <!--<apex:outputPanel rendered="{!AND(IF(queryAccName <> null, TRUE, FALSE),accntchild.Id <> null)}">--> 
+                    <apex:outputPanel rendered="{!OR(AND(IF(queryAccName <> null, TRUE, FALSE),accntchild.Id <> null),selectedLevelValue == 'L1',selectedLevelValue == 'CHILD')}"> 
+                       <apex:commandButton value="First Page" action="{!FirstPage}" disabled="{!prev}" status="loading" reRender="theTabPanel"/> &nbsp;&nbsp;
+<apex:commandButton value="Previous" action="{!previous}" disabled="{!prev}" status="loading" reRender="theTabPanel"/> &nbsp;&nbsp;
+<apex:commandButton value="Next" action="{!next}" disabled="{!nxt}" status="loading" reRender="theTabPanel"/> &nbsp;&nbsp;
+<apex:commandButton value="Last Page" action="{!LastPage}" disabled="{!nxt}" status="loading" reRender="theTabPanel"/>
+                    </apex:outputPanel>
+                    <apex:outputText rendered="{!IF(customSetList.size == 0,TRUE,FALSE)}" > <br/><b style="font-size: 15px;">{!$Label.ZTS_EU_Based_on_the_current_report_selections_no_data_is_available}</b></apex:outputText><br/><br/><br/>
+                </apex:tab>  
+            </apex:tabPanel>
+            </apex:outputPanel>
+            <apex:actionstatus id="loading">
+                <apex:facet name="start">
+                    <div class="waitingSearchDiv" id="loading" style="background-color: #fbfbfb;  height: 100%;opacity:0.65;width:100%;position: fixed;"> 
+                            <div class="waitingHolder" style="top: 200px; left:700px; width: 91px; position: fixed;"> 
+                            <img class="waitingImage" src="{!$Resource.LoadingImage}" title="{!$Label.ZTS_EU_Please_Wait}" />
+                           </div> 
+                    </div>
+                </apex:facet> 
+            </apex:actionstatus>
+            
+            <apex:actionFunction id="afReset" name="resetActionFunction" action="{!getcreateDataTable}" reRender="theTabPanel,errorMsg" onComplete="checkvalues()" status="loading">
+                <apex:param name="selectedTab" assignTo="{!selectedReport}" value=""/>
+                <apex:param name="selectedSalesPreset" assignTo="{!selectedPreset}" value=""/>
+                <apex:param name="selectedMATYTD" assignTo="{!selectedMATYTD}" value=""/>
+                <apex:param name="selectedBillShipType" assignTo="{!selectedSalesType}" value=""/>
+                <apex:param name="selectedThrpGrp" assignTo="{!selectedTherapeuticGrp}" value=""/>
+                <apex:param name="selectedSpecies" assignTo="{!selectedSpecies}" value=""/> 
+                <apex:param name="selectedProduct" assignTo="{!selectedProduct}" value=""/>                 
+            </apex:actionFunction>
+            
+            <apex:actionFunction id="af1" name="selectTabActionFunction" action="{!getcreateDataTable}" reRender="theTabPanel,errorMsg" onComplete="checkvalues()" status="loading">
+                <apex:param name="selectedTab" assignTo="{!selectedReport}" value=""/>
+            </apex:actionFunction>
+            <!--<apex:actionFunction id="af2" name="selectRadioBillShipAF" action="{!getcreateDataTable}" reRender="theTabPanel" onComplete="checkvalues()" status="loading">
+                <apex:param name="selectedBillToShipToRadio" assignTo="{!selectedBillToShipTo}" value=""/>
+            </apex:actionFunction>-->
+            <apex:actionFunction id="af3" name="selectMatYtdShipAF" action="{!selectedValueQuery}" reRender="theTabPanel,errorMsg" onComplete="checkvalues()" status="loading">
+                <apex:param name="selectedMatYtdRadio" assignTo="{!selectedMATYTD}" value=""/>
+            </apex:actionFunction>
+            
+            
+            <apex:actionFunction id="af4" name="selectedValueQueryThGrpAF" action="{!selectedValueQuery}"  onComplete="checkvalues()" reRender="theTabPanel,debug,errorMsg" status="loading">
+                <apex:param name="selectVal1" assignTo="{!selectedTherapeuticGrp}" value=""/>
+            </apex:actionFunction>
+            <apex:actionFunction id="af5" name="selectedValueQueryProdAF" action="{!selectedValueQuery}"  onComplete="checkvalues()" reRender="theTabPanel,debug,errorMsg" status="loading">
+                <apex:param name="selectVal2" assignTo="{!selectedProduct}" value=""/>
+            </apex:actionFunction>
+            <apex:actionFunction id="af6" name="selectedValueQuerySpeciesAF" action="{!selectedValueQuery}" onComplete="checkvalues()" reRender="theTabPanel,debug,errorMsg" status="loading">
+                <apex:param name="selectVal3" assignTo="{!selectedSpecies}" value=""/>
+            </apex:actionFunction>
+            <apex:actionFunction id="af7" name="selectSalesPresetAF" action="{!multiSelectedValueQuery}"  onComplete="checkvalues()" reRender="theTabPanel,debug,errorMsg" status="loading">
+                <apex:param name="selectPresetVal" assignTo="{!selectedPreset}" value=""/>
+            </apex:actionFunction>
+            <apex:actionFunction id="af8" name="selectedValueQueryBusinessAF" action="{!selectedValueQuery}" onComplete="checkvalues()" reRender="theTabPanel,debug,errorMsg" status="loading">
+                <apex:param name="selectVal4" assignTo="{!selectedSpecies}" value=""/>
+            </apex:actionFunction>
+            <!-- Modified by Sohil Shah in order to update a Sales Through Date when Sales Type is changed on 6th Oct, 2015  INC0461833-->
+            <apex:actionFunction id="af9" name="selectRadioSalesAF" action="{!selectedValueQuery}" reRender="theTabPanel,errorMsg" onComplete="checkvalues()" status="loading">
+                <apex:param name="selectedSalesTypeRadio" assignTo="{!selectedSalesType}" value=""/>
+            </apex:actionFunction>
+            
+            <apex:actionFunction id="af11" name="selectedAggValue" action="{!getcreateDataTable}" onComplete="checkvalues()" reRender="theTabPanel,debug" status="loading">
+                <apex:param name="selectedAggregated" assignTo="{!selectedLevelValue}" value=""/>
+            </apex:actionFunction>              
+
+        </apex:form>
+    </apex:page>

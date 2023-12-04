@@ -1,0 +1,271 @@
+<apex:page controller="AddDiscussionController" sidebar="flase" showHeader="false" id="pg" action="{!populateProducts}">
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+$(document).ready(function(){
+    reloadPage();
+});
+    
+function reloadPage(viewatten) {
+       if(document.getElementById(viewatten)!=null)
+       {
+        document.getElementById(viewatten).style.display="none";
+       }
+       
+    }
+</script>
+<style>
+        .activeTab {background-color: #FFFFFF; background-image:none}
+        .inactiveTab { background-color: #DFDFDF; background-image:none}
+body {
+    padding: 10px;
+}
+
+body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+    background-color: rgba(0, 0, 0, 0);
+    border-color: #FF6400;
+    border-radius: 0;
+    border-style: solid none none;
+    border-width: 1px medium medium;
+}
+.bEditBlock .pbHeader > table, .apexp .bPageBlock.apexDefaultPageBlock .pbHeader > table, #ep.bLayoutBlock .pbHeader > table {
+    border-bottom: medium none;
+}
+.remove{
+    color: #DC143C !important;
+    font-weight: bold;
+    text-decoration: none;
+}
+body .bPageBlock .pbBody hr {
+    border: none;
+    border-bottom: 1px solid #DBDBDB;
+}
+
+/*body .bPageBlock .pbBody .labelCol,
+body .bPageBlock .pbBody .dataCol,
+body .bPageBlock .pbBody .data2Col,
+body .bPageBlock .pbBody ..headerRow th,
+.apexp .bPageBlock .detailList .list,
+body .pbBody table.list tr.dataRow th, 
+body .pbBody table.list tr.dataRow td,
+body .bEditBlock .pbBottomButtons, 
+body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+    border: medium none;
+}*/
+.apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-top: 0 none;
+    color: #000000;
+}
+.add {
+    color: #0096AF !important;
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+}
+.add:hover{
+   opacity: .5;
+   text-decoration: none;
+}
+body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th,
+body .pbBody table.list tr.headerRow th:first-child, 
+body .pbBody table.list tr.dataRow td:first-child,
+body .bRelatedList .pbBody table.list, body .apexp .pbBody table.list {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    padding-left: 20px;
+    text-align: left;
+}
+
+body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th:last-child{
+text-align: center;
+}
+body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow td {
+    border-bottom: 1px solid #DBDBDB !important;
+    padding: 5px 0;
+    text-align: left;
+    vertical-align: top;
+}
+body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow:last-child td {
+    border-bottom: none !important;
+}
+body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow td:last-child{
+text-align: center;
+}
+.pbSubheader > img {
+    display: none;
+}
+.pbSubheader > h3 {
+    font-size: 1.2em;
+}
+.pbBody > a {
+    display: block;
+    float: left;
+    font-size: 1em;
+    font-weight: bold;
+    left: 0;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    text-decoration: none;
+}
+.pbBody a > i{
+    font-size: 1.5em;
+    font-weight: normal;
+    margin-right: 5px;
+    margin-top: -4px;
+}
+
+.listRelatedObject .bPageBlock .pbHeader .btn, .listRelatedObject .bPageBlock .pbBottomButtons .btn, .apexp .bPageBlock .pbHeader .btn, .apexp .bPageBlock .pbBottomButtons .btn, div.buttons .btn, div.pbBottomButtons > .btn,
+body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-color: #DBDBDB;
+    font-size: 1em;
+    font-weight: normal;
+    
+    margin: 0 10px;
+   
+}
+
+.listRelatedObject .bPageBlock .pbHeader .btn:hover, .listRelatedObject .bPageBlock .pbBottomButtons .btn:hover, .apexp .bPageBlock .pbHeader .btn:hover, .apexp .bPageBlock .pbBottomButtons .btn:hover, div.buttons .btn:hover, div.pbBottomButtons > .btn:hover,
+body button:hover, body .x-btn:hover, body .btn:hover, body .btnDisabled:hover, body .btnCancel:hover, body .menuButton .menuButtonButton:hover {
+    background: linear-gradient(to bottom, #DBDBDB 0%, #808080 99%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+
+.apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader h3 {
+    font-size: 1.3em;
+}
+.errorConsole .x-grid3-row-over, body .pbBody table.list tr.dataRow.highlight td, body .pbBody table.list tr.dataRow.highlight th {
+    background-color: #FFC19B;
+}
+
+body > h3 {
+    display: block;
+    font-size: 1.6em;
+    padding-bottom: 10px;
+}
+ i.iSection{
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 5px;
+ }
+ i.iSection > span {
+     display: block;
+     margin-top: -12px;
+ }
+</style>
+    <script>
+        window.onload = testfunc;
+        function testfunc(){
+                      
+            var procductNames = '{!JSENCODE(values)}';
+            procductNames = procductNames.replace(/dbqt/g,'');
+            procductNames = procductNames.split(",");
+                                                            
+            $( "#srchTxt" ).autocomplete({
+            source: procductNames
+                });
+            
+        }
+    </script>
+      <apex:form id="frm">
+        <apex:pageBlock title="Search for Discussion Items" id="searchPB">
+             <apex:outputText value="Enter the search text: "></apex:outputText>
+             <input  id="srchTxt"  /> 
+             <apex:commandButton value="Add"  onclick="this.disabled='disabled';checkSearchBox();" oncomplete="this.disabled=false;" status="saveStatus" reRender="SearchedProducts,outCall"/><br/>
+                <apex:actionFunction name="searchBoxAF" action="{!addSearchString}" oncomplete="closeOpenWindow();" reRender="refreshWindow">
+                    <apex:param name="searchString" assignTo="{!searchString}" value=""/>
+                </apex:actionFunction>
+             <div style="padding-top:20px;">
+                <div><apex:outputText value="Begin typing to search for Brands, Campaigns, and Programs" style=" font-style: italic"/></div>
+             </div> 
+        </apex:pageBlock>
+         
+       <apex:outputPanel id="outCall">
+            <apex:pageBlock title="Currently added to this Call:" rendered="{!NOT(ISNULL(discObj)) && discObj.size > 0}">
+                <apex:pageBlockTable value="{!discObj}" var="prod">
+                    <apex:column headerValue="Discussion Item" width="80%">
+                    <apex:outputText value="{!prod.name}" />
+                    <br/>
+                <i class="iSection">
+                    <apex:commandLink id="viewatten" value="+View Attendees" action="{!showAttendeesAF}" style="" rendered="{!showview}" reRender="frm" onComplete="reloadPage(this.id);">
+                    <apex:param name="discname" value="{!prod.name}" assignTo="{!currdiscc}"/>
+                    </apex:commandLink>
+                </i>
+                   <apex:outputPanel id="showdisc"  style="" rendered="{!AND(if(currdiscc==prod.Name,true,false),showattendee)}">
+                    <apex:dataTable value="{!discattenMap[prod.Name]}" var="attendee" width="100%">
+                    <br/>
+                    <apex:column >
+                            <apex:commandLink value="X" action="{!removeAttendees}" rerender="showdisc" styleClass="remove">
+                                        <apex:param value="{!attendee.Id}" assignTo="{!attendeeRemoveId}" name="attenrem"/>
+                                        <apex:param value="{!prod.Name}" assignTo="{!discuname}" name="discurem"/>
+                            </apex:commandLink> &nbsp;&nbsp;
+                    </apex:column>
+                     <apex:column >
+                        <apex:outputText value="{!attendee.Name}"/>
+                     </apex:column>
+                     <apex:column >
+                        <apex:outputField value="{!attendee.Represents_Account__c}" label=""/>
+                     </apex:column>
+                     <apex:column >
+                        <apex:outputText value="{!attendee.ZTS_US_Contact_Profession__c}"/>
+                     </apex:column>
+                     </apex:dataTable>
+                    </apex:outputPanel> 
+                   <br/>
+            <i class="iSection">
+                   <apex:commandLink value="-Hide Attendees" action="{!hideAttendeesAF}" rendered="{!AND(if(currdiscc==prod.Name,true,false),hideattendee)}" reRender="frm">
+                   </apex:commandLink>
+            </i>
+                    </apex:column>
+                    <apex:column headerValue="Remove" width="20%">
+                      <apex:commandLink action="{!removeProduct}" value="X" status=""  styleClass="remove" immediate="true" reRender="outCall,SearchedProducts">
+                          <apex:param name="productId" assignTo="{!prodName}" value="{!prod.Name}" />    
+                      </apex:commandLink>                                         
+                    <apex:dataTable value="{!discattenMap[prod.Name]}" var="attendee">
+                    <br/>   
+                    </apex:dataTable>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+        </apex:outputPanel>
+        <apex:commandButton value="Done" onclick="closeWindow();" style="margin-left:50%" />
+        <script type = "text/javascript">
+            function checkSearchBox(){      
+                var search = document.getElementById("srchTxt").value;     
+                
+                if(search == '' || search == null){
+                    
+                    return false;
+                } else{
+                    
+                    searchBoxAF(search);
+                }
+            }
+            
+            function closeWindow(){
+                //window.parent.location.reload();
+                //opener.location.reload(true);
+                var loc = window.opener.location;
+                window.opener.location = loc;   
+                window.close();
+                return;
+            }
+                       
+        </script> 
+        <apex:outputPanel id="refreshWindow">
+            <script>
+                function closeOpenWindow(){
+                    var redirectURL = document.getElementById("srchTxt").value
+                    var initialPage = window.location.pathname;
+                    window.location.replace('/#' + '/apex/AddDiscussion?searchString=test?callId=a0bc0000002VC3y');
+                    /*location.reload(true);*/
+                    location.assign("apex/AddDiscussion?searchString="+redirectURL+"&callId="+'{!callId}')
+                }
+            </script>
+        </apex:outputPanel>     
+    </apex:form>
+</apex:page>

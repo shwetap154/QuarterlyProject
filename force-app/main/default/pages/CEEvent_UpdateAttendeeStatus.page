@@ -1,0 +1,107 @@
+<apex:page standardController="ZTS_Events__c" standardStylesheets="false"  tabStyle="ZTS_Events__c" extensions="CEEventUpdateAttendeeStatus" docType="html-5.0" showQuickActionVfHeader="false" showHeader="false">
+
+ <head>
+	<title>Update Invitee Attendance</title>
+     <meta charset="utf-8" /> 
+     <meta content="IE=edge" http-equiv="X-UA-Compatible" /> 
+     <meta content="width=device-width,initial-scale=1" name="viewport" />
+	<!-- Bootstrap stylesheet -->
+	 
+    <apex:stylesheet value="{!URLFOR($Resource.CEEvents, 'CSS/bootstrap.min.css')}" /> 
+	<!--[if lt IE 9]>  
+		<apex:includeScript value="{!URLFOR($Resource.CEEvents, 'JS/respond.min.js')}" /> 
+		<apex:includeScript value="{!URLFOR($Resource.CEEvents, 'JS/html5shiv.min.js')}" />
+	<![endif]-->
+	<!-- Custom stylesheet --> 
+     <apex:stylesheet value="{!URLFOR($Resource.CEEvents, 'CSS/style.css')} "/>  
+     <apex:includeScript value="{!URLFOR($Resource.CEEvents, 'JS/jquery.min.js')} "/> 
+     <apex:includeScript value="{!URLFOR($Resource.CEEvents, 'JS/zoetisEventInvitees.js')}" />  
+     <script type='text/javascript'>
+         function toggle(source) {  
+             var checkboxes = document.getElementsByClassName('checkbox-custom'); 
+             var i;
+             for (i = 0; i < checkboxes.length; i++) { 
+                 checkboxes[i].checked = source.checked;
+             }
+         }
+     </script>
+     <style type="text/css"  >
+         .zoetis-register-button-wraper{
+        	 padding: 0px 0px 20px 5px;
+         }
+         .zoetis-register-button{
+             background: #ff6400;
+             padding: 0 10px;
+             line-height: 36px;
+             color: #fff;
+             border-radius: 40px;
+             border: 0;
+             font-family: "Roboto-Regular";
+             font-size: .8em;
+             width: auto;
+         }
+     </style>
+</head>
+	<body  >
+        <div class="container-fluid">
+            <div class="row">
+                <apex:pageMessages />
+        <apex:form id="mainForm" >
+            <apex:actionFunction action="{!updateStatus}" name="updateStatusFunc" rerender="mainForm" >
+                <apex:param assignTo="{!newStatus}" value="" name="newStatus" />
+            </apex:actionFunction>
+            
+            <apex:actionFunction action="{!cancelAction}" name="cancelActionFunc"/>  
+            <h2 class="zoetis-table-caption">Event Invitees Attendance</h2>	<br/>		
+                <div class="zoetis-register-button-wraper" >   
+                    <input type="button" value="Registered" class="zoetis-register-button" onClick="updateStatusFunc('Registered');" /> 
+                    <input type="button" value="Attended" class="zoetis-register-button" onClick="updateStatusFunc('Attended');" />  
+                    <input type="button" value="Back to Event" class="zoetis-register-button" onClick="cancelActionFunc();" />  
+                </div>
+				<div class="zoetis-table-container">
+					<table class="table table-striped" id="eilist" >
+                        <thead>
+                            <tr>
+                                <th> 	 
+                                    <apex:inputCheckbox id="checkAllBox" styleClass="checkbox-custom" onclick="toggle(this);" > 
+                                    </apex:inputCheckbox> 
+                                    <label for="checkAllBox" class="checkbox-custom-label">Select All</label>
+                                </th>
+								<th class="hidden-lg hidden-md hidden-sm">Name</th>
+								<th class="hidden-xs">First Name</th>
+								<th class="hidden-xs">Last Name</th>
+								<th>Invitation Status</th> 
+							</tr>
+						</thead>
+						<tbody>
+                            <apex:repeat id="eventTable" value="{!wrpConList}" var="e" rendered="{!wrpConList != null && wrpConList.size > 0}" >
+							<tr>
+								<td>
+									<div> 
+                                        <apex:inputCheckbox value="{!e.isSelected}" styleClass="checkbox-custom"  />
+									</div>
+								</td>
+								<td class="hidden-lg hidden-md hidden-sm">{!e.evtInv.ZTS_US_Event_Invitee_First_Name__c} {!e.evtInv.ZTS_US_Event_Invitee_Last_Name__c}</td>
+								<td class="hidden-xs">{!e.evtInv.ZTS_US_Event_Invitee_First_Name__c}</td>
+								<td class="hidden-xs">{!e.evtInv.ZTS_US_Event_Invitee_Last_Name__c}</td>
+								
+                                <apex:panelGroup rendered="{!e.evtInv.ZTS_US_Invitation_Status__c == 'Attended'}" >
+                                    <td class="zoetis-attended" >{!e.evtInv.ZTS_US_Invitation_Status__c}</td>
+                                </apex:panelGroup>
+                                <apex:panelGroup rendered="{!e.evtInv.ZTS_US_Invitation_Status__c != 'Attended'}" >
+                                	<td >{!e.evtInv.ZTS_US_Invitation_Status__c}</td>    
+                                </apex:panelGroup>
+							</tr> 
+                            </apex:repeat>
+						</tbody>
+					</table> 
+				</div>
+		
+		</apex:form>
+                </div>
+            </div>
+	</body>   
+    
+    
+    
+</apex:page>

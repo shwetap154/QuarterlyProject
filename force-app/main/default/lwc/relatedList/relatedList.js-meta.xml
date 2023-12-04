@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="fieldSetName" type="String" default="" label="Name of field set to display"/>
+            <property name="objectApi" type="String" default="" label="API name of Child SObject"/>
+            <property name="filterField" type="String" default="" label="Relationship field to relate child object to parent object"/>
+            <property name="iconName" type="String" default="" label="Icon to be displayed next to title"/>
+            <property name="title" type="String" default="" label="Title of related list"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

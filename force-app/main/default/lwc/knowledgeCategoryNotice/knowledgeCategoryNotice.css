@@ -1,0 +1,21 @@
+.slds-notify-slds-notify_toast-slds-theme_warning {
+    background-color:#51087E !important;
+    color: white !important;
+    width: 100%;
+    height: 30%;
+    border-radius: 5px; 
+}
+
+.slds-is-absolute{
+    margin-left: 30%; 
+    top:-10%; 
+    width:40%;
+}
+
+.slds-theme--warning button {
+  color: white !important;
+}
+
+.slds-theme--warning .slds-button__icon {
+  fill: white !important;
+}

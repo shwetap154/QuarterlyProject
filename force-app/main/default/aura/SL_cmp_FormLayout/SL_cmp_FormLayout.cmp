@@ -1,0 +1,150 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,forceCommunity:availableForAllPageTypes" access="global" controller="SL_FormLayoutHandler" >
+
+    <!-- Design Token Attributes -->
+    <aura:attribute name="fieldSetSelection" type="String" />
+    <aura:attribute name="fieldset" type="String" />
+    <aura:attribute name="fieldsetToUse" type="String" />
+    <aura:attribute name="title" type="String" default=""/>
+    <aura:attribute name="numberofColumns" type="Integer" default="2"/>
+    <aura:attribute name="dateFormat" type="String" default="MM/dd/yyyy"/>
+    <aura:attribute name="timeFormat" type="String" default="hh:mm aaa"/>
+    <aura:attribute name="stdDateFormat" type="String" />
+    <aura:attribute name="stdDateTimeFormat" type="String" />
+    
+    <aura:attribute name="ObjectName" type="String" />
+    <aura:attribute name="fieldAPI" type="String[]" />
+    <aura:attribute name="fieldInfo" type="Map[]" />
+    <aura:attribute name="sObj" type="Object" />
+    <aura:attribute name="sObjCloned" type="Object" />
+    <aura:attribute name="isEdit" type="boolean" default="false"/>
+    <aura:attribute name="isReadOnly" type="boolean" default="false"/>
+    <aura:attribute name="decimalFldLngth" type="Map" />
+
+    <aura:attribute name="ComponentExpandCollapse" default="Don't allow-always expanded" type="String" access="global" />
+    <aura:attribute name="isShowChevronIcon" type="boolean" default="false"/>
+    <aura:attribute name="IsMainExpEnabled" type="boolean" default="false"/>
+    
+    <aura:attribute name="parentobjFieldAPIName" type="String"/> 
+    <aura:attribute name="filterParentFieldName" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="mpFieldDependence" type="Map" access="global"/>
+    <aura:attribute name="headerBackgroundcolor" type="String" default="white" access="global"/>
+
+    <!--boolean to turn off the spinner if an error alert is fired-->
+    <aura:attribute name="isNoError" type="Boolean" default="true"/>
+
+    <!-- Density setting -->
+    <aura:attribute name="displayDensity" type="String"/>
+
+    <!-- For spinner -->
+    <aura:attribute name="isLoaded" type="Boolean" default="false"/>
+
+    <aura:method name="executeToggle" action="{!c.doInit}" description="ToggleHandler"/>
+    
+    <aura:handler name="SL_FL_evt_FieldEdited" event="c:SL_FL_evt_FieldEdited" action="{!c.editFieldHandle}"/>
+    <aura:handler name="selectChange" event="c:SL_evt_MultiSelect" action="{!c.updateMultiselect}"/>
+    <aura:handler name="SL_evt_LookupValue" event="c:SL_evt_LookupValue" action="{!c.UpdateLookupValue}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="force:showToast" action="{! c.refresh}" />
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    
+    <div data-automationId="ViewEditComponent" class="{!'slds-section '+(v.isShowChevronIcon ? (v.IsMainExpEnabled ? ' slds-is-open' : ' ') : ' slds-is-open ')}" >
+        <aura:if isTrue="{!!empty(v.title)}">
+            <h3 class="slds-section__title" style=" border: 0 solid transparent; ">
+                <aura:if isTrue="{!v.isShowChevronIcon}">
+                    <button aura:id="btnHeaderId" aria-controls="expando-unique-id" aria-expanded="true"  onclick="{!c.ToggleBody}"
+                        class="{!'slds-button btn slds-section__title-action '+(v.isShowChevronIcon ? (v.IsMainExpEnabled ? ' customBoRadius ' : ' ') : ' customBoRadius SL-card-header')}" 
+                        style="{!'background:'+ v.headerBackgroundcolor +' !important;'}">
+                        <aura:if isTrue="{!v.IsMainExpEnabled }">
+                            <lightning:icon iconName="utility:chevrondown" size="x-small" class="{!v.isShowChevronIcon ? 'slds-m-right_x-small ' : ' slds-hide'}" />
+                            <aura:set attribute="else">
+                                <lightning:icon iconName="utility:chevronright" size="x-small" class="{!v.isShowChevronIcon ? 'slds-m-right_x-small ' : ' slds-hide'}"/>
+                            </aura:set>
+                        </aura:if>
+                        <span class="slds-truncate slds-text-heading_small" style="font-weight: 700;" title="{!v.title}">{!v.title}</span>
+                    </button>
+                    <aura:set attribute="else">
+                        <button aura:id="btnHeaderId" aria-controls="expando-unique-id" aria-expanded="true"
+                            class="{!'slds-button btn slds-section__title-action '+(v.isShowChevronIcon ? (v.IsMainExpEnabled ? ' customBoRadius ' : ' ') : ' customBoRadius SL-card-header')}" 
+                            style="{!'background:'+ v.headerBackgroundcolor +' !important;'}">
+                            <aura:if isTrue="{!v.IsMainExpEnabled }">
+                                <lightning:icon iconName="utility:chevrondown" size="x-small" class="{!v.isShowChevronIcon ? 'slds-m-right_x-small ' : ' slds-hide'}" />
+                                <aura:set attribute="else">
+                                    <lightning:icon iconName="utility:chevronright" size="x-small" class="{!v.isShowChevronIcon ? 'slds-m-right_x-small ' : ' slds-hide'}"/>
+                                </aura:set>
+                            </aura:if>
+                            <span class="slds-truncate slds-text-heading_small" style="font-weight: 700;" title="{!v.title}">{!v.title}</span>
+                        </button>
+                    </aura:set>
+                </aura:if>
+            </h3>
+        </aura:if>
+        <aura:if isTrue="{!v.isLoaded}">
+            <div class="slds-card__body slds-section__content customPadd" style="background: white;" aria-hidden="false" id="expando-unique-id" >
+                <div>
+                    <div>
+
+                        <!-- Added this condition to make the value of displayDensity available in SL_FL_cmp_Row -->
+                        <aura:if isTrue="{!!empty(v.displayDensity)}">
+                            <aura:iteration items="{!v.fieldAPI}"
+                                            var="f"
+                                            indexVar="rowNumber"
+                                            start="0"
+                                            end="{! v.numberofColumns == 1 ? v.fieldAPI.length : (v.fieldAPI.length % 2 == 0 ? v.fieldAPI.length / 2 : v.fieldAPI.length / 2 + 1)}">
+                                
+                                <div class="slds-grid slds-wrap">
+                                    
+                                    <aura:iteration items="{!v.fieldAPI}"
+                                                    var="f"
+                                                    start="{!rowNumber * v.numberofColumns}"
+                                                    end="{!rowNumber * v.numberofColumns + v.numberofColumns}" >
+                                        
+                                        <div class="{!'slds-p-horizontal_small slds-size_1-of-' +v.numberofColumns}">    
+                                            <aura:if isTrue="{!!empty(v.sObj)}">
+                                                <c:SL_FL_cmp_Row rows="{!v.fieldInfo}"
+                                                                 col="{!f}"
+                                                                 record="{!v.sObj}"
+                                                                 isEdit="{!v.isEdit}"
+                                                                 sObjectName="{!v.ObjectName}"
+                                                                 mpFieldDependence="{!v.mpFieldDependence}" 
+                                                                 dateFormat="{!v.dateFormat}" 
+                                                                 timeFormat="{!v.timrFormat}"
+                                                                 isReadOnly="{!v.isReadOnly}"
+                                                                 decimalFldLngth = "{!v.decimalFldLngth}"
+                                                                 stdDateTimeFormat= "{!v.stdDateTimeFormat}"
+                                                                 stdDateFormat= "{!v.stdDateFormat}"
+                                                                 displayDensity= "{!v.displayDensity}" />
+                                            </aura:if>
+                                        </div>
+                                    </aura:iteration>
+                                </div>
+                            </aura:iteration>
+                        </aura:if>
+                    </div>
+                </div>
+                <aura:if isTrue="{!v.isEdit}">
+                    <div class="slds-panel__actions slds-border_top">
+                        <div class="slds-grid slds-grid_align-center">
+                            <button onclick="{!c.handleCancel}" type="button" class="slds-button slds-button_neutral">Cancel</button>
+                            <button onclick="{!c.handleSave}" type="button" class="slds-button slds-button_brand">Save</button>
+                        </div>
+                    </div>
+                </aura:if>
+            </div>
+            <aura:set attribute="else">
+                <aura:if isTrue="{!v.isNoError}">
+                    <div class="demo-only" style="height: 6rem;">
+                        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                            <span class="slds-assistive-text">Loading</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+        
+    </div>
+    <!-- </footer> -->
+    <!-- </article> -->
+    <!-- </div> -->
+</aura:component>

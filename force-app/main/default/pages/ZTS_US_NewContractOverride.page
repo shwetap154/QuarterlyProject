@@ -1,0 +1,3 @@
+<apex:page standardController="contract" extensions="ZTS_US_NewContractOverride" action="{!addRedirect}">
+             
+</apex:page>

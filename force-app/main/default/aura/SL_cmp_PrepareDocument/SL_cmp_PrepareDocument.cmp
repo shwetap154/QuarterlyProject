@@ -1,0 +1,6 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId" controller="SL_PrepareDocument">
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="isError" type="Boolean" default="false" />
+    <lightning:navigation aura:id="navigationService" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+</aura:component>

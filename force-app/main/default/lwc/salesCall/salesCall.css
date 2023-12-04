@@ -1,0 +1,237 @@
+/**
+ * Created by alexander.carstairs on 3/23/20.
+ */
+ .modal-content-override {
+    padding: 1.5rem !important;
+    padding-top: 5.5% !important;
+    padding-bottom: 5.5% !important;
+}
+
+.form-container {
+    margin-bottom: 4rem;
+}
+
+.sticky-top {
+    position: absolute;
+    z-index: 5000;
+    width: 100%;
+}
+
+.sticky-bottom {
+    position: fixed;
+    z-index: 5000;
+    bottom: 12.5%;
+    width: 100%;
+}
+
+.large-font-size {
+    font-size: 1.25rem;
+}
+
+.medium-height {
+    margin-top: 12.5%;
+    margin-bottom: 12.5%;
+}
+
+.ltng-input-fields {
+    padding-top: 0.5rem;
+    padding-right: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: 0.25rem;
+}
+
+.new-contact-form-container {
+    padding-top: 1.25rem;
+    margin-top: .5rem;
+    padding-bottom: 1rem;
+    border-top: 1px solid rgb(201, 199, 197);
+    border-bottom: 1px solid rgb(201, 199, 197);
+}
+
+.new-contact-container {
+    padding-top: 0.5rem;
+}
+
+.followup-container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.header-span {
+    padding-left: 0.385rem;
+    font-weight: bold;
+    color: rgb(93, 93, 91);
+}
+
+.followup-header {
+    border-top: 1px solid rgb(232, 232, 232);
+    border-bottom: 1px solid rgb(232, 232, 232);
+    background-color: rgb(244, 243, 241);
+}
+
+.assign-to-column {
+    width: 20%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.subject-column {
+    width: 20%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.due-date-column {
+    width: 10%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.priority-column,
+.status-column {
+    width: 15%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.followup-column {
+    width: 25%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.delete-column {
+    width: 6%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.checkbox-column {
+    padding-top: .385rem;
+    width: 14%;
+}
+
+.checkbox-field {
+    padding-left: 1.125rem;
+    padding-top: .770rem;
+    padding-bottom: .385rem;
+}
+
+
+.competitor-column {
+    width: 20%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.delete-comp-column {
+    width: 6%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.task-row {
+    border-bottom: 1px solid rgb(235, 235, 235);
+}
+
+.info-color {
+    color: white;
+    background-color: #032E61;
+}
+
+.slds-notify_container {
+    z-index: inherit;
+}
+
+.contact-buttons {
+    margin-bottom: 0.5rem;
+    padding-top: 0.5rem;
+}
+
+/*
+* below style class is added to show spinner with text
+*/
+.spins::after {
+    position: absolute;
+    content: 'Please wait while the call record is being saved..';
+    width: 100%;
+    font-size: large;
+    text-align: center;
+    top: calc(50% + 3em);
+    font-weight: bold;
+}
+
+.duplicate-content-override {
+    height: auto !important;
+    padding: 1.5rem !important;
+
+}
+
+/*
+* below style class is added to show duplicate container position margin
+*/
+.duplicate-container-override {
+    position: absolute !important;
+    margin-bottom: 4rem;
+    margin-left: 8rem;
+
+}
+
+/*
+* below style class is added to show column styling in matching record table
+*/
+.dup-contact-column {
+    width: 16.66%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+    text-align: center;
+}
+
+/*
+* below style class is added to show border and background color in matching rows
+*/
+.dup-data-row {
+    border-top: 1px solid rgb(232, 232, 232) !important;
+    border-bottom: 1px solid rgb(232, 232, 232) !important;
+    background-color: rgb(233, 228, 218) !important;
+}
+
+/*
+* below style class is added to show duplicate record table cell background color 
+*/
+.dup-data-container {
+    background-color: rgb(201, 199, 197) !important;
+}
+
+/*
+* below style class is added to set duplicate container width
+*/
+.slds-modal__container {
+    max-width: 80rem !important;
+    width: 80% !important;
+}
+
+/*
+* below style class is added to set call creation modal container footer padding bottom
+*/
+.call-modal-footer {
+    padding-bottom: 25% !important;
+
+}
+
+.slds-modal__content {
+    overflow: initial !important;
+}
+
+.eighty-percent {
+    zoom: 85%;
+}

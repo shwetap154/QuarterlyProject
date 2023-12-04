@@ -1,0 +1,31 @@
+<template>
+    <lightning-accordion> 
+        <h1 class="dt1" >{Recommended_learnings}</h1>
+        <template for:each={recomLessons} for:item="map">
+            <lightning-accordion-section class="accordion" key={map.strcompskill} name={map.strcompskill} value={map.strcompskill} label={map.strcompskill}>
+                    <div class="panel">
+                        <table class="table">
+                        <tr>
+                            <th class="heading1">{LessonSelection}</th>
+                            <th class="heading2">{LessonName}</th>
+                            <th class="heading3">{LessonDescription}</th>
+                            <th class="heading4">{LessonURL}</th>
+                        </tr>
+                        <template for:each={map.lstcompLesson} for:item="map2">
+                            <tr key={map2.recordId}>
+                                <td class="td1"><lightning-input value={map2.Name} id={map2.recordId} class="" type="checkbox" checked={map2.checked} onchange={handleChange}></lightning-input></td>
+                                <td class="td2">{map2.name}</td>
+                                <td class="td3">{map2.description}</td>
+                                <td class="td4">
+                                    <lightning-formatted-rich-text value={map2.url} >
+                                    </lightning-formatted-rich-text>
+                                </td>
+                            </tr>
+                        </template>
+                        </table>
+                        <br><br>
+                    </div>
+                </lightning-accordion-section>  
+        </template>
+    </lightning-accordion> 
+</template>

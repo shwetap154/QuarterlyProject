@@ -1,0 +1,134 @@
+<template>
+	<div>
+		<div class="comments">
+			<div class="slds-grid slds-wrap">
+				<!-- First Column: Competency Model -->
+				<div class="slds-col slds-size_1-of-3">
+					<div class="slds-form slds-form_stacked">
+						<div class="slds-form-element">
+							<lightning-combobox data-id="Competency_Model__c" label="Competency Model"
+								placeholder="Select a Competency Model" options={competencyModel}
+								value={item.Competency_Model__c} onchange={handleDataChange}>
+							</lightning-combobox>
+						</div>
+					</div>
+				</div>
+				<!-- Second Column: Competency -->
+				<div class="slds-col slds-size_1-of-3">
+					<div class="slds-form slds-form_stacked">
+						<div class="slds-form-element">
+							<lightning-combobox data-id='Competency__c' label="Competency"
+								placeholder="Select a Competency" options={competencies} value={item.Competency__c}
+								onchange={handleDataChange} disabled={disableCompetencyDropdown} required={requiredCompetencyDropdown}>
+							</lightning-combobox>
+						</div>
+					</div>
+				</div>
+				<!-- Third Column: Skills -->
+				<div class="slds-col slds-size_1-of-3">
+					<div class="slds-form slds-form_stacked">
+						<div class="slds-form-element">
+							<lightning-combobox data-id='Skill__c' label="Skills" options={SkillArr}
+								value={item.Skill__c} onchange={handleDataChange} disabled={disableSkillDropdown} required={requiredSkillDropdown}>
+							</lightning-combobox>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel">
+			<template for:each={skills} for:item="skill">
+				<div key={skill.value}>
+					<h1 class="heading">{Learning_Descriptionval} :</h1>
+					<p class="para"> {skill.learningDescription}<br><br></p>
+						<h1 class="heading">{Applying_Descriptionval} :</h1>
+						<p class="para"> {skill.applyingDescription}<br><br></p>
+							<h1 class="heading">{Mastery_Descriptionval} :</h1>
+							<p class="para"> {skill.masteryDescription}<br><br></p>
+				</div>
+			</template>
+			<!-- icon-name -->
+			<br/>
+			previousBenchMarkRating : {previousBenchMarkRating} <br/>
+			previousiCoachFormRating : {previousiCoachFormRating} <br/>
+			
+			<div class="container ">
+				
+				<div style = "position : relative;height: 32px; width: 96%; margin-left: .5%;" class = "previousScoreContainer">
+				<lightning-icon icon-name="utility:down" size="medium" alternative-text="Down Arrow"
+					class={previousiCoachFormRatingClass} ></lightning-icon>
+				<lightning-icon icon-name="utility:down" size="medium" alternative-text="Down Arrow"
+					class={previousBenchMarkRatingClass} ></lightning-icon>
+				<lightning-icon icon-name="utility:down" size="medium" alternative-text="Down Arrow"
+					class={previousiCoachandBenchRatingClass}></lightning-icon>
+					</div>
+					
+				<table class="table">
+					<tr>
+						<td>
+							<input type="range" min="1" max="9"  class="slider" data-id="Rating__c" value={item.Rating__c}  onchange={handleDataChange}>
+                        </td>
+					</tr>
+				</table>
+			</div>
+			
+			<table style="width: 96%;" class="table">
+				<colgroup>
+				 <col width = "11%" /> 
+				 <col width = "11%" /> 
+				 <col width = "11%" /> 
+				 <col width = "11%" /> 
+				 <col width = "11%" /> 
+				 <col width = "11%" /> 
+				 <col width = "11%" /> 
+				 <col width = "11%" /> 
+				 <col width = "12%" /> 
+				</colgroup>
+				<tr>
+					<td class="learning-nopadding">1</td>
+					<td class="learning-meter2">2</td>
+					<td class="learning-meter3">3</td>
+					<td class="applying-meter4">4</td>
+					<td class="applying-meter5">5</td>
+					<td class="applying-meter6">6</td>
+					<td class="mastery-meter7">7</td>
+					<td class="mastery-meter8">8</td>
+					<td class="mastery-meter9">9</td>
+				</tr>
+			</table>
+			<table style="margin-left: 1%;width: 95.4%;" class="table">
+				<tr style="width: 100%;">
+					<th class="th_Learning">{Learningval}</th>
+					<th class="th_Applying">{Applyingval}</th>
+					<th class="th_Mastery">{Masteryval}</th>
+				</tr>
+			</table>
+		</div>
+
+		<!--iconnamewithtext-->
+		<div class="icon-text">
+			<lightning-icon icon-name="utility:down" size="medium" alternative-text="Down Arrow"
+				class= {previousiCoachFormIndicatorClass} >
+			</lightning-icon>
+			<span class = {previousiCoachFormIndicatorClass}>Previous iCoach Form</span>
+			<lightning-icon icon-name="utility:down" size="medium" alternative-text="Down Arrow"
+				class= {previousBenchMarkIndicatorClass}>
+			</lightning-icon>
+			<span class = {previousBenchMarkIndicatorClass}>Previous iDevelop Benchmark</span>
+			<lightning-icon icon-name="utility:down" size="medium" alternative-text="Down Arrow"
+				class={previousiCoachandBenchIndicatorClass}>
+			</lightning-icon>
+			<span class={previousiCoachandBenchIndicatorClass}>Previous iCoach and iDevelop are same </span>
+		</div>
+		<div class="comments">
+			<div class="slds-p-around_medium lgc-bg">
+				Comments
+				<lightning-helptext label="Comments"
+					content="We aligned on the focus areas for our time. The observations we discussed as you practiced those skills were…">
+				</lightning-helptext>
+				<lightning-input-rich-text data-id="Comments__c" value={item.Comments__c} onchange={handleDataChange}></lightning-input-rich-text>
+			</div>
+		</div>
+	</div>
+</template>

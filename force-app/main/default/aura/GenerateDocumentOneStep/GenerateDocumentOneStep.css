@@ -1,0 +1,6 @@
+.THIS .spinner {
+    position: relative;
+    display: block;
+    height: 80px;
+    white-space: nowrap;
+}

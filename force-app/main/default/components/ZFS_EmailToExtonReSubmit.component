@@ -1,0 +1,40 @@
+<apex:component access="global" controller="ZFS_EmailToExtonController">
+    <apex:attribute name="LeadId" assignTo="{!shelterId}" type="Id" description="Salesforce Id of Lead"/> 
+    <style type="text/css"  >
+        .ct{
+            text-align:center;
+            font-weight: bold;
+            font-family:Arial; 
+            font-size:12px;
+        }
+    </style>   
+    <body style="font-family:Arial; font-size:11px;text-align:left;"/>
+    <apex:outputText value="{!loadData}"></apex:outputText>
+        
+    Below is basic information on the shelter/rescue that just resubmitted their ZFS application and/or supporting documents. 
+    Below is a link to their lead profile in TouchPoint that will provide full information and attachments, including their completed application and other documents that would qualify them for membership. 
+    <br/>
+    <apex:outputLink value="{!baseURL}/{!shelter.Id}">{!shelter.Shelter_Application_Number__c} - {!shelter.Shelter_Name__c}</apex:outputLink>
+    
+    <apex:outputPanel rendered="{!existingAccts != null && existingAccts.size > 0}">
+        <br/><br/>
+        Below is the list of potential duplicate accounts that already existing in TouchPoint matching on either Account Name, Account SAP#, Billing Address or Shipping Address. 
+        Please consider and verify the existing accounts before creating a new account. <br/><br/>
+        
+        <apex:dataTable value="{!existingAccts}" var="acc" border="1" cellpadding="3">
+            <apex:column headerValue="Account" headerClass="ct" style="text-align:center;font-family:Arial; font-size:11px;">
+                <apex:outputLink value="{!baseURL}/{!acc.Id}">{!acc.Name}</apex:outputLink>
+            </apex:column>
+            <apex:column headerValue="Account NARC#" headerClass="ct" style="text-align:center;font-family:Arial; font-size:11px;"  >
+                <apex:outputText value="{!acc.ZTS_US_NARC_ID__c}" />
+            </apex:column>
+            <apex:column headerValue="Primary Address" headerClass="ct" style="text-align:center;font-family:Arial; font-size:11px;">
+                <apex:outputText value="{!acc.BillingStreet},{!acc.BillingCity},{!acc.BillingState},{!acc.BillingPostalCode},{!acc.BillingCountry}" />
+            </apex:column>
+        </apex:dataTable>
+    </apex:outputPanel>
+    <br/><br/>
+    Thanks, <br/>
+    <b>Zoetis Shelters Team</b>
+    
+</apex:component>

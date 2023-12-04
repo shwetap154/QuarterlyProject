@@ -1,0 +1,63 @@
+<!--
+ - Created by jerridkimball on 2018-05-17.
+ -->
+
+<aura:component
+                description="SL_NestedTables_TableChildRow"
+                implements="c:SL_NestedTables_ITableMain"
+                extends="c:SL_NestedTables_TableRowBase"
+                >
+    <aura:attribute name="isIEbrowser2" type="Boolean" />
+    <aura:attribute name="profileAccessForObject" type="Object" />
+    <!-- - - - -->
+    <!-- Local -->
+    <!-- - - - -->
+    
+    <tr class="{!v.isIEbrowser2 ? ' no-table-child ':' no-table-child slds-grid' }" tabindex="0">
+        <!--  <td class="slds-shrink" data-label="Icon1"> -->
+        <!--<span class="slds-hidden">-->
+        <!--<a href="javascript:void(0);">-->
+        <!--<lightning:icon iconName="utility:chevronright" size="xx-small" title="" alternativeText="" />-->
+        <!--</a>-->
+        <!--</span>-->
+        <!-- </td> -->
+        
+        <aura:iteration items="{!v.fieldMap}" var="fldR" indexVar="index">
+            <td
+                data-label="{!fldR.label}"
+                style="{!'vertical-align: top; '+ (fldR.fieldType == 'ICON' ? ' padding-left:0; padding-right : 0;' : '') + if(or(fldR.fieldType == 'STRING', fldR.fieldType == 'TEXTAREA'),' white-space: normal;','')}"
+                class="{!'slds-truncate slds-size_' + fldR.columnWidth + '-of-12'}"
+                >
+                
+                <!--  class="{!'slds-truncate ' + if(equals(sub(v.fieldMap.length,1),index),'slds-grow','slds-size_' + fldR.columnWidth + '-of-12')}" -->
+                <c:SL_NestedTables_DynamicTableCell currentField="{#fldR}" currentRecord="{#v.currentRecord.record}"/>
+                
+            </td>
+        </aura:iteration>
+        <td class="" role="" data-label="Actionbutton" style="Width:8.333%;" >
+            <aura:if isTrue="{! or( v.mainEnableEditButton, v.mainEnableDeleteButton )}">
+                <aura:if isTrue="{!or(v.currentRecord.record.UserRecordAccess.HasDeleteAccess,v.currentRecord.record.UserRecordAccess.HasEditAccess)}">
+                    <aura:if isTrue="{!or(v.profileAccessForObject.isEditable,v.profileAccessForObject.isDeletable)}">
+                        <lightning:buttonMenu
+                                              iconSize="x-small"
+                                              iconName="utility:down"
+                                              alternativeText="Settings"
+                                              onselect="{!c.handleSelect}"
+                                              menuAlignment="right"
+                                              >
+                            <!-- Added by Divyansh as per LIB-615, as AccountCOntactRealtion doesn't have any association with userRecordAccess, so we are not checking that condtion only for this object -->
+                            <aura:if isTrue="{!and(and(v.mainEnableEditButton, v.currentRecord.record.UserRecordAccess.HasEditAccess),v.profileAccessForObject.isEditable)}">
+                                <lightning:menuItem label="Edit" value="edit" iconName="utility:edit" 
+                                                    disabled="{!not(and(v.mainEnableEditButton, v.currentRecord.record.UserRecordAccess.HasEditAccess))}"/>
+                            </aura:if>
+                            <aura:if isTrue="{!and(and(v.mainEnableDeleteButton,v.currentRecord.record.UserRecordAccess.HasDeleteAccess),v.profileAccessForObject.isDeletable)}">
+                                <lightning:menuItem label="Delete" value="delete" iconName="utility:delete" 
+                                                    disabled="{!not(and(v.mainEnableDeleteButton,v.currentRecord.record.UserRecordAccess.HasDeleteAccess))}"/>
+                            </aura:if>
+                        </lightning:buttonMenu>
+                    </aura:if>
+                </aura:if>
+            </aura:if>
+        </td>
+    </tr>
+</aura:component>

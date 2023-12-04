@@ -1,0 +1,22 @@
+<aura:component access="global">
+  <aura:attribute name="label" type="String" access="global" />
+  <aura:attribute name="imageSrc" type="String" access="global" />
+  <aura:attribute name="active" type="Boolean" default="false" access="global" />
+  <aura:attribute name="isPhone" type="Boolean" default="false" access="global" />
+
+  <aura:registerEvent name="Communities_SpeciesFilter_EV" type="c:Communities_SpeciesFilter_EV" />
+
+  <div class="custom-filter-icon slds-box_x-small slds-text-align_center" aura:id="speciesContainer" onclick="{!c.mouseClick}">
+    <aura:renderIf isTrue="{!!v.isPhone}">
+      <p class="{!v.active ? 'custom-text custom-filter-selected' : 'custom-text custom-filter-default'}">
+        {!v.label}
+      </p>
+      <img src="{!v.imageSrc}" class="custom-image" />
+    </aura:renderIf>
+    <aura:renderIf isTrue="{!v.isPhone}">
+      <p class="{!v.active ? 'custom-text custom-filter-selected' : 'custom-text custom-filter-default-phone'}">
+        {!v.label}
+      </p>
+    </aura:renderIf>
+  </div>
+</aura:component>

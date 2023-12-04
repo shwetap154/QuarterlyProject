@@ -1,0 +1,70 @@
+<apex:component id="salesCallOrder" controller="ZTS_EU_SalesCallOrderController" allowDML="true" >
+     <style>
+        body input[type="submit"], body .pbButton .btn, body .pbButtonb .btn, body input.btn, body .menuButton, 
+        .slds-vf-scope input[type="submit"], .slds-vf-scope .pbButton .btn, .slds-vf-scope .pbButtonb .btn, .slds-vf-scope input.btn, .slds-vf-scope .menuButton
+        {
+            margin-top: 3px;
+        }
+    </style>
+    <apex:stylesheet value="{!$Resource.OrderCall}"/>
+    <apex:pageBlock title="{!$Label.Orders}" rendered="true" id="addOrder">
+        <apex:pageBlockSection columns="1" rendered="{!(orders != null && orders.size > 0)}">
+            <apex:dataTable value="{!orders}" var="order">
+                <apex:column value="{!order.Name}" headerValue="{!$Label.Order}"/> 
+                <apex:column value="{!order.ZTS_EU_Fulfillment_Date__c}" headerValue="{!$ObjectType.Orders__c.Fields.ZTS_EU_Fulfillment_Date__c.Label}"/> 
+                <apex:column value="{!order.Product__c}" headerValue="{!$ObjectType.Orders__c.Fields.Product__c.Label}"/> 
+                <apex:column value="{!order.ZTS_EU_Dealer_Distributor__c}" headerValue="{!$Label.Distributor}" /> 
+                <apex:column value="{!order.List_Price__c}" headerValue="{!$ObjectType.Orders__c.Fields.List_Price__c.Label}"/> 
+                <apex:column value="{!order.Sales_Price__c}" headerValue="{!$ObjectType.Orders__c.Fields.Sales_Price__c.Label}"/> 
+                <apex:column value="{!order.Quantity__c}" headerValue="{!$Label.Units}"/> 
+                <apex:column value="{!order.Total__c}" headerValue="{!$ObjectType.Orders__c.Fields.Total__c.Label}"/> 
+                <apex:column headerValue="{!$Label.Action}">
+                   <apex:commandButton value="{!$Label.Edit}" action="{!editOrder}" reRender="addOrder">
+                        <apex:param value="{!order.Id}" assignTo="{!selectedOrderId}" name="oNo"/>
+                   </apex:commandButton>
+               </apex:column>
+               <apex:column styleClass="removeColumn" headerValue="{!$Label.Remove}">
+                   &nbsp;&nbsp;&nbsp;
+                   <apex:commandLink value="X" action="{!removeOrder}" styleClass="removeLink">
+                        <apex:param value="{!order.Id}" assignTo="{!selectedOrderId}" name="pNo"/>
+                   </apex:commandLink>
+               </apex:column>
+            </apex:dataTable> 
+        </apex:pageBlockSection>
+        <table>
+            <tr>
+                <td>
+                    <apex:commandLink value="{!$Label.AddOrder}" id="orderLink" styleClass="changeColor" reRender="addOrder" action="{!addOrderRow}"/>
+                </td>
+            </tr>
+        </table>
+        <apex:pageBlockSection id="orders" columns="1" rendered="{!addOrderClicked}">
+            <apex:dataTable value="{!newOrder}" var="newOrder">
+                <apex:column headerValue="{!$ObjectType.Orders__c.Fields.ZTS_EU_Fulfillment_Date__c.Label}">     
+                    <apex:inputField value="{!newOrder.ZTS_EU_Fulfillment_Date__c}"/>
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.Orders__c.Fields.Product__c.Label}">
+                    <apex:inputField value="{!newOrder.Product__c}">
+                        <apex:actionSupport event="onchange" action="{!getListPriceForProduct}" reRender="LP" />
+                    </apex:inputField>
+                </apex:column>
+                <apex:column headerValue="{!$Label.Distributor}">
+                    <apex:inputField value="{!newOrder.ZTS_EU_Dealer_Distributor__c}"/>
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.Orders__c.Fields.List_Price__c.Label}">
+                    <apex:outputText value="{!IF(listPrice != null && listPrice > 0, listPrice, '0.00')}" id="LP"/>
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.Orders__c.Fields.Sales_Price__c.Label}">
+                    <apex:inputField value="{!newOrder.Sales_Price__c}"/>
+                </apex:column>
+                <apex:column headerValue="{!$Label.Units}">
+                    <apex:inputField value="{!newOrder.Quantity__c}"/> 
+                </apex:column>
+                <apex:column headerValue="{!$Label.Action}">
+                    <apex:commandButton value="{!$Label.Save}" action="{!addNewOrder}" title="{!$Label.Save}" id="btnSave"/>
+                    <apex:commandButton value="{!$Label.Cancel}" action="{!clearOrder}" title="{!$Label.Cancel}" id="btnCancel" styleClass="margin-top: 3px;Important" />
+                </apex:column>
+            </apex:dataTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:component>

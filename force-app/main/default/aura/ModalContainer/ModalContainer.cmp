@@ -1,0 +1,31 @@
+<!--
+ - Created by alexander.carstairs on 3/20/20.
+ - Updated by Aritra (Cognizant) on 04/12/2021
+ -->
+ <aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="SalesCallLWCController">
+    <aura:attribute name="isInternationalUser" type="boolean" default="false" />
+    <!-- Used to override the modal styling to increase the height and width of the modal -->
+     <aura:html tag="style">
+        .slds-modal__container {
+        padding: 0 !important;
+        width: 75% !important;
+        max-width: 100% !important;
+        }
+        .slds-modal__content {
+        height: 75% !important;
+        max-height: 100% !important;
+        padding: 0 !important;
+        }
+        .cuf-content {
+        padding: 0 !important;
+        }  
+    </aura:html>
+    
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+        <aura:if isTrue="{!v.isInternationalUser}">
+    	<c:salesCallINTL recordId="{!v.recordId}" onclose="{!c.closeChildLWC}"></c:salesCallINTL>
+            <aura:set attribute="else">
+                <c:salesCall recordId="{!v.recordId}" onclose="{!c.closeChildLWC}"></c:salesCall>
+            </aura:set>
+        </aura:if>
+</aura:component>

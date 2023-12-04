@@ -1,0 +1,33 @@
+<aura:component controller="SL_RxNewCaseController">
+
+    <aura:attribute name="objCase" type="Object"/>
+    <aura:attribute name="showCMP" type="boolean" default="false"/>
+    <aura:attribute name="displayCaseComponent" type="boolean" />
+    <aura:attribute name="activeSectionName" type="List"/>
+    <aura:attribute name="rows" type="Map[]"/>
+    <aura:attribute name="cols" type="Map[]"/>
+
+    <aura:handler event="c:NewCaseReset" action="{!c.onNewCaseReset}"/>
+    <aura:handler name="change" value="{!v.objCase.AccountId}" action="{!c.fectchSAPIDs}"/>
+    <aura:handler name="change" value="{!v.objCase.isSAPNumber}" action="{!c.fectchSAPIDs}"/>
+    
+    <!-- Table display -->
+    <aura:if isTrue="{!v.showCMP}">
+        <lightning:card title="SAP Numbers" iconName="standard:location">
+            <lightning:datatable aura:id="sapList"
+                                 data="{!v.rows}"
+                                 columns="{!v.cols}"
+                                 keyField="Id"
+                                 hideCheckboxColumn="false"
+                                 showRowNumberColumn="true"
+                                 maxRowSelection="1"
+                                 onrowselection="{!c.selectSAPNumber}" />
+                
+            
+        </lightning:card>
+            <aura:set attribute="else">
+                No related SAP IDs found.
+            </aura:set>
+    </aura:if>
+
+</aura:component>

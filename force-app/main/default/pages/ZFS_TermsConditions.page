@@ -1,0 +1,31 @@
+<apex:page standardController="Lead" showChat="false" showHeader="false" cache="false" title="Terms & Conditions" >
+    <!-- Begin Default Content REMOVE THIS -->
+    <style type="text/css">
+        .individualPalette .leadBlock .tertiaryPalette{
+        background-color:#0096AF !important;
+        }
+        .individualPalette .leadBlock .secondaryPalette {
+        border-color:#0096AF !important;
+        }
+        body .bEditBlock .pbBody .pbSubheader{
+        background-image:none !important;
+        color:#ffffff !important;
+        }
+        .requiredLegend{
+        color:#ffffff !important;
+        }
+        body{
+        font-size: 80% !important;
+        }
+    </style>
+    <center>
+        <apex:form style="width: 95%; text-align:justify;">
+            <apex:pageBlock >
+                <center><h1 style="font-size:15px;color:#1696ad;">TERMS &amp; CONDITIONS</h1></center>
+                <br/><br/>
+                Under the terms of this agreement, Zoetis for Shelters agrees to provide enrolled accounts significant discount pricing on vaccines and pharmaceutical products once an account has been reviewed and approved. Accounts will be eligible for shelter discount pricing once they have completed the enrollment process. Zoetis for Shelters reserves the right to limit purchases of these products. All organizations in this program must be not for profit (NPO) and have a Veterinarian of Record. The organization represents and warrants that all purchases made pursuant to this agreement are intended for its own use for dogs and cats in the shelter only, and not for use in or resale to other shelters, veterinarians, veterinary clinics or Internet pharmacies or for its own clinic that provides veterinary services to the general public. The organization further represents and warrants that all information provided is accurate to the best of their knowledge. By registering for the Zoetis for Shelters program, you agree to receive email messages that will be used to provide important service updates and occasional special offers from Zoetis for Shelters.
+                <br/><br/><br/>
+            </apex:pageBlock>
+        </apex:form>
+    </center>
+</apex:page>

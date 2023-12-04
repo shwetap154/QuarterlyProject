@@ -1,0 +1,124 @@
+/*Caledar div properteis */ 
+        #calendar{
+            width: 800px;
+            margin-left: 200px;
+            margin-top: 5px;
+        }
+        
+        /* Styles for event and call div  */
+       .backGroundStyle{
+           
+            width :80px;
+            margin-top: 50px;
+            margin-left: 30px;
+            display: block;
+            font-size: .85em;
+            line-height: 1.3;
+            border-radius: 3px;
+            border: 1px solid #3a87ad;
+            background-color: #3a87ad;
+            font-weight: normal;
+            color: #fff;
+            position:fixed;
+           
+       }
+       
+       /*Date picker coming behind pop up, to avoid datepicker z-index has chged  */
+       .datePicker,.helpText {
+            z-index: 9999;/*Changed this css property which was 100 prior*/
+            position: absolute;
+            
+        }
+        
+       /*To display pop up screen  */
+       .custPopup{
+            background-color: white;
+            border-width: 2px;
+            border-style: solid;
+            z-index: 9998;
+            left: 30%;
+            padding:10px;
+            position: absolute;
+            /* These are the 3 css properties you will need to change so the popup 
+            displays in the center of the screen. First set the width. Then set 
+            margin-left to negative half of what the width is. You can add 
+            the height property for a fixed size pop up if you want.*/
+            margin-left: -200px;
+            top:100px;
+            
+            
+        }
+        
+        /*To disable pop up background  */
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9997;
+        }
+        .dateInput dateOnlyInput{
+            position: absolute;
+            z-index: 9998;
+            left: 30%;
+        
+        }
+        
+        /*To display X (Close) button */
+        .myButton {
+            -moz-box-shadow:inset 0px 1px 0px 0px #f5978e;
+            -webkit-box-shadow:inset 0px 1px 0px 0px #f5978e;
+            box-shadow:inset 0px 1px 0px 0px #f5978e;
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f24537), color-stop(1, #c62d1f));
+            background:-moz-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+            background:-webkit-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+            background:-o-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+            background:-ms-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+            background:linear-gradient(to bottom, #f24537 5%, #c62d1f 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f24537', endColorstr='#c62d1f',GradientType=0);
+            background-color:#f24537;
+            -moz-border-radius:6px;
+            -webkit-border-radius:6px;
+            border-radius:6px;
+            border:1px solid #d02718;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:arial;
+            font-size:9px;
+            font-weight:bold;
+            padding:3px 12px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #810e05;
+            float: right;
+        }
+        .myButton:hover {
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #c62d1f), color-stop(1, #f24537));
+            background:-moz-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+            background:-webkit-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+            background:-o-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+            background:-ms-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+            background:linear-gradient(to bottom, #c62d1f 5%, #f24537 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#c62d1f', endColorstr='#f24537',GradientType=0);
+            background-color:#c62d1f;
+        }
+        .myButton:active {
+            position:relative;
+            top:1px;
+        }
+		.sendEmailButton{
+            float: right;
+            margin-right: 210px;
+            margin-top: 30px;
+        }
+		/*Chaging colors for saturday and sunday in full calendar */
+        .fc-sat,.fc-sun { background-color:#F5FFEB !important; } 
+        
+		/*IP 29-Jan-15 Holiday css*/
+        .holiday {
+            background:#3DD987 !important;
+        }

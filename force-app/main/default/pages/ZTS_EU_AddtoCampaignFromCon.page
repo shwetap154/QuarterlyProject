@@ -1,0 +1,25 @@
+<apex:page standardController="Contact" extensions="ZTS_EU_AddtoCampaignFromConController" tabStyle="Contact" id="myPage" LightningStyleSheets="true">
+  
+
+    <apex:form id="frm">
+        <apex:pageBlock id="pb"  title="Select Campaign record :">
+            <apex:pageBlocksection id="TopSection" columns="1" collapsible="false" >
+                <apex:pageBlockSectionItem id="pbsi">
+                    <apex:outputLabel value="Selected Campaign : "/>
+                    <apex:outputPanel >
+                        <apex:inputField value="{!conCamp.ZTS_EU_Campaign_for_Contact__c}"/>
+                    </apex:outputPanel>
+                    
+                </apex:pageBlockSectionItem>
+                
+                
+            </apex:pageBlocksection>
+            <apex:pageBlockButtons location="bottom">
+            <apex:commandButton action="{!addConCampaign}" value="Add"/>
+           
+            <apex:commandButton action="/{!conCampId}" value="Cancel" immediate="true" />
+            
+          </apex:pageBlockButtons>
+        </apex:pageBlock>  
+    </apex:form>
+</apex:page>

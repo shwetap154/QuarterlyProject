@@ -1,0 +1,101 @@
+.validation{ 
+  background: #c51244 !important;
+  padding: 10px !important;
+  border-radius: 0 !important;
+  position: relative; 
+  display: inline-block !important;
+  box-shadow: 1px 1px 1px #aaaaaa;
+  margin-top: 10px;
+}
+.checkbox{
+    text-align: center;
+    background:lightgrey;
+}
+
+.zs_instruction_blk{
+  background: #DEDEDE;
+}
+.zs_instruction_blk p{
+  padding: 10px;
+  font-size: 14px;
+  font-family: "GothamNarrow";
+  letter-spacing: 0.121875px;
+  color: #000;
+}
+.zs_co_entry_title{
+  letter-spacing: 0.121875px;
+  text-transform: capitalize;
+  color: #005670;
+  font-size: 18px;
+}
+
+.zs_company_card, .zs_order_card{
+  border: 0;
+  background: #DEDEDE;
+  box-shadow: 0px 4px 2px rgb(0 0 0 / 25%);
+  border-radius: 0;
+}
+.zs_company_card h2, .zs_order_card h2, .zs_shipping_doc h2, .zs_attachments_card h2{
+  font-family: GothamNarrow;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.121875px;
+  color: #005670;
+}
+.zs_orderdetails_table tbody{
+  background: #dedede;
+}
+.zs_orderdetails_table tr th{
+  background: #005670;
+  color: #fff;
+  text-align: center;
+  font-family: "GothamNarrow";
+  text-transform: capitalize;
+  letter-spacing: 0.121875px;
+  font-size: 13px;
+  font-weight: normal;
+  border-right: .5px solid #d8d8d8;
+}
+.zs_orderdetails_table tr th div{
+  padding:5px;
+}
+.zs_moreinfo_title{
+  line-height: 24px;
+  letter-spacing: 0.121875px;
+  color: #080D1C;
+  font-family: "GothamNarrow";
+  font-size: 15px;
+}
+.zs_shipping_doc{
+  border: 0;
+  background: #dedede;
+}
+.zs_shipping_table_wrap{
+  width: 75%;
+  margin: 0 auto;
+}
+.zs_shipping_table_wrap table tr th div{
+  font-family: GothamNarrow;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0.121875px;
+  color: #585858;
+  text-transform: capitalize;
+}
+.zs_attachments_card{
+  border: 0;
+  background: #dedede;
+}
+.zs_attachments_table_wrap{
+  width: 75%;
+  margin: 0 auto;
+}
+.zs_attachments_table_wrap table tr th div{
+  font-family: GothamNarrow;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0.121875px;
+  color: #585858;
+  text-transform: capitalize;
+  
+}

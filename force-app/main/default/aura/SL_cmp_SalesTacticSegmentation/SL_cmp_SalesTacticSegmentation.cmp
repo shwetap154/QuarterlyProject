@@ -1,0 +1,69 @@
+<aura:component controller="SL_SalesTacticSegmentationController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+	
+    <aura:attribute name="lstSegmentaionData" type="List" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div class="slds-card slds-card_boundary related_list_card_border_top forceRelatedListPreviewAdvancedGrid">
+        <div class="related_list_themed_border_top" />
+        <div class="slds-page-header forceListViewManagerHeader slds-grid">
+            <div class="slds-col slds-has-flexi-truncate">
+            	<h2 class="slds-page-header__title listViewTitle">Sales Tactic</h2>
+            </div>
+            <lightning:buttonIcon iconName="utility:refresh" variant="border-filled" 
+                                  size="medium" alternativeText="Refresh" onclick="{!c.doInit}" />
+        </div>
+        <table class="slds-table slds-table_bordered slds-table_striped slds-table_cell-buffer slds-table_fixed-layout">
+            <lightning:spinner aura:id="mySpinner" />
+            <thead>
+                <tr class="slds-text-heading_label">
+                    <th scope="col">
+                    </th>
+                    <th scope="col">
+                       {!$Label.c.Rating}
+                    </th>
+                    <th scope="col">
+                       {!$Label.c.Potential_Value}
+                    </th>
+                    <th scope="col">
+                       {!$Label.c.Sales}
+                    </th>
+                    <th scope="col">
+                       {!$Label.c.Penetration}
+                    </th>
+                    <th scope="col">
+                       {!$Label.c.Sales_tactic}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <aura:iteration items="{!v.lstSegmentaionData}" var="SegmentationData">
+                    <tr>
+                        <th scope="row">
+                            {!SegmentationData.BusinessUnit}
+                        </th>
+                        <td scope="row">
+                            {!SegmentationData.Rating}
+                        </td>
+                        <td scope="row">
+                            <lightning:formattedNumber value="{!SegmentationData.Potential}" 
+                                                       style="currency"
+                                                       maximumFractionDigits="2" />
+                        </td>
+                        <td scope="row">
+                            <lightning:formattedNumber value="{!SegmentationData.Sales}" 
+                                                       style="currency"
+                                                       maximumFractionDigits="2" />
+                        </td>
+                        <td scope="row">
+                            <lightning:formattedNumber value="{!SegmentationData.Penetration}" style="percent"/>
+                        </td>
+                        <td scope="row">
+                            {!SegmentationData.SalesTactic}
+                        </td>
+                    </tr>
+            	</aura:iteration>
+            </tbody>
+        </table>
+    </div>
+</aura:component>

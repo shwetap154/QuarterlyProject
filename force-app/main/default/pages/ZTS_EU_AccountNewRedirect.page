@@ -1,0 +1,4 @@
+<apex:page standardController="Account" extensions="ZTS_EU_AccountRedirect" action="{!accRedirect}">
+  
+
+</apex:page>

@@ -1,0 +1,23 @@
+<template>
+    <lightning-card variant="narrow" icon-name="utility:note">
+        <h1 slot="title">Account Notes</h1>
+        <div slot="actions">
+        </div>
+        <template if:true={accountAlt}>
+            <ul class="alert-list">
+                <template for:each={accountAlt} for:item="alert">
+                    <li key={alert.Id} class="alert-item">
+                        <div class="alert-details">
+                            <div><b>Alert Note:</b> {alert.Account_Alert__c}</div>
+                            <div><b>Created Date:</b> {alert.CreatedDate}</div>
+                            <div><b>Created By:</b> {alert.CreatedBy.Name}</div>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        <template if:true={error}>
+            <div>Error fetching records: {error}</div>
+        </template>
+    </lightning-card>
+</template>

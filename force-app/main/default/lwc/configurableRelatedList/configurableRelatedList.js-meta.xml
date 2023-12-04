@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+    <targetConfigs>
+            <targetConfig targets="lightning__RecordPage">
+                <supportedFormFactors>
+                    <supportedFormFactor type="Small" />
+                    <supportedFormFactor type="Large" />
+                </supportedFormFactors>
+                <property name="displayedName" type="String" label="Displayed Name"  description="Name to be displayed on the Related List" />
+                <property name="listIcon" type="String" label="Icon to be displayed"  description="To selecte the icon go to https://www.lightningdesignsystem.com/icons/ and use 'the category of the icon' + ':' + 'the name of the icon' and then put it on this field a.i. standard:topic" />
+                <property name="customMetadataName" type="String" label="Custom Metadata Type Name" placeholder="Name of Custom Metadata Type" description="Custom Metadata Type being use to make the queries" required="true"/>
+                <property name="maxNumberRecords" type="Integer" label="Max. Number of Records Display"  description="Number of records you want to be displayed on the related list" required="true"/>
+                <property name="showsNameColumn" type="Boolean" label="Display Name Column"  description="In case Name column is not needed for display it can be removed. Such as when the name Column is an auto number." default="true" />
+                <property name="showCreateButton" type="Boolean" label="Adds Create Button to Column"  description="In case Create button is not need for display it can be removed." default="true" />
+                <property name="showsEditButton" type="Boolean" label="Adds Edit Button to Column"  description="In case Edit button is not need for display it can be removed." default="true" />
+                <property name="showDeleteButton" type="Boolean" label="Adds Delete Button to Column"  description="In case Delete button is not need for display it can be removed." default="true" />
+            </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

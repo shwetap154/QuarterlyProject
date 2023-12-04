@@ -1,0 +1,4 @@
+<apex:page standardController="ZTS_EU_Affiliations__c" extensions="AccountContactAffiliationListController" 
+                    recordSetVar="accountContactAffiliations" action="{!doAffiliateExistingContact}">
+    <apex:pageMessages />
+</apex:page>

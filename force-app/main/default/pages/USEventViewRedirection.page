@@ -1,0 +1,3 @@
+<apex:page StandardController="Event" extensions="USEventRedirectionController" action="{!viewRedirect}"> 
+
+</apex:page>

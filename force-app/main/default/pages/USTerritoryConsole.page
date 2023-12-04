@@ -1,0 +1,287 @@
+<!--  
+ * Page Name    : TerritoryConsole
+ * Description  :  Territory Management related Activity Console.
+ *                
+ *      
+ * Created By   : Deloitte Consulting/ Raghu
+ * Created Date : 25 April 2014.
+ *
+ * Modification Log:  
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ * Developer                Date               Description 
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ * Raghu                   04/25/2014           Created
+-->
+<apex:page controller="ZTS_US_TerritoryConsoleController" extensions="ZoetisSettingsControllerExtension" sidebar="false" tabStyle="Territory_Console__tab" LightningStyleSheets="True">
+<style>
+ .loading-icon{
+  background-image: url('../img/loading32.gif');
+   width:18px;
+   background-repeat: no-repeat;
+   }
+   .modal {
+    /* some styles to position the modal at the center of the page */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    line-height: 200px;
+    height: 200px;
+    margin-left: -150px;
+    margin-top: -100px;
+    background-color: #f1c40f;
+    text-align: center;
+    border-radius: 5px;
+   
+    /* needed styles for the overlay */
+    z-index: 10; /* keep on top of other elements on the page */
+    box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
+ }
+</style>
+  <apex:sectionHeader title="{!$Label.ZTS_EU_TerritoryConsole}">
+  <!-- Page Message -->
+  <apex:panelgrid columns="1" width="75%">
+  <apex:pageMessages id="msgs" />
+  <apex:pageMessages id="msgs2" />
+  
+  </apex:panelgrid>
+  </apex:sectionHeader>
+  <apex:outputPanel id="terrPanel"> 
+  <apex:actionStatus id="status">
+      <apex:facet name="start">
+          <div>
+            Creating Territory records <img src="../img/loading32.gif" width="18px"></img>
+          </div>
+      </apex:facet>
+  </apex:actionStatus>
+  
+  <apex:actionStatus id="loading">
+      <apex:facet name="start">
+          <div>
+            Processing Request .. <img src="../img/loading32.gif" width="18px"></img>
+          </div>
+      </apex:facet>
+  </apex:actionStatus>
+  
+    <apex:actionStatus id="updatestatus">
+        <apex:facet name="start">
+              <div>
+               Updating Custom Status<img src="../img/loading32.gif" width="18px"></img>
+              </div>
+          </apex:facet>
+    </apex:actionStatus>
+    <div id="ut_load" style="display:none">Creating User Territory <img src="../img/loading32.gif" width="18px" alt="loading-icon" /></div>
+  <apex:panelgrid columns="2" width="75%"> 
+    <apex:pageBlock >
+   
+      <apex:pageBlockSection title="Territories Results" columns="1"   >
+        <apex:pageBlockSectionItem >
+          <image src="../img/samples/flag_yellow.gif">
+          </image>
+          {!$Label.ZTS_EU_TerritoryConsoleTotalCount} : {!totalTerrCount}
+          <br/>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+          {!$Label.ZTS_EU_TerritoryConsoleSyncCount} : {!totalTerrCount-unAssignedTerrCount}
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+          <apex:panelGroup >
+          <apex:form ><!-- oncomplete="UpdateCustomTerrStatusCtrl();" -->
+           <apex:actionFunction name="CreateStdTerritorityCtrl" action="{!createStdTerrFromCustomTerritory}" oncomplete="UpdateCustomTerrStatusCtrl();" rerender="msgs,terrPanel" status="status"></apex:actionFunction>
+           <apex:actionFunction name="UpdateCustomTerrStatusCtrl" action="{!updateCustomTerrAssignedStatus}"  rerender="msgs2,terrPanel" status="updatestatus"></apex:actionFunction>
+           
+            </apex:form>
+            {!$Label.ZTS_EU_TerritoryConsoleUnSyncCount} :{!unAssignedTerrCount}
+            &nbsp;&nbsp;
+            <apex:outputLink rendered="{!unAssignedTerrCount >0}" onclick="CreateStdTerritorityCtrl(); return false;"> {!$Label.ZTS_EU_TerritoryConsoleSync}
+            </apex:outputLink>  
+            
+          </apex:panelGroup>
+        </apex:pageBlockSectionItem>
+         <apex:pageBlockSectionItem >
+        </apex:pageBlockSectionItem>
+      </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    <!-- User Territory Block -->
+    <apex:pageBlock >
+      <apex:pageBlockSection title="Users Territory Results" columns="1" >
+          <apex:pageBlockSectionItem >
+            <image src="../img/group_event.gif"/>
+            {!$Label.ZTS_EU_TerritoryConsoleTUserCount} :{!totalUsrTerrCount} 
+            <br/>
+          </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+          {!$Label.ZTS_EU_TerritoryConsoleTAssignUser} : {!totalUsrTerrCount - totalUnassignedUsrTerrCount}
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:panelGroup >
+               {!$Label.ZTS_EU_TerritoryConsoleUnAssignUser} : {!totalUnassignedUsrTerrCount} 
+                &nbsp;&nbsp;<!-- {!totalUnassignedUsrTerrCount > 0} -->
+                <apex:outputlink rendered="{!totalUnassignedUsrTerrCount > 0}" onclick="return addUsertoTerritory();">{!$Label.ZTS_EU_TerritoryConsoleSync}
+                </apex:outputlink> 
+               
+        </apex:panelGroup>
+    </apex:pageBlockSectionItem>
+      <apex:pageBlockSectionItem >
+      
+      <apex:form >
+                <apex:commandLink action="{!userTerrRemoval}" rerender="msgs" status="loading">User Territory Removal
+                </apex:commandlink>  |&nbsp;
+                
+                <apex:commandLink action="{!closeJobs}" rerender="msgs" status="loading">CloseJobs 
+                </apex:commandlink>
+              </apex:form>
+      </apex:pageBlockSectionItem>
+  </apex:pageBlockSection>
+  </apex:pageBlock>
+  </apex:panelgrid>
+  
+  <!-- Notification Settings -->
+      <div id="notification_setting">
+      <apex:panelGrid columns="1" width="75%">
+         <apex:form id="notification_form">
+      <apex:pageBlock >
+      <apex:pageBlockButtons location="bottom">
+       
+         <apex:commandButton action="{!updateSettings}" value="Update" rerender="msgs,notification_form" status="loading"/>
+     </apex:pageBlockButtons>
+        <apex:pageBlockSection title="{!$Label.ZTS_Notification_Settings}" columns="2">
+            <apex:pageBlockSectionItem >
+     <apex:outputLabel for="mass_align_notify" value="{!$ObjectType.ZTS_Settings__c.fields.ZTS_Mass_Alignment_Email_Notification__c.label}">
+         &nbsp;<img src="../img/func_icons/util/mailCloseEnv16.gif" alt="email-icon"/>
+                </apex:outputLabel>
+        <apex:inputField id="mass_align_notify" value="{!zoetisSettings.ZTS_Mass_Alignment_Email_Notification__c}"/>
+                </apex:pageBlockSectionItem>
+            
+             <apex:pageBlockSectionItem >
+     <apex:outputLabel for="mass_align_notify" value="{!$ObjectType.ZTS_Settings__c.fields.ZTS_VMIPS_Case_Task_Notification__c.label}">
+         &nbsp;<img src="../img/func_icons/util/mailCloseEnv16.gif" alt="email-icon"/>
+                </apex:outputLabel>
+        <apex:inputField id="mass_align_notify" value="{!zoetisSettings.ZTS_VMIPS_Case_Task_Notification__c}"/>
+                </apex:pageBlockSectionItem>
+       </apex:pageBlockSection>
+      </apex:pageBlock>
+        </apex:form>
+  </apex:panelGrid>
+  </div>
+  <!-- ListViews panel -->
+            <apex:panelGrid columns="2" width="100%" styleclass="zts_EU">
+                <div class="set1">
+                    <apex:enhancedList type="ZTS_EU_Territory__c" customizable="false" height="350"></apex:enhancedList>
+                </div>
+                <div class="euPosition">
+                    <apex:enhancedList type="ZTS_EU_Position__c" customizable="false" height="350" width="140"></apex:enhancedList>
+                </div>
+            </apex:panelGrid>
+        </apex:outputPanel>
+       
+
+  
+  <script type="text/javascript"> 
+   var intervalTime=4000;
+   var poller;
+   
+   function show(ele_id){
+   document.getElementById(ele_id).style.display='';
+   }
+   
+    function hide(ele_id){
+   document.getElementById(ele_id).style.display='none';
+   }
+   
+   function addUsertoTerritory(){
+   Visualforce.remoting.timeout = 120000; // Set timeout at page level
+   Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ZTS_US_TerritoryConsoleController.addUserToTerritory}',
+            batchHandler
+        ); 
+        return false;
+   }
+   
+   
+   function doCheckStatus(jobId,batchId){
+    var s='check';
+    // remote call to checks status of batch
+     // console.log('Polling started ...');
+        Visualforce.remoting.timeout = 120000; // Set timeout at page level
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ZTS_US_TerritoryConsoleController.checkStatus}',
+            jobId,batchId, 
+            batchStatusHandler
+        );    
+   }
+    
+    function batchHandler(result,event){
+        if(event.status && event.type!=='exception'){
+          if(result[0].batchInfoMap!=='undefined' && result[0].batchInfoMap['jobId']!==''){
+             var jobId=result[0].batchInfoMap['jobId'];
+             var batchId=result[0].batchInfoMap['id'];
+             show('ut_load');
+             //do poll to check status
+             //console.log('JobId : batchId',jobId,batchId);
+             poller=setInterval(doCheckStatus(jobId,batchId),intervalTime);
+            // console.log('Polling started poller id: '+poller);
+         }
+      }
+      else{
+          alert('Add UserToTerritory Remote Request Failed : '+event.message);
+         }
+     }
+   
+   function batchStatusHandler(result,event){
+       // console.log(' batch status result : '+result.batchInfoMap['state']);
+        if(event.status && event.type!=='exception'){
+            if(result.batchInfoMap['state']==='Completed')
+            {
+                Visualforce.remoting.timeout = 120000; // Set timeout at page level
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.ZTS_US_TerritoryConsoleController.closeJob}',
+                    result.batchInfoMap.jobId,
+                    jobCloseHandler
+                ); 
+            
+                if(poller)
+                {
+                  clearInterval(poller);
+                  poller=null;
+                }
+            }
+            else if(result.batchInfoMap['state'] === 'InProgress')
+            {
+                if(event.status)
+                {
+                      hide('ut_load');
+                      alert('Batch execution is still in progress.');
+                      window.location.reload(true);
+                }
+                else
+                {
+                    alert('Job Close Request Failed - '+event.message);
+                }
+           }
+     }
+         else{
+          alert('Batch Check Status Remote Request Failed - '+event.message);
+         }
+   }
+   
+   
+   function jobCloseHandler(result,event){
+       if(event.status){
+        hide('ut_load');
+        alert('UserTerritory records created');
+        window.location.reload(true);
+       // alert('Closed Job');
+        }
+        else{
+         alert('Job Close Request Failed - '+event.message);
+        }
+   }
+   
+    function showNotification(){
+    alert('Request completed ! ');
+    }
+
+    </script>
+</apex:page>

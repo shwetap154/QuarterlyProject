@@ -1,0 +1,5 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" description="Handler for valueInit event fired when the component has been initialised"/>
+    <aura:attribute name="urlString" type="String"/>
+    <iframe src="{!v.urlString}" width="100%" height="500px;" frameBorder="0"/>
+</aura:component>

@@ -1,0 +1,238 @@
+.panel{
+    padding: 18px;
+    background-color: rgb(255, 255, 255);
+  }
+  .table {
+  margin-left:.5%;
+  height:50%;
+  width:100%;
+}
+ .heading{
+    font-weight: 600;
+    font-size: 16px;
+    background-color: rgb(255, 255, 255)010;
+    color: #000000;
+  }
+.th_Learning {
+  height:50%;
+  width:30%;
+  text-align: center;
+  background: rgba(195,28,73,255);
+  color: #fefdfc;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  padding-left: 6%;
+  padding-right: 6%;
+  font-size: 100%;
+}
+
+.th_Applying {
+  height:50%;
+  width:36%;
+  text-align: center;
+  background: rgba(246,92,0,255);
+  color: #fefdfc;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-size: 100%;
+}
+
+.th_Mastery {
+  height:50%;
+  width:30%;
+  text-align: center;
+  background: rgba(1,81,111,255);
+  color: #fefdfc;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  padding-left: 6%;
+  padding-right: 6%;
+  font-size: 100%;
+}
+.learning-nopadding {
+  color: #993a3a;
+  font-size: 75%;
+  padding-left: .85%;
+  width:11%;
+}
+
+.learning-meter1padding{
+  
+  left: CALC(.85% - 12px);
+}
+
+
+.learning-meter2 { 
+  color: #993a3a;
+  font-size: 75%;
+  padding-left: 1.97%;
+  width:11%;
+}
+
+.learning-meter2padding{
+  left: 11%;
+  padding-left: CALC(1.97% - 12px);
+  
+}
+
+.learning-meter3 {
+  color: #993a3a;
+  font-size: 75%;
+  padding-left: 3.2%;
+  width:11%;
+}
+
+.learning-meter3padding{
+  left: 22%;
+  padding-left: CALC(3.2% - 12px);
+}
+
+.applying-meter4 {
+  color: #bdc019;
+  font-size: 75%;
+  padding-left: 4.5%;
+  width:11%;
+}
+
+.applying-meter4padding{
+  
+  left: 33%;
+  padding-left: CALC(4.5% - 12px);
+}
+
+.applying-meter5 {
+  color: #bdc019;
+  font-size: 75%;
+  padding-left: 5.6%;
+  width:11%;
+} 
+
+.applying-meter5padding{
+  left: 44%;
+  padding-left: CALC(5.6% - 12px);
+}
+
+.applying-meter6 {
+  color: #bdc019;
+  font-size: 75%;
+  padding-left: 6.62%;
+  width:11%;
+}
+
+.applying-meter6padding{
+  left: 55%;
+  padding-left: CALC(6.62% - 12px);
+}
+
+.mastery-meter7 {
+  color: #41974a;
+  font-size: 75%;
+  padding-left: 8%;
+  width:11%;
+}
+
+.mastery-meter7padding{
+  left: 66%;
+  padding-left: CALC(8% - 12px);
+}
+
+.mastery-meter8 {
+  color: #41974a;
+  font-size: 75%;
+  padding-left: 9%;
+  width:11%;
+}
+
+.mastery-meter8padding{
+  left: 77%;
+  padding-left: CALC(9% - 12px);
+}
+
+.mastery-meter9 {
+  color: #41974a;
+  font-size: 75%;
+  padding-left: 10.26%;
+  width:12%;
+}
+
+.mastery-meter9padding{
+  left: 88%;
+  padding-left: CALC(10.26% - 12px);
+}
+.slidecontainer {
+  width: 96%;
+}
+.slider {
+  -webkit-appearance: none;
+  width: 96%;
+  height: 5px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+.slider:hover {
+  opacity: 1;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #175CAA;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #5C8DC3;
+  cursor: pointer;
+}
+.comments{
+  padding: 17px;
+    background-color: rgb(255, 255, 255);
+     border: 1px rgb(255, 255, 255);
+       margin: 21px;
+}
+
+.previousScoreContainer lightning-icon{
+  position: absolute; 
+} 
+.previousIcoachFormIndicator {
+    --sds-c-icon-color-foreground-default: rgb(102, 151, 220);
+    
+	
+}
+
+.previousiDevelopBenchmarkIndicator {
+    --sds-c-icon-color-foreground-default: rgb(20, 63, 123);
+   
+	
+
+}
+.previousiCoachAndiDevelopIndicator {
+    --sds-c-icon-color-foreground-default: rgb(2, 12, 25);
+    
+	
+}
+.hideAllIcons {
+  display: none;
+}
+
+.icon-text{
+ /* border: 1px solid #ccc; */
+ margin-left: 43px;
+ width: 80%;
+ display: flex;
+ align-items: center;
+}
+
+
+.lgc-bg {
+    background-color: rgb(242 242 242);
+}

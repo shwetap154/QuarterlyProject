@@ -1,0 +1,3 @@
+<apex:page standardController="Contract" extensions="ContractDetailViewController" action="{!submitForApproval}" cache="false">
+
+</apex:page>

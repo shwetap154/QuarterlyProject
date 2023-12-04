@@ -1,0 +1,9 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+	<aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="IsSubmitted" type="Boolean"/>
+    <aura:attribute name="create" type="Boolean" default="true"/>
+
+    <!--<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>-->
+    <c:createEditActionPlan isCreated="{!v.create}" recordId="{!v.recordId}"></c:createEditActionPlan>    
+    
+</aura:component>

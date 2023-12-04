@@ -1,0 +1,92 @@
+<apex:page title="Zoetis For Shelters" standardController="Lead" extensions="ZoetisForShelters" cache="false" 
+           showChat="false" showHeader="false" sidebar="false">
+    <head>
+        <style type="text/css"  >
+            th {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+            }     
+            td {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+            }
+            .btn {  
+            line-height:1.5 !important;border:2px solid transparent !important;min-width:8em !important;
+            background-color:#ff6400 !important;
+            background:#ff6400 !important;
+            color:white !important;
+            }  
+            pbSubheader{
+            background-color:#1696ad !important;
+            color:white !important;
+            }
+            .individualPalette .leadBlock .tertiaryPalette{
+            background-color:#0096AF !important;
+            border-color:#0096AF !important;
+            }
+            .individualPalette .leadBlock .secondaryPalette {
+            border-color:#0096AF !important;
+            }
+            body .bEditBlock .pbBody .pbSubheader{
+            background-image:none !important;
+            color:#ffffff !important;
+            } 
+            .message{
+            background-color: #ffffff !important;
+            padding: 0px 0px 0px 0px !important;
+            margin: 2px 0px !important;
+            width: 100% !important;
+            }
+            body{
+            font-size: 85% !important;
+            }
+            body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label{
+            font-size: 1.4em;
+            } 
+            body .bPageBlock .pbBody .labelCol{
+                vertical-align:middle !important;
+                font-size:1em !important; 
+            } 
+            .orangeClr{
+                color: #ff671f;
+            }
+            
+        </style>
+    </head> 
+    
+    <c:ZFS_header shelterObj="{!shelter}" ></c:ZFS_header>
+    <table style="width:100%;">
+        <tr>
+            <td style="width:10%;"></td>
+            <td style="vertical-align: top; text-align: right;">
+                
+            </td>
+            <td style="width:50%;vertical-align: top;">
+                  
+                <br/><br/>
+                 <p>
+                        
+                        We are making updates to our Zoetis For Shelters Application at this time, we apologize for the inconvenience. The Application will be back soon! 
+                        <br/><br/>
+                        Please visit us at 
+                        <apex:outputLink styleClass="orangeClr" value="https://www.zoetisus.com" target="_blank" > ZoetisUS.com </apex:outputLink> 
+                        for information about our products and services.
+                        <br/><br/>
+                        For questions on the shelter process please call us at 
+                        <apex:outputText value=" 1-855-721-0078" styleClass="orangeClr" />  or email us                         
+                        <apex:outputLink styleClass="orangeClr" value="mailto:CustomerAccounts@zoetis.com" > CustomerAccounts@zoetis.com</apex:outputLink>  
+                        <br/><br/><br/><br/>
+                        Thank you!
+                        <br/>
+                        <b>Your Team at Zoetis</b>
+                        <br/>
+                    </p>
+                    <br/>    
+                    
+                
+            </td>
+            <td style="width:25%;"><apex:outputPanel ></apex:outputPanel></td>
+        </tr>
+    </table>
+    <c:ZFS_footer /> 
+</apex:page>

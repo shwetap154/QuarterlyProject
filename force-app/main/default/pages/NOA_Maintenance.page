@@ -1,0 +1,104 @@
+<apex:page id="mainPage" title="New Online Account" standardController="Lead" extensions="NOA_NewOnlineAccount" cache="false" showChat="false" showHeader="false" sidebar="false">
+    <head>
+        <style type="text/css"  >
+            
+            .btn {  
+            line-height:1.5 !important;border:2px solid transparent !important;min-width:8em !important;
+            background-color:#ff6400 !important;
+            background:#ff6400 !important;
+            color:white !important;
+            }  
+            pbSubheader{
+            background-color:#1696ad !important;
+            color:white !important;
+            }
+            .individualPalette .leadBlock .tertiaryPalette{
+            background-color:#0096AF !important;
+            border-color:#0096AF !important;
+            }
+            .individualPalette .leadBlock .secondaryPalette {
+            border-color:#0096AF !important;
+            }
+            body .bEditBlock .pbBody .pbSubheader{
+            background-image:none !important;
+            color:#ffffff !important;
+            }
+            .requiredLegend{
+            color:#ffffff !important; 
+            }
+            .message {
+            background-color: white;
+            width: 70%;
+            border-color: red;
+            border-width: thin;
+            border-style: solid;
+            font-weight:bold;
+            }
+            body{
+            font-size: 85% !important;
+            min-height: 50% !important;	//only used for distribution page
+            }
+            body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label{
+            font-size: 1.4em;
+            }
+            .headtext{
+            text-align: left;
+            margin-left: 10%;
+            margin-right: 10%; 
+            color: #9a9797;
+            }
+            
+            .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader h3 {
+            font-size: 1.4em;
+            }
+            body{
+            font-family: "proxima-nova", Helvetica, Arial, sans-serif !important;
+            }
+            
+            .orangeClr{
+                color: #ff671f;
+            }
+            
+        </style> 
+        
+    </head> 
+    
+    <apex:image url="{!URLFOR($Resource.NewOnlineAccount, 'images/ZoetisBanner_left.jpg')}" alt="Zoetis" width="100%"  />         	
+    <apex:image url="{!URLFOR($Resource.NewOnlineAccount, 'images/ZoetisSpecies.png')}" alt="Zoetis" width="100%" />     
+
+    <body>
+        <table style="width:100%;">
+            <tr>
+                <td style="width:10%;"></td> 
+                <td style="width:50%;vertical-align: top;">
+                    
+                <br/><br/>
+                 <p>
+                     
+                        We are making updates to our New Account Application at this time, we apologize for the inconvenience. The Application will be back soon!
+                        <br/><br/>
+                        Please visit us at 
+                        <apex:outputLink styleClass="orangeClr" value="https://www.zoetisus.com" target="_blank" > ZoetisUS.com </apex:outputLink> 
+                        for information about our products and services.
+                        <br/><br/>
+                        For questions on the new account process please call us at 
+                        <apex:outputText value=" 1-855-721-0078" styleClass="orangeClr" />  or email us 
+                        
+                        <apex:outputLink styleClass="orangeClr" value="mailto:CustomerAccounts@zoetis.com" > CustomerAccounts@zoetis.com</apex:outputLink>  
+                        <br/><br/><br/><br/>
+                        Thank you!
+                        <br/>
+                        <b>Your Team at Zoetis</b>
+                        <br/>
+                    </p>
+                    <br/>    
+                    
+                </td>
+                <td style="width:10%" ></td>
+            </tr>
+        </table> 
+        <br/><br/>
+        <c:NOA_footerpage />
+        
+    </body>
+</apex:page>

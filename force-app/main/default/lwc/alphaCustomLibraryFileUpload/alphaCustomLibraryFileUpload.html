@@ -1,0 +1,34 @@
+<template>
+    <div class='slds-align_absolute-center'>
+        <lightning-input type='file' variant='label-hidden' onchange={handleFileSelected}></lightning-input>
+    </div>
+    <template if:true={fileSelected}>
+        <div class='slds-p-around_xx-small'>
+            <lightning-input data-name='title' label='Title' type='text' placeholder={selectedFileName} onchange={handleFieldChange}></lightning-input>
+        </div>
+        <div class='slds-grid slds-wrap'>
+            <div class='slds-size_1-of-2 slds-p-around_xx-small'>
+                <lightning-combobox data-name='library' label='Library' options={libraryList} required onchange={handleFieldChange}></lightning-combobox>
+            </div>
+            <div class='slds-size_1-of-2 slds-p-around_xx-small'>
+                <lightning-combobox data-name='fileType' label='File Type' options={fileTypeList} onchange={handleFieldChange}></lightning-combobox>
+            </div>
+        </div>
+        <br><br>
+        <div class='slds-grid slds-wrap'>
+            <div class='slds-size_1-of-2 slds-p-around_xx-small'>
+                <lightning-combobox data-name='productLine' label='Product Line' options={productLineList} onchange={handleFieldChange}></lightning-combobox>
+                <br>
+                <lightning-dual-listbox data-name='species' label='Applicable Species' source-label='Available' selected-label='Selected' required options={speciesList} onchange={handleFieldChange}></lightning-dual-listbox>
+            </div>
+            <div class='slds-size_1-of-2 slds-p-around_xx-small slds-border_left'>
+                <div>
+                    <p>Applicable Distributors</p>
+                    <c-alpha-custom-multi-lookup data-name='distributor' object-name='Account' field-name='Name' additional-fields=', ZTS_EU_Market__c' label='Account' iconname='standard:account' filters={filters} onrecselect={handleFieldChange}></c-alpha-custom-multi-lookup>
+                </div>
+                <br>
+                <lightning-dual-listbox data-name='market' label='Applicable Markets' source-label='Available' selected-label='Selected' options={marketList} onchange={handleFieldChange}></lightning-dual-listbox>
+            </div>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,63 @@
+<!--
+  @description       : 
+  @author            : Morgan Marchese @ Zoetis Inc
+  @group             : 
+  @last modified on  : 08-21-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+-->
+<apex:page showHeader="false" sidebar="false" controller="GigyaRegistrationController">
+    <apex:includeScript value="https://cdns.gigya.com/js/gigya.js?apikey={!apiKey}" />
+    <style>
+        .flex-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background-color: #f7fdfd;
+        }
+
+        .flex-container>div {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+
+    <body>
+        <div class="flex-container">
+            <div id="LoginGigya">
+            </div>
+
+        </div>
+    </body>
+    <script>
+
+        gigya.socialize.addEventHandlers({
+            onLogin: function () {
+                gigya.fidm.saml.continueSSO();
+            }
+        });
+
+        gigya.accounts.showScreenSet({            
+screenSet: 'RegistrationLogin',
+            startScreen: 'gigya-login-screen',
+            containerID: 'LoginGigya'
+        });
+
+        gigya.accounts.addEventHandlers({
+            onLogin: displayLogin,
+            onLogout: displayLogout,
+            onError: displayError
+        });
+
+        function displayLogin(response) {
+            console.log('Response==>', response);
+        }
+        function displayLogout(response) {
+            console.log('Response==>', response);
+        }
+        function displayError(response) {
+            console.log('Response==>', response);
+        }
+    </script>
+</apex:page>

@@ -1,0 +1,167 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_AddSampleDrops
+* Description   :   This is the popup page for adding Sample Drops from Call page.                        
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     20th-Nov-14   Shreyas             Created the vf page.
+
+********************************************************************************************************************************************
+-->
+
+<apex:page sidebar="false" showHeader="false" id="pg" controller="ZTS_EU_AddSampleDropsController" LightningStyleSheets="true">
+    <apex:stylesheet value="{!$Resource.AddInformationOnCall}"/>
+    <apex:stylesheet value="{!$Resource.CallPage}"/>
+    <apex:includeScript value="{!$Resource.jquery_1_11_1}"/>
+    <style>
+        body .pbBody, .slds-vf-scope .pbBody
+        {
+            overflow: initial;
+        }
+        body .bPageBlock.apexDefaultPageBlock, body .bPageBlock.bDetailBlock, body .bPageBlock.bEditBlock, .slds-vf-scope .bPageBlock.apexDefaultPageBlock, 
+        .slds-vf-scope .bPageBlock.bDetailBlock, .slds-vf-scope .bPageBlock.bEditBlock
+        {
+            min-height: 100px;
+            margin-top: 10px;
+        }
+        .pbBody a > i
+        {
+            margin-top: -15px;
+        }
+        .listRelatedObject .bPageBlock .pbHeader .btn:hover, .listRelatedObject .bPageBlock .pbBottomButtons .btn:hover, .apexp .bPageBlock .pbHeader .btn:hover, 
+        .apexp .bPageBlock .pbBottomButtons .btn:hover, div.buttons .btn:hover, div.pbBottomButtons > .btn:hover, body button:hover, body .x-btn:hover, 
+        body .btn:hover, body .btnDisabled:hover, body .btnCancel:hover, body .menuButton .menuButtonButton:hover
+        {
+            background: rgb(244,246,249);
+        }
+    </style>
+
+    <apex:slds />
+    <div class="slds-scope slds-p-horizontal_medium"  >
+        <h3 style="font-size: 1.6em;">{!$Label.ZTS_EU_AddSampleDrops}</h3> 
+        
+        <apex:form id="frm_sampledrop">
+        
+            <apex:messages layout="list" /> <!--style="color:red;"-->
+            <apex:pageblock title="{!$Label.ZTS_EU_AttendeesForThisCall}">
+            
+                <apex:pageblocktable value="{!existingAttendeeList}" var="att">
+                    <apex:column value="{!att.ZTS_EU_Contact__c}" headerValue="{!$ObjectType.Attendee__c.Fields.ZTS_EU_Contact__c.Label}"/>
+                    <apex:column value="{!att.ZTS_EU_Contact_Profession__c}" headerValue="{!$ObjectType.Attendee__c.Fields.ZTS_EU_Contact_Profession__c.Label}"/>
+                    <apex:column value="{!att.ZTS_EU_Represents_Account__c}" headerValue="{!$ObjectType.Attendee__c.Fields.ZTS_EU_Represents_Account__c.Label}"/>
+                </apex:pageblocktable>
+            
+            
+            </apex:pageblock>
+            
+            
+            <apex:pageblock title="{!$Label.ZTS_EU_SampleDropsForThisCall}" id="pb_sampledropdetails">
+            
+                <apex:dataTable value="{!existingSampleDropList}" var="sd" rendered="{! (existingSampleDropListSize != 0) }">
+                    <apex:column value="{!sd.Name}" headerValue="{!$ObjectType.Sample_Drop__c.Fields.Name.Label}"/>
+                    <apex:column value="{!sd.ZTS_EU_Sample__c}" headerValue="{!$ObjectType.Sample_Drop__c.Fields.ZTS_EU_Sample__c.Label}"/>
+                    <apex:column value="{!sd.ZTS_EU_Sample__r.ZTS_EU_Contact__c}" headerValue="contact"/>
+                    <apex:column headerValue="OLD SKU's Year">              
+                        <apex:outputText value="{!SampDropVSYear[sd]}" rendered="{!If(sd.ZTS_EU_Product__r.ZTS_EU_Is_Old__c == true,'','')}"/>            
+                    </apex:column>
+                     <apex:column headerValue="NEW SKU's Year">             
+                        <apex:outputText value="{!SampDropVSNewYear[sd]}" rendered="{!If(sd.ZTS_EU_Species_Product_New_SKU__r.ZTS_EU_Is_Old__c == false,'','')}"/>              
+                    </apex:column> 
+                
+                    
+                    <apex:column value="{!sd.ZTS_EU_Sample_Drop_Type__c}" headerValue="{!$ObjectType.Sample_Drop__c.Fields.ZTS_EU_Sample_Drop_Type__c.Label}"/>
+                    <apex:column value="{!sd.ZTS_EU_Quantity__c}" headerValue="{!$ObjectType.Sample_Drop__c.Fields.ZTS_EU_Quantity__c.Label}"/>
+                    <apex:column headerValue="{!$ObjectType.Sample_Drop__c.Fields.ZTS_EU_Product__c.Label}">
+                        
+                        <apex:outputField value="{!sd.ZTS_EU_Product__c}" rendered="{!  (sd.ZTS_EU_Product__c != null)  }"/>
+                        <apex:outputField value="{!sd.ZTS_EU_Species_Product_New_SKU__c}" rendered="{!  (sd.ZTS_EU_Species_Product_New_SKU__c != null)  }"/>
+                        
+                    </apex:column>
+                    <apex:column headervalue="{!$Label.ZTS_EU_Remove}">
+                        <apex:commandLink value="X" action="{!deleteSampleDrop}" rerender="frm_sampledrop" status="status_Loading" immediate="true">
+                        <apex:param name="param1" value="{!sd.Id}" assignTo="{!sampleDropId}"/>
+                        </apex:commandLink>
+                    </apex:column>
+                </apex:dataTable>
+                <!--<br></br>-->
+                <apex:commandlink styleClass="callSampleDrop"  action="{!showNewSampleDrop}" rerender="frm_sampledrop" status="status_Loading" oncomplete="modifySampleLookup();">
+                       {!$Label.ZTS_EU_NewSampleDrop}
+                </apex:commandlink>
+                <br></br>
+                <apex:pageBlock rendered="{!showNewSampleDrop}" id="pb_newSampleDrop" >
+                    <apex:pageblockSection collapsible="false" id="pbs_newSampleDrop" >
+                        <apex:inputField value="{!newSampleDrop.ZTS_EU_Sample__c}" id="sampleLookup" onchange="setProductLookupVisibility();"/>
+                        <apex:inputField value="{!newSampleDrop.ZTS_EU_Comments__c}" style="width:300px;height:75px;"/>
+                        <apex:inputField value="{!newSampleDrop.ZTS_EU_Quantity__c}"/>
+                        <apex:outputField value="{!newSampleDrop.ZTS_EU_Species_Product_New_SKU__c }" rendered="{!  (newSampleDrop.ZTS_EU_Species_Product_New_SKU__c != null)  }"/>
+                        <apex:inputField value="{!newSampleDrop.ZTS_EU_Product__c }" rendered="{!  showProductLookup  }"/>
+                    </apex:pageblockSection>       
+    
+                    <apex:commandButton styleClass="slds-button slds-button_neutral" value="{!$Label.ZTS_EU_Save}" action="{!saveNewSampleDrop}" style="margin-left:42%" rendered="{!showNewSampleDrop}"/>
+                    <apex:commandButton styleClass="slds-button slds-button_neutral" value="{!$Label.ZTS_EU_Cancel}" action="{!cancelNewSampleDrop}" immediate="true" style="margin-left:3%" rendered="{!showNewSampleDrop}"/>
+                </apex:pageBlock>
+                
+            </apex:pageblock>
+            <br></br><br></br>
+            <apex:commandButton styleClass="slds-button slds-button_neutral" value="{!$Label.ZTS_EU_Done}" onclick="closeWindow();" style="margin-left:47%" immediate="true"/>
+            
+            <apex:actionStatus id="status_Loading">
+                <apex:facet name="start"> 
+                    <c:ZTS_EnhancedActionStatus BackColor="#F1F2C6" borderColor="#336699" borderSize="1" height="30px" width="120px" ImageUrl="{!$Resource.AjaxAnimation}" Message="{!$Label.ZTS_EU_Loading}" messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+                </apex:facet>
+            </apex:actionStatus>
+            
+            <apex:actionFunction name="determineOldSkuSample" reRender="frm_sampledrop" action="{!determineOldSkuSample}" immediate="true" status="status_Loading" oncomplete="modifySampleLookup();">            
+                <apex:param name="param2" assignTo="{!selectedSampleId}" value=""/>
+            </apex:actionFunction>
+            
+        </apex:form>
+        
+        <script type = "text/javascript">
+        
+            $(document).ready(function(){
+                reloadPage();
+            });
+            
+            var addCallSampleDrop = '{!$Label.ZTS_EU_NewSampleDrop}'; 
+            
+            function reloadPage(viewdiscid) {
+               $('a.callSampleDrop').html('<i>+</i>'+addCallSampleDrop); 
+            }
+            
+            function openLookup(baseURL, modified, searchParam) {   
+                 baseURL = baseURL + searchParam;                                                
+                 openPopup(baseURL, "lookup", 350, 480, "width="+670+",height=575,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollbars=yes", true);
+            } 
+            
+            function modifySampleLookup() { 
+                                     
+                    var assocLink = document.getElementById('pg:frm_sampledrop:pb_sampledropdetails:pb_newSampleDrop:pbs_newSampleDrop:sampleLookup_lkwgt'); 
+                    if (assocLink != null) {                                           
+                        assocLink.href = "JavaScript: openLookup('/apex/ZTS_EU_SampleLookupOverride?callId={!callId}&lkfm=editPage&lknm=pg:frm_sampledrop:pb_sampledropdetails:pb_newSampleDrop:pbs_newSampleDrop:sampleLookup&lktp=' + getElementByIdCS('pg:frm_sampledrop:pb_sampledropdetails:pb_newSampleDrop:pbs_newSampleDrop:sampleLookup_lktp').value,getElementByIdCS('pg:frm_sampledrop:pb_sampledropdetails:pb_newSampleDrop:pbs_newSampleDrop:sampleLookup_mod').value,'&lksrch=' + escapeUTF(getElementByIdCS('pg:frm_sampledrop:pb_sampledropdetails:pb_newSampleDrop:pbs_newSampleDrop:sampleLookup').value))";
+                    }
+            } 
+            
+            function closeWindow(){
+                opener.location.reload(true);
+                window.close();
+                return;
+            }  
+            function setProductLookupVisibility(){
+                
+                var sampleName = document.getElementById('pg:frm_sampledrop:pb_sampledropdetails:pb_newSampleDrop:pbs_newSampleDrop:sampleLookup').value; 
+                if(sampleName != ''){
+                    var sampleId = document.getElementById('pg:frm_sampledrop:pb_sampledropdetails:pb_newSampleDrop:pbs_newSampleDrop:sampleLookup_lkid').value;
+                    if(sampleId != '000000000000000'){
+                        determineOldSkuSample(sampleId);  
+                    }
+                }
+                
+            }          
+        </script>
+    </div>
+</apex:page>

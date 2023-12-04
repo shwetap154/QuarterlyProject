@@ -1,0 +1,18 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_RedirectToEditPAP
+* Description   :   This vf page is overrides new/edit and view link for PAP                        
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     4th-May-15   Shreyas             Created the vf page.
+
+********************************************************************************************************************************************
+-->
+
+<apex:page standardController="ZTS_EU_Product_Adoption_Profile__c" extensions="ZTS_EU_PAPController" action="{!redirectToEditPAPrecord}">
+  
+</apex:page>

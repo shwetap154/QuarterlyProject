@@ -1,0 +1,18 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_CloneOrderAndDetails
+* Description   :   This page overrides the clone button on order object and is used to clone the order along with the order details.                        
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     24th-Jul-15   Shreyas             Created the vf page.
+
+********************************************************************************************************************************************
+-->
+
+<apex:page controller="ZTS_EU_CloneOrderAndDetailsController" action="{!cloneOrderAndOrderDetails}">
+  
+</apex:page>

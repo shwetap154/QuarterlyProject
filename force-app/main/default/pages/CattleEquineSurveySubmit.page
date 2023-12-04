@@ -1,0 +1,24 @@
+<apex:page standardController="Cattle_Equine_Survey__c" extensions="CattleEquineSurveyButtonController">
+    <apex:pageMessages />
+    <apex:form >
+        <apex:actionFunction action="{!doUpdateCES}" name="updateRecord" rerender="myPageId" oncomplete="showAlert();"/>
+    </apex:form>
+    <apex:form >
+        <apex:actionFunction action="{!goBackToRecord}" name="switchPage" />
+    </apex:form>
+    <script>
+    updateRecord();
+    </script>
+    <apex:pageBlock id="myPageId">
+        <script>
+        function showAlert() 
+        {
+            if ("{!reasonForFailure}" != '')
+            {
+            	alert("{!reasonForFailure}");
+            }
+            switchPage();
+        }
+        </script>
+    </apex:pageBlock>
+</apex:page>

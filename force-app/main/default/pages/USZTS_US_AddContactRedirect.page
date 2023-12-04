@@ -1,0 +1,175 @@
+<!---
+    /****************************************************************************************************************************************** 
+     * Page Name       : ZTS_US_AddContactRedirect
+     * Description      : The Visual force is used to do the following 
+                          1. Retrieve the Contacts associated to Account on that Event
+                          2. Add Contact to the event as Invitee
+                          3. Sort the Contact data on all Columns
+                                        
+     * Created By   : Deloitte Consulting
+     * Created Date : 
+     *
+     * Modification Log:  
+     * ---------------------------------------------------------------------------------------------------------------------------------------
+     * Developer                Date               Description 
+     * ---------------------------------------------------------------------------------------------------------------------------------------
+     * Sohil shah(Cloud Sense)  12/03/2014          Added code for DEF-DEF-001535 (Sorting purpose on contact Name and Profession Columns)
+     * * Sohil Shah(Cloud Sense)  7/8/2015            Added Search logic for DEF-001663 + Removed Name,Degree and Phone column and added FirstName LastName and Job Function
+    *****************************************************************************************************************************************/
+    -->
+    <apex:page controller="USZTS_US_AddContactRedirect" tabStyle="ZTS_Events__c" >
+        <script type="text/javascript">
+        function selectAllCheckboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input");                  
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+        }
+    </script>        
+    <apex:form id="form">
+        <apex:pageBlock >
+                     <!--By Sohil DEF-001663 - Search Logic -->
+
+                        <apex:outputLabel value="Search Contact: "/> &nbsp;
+                        <apex:inputText value="{!name}"/> &nbsp;
+                        <apex:commandButton value="Search " action="{!executeSearch}" reRender="panelID,panelID2,cmdSort1" status="actStatusId"/>
+                         <apex:actionStatus id="actStatusId" >
+                            <apex:facet name="start" >
+                              <img src="/img/loading.gif" />                    
+                            </apex:facet>
+                        </apex:actionStatus>
+                        <font color="blue"><br/> 
+                        <i><apex:outputLabel value="Enter a First Name, Last Name or Account Name and click Search to find the contacts you wish to add to the event"/></i></font>
+                        <!-- //EOC by sohil Shah Search Logic -->   
+                </apex:pageBlock>
+            
+    </apex:form>
+    
+      <apex:form id="theForm">      
+            <apex:pageMessages />
+            <apex:outputPanel rendered="{!IF(categories.size==0, true,false)}">
+                <apex:pageMessage summary="No contacts are available. Please select account(s) which have contacts associated." severity="warning" strength="3" />
+            </apex:outputPanel>
+                
+                <apex:pageBlock >
+                    <apex:pageBlockButtons location="top" style="align-left;" id="panelID3">                      
+                        <apex:commandButton action="{!saveContacts}" value="Add Contacts" rendered="{!IF(categories.size==0, false, true)}"/>
+                        <apex:commandButton action="{!cancel}" value="Back to Event"/> 
+                        <apex:commandButton value="Save Contacts" action="{!SaveAcc}" reRender="panelID3"/>                         
+                     </apex:pageBlockButtons>
+                    
+                  <apex:outputPanel rendered="{!IF(( categories.size>0), true,false)}" id="panelID" >                             
+                    <apex:pageBlockTable value="{!categories}" var="c">
+                        <apex:column width="25px">
+                             <!---	Added by Rahul -->
+                           <!-- <apex:inputCheckbox value="{!c.checked}"/> -->
+                            <apex:facet name="header">
+                        		<apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')"/>
+                    		</apex:facet>
+                    		<apex:inputCheckbox value="{!c.checked}" id="inputId"/>
+                        </apex:column>
+                    
+                <!-- Added BY Sohil Sorting on All columns -->    
+                       
+
+                            
+                        <apex:column > 
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!ViewSortData}" value="First Name {!IF(sortExpression=='FirstName',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort">
+                               <apex:param value="FirstName" name="column" assignTo="{!sortExpression}" ></apex:param>                          
+                            </apex:commandLink>
+                         </apex:facet>
+                         <apex:inputField value="{!c.con.FirstName}" />
+                      </apex:column>
+                          <apex:column >               
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!ViewSortData}" value="Last Name {!IF(sortExpression=='LastName',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort1">
+                               <apex:param value="LastName" name="column" assignTo="{!sortExpression}" ></apex:param>                          
+                            </apex:commandLink>
+                         </apex:facet>
+                         <apex:inputField value="{!c.con.LastName}" />
+                      </apex:column>                  
+                        
+                        <apex:column >               
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!ViewSortData}" value="Account {!IF(sortExpression=='Account_Name__c',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort2">
+                               <apex:param value="Account_Name__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+                               </apex:commandLink>
+                         </apex:facet>
+                         <apex:outputField value="{!c.con.Account.Name}" />
+                      </apex:column>
+                      
+                        <apex:column >               
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!ViewSortData}" value="Profession {!IF(sortExpression=='ZTS_US_Profession__c',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort4">
+                               <apex:param value="ZTS_US_Profession__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+                               </apex:commandLink>
+                         </apex:facet>
+                         <apex:inputField value="{!c.con.ZTS_US_Profession__c}" />
+                      </apex:column>    
+
+                        <apex:column >               
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!ViewSortData}" value="Job Function {!IF(sortExpression=='ZTS_US_Job_Function__c',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort3">
+                               <apex:param value="ZTS_US_Job_Function__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+                               </apex:commandLink>
+                         </apex:facet>
+                         <apex:inputField value="{!c.con.ZTS_US_Job_Function__c}" />
+                      </apex:column>
+                        
+                        
+                        
+                        <!-- <apex:column >               
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!ViewSortData}" value="Degree {!IF(sortExpression=='ZTS_US_Degree__c',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort4">
+                               <apex:param value="ZTS_US_Degree__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+                               </apex:commandLink>
+                         </apex:facet>
+                         <apex:outputField value="{!c.con.ZTS_US_Degree__c}" />
+                      </apex:column>
+                      <apex:column >             
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!ViewSortData}" value="Phone {!IF(sortExpression=='Phone',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort5">
+                               <apex:param value="Phone" name="column" assignTo="{!sortExpression}" ></apex:param>
+                               </apex:commandLink>
+                         </apex:facet>
+                         <apex:outputField value="{!c.con.Phone}" />
+                      </apex:column> -->
+                       <apex:column >                
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!ViewSortData}" value="Email {!IF(sortExpression=='Email',IF(sortDirection='ASC','▲','▼'),'')}" id="cmdSort6">
+                               <apex:param value="Email" name="column" assignTo="{!sortExpression}" ></apex:param>
+                               </apex:commandLink>
+                         </apex:facet>
+                         <apex:inputField value="{!c.con.Interface_Email__c}" />
+                      </apex:column>
+                      <!--<apex:column >                
+                            <apex:commandButton value="Update Contact"  />
+                      </apex:column> -->
+                      
+                    </apex:pageBlockTable>
+                    </apex:outputPanel>
+                <!-- EOC BY Sohil Sorting on All columns -->   
+                
+            </apex:pageBlock>
+            <apex:outputPanel rendered="{!IF(categories.size>0, true,false)}" id="panelID2">
+                <!-- <center style="padding-left:-100px;">-->
+                    <apex:panelGrid columns="4" style="padding-left:530px !important;">
+                        <apex:commandLink action="{!first}" rendered="{!hasPrevious}" value="<<  " style="font-weight:bold;font-size:1.2em;"></apex:commandlink>
+                        <apex:commandLink action="{!previous}" rendered="{!hasPrevious}" value="  Previous  " style="font-weight:bold;font-size:1.2em;">   </apex:commandlink>
+                        <apex:commandLink action="{!next}" rendered="{!hasNext}" value="  Next  " style="font-weight:bold;font-size:1.2em;">   </apex:commandlink>
+                        <apex:commandLink action="{!last}" rendered="{!hasNext}" value="  >>" style="font-weight:bold;font-size:1.2em;">  </apex:commandlink>
+                    </apex:panelGrid>
+                <!-- </center>-->
+            </apex:outputPanel>
+        </apex:form>
+         <script>
+          function javaScrpt(){
+           ViewSortDataScript(); 
+          }
+        </script>
+         
+        
+    </apex:page>

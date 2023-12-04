@@ -1,0 +1,39 @@
+<!--<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,lightning:isUrlAddressable,lightning:hasPageReference" >
+
+<aura:attribute name="recordId" type="String" />
+
+<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+<aura:handler name="change" value="{!v.pageReference}" action="{!c.doInit}" />
+<aura:handler name="onSaveSuccess" event="force:recordSaveSuccess" action="{!c.handleSaveSuccess}"/>
+
+<div>
+    <lightning:spinner alternativeText="Loading" size="medium" variant="brand" />
+</div>
+<lightning:navigation aura:id="navService"/>
+
+</aura:component>-->
+<!-- Aritra commented out the old component code and recreated the new component for SC-008143 -->
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,lightning:isUrlAddressable,lightning:hasPageReference" >
+    <aura:attribute name="recordId" type="String" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>  
+    <aura:handler name="onSaveSuccess" event="force:recordSaveSuccess" action="{!c.onSaveSuccess}"/>
+    <lightning:navigation aura:id="navService"/>
+    <lightning:workspaceAPI aura:id="workspace"/>
+    <aura:attribute name="recordLoadError" type="String"/>
+
+    <aura:if isTrue="{!v.recordId != null}">
+         <div class="slds-modal__header">
+            <h2 class="slds-text-heading--medium">Edit Account Contact affiliation</h2>
+         </div>
+        <div class="slds-modal__content">
+            <lightning:recordEditForm aura:id="form" recordId="{!v.recordId}" objectApiName="Opportunity">
+        	<force:recordEdit aura:id="edit" recordId="{!v.recordId}"/>  
+            </lightning:recordEditForm>
+        </div>
+        <div align="center">
+            <lightning:button label="Cancel" title="Cancel" variant="neutral" onclick="{!c.close}"/>
+            <lightning:button label="Save" title="Save" variant="brand" onclick="{!c.handleSave}"/>
+        </div>
+    </aura:if>
+</aura:component>

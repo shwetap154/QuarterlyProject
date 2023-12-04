@@ -1,0 +1,136 @@
+<template>
+    <div class="custom-data-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <div class="header-cell" onclick={toggleTheraupeuticGroupDropdown}>
+                            Theraupeutic Group
+                            <div class="filter-dropdown" if:true={showTheraupeuticGroupDropdown}>
+                                <lightning-combobox
+                                    label="Filter"
+                                    name="theraupeuticgroupFilter"
+                                    value={theraupeuticgroupFilter}
+                                    options={theraupeuticgroupOptions}
+                                    onchange={handleFilterChange}
+                                ></lightning-combobox>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell" onclick={toggleProductDropdown}>
+                            Product
+                            <div class="filter-dropdown" if:true={showProductDropdown}>
+                                <lightning-combobox
+                                    label="Filter"
+                                    name="productFilter"
+                                    value={productFilter}
+                                    options={productFilterOptions}
+                                    onchange={handleFilterChange}
+                                ></lightning-combobox>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell" onclick={toggleProductSalesDropdown}>
+                            Product Sales
+                            <div class="filter-dropdown" if:true={showProductSalesDropdown}>
+                                <lightning-combobox
+                                    label="Filter"
+                                    name="productSalesFilter"
+                                    value={productSalesFilter}
+                                    options={productSalesFilterOptions}
+                                    onchange={handleFilterChange}
+                                ></lightning-combobox>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell" onclick={toggleGrandTotalDropdown}>
+                            Grand Total
+                            <div class="filter-dropdown" if:true={showGrandTotalDropdown}>
+                                <lightning-combobox
+                                    label="Filter"
+                                    name="GrandTotalFilter"
+                                    value={GrandTotalFilter}
+                                    options={GrandTotalFilterOptions}
+                                    onchange={handleFilterChange}
+                                ></lightning-combobox>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell" onclick={toggleAPRDropdown}>
+                            APR
+                            <div class="filter-dropdown" if:true={showAPRDropdown}>
+                                <lightning-combobox
+                                    label="Filter"
+                                    name="APRFilter"
+                                    value={APRFilter}
+                                    options={APRFilterOptions}
+                                    onchange={handleFilterChange}
+                                ></lightning-combobox>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell" onclick={toggleAUGDropdown}>
+                            AUG
+                            <div class="filter-dropdown" if:true={showAUGDropdown}>
+                                <lightning-combobox
+                                    label="Filter"
+                                    name="AUGFilter"
+                                    value={AUGFilter}
+                                    options={AUGFilterOptions}
+                                    onchange={handleFilterChange}
+                                ></lightning-combobox>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell" onclick={toggleFEBDropdown}>
+                            FEB
+                            <div class="filter-dropdown" if:true={showFEBDropdown}>
+                                <lightning-combobox
+                                    label="Filter"
+                                    name="FEBFilter"
+                                    value={FEBFilter}
+                                    options={FEBFilterOptions}
+                                    onchange={handleFilterChange}
+                                ></lightning-combobox>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell" onclick={toggleMAYDropdown}>
+                            MAY
+                            <div class="filter-dropdown" if:true={showMAYDropdown}>
+                                <lightning-combobox
+                                    label="Filter"
+                                    name="MAYFilter"
+                                    value={MAYFilter}
+                                    options={MAYFilterOptions}
+                                    onchange={handleFilterChange}
+                                ></lightning-combobox>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={filteredAccounts} for:item="account">
+                    <tr key={account.Id} data-id={account.Id}>
+                        <td>{account.Theraupeutic_Group__c}</td>
+                        <td>{account.Applicable_Product_Lines__c}</td>
+                        <td>{account.Product_Sales__c}</td>
+                        <td>{account.Grand_Total__c}</td>
+                        <td>{account.APR__c}</td>
+                        <td>{account.AUG__c}</td>
+                        <td>{account.FEB__c}</td>
+                        <td>{account.MAY__c}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+</template>

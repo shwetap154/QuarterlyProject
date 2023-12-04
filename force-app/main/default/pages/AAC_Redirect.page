@@ -1,0 +1,89 @@
+<!--
+  @description       : 
+  @author            : Padma Nerella @ Zoetis Inc
+  @group             : 
+  @last modified on  : 10-31-2023
+  @last modified by  : Padma Nerella @ Zoetis Inc
+  Modifications Log
+  Ver   Date         Author                         Modification
+  1.0   10-31-2023   Padma Nerella @ Zoetis Inc   Initial Version Redirect to new online Account page
+-->
+<apex:page showHeader="false" cache="false" sidebar="false" standardStylesheets="false" showChat="false">
+    <html>
+        <style>
+          body {
+            font-family: GothamNarrowSSm-Book,Helvetica,sans-serif;
+            text-align: center;
+          }
+            
+          .container {
+            width: auto;
+            display:inline-block;
+            margin: 0 auto;
+          }
+            
+          h1 {
+             font-family: Arboria-Bold,Helvetica,sans-serif;
+             font-size: 56px;
+             line-height: 67px;
+             color: #585858;
+             margin-bottom: 20px;
+             font-weight: bold;
+             text-align: left;
+          }
+            
+          p {
+            font-size: 16px;
+            line-height: 24px;
+            color: #585858;
+            margin-bottom:24px;
+            text-align: left;
+          }
+            
+          #countdowntimer {
+            font-weight: bold;
+            font-size: 18px;
+          }
+            
+          a, a:visited {
+            color: #585858;
+          }
+            
+          a:hover {
+            color: #fd7e14;  
+          }
+        </style>
+        <head>
+          <script type="text/javascript">
+            var timeleft = 7;
+            var downloadTimer = setInterval(function(){
+              timeleft--;
+              if(timeleft <= 0)
+                redirectpage();
+              document.getElementById("countdowntimer").textContent = timeleft;
+            },1000);
+            
+            function redirectpage(){
+                window.top.location.href = 'https://www.zoetisus.com/apply-for-a-zoetis-account';
+            }
+          </script>
+        </head>
+        <body>
+            <div class="container">
+                <h1>
+                    Apply for a Zoetis Account
+                </h1>
+                <p>
+                    We've created a new account application experience, you will be redirected there automatically in <span id="countdowntimer">7 </span> seconds.  
+                </p>
+             
+                <p>
+                    Please update your bookmarks to <a href="https://www.zoetisus.com/apply-for-a-zoetis-account">https://www.zoetisus.com/apply-for-a-zoetis-account</a>.
+                </p>
+                <p>
+                    If you are not redirected automatically, <a href="https://www.zoetisus.com/apply-for-a-zoetis-account">click here</a>.
+                </p>
+            </div>
+        </body>       
+    </html>
+</apex:page>

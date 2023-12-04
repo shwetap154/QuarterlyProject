@@ -1,0 +1,23 @@
+<design:component label="Silverline Field Set View/Edit">
+
+    <design:attribute name="fieldSetSelection" dataSource="Field Set from Component Config, Field Set from User Assignment"
+                      description="If selecting the 'Field Set from Component Config' option, you must enter a field set name
+                                    in the 'Field Sets' field below. If selecting the 'Field Set from User Assignment' then
+                                    the field set assigned to the logged in user will be used." required="true" placeholder="please select"/>
+    <design:attribute name="fieldset" label="Field Sets" description="Specify the fieldset name" />
+    <design:attribute name="title" label="Component Title" description="Title for each instance of the component" />
+	<design:attribute name="ObjectName" label="Object Name" description="Required in Community Record Page. Not Required for Lightning Experience."/>
+
+    <!-- Added By Nrusingh -->
+    <design:attribute name="numberofColumns" label="Number of Columns" description="Specify the Number of Columns you want to see" />
+    <design:attribute name="parentobjFieldAPIName" label="ParentId Field"/>
+    <design:attribute name="filterParentFieldName" label="Use Parent Field Set"/> 
+    <design:attribute name="ComponentExpandCollapse" label="Component Expand/Collapse" 
+        datasource="Allow-default expanded, Allow-default collapsed, Don't allow-always expanded" 
+        default="Don't allow-always expanded" description="Expand / Collapse the component" />
+    <design:attribute name="dateFormat" label="Date Format" default="MM/dd/yyyy" datasource="yyyy-mm-dd,MM/dd/yyyy,dd/MM/yyyy,MM-dd-yyyy,dd-MM-yyyy,dd-MMM-yyyy"/>
+    <design:attribute name="timeFormat" label="Time Format" default="hh:mm aaa" datasource="hh:mm aaa,HH:mm"/> 
+    <design:attribute name="isReadOnly" label="Read Only Mode" default="false"/>
+    <design:attribute name="headerBackgroundcolor" label="Header Background color" default="white"/>
+
+</design:component>

@@ -1,0 +1,49 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_DisplayDataGeneric
+* Description   :   This is a generic visualforce component that will display records of the objects.                          
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     15th-Oct-14   Shreyas             Created the vf component.
+
+********************************************************************************************************************************************
+-->
+
+<apex:component controller="ZTS_EU_DisplayDataGenericController">
+
+    
+   <apex:attribute name="obj" type="String" description="API name of the object" assignTo="{!objNamestring}"/>
+   <apex:attribute name="fields" type="String[]" description="list of API names of fields" assignTo="{!fieldsList}"/>
+   <apex:attribute name="objId" type="String" description="Id of the record" assignTo="{!recordId}"/>
+   <apex:attribute name="accountRelationAPI" type="String" description="Id of the record" assignTo="{!accountRelationName}"/>
+   <apex:attribute name="labelOfDisplayName" type="String" description="Id of the record" assignTo="{!label_DisplayName}"/>
+   
+   <apex:form >
+    <apex:pageBlock id="block">
+        <apex:pageBlockTable id="table" var="d" value="{!sObjectData}">
+            
+            
+            <apex:repeat var="f" value="{!fieldsList}">
+                
+                <apex:column headerValue="{!$ObjectType[objNamestring].fields[f].Label}" >
+                <apex:variable var="fLabel" value="{!$ObjectType[objNamestring].fields[f].Label}" />
+                    <apex:outputLink value="/{!d.Id}" rendered="{! (fLabel) == (label_DisplayName) }" target="_parent"> {!d[f]} </apex:outputLink>
+                    <apex:outputLink value="/{!d[f]}" rendered="{! (f) == (accountRelationName) }" target="_parent"> {!accountNameMap[d[f]]} </apex:outputLink>
+                    <apex:outputField value="{!d[f]}" rendered="{! ( (fLabel != label_DisplayName) && (f != accountRelationName) )}"/>
+                </apex:column>
+                
+            </apex:repeat>
+            
+            <apex:column headerValue="{!$Label.ZTS_EU_Account_Relationship_Type}">
+                <apex:outputText value="{!accountIdTypeMap[d[accountRelationName]]}" />
+            </apex:column>
+            
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+  </apex:form>
+
+</apex:component>

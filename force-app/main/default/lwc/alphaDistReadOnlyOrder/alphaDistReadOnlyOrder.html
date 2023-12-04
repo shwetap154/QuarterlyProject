@@ -1,0 +1,139 @@
+<template>
+
+    <lightning-breadcrumbs class="zs_fc_list_breadcrumbs slds-p-bottom_medium">
+        <lightning-breadcrumb label="Forecast, Stock and Order" href=""></lightning-breadcrumb> / 
+        <lightning-breadcrumb label="Order" href=""></lightning-breadcrumb> /
+        <lightning-breadcrumb class="zs_active_breadcrumb" label="Order List View" href=""></lightning-breadcrumb>
+    </lightning-breadcrumbs>
+
+    <template if:false={showOrderform}>
+     <template if:false={showSpinner}>
+       
+        <template if:false={showCreateOrder}> 
+            <div style="overflow: auto;">
+                <div class="slds-text-heading_medium slds-p-bottom_small slds-float_left zs_fc_listview_title">Order List View</div>
+            <lightning-button icon-name="standard:orders"
+                                    variant=brand
+                                    label="Create Order"       
+                                    class="slds-text-heading_small slds-var-m-left_xx-large slds-p-bottom_small slds-float_right zs_create_orderbtn"
+                                    onclick={createOrder} 
+                                    title="Create Order">
+            </lightning-button> 
+    </div>
+        <article class="slds-card zs_order_card">
+            <div class="slds-card__body slds-card__body_inner">
+                <lightning-layout vertical-align="center" class="x-large zs_order_layout">
+                    <lightning-layout-item flexibility="auto" size="3" padding="around-small">
+                        <lightning-input data-name= "poDate" label="Purchase Order Date" type=Date onchange={handleValueChange}>
+                        </lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item class="slds-align_absolute-center" flexibility="auto" size="1" padding="around-small">
+                        <div class="zs_or">or</div>
+                        </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto" size="3" padding="around-small">
+                        <lightning-input data-name= "poNo" label="Purchase Order Number" type=text onchange={handleValueChange}>
+                        </lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item class="slds-align_absolute-center" flexibility="auto" size="1" padding="around-small">
+                        <div class="zs_or">or</div>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto" size="3" padding="around-small">
+                        <lightning-input data-name= "sapNo" label="SAP Order Number" type=text onchange={handleValueChange}>
+                        </lightning-input>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+    </article>
+
+
+        <div class="slds-m-top_medium slds-p-top_none slds-table--header-fixed_container" style="height:350px;">
+    <div class="slds-scrollable_y" style="height:100%;">
+                <table  class="slds-table slds-table--header-fixed zs_entry_table">                                           
+                <thead>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Purchase Order Number">Purchase Order Number</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="SAP Order No">SAP Order No</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Purchase Order Date">Purchase Order Date</div>
+                    </th>
+                    <th scope="col">
+                         <div class="slds-truncate" title="Status">Status</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Actions">Actions</div>
+                    </th>
+                </thead> 
+                 <tbody class="zs_orderlist_rows">
+                    <template for:each={finalresult} for:item="item" for:index="index">                    
+                        <tr key={item.Id} id={item.Id}>
+                            <td>
+                                <lightning-input variant="label-hidden" label="Name" value={item.PoNumber}  disabled></lightning-input>                        
+                            </td>
+                            <td>
+                                <lightning-input variant="label-hidden" label="Name" value={item.OrderReferenceNumber}  disabled></lightning-input>                        
+                            </td>
+                            <td>
+                                <lightning-input variant="label-hidden" label="Name" value={item.PoDate}  disabled></lightning-input>                        
+                            </td>
+                            <td>
+                                <lightning-input variant="label-hidden" label="Name" value={item.Status}  disabled></lightning-input>                        
+                            </td>
+                            <td>
+                                <template if:true={item.canEdit}>
+                                    <lightning-button-icon icon-name="utility:edit"
+                                                                            data-id={item.Id}       
+                                                                            alternative-text="Edit"     
+                                                                            class="slds-var-m-left_xx-small"
+                                                                            onclick={editRow} 
+                                                                            title="Edit Order">
+                                    </lightning-button-icon>
+                                    <lightning-button-icon icon-name="utility:delete"
+																		  data-id={item.Id}       
+																		  alternative-text="Show Details"     
+																		  class="slds-var-m-left_xx-small"
+																		  onclick={deleteRow} 
+																		  title="Delete Order">
+                                </lightning-button-icon>
+                                </template>
+                                <lightning-button-icon icon-name="utility:display_text"
+																		  data-id={item.Id}       
+																		  alternative-text="Show Details"     
+																		  class="slds-var-m-left_xx-small"
+																		  onclick={showRow} 
+																		  title="Details">
+                                </lightning-button-icon>                        
+                            </td>
+                        </tr>
+                    </template>
+                 </tbody>                          
+                </table>
+            </div>
+         </div>
+     </template>
+            <template if:true={showSpinner}>
+                                <lightning-spinner alternative-text="Loading"></lightning-spinner>
+            </template>
+        </template>
+     </template>
+
+
+
+     <template if:true={showOrderform}>
+         <lightning-button icon-name="action:back"
+                            variant=brand
+                            label="Back to List View"       
+                            class="slds-var-m-left_xx-large slds-float_right"
+                            onclick={back} 
+                            title="Back to List View">
+          </lightning-button>   
+        <c-alpha-create-order-form order-record-id={orderId} mode={mode} onupdateorder = {postUpdate}></c-alpha-create-order-form>         
+     </template>
+
+
+     <template if:true={showCreateOrder}> 
+        <c-alpha-create-order-form order-record-id='' mode={mode} onsaveorder = {postSave} onmodalclosed = {modalClosed}></c-alpha-create-order-form>         
+     </template>
+</template>

@@ -1,0 +1,193 @@
+<aura:component
+  implements="force:hasRecordId,force:lightningQuickActionWithoutHeader"
+  access="global"
+  controller="GetVistexPriceController"
+>
+  <!-- input attributes -->
+  <aura:attribute name="recordId" type="string" />
+
+  <!-- view general attributes -->
+  <aura:attribute name="loading" type="boolean" default="true" />
+  <aura:attribute name="loadingMessage" type="string" />
+
+  <aura:attribute name="errorMessage" type="string" />
+  <aura:attribute name="additionalErrorDetails" type="string" default="" />
+  <aura:attribute name="errorSeverity" type="string" default="warning" />
+
+  <aura:attribute name="pricingCallResult" type="Object" />
+
+  <!-- Add-on configuration related attributes -->
+  <aura:attribute name="addonQtyConfiguration" type="Object" />
+  <aura:attribute name="configurationIsNotValid" type="boolean" default="false" />
+  <aura:attribute name="configurationErrorMessage" type="string" default="" />
+  <aura:attribute name="addonApprovalConfiguration" type="Object" />
+
+  <!-- Ship to Locations -->
+  <aura:attribute name="shipToLocations" type="List" />
+
+  <!-- Event handler -->
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <div class="slds-m-around_large">
+    <!-- style="max-height: 200px; position: relative;" -->
+
+    <div class="slds-grid slds-grid_vertical">
+      <aura:if isTrue="{! v.loading }">
+        <div class="slds-col">
+          <div class="slds-m-around_large">
+            <lightning:spinner variant="brand" size="medium" alternativeText="loading" class="" />
+            <div style="position: absolute; top: 55%; left: 40%; z-index: 9050;" class="slds-text-heading_small">{! v.loadingMessage }</div>
+          </div>
+        </div>
+      </aura:if>
+
+      <!-- Error on pricing call -->
+      <aura:if isTrue="{! !empty(v.errorMessage) }">
+        <div class="slds-col">
+          <div class="slds-m-top_large slds-m-bottom_large">
+            <lightning:icon variant="{! v.errorSeverity }" iconName="{! 'utility:' + v.errorSeverity }" size="small" />
+            <div class="{! 'message-text slds-text-heading_small slds-text-color_' + v.errorSeverity }">
+              {!v.errorMessage}
+            </div>
+            <aura:if isTrue="{! !empty(v.additionalErrorDetails) }">
+              <div class="slds-summary-detail slds-m-left_medium slds-m-top_small slds-box slds-box_small" aura:id="divErrorParent">
+                <lightning:buttonIcon
+                  size="small"
+                  iconName="utility:chevronright"
+                  variant="bare"
+                  onclick="{! c.handleExpandCollapseErrorDetail }"
+                  class="slds-m-left_xx-small"
+                  alternativeText="Expand/Collapse"
+                />
+                <div>
+                  <div class="slds-summary-detail__title">
+                    <h3 class="slds-text-heading_x-small slds-text-color_error slds-truncate" title="summary title">
+                      {! $Label.c.Additional_error_details_provided_by_Vistex }
+                    </h3>
+                  </div>
+                  <div class="slds-summary-detail__content slds-text-color_error" aura:id="divErrorMessage">
+                    <p><aura:unescapedHtml value="{!v.additionalErrorDetails}" /></p>
+                  </div>
+                </div>
+              </div>
+            </aura:if>
+          </div>
+        </div>
+        <div class="slds-col slds-m-top_small">
+          <lightning:button
+            variant="destructive-text"
+            label="{! $Label.c.Vistex_Price_Button_Return_to_QLE }"
+            onclick="{! c.handleReturnClick }"
+          />
+        </div>
+      </aura:if>
+
+      <!-- Pricing call was Successful -->
+      <aura:if isTrue="{! v.pricingCallResult.Status == 'OK' }">
+        <lightning:card title="{! $Label.c.Configure_Add_ons }" iconName="custom:custom19">
+          <aura:set attribute="actions">
+            <lightning:button
+              variant="brand"
+              disabled="{! v.configurationIsNotValid }"
+              title="{! v.configurationErrorMessage }"
+              label="{! $Label.c.Vistex_Price_Button_Done }"
+              onclick="{! c.handleDoneClick }"
+            />
+          </aura:set>
+          <p class="slds-p-horizontal_small">
+            <!-- Success status message -->
+            <div class="slds-col">
+              <div class="slds-m-top_large slds-m-bottom_large">
+                <lightning:icon variant="success" iconName="utility:success" size="small" />
+                <div class="slds-text-heading_small slds-text-color_sucess message-text">
+                  {! v.pricingCallResult.Message }
+                </div>
+              </div>
+            </div>
+
+            <!-- AUTOMATIC ADDONS  -->
+            <aura:if isTrue="{! v.pricingCallResult.AutomaticAddons.length > 0 }">
+              <div class="slds-col">
+                <div class="slds-box">
+                  <div class="slds-text-heading_medium">{! $Label.c.Automatic_Add_ons_Customer_is_Entitled_To }</div>
+
+                  <!-- If there are one or more manuals addons to select, show a table -->
+                  <div class="slds-text-body_small">{! $Label.c.The_following_add_ons_were_already_added_to_the_Quote }</div>
+
+                  <aura:iteration items="{! v.pricingCallResult.AutomaticAddons }" var="autoAddon">
+                    <c:editAutomaticAddonQuantity
+                      automaticAddon="{! autoAddon }"
+                      shipToLocations="{! v.shipToLocations }"
+                      onquantitychange="{! c.handleAutomaticAddonQuantityChange }"
+                    ></c:editAutomaticAddonQuantity>
+                  </aura:iteration>
+                </div>
+              </div>
+            </aura:if>
+
+            <!-- MANUAL ADDONS -->
+            <aura:if isTrue="{! v.pricingCallResult.ManualAddons.length > 0 }">
+              <div class="slds-col slds-m-top_small">
+                <div class="slds-box">
+                  <div class="slds-text-heading_medium">{! $Label.c.Discretionary_Add_ons }</div>
+
+                  <div class="slds-text-body_small">{! $Label.c.Select_the_manual_add_ons_you_want_to_add_to_the_Quote }</div>
+
+                  <aura:iteration items="{! v.pricingCallResult.ManualAddons }" var="addon">
+                    <c:editManualAddonQuantity
+                      manualAddon="{! addon }"
+                      shipToLocations="{! v.shipToLocations }"
+                      groupIndex="{! _index }"
+                      onquantitychange="{! c.handleAddonQuantityChange }"
+                    ></c:editManualAddonQuantity>
+                  </aura:iteration>
+                </div>
+              </div>
+            </aura:if>
+
+            <!-- DISCOUNTED ADDONS -->
+            <aura:if isTrue="{! v.pricingCallResult.DiscountedAddonGroups.length > 0 }">
+              <div class="slds-col slds-m-top_small">
+                <div class="slds-box">
+                  <div class="slds-text-heading_medium">{! $Label.c.Discounted_Add_ons }</div>
+
+                  <div class="slds-text-body_small">{! $Label.c.Discounted_Add_on_Message }</div>
+
+                  <aura:iteration items="{! v.pricingCallResult.DiscountedAddonGroups }" var="addonGroup">
+                    <c:editAddonQuantity
+                      addonGroup="{! addonGroup }"
+                      shipToLocations="{! v.shipToLocations }"
+                      groupIndex="{! _index }"
+                      onquantitychange="{! c.handleAddonQuantityChange }"
+                    ></c:editAddonQuantity>
+                  </aura:iteration>
+                </div>
+              </div>
+            </aura:if>
+
+            <!-- RX/DX CONSUMABLES -->
+            <aura:if isTrue="{! v.pricingCallResult.RxDxConsumables.length > 0 }">
+              <div class="slds-col slds-m-top_small">
+                <div class="slds-box">
+                  <div class="slds-text-heading_medium">{! $Label.c.Rx_Dx_Consumables }</div>
+
+                  <div class="slds-text-body_small">{! $Label.c.Rx_Dx_Consumables_Message }</div>
+
+                  <aura:iteration items="{! v.pricingCallResult.RxDxConsumables }" var="addonGroup">
+                    <c:editRxDxAddonQuantity
+                      addonGroup="{! addonGroup }"
+                      shipToLocations="{! v.shipToLocations }"
+                      groupIndex="{! _index }"
+                      currencyCode="{! v.pricingCallResult.CurrencyCode }"
+                      onquantitychange="{! c.handleAddonQuantityChange }"
+                    ></c:editRxDxAddonQuantity>
+                  </aura:iteration>
+                </div>
+              </div>
+            </aura:if>
+          </p>
+        </lightning:card>
+      </aura:if>
+    </div>
+  </div>
+</aura:component>

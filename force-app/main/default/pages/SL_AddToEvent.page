@@ -1,0 +1,26 @@
+<apex:page standardController="Account" recordSetVar="accountsRecords" tabStyle="Account" extensions="SL_AddToCampaignOREvent">
+
+    <script>
+        var ids = [];
+        <apex:repeat value="{!lstAccount}" var="acc">
+            ids.push('{!acc.Id}');
+        </apex:repeat>
+        try 
+        {
+            var evntId = window.location.search.substring(1).split('=')[1];
+            
+            if (!ids || ids.length < 1)
+            {
+                alert('Please select at least one record.');
+                sforce.one.navigateToURL("/001");
+            }
+            else {
+                sforce.one.navigateToURL("/apex/ZTS_US_Add_Account_Redirect?records=" + ids + "&eventId=" + evntId);
+            }
+        } catch (ex) {
+            alert('Exception:' + ex);
+        }
+
+    </script>
+
+</apex:page>

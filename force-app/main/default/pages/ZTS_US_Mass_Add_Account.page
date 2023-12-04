@@ -1,0 +1,104 @@
+<apex:page standardController="ZTS_Events__c" extensions="ZTS_US_Mass_Add_Account_Ext" tabStyle="ZTS_Events__c" sidebar="false" LightningStyleSheets="true">
+    <style>
+        body input[type="submit"], body .pbButton .btn, body .pbButtonb .btn, body input.btn, body .menuButton, .slds-vf-scope input[type="submit"], 
+        .slds-vf-scope .pbButton .btn, .slds-vf-scope .pbButtonb .btn, .slds-vf-scope input.btn, .slds-vf-scope .menuButton
+        {
+            line-height: 1.75rem;
+        }
+    </style>
+    <apex:slds />
+    <div class="slds-scope slds-p-horizontal_medium">
+        <h1>
+        <apex:outputText value="{!currentEventsRecord.Name} - {!currentEventsRecord.ZTS_US_Name__c}" style="font-weight:bold; font-size:2em;"/>
+    </h1>
+    <!--<br/>-->
+    <!--Kaushik added-->
+    <script type="text/javascript">
+        function displaymessage()
+        {
+        var selectedaccountids = {!GETRECORDIDS($ObjectType.Account)};
+        if (selectedaccountids[0]==null) alert ('You must selected at least one records');
+        
+        }
+    </script>
+    <apex:form >
+        <apex:pageMessages />
+    </apex:form>
+    <apex:form >
+       
+        <apex:pageBlock >
+           <apex:outputLabel value="Search Account: "/> &nbsp;
+           <apex:inputText value="{!myaccountname}"/> &nbsp;
+           <apex:commandButton value="Search "  action="{!search}" />
+           <font color="blue"><br/> 
+                        <i><apex:outputLabel value="Enter Account Name and click Search to find the accounts"/></i></font>
+           <apex:pageBlockButtons location="top">
+                 <apex:commandButton value="Add to Event" action="{!process}" />
+                <apex:commandButton action="/{!eventId}" value="Cancel" immediate="true" />
+        </apex:pageBlockButtons>
+        <apex:pageblocksection title="Account Search Result " collapsible="false"  columns="1">
+
+           <apex:pageBlockTable value="{!mywrapperlist}"  var="aw" >
+                     
+                     <apex:column >
+                     <apex:inputCheckbox value="{!aw.selected}"/>
+                     </apex:column>
+                     
+                     <apex:column value="{!aw.acc1.name}"/>
+                      
+                     <apex:column value="{!aw.acc1.ZTS_EU_Market__c}"/>
+                    
+                     <apex:column value="{!aw.acc1.type}"/>
+                     
+                     <apex:column value="{!aw.acc1.ZTS_EU_Address_Line_1__c}"/>
+                     
+                     <apex:column value="{!aw.acc1.ZTS_EU_City__c}"/>
+                     
+                     <apex:column value="{!aw.acc1.ZTS_EU_Zip_Postal_Code__c}"/>
+                     
+                     <apex:column value="{!aw.acc1.ZTS_EU_Main_Phone__c}"/>
+                     
+                 </apex:pageBlockTable>
+           </apex:pageblocksection>              
+       
+                <apex:pageblocksection title="Selected Record Details" collapsible="false" columns="1">
+                
+                 <apex:pageBlockTable value="{!selectedlist}"  var="aw1" >
+                     
+                     <apex:column value="{!aw1.name}"/>
+                      
+                     <apex:column value="{!aw1.ZTS_EU_Market__c}"/>
+                     
+                     <apex:column value="{!aw1.type}"/>
+                     
+                     <apex:column value="{!aw1.ZTS_EU_Address_Line_1__c}"/>
+                     
+                     <apex:column value="{!aw1.ZTS_EU_City__c}"/>
+                     
+                     <apex:column value="{!aw1.ZTS_EU_Zip_Postal_Code__c}"/>
+                     
+                     <apex:column value="{!aw1.ZTS_EU_Main_Phone__c}"/>
+                 </apex:pageBlockTable>
+                  </apex:pageblocksection>
+             </apex:pageblock>
+       
+    </apex:form>
+    <!--Kaushik added-->
+    
+    <apex:form >
+        <apex:commandButton value="{!$Label.ZTS_EU_Back_to_Event}" action="/{!eventId}" />
+        <br/>
+    </apex:form>
+    <apex:form >
+        <apex:pageMessages />
+    </apex:form>
+        <apex:outputPanel layout="block">
+            <apex:enhancedList type="Account" customizable="false" height="450" width="140" rowsPerPage="50" />
+        </apex:outputPanel>
+    <apex:form >
+        <br/>
+        <apex:commandButton value="Back to Event" action="/{!eventId}"/>
+    </apex:form>
+    </div>
+     
+</apex:page>

@@ -1,0 +1,11 @@
+<apex:page >
+    <head>
+        <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+        <script src="https://touchpointeca--quarterly.sandbox.my.salesforce-sites.com/zoey/resource/ChatScript?" type="text/javascript"></script>
+        <script src="https://touchpointeca--quarterly.sandbox.my.salesforce-sites.com/zoey/resource/SnapInSettings?" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="https://touchpointeca--quarterly.sandbox.my.salesforce-sites.com/zoey/resource/ChatStyle?" media="screen" /> 
+    </head>
+    
+        
+    
+</apex:page>

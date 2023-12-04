@@ -1,0 +1,7 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+    <div class="slds-align_absolute-center" style="height:4rem">
+        <a href="https://www.youtube.com/channel/UCNyc_CKka3n5-tV1rmo2wTA">
+            <img style='width:25%;' class="slds-align_absolute-center" src="/sfsites/c/resource/1560365489000/youtube?" ></img> 
+        </a> 
+    </div>
+</aura:component>

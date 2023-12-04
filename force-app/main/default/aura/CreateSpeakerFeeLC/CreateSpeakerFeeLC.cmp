@@ -1,0 +1,7 @@
+<aura:component implements="lightning:isUrlAddressable,force:lightningQuickActionWithoutHeader,lightning:hasPageReference" controller="SpeakerFeeListController">
+    <aura:attribute name="errorMsg" type="Boolean"/>
+    <aura:attribute name="contId" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.pageReference}" action="{!c.doInit}" />
+    <lightning:navigation aura:id="navService"/>
+</aura:component>

@@ -1,0 +1,42 @@
+.zs_fc_list_breadcrumbs{
+    font-family: "GothamNarrow";
+}
+.zs_monthyear_card{
+    margin: 0 auto;
+    border: 0;
+    border-radius: 0;
+    padding: 5px;
+    box-shadow: 0px 4px 2px rgb(0 0 0 / 25%);
+}
+.zs_monthyear_layout{
+    margin: 2% 15%;
+}
+.zs_fc_entry_title{
+    font-size: 18px;
+    color: #005670;
+}
+.zs_fc_addupdate_wrapper .slds-size_1-of-12, .zs_fc_addupdate_wrapper .slds-size--1-of-12 {
+    width: 10.333333%;
+}
+.zs_entry_table tr th{
+    background: #005670;
+    color: #fff;
+    letter-spacing: normal;
+    text-align: center;
+    font-family: "GothamNarrow";
+}
+.zs_entry_table td{
+    padding: 8px 3px;
+}
+.zs_entry_table tr th div{
+    padding:5px;
+}
+.zs_label_right{
+    float: right;
+    font-family: 'GothamNarrow';
+    font-size: 10px;
+    line-height: 24px;
+    letter-spacing: 0.121875px;
+    color: #585858;
+    margin-top: 1%;
+}

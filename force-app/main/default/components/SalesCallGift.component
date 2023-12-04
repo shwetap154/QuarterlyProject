@@ -1,0 +1,30 @@
+<!--
+***************************************************************************************
+* Description   :   This is the component for displaying list of Gifts on a Call page.                        
+
+* @author       :   CloudSense (Ilirjana Predojević)
+* Modification Log
+=======================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------
+* 1.0     20-Feb-15   Ilirjana Predojević   Created the component.
+
+***************************************************************************************
+-->
+<apex:component id="salesCallGift" controller="ZTS_EU_AddGiftFromCallController" allowDML="true">
+    <apex:pageBlock title="{!$Label.ZTS_EU_GiftsAssociatedToThisCall}" id="pb_gifts" rendered="{! (existingGiftListSize != 0) }">
+        <apex:pageblocktable value="{!existingGifts}" var="gift">
+            <apex:column value="{!gift.Name}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.Name.Label}"/>
+            <apex:column value="{!gift.ZTS_EU_Contact__c}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.ZTS_EU_Contact__c.Label}"/>
+            <apex:column value="{!gift.ZTS_EU_Quantity__c}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.ZTS_EU_Quantity__c.Label}"/>
+            <apex:column value="{!gift.ZTS_EU_Gift_type__c}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.ZTS_EU_Gift_type__c.Label}"/>
+            <apex:column value="{!gift.ZTS_EU_Product_Hierarchy__c}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.ZTS_EU_Product_Hierarchy__c.Label}"/>
+            <apex:column value="{!gift.ZTS_EU_Year__c}" headerValue="{!$ObjectType.ZTS_EU_Gift__c.Fields.ZTS_EU_Year__c.Label}"/>
+            <apex:column headervalue="{!$Label.ZTS_EU_Remove}">
+                <apex:commandLink value="X" action="{!deleteGift}" rerender="pb_gifts" status="status_Loading" immediate="true">
+                    <apex:param name="param1" value="{!gift.Id}" assignTo="{!giftId}"/>
+                </apex:commandLink>
+            </apex:column>
+        </apex:pageblocktable>
+    </apex:pageBlock>
+</apex:component>

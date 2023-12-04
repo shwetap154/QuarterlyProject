@@ -1,0 +1,460 @@
+@font-face {
+  font-family: "Arboria";
+  src: url("/sfsites/c/resource/1626872099000/Zoetis_Static_Resources/fonts/FontsFree-Net-arboria2.ttf?orgId=00DF00000005zmy&orgId=00D2g0000000kkJ") format("truetype");
+}
+
+@font-face {
+  font-family: "ArboriaBold";
+  src: url("/sfsites/c/resource/1626872099000/Zoetis_Static_Resources/fonts/FontsFree-Net-Arboria-Bold.ttf?orgId=00DF00000005zmy&orgId=00D2g0000000kkJ") format("truetype");
+}
+
+@font-face {
+  font-family: "GothamNarrow";
+  src: url("/sfsites/c/resource/1626872099000/Zoetis_Static_Resources/fonts/FontsFree-Net-GothamNarrowBook.ttf?orgId=00DF00000005zmy&orgId=00D2g0000000kkJ") format("truetype");
+}
+
+.siteforcePrmBody .cCenterPanel {
+  margin-top: 2px;
+  padding: 0;
+}
+
+.siteforcePrmBody .cCenterPanel .slds-col--padded {
+  padding: 0;
+}
+
+body {
+  background: #fff;
+}
+
+.cCenterPanel {
+  max-width: 1030px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.uiTab, .siteforceContentArea {
+  background: #f6f5f4;
+  padding: 2% !important;
+}
+
+.btnIconOverlay button {
+  border: 0;
+}
+
+.btnIconOverlay button:hover {
+  color: #969696;
+}
+
+.btnIconOverlay button:focus {
+  outline: 0;
+  box-shadow: none;
+  color: #969696;
+}
+
+.product_search .slds-input-has-icon lightning-primitive-icon {
+  display: none;
+}
+
+.slds-breadcrumb .slds-list__item:before, .slds-breadcrumb .slds-breadcrumb__item:before {
+  content: none;
+}
+
+.zs_active_breadcrumb a {
+  color: #9b9b9b;
+}
+
+lightning-breadcrumb a {
+  font-size: 12px;
+  color: #005670;
+}
+
+lightning-base-combobox input {
+  border: 0 !important;
+  border-bottom: 1px solid #9b9b9b !important;
+  border-radius: 0 !important;
+  padding-left: 0 !important;
+  cursor: pointer !important;
+}
+
+[role=combobox] input[readonly], input[readonly][role=combobox] {
+  padding-left: 0;
+}
+
+[role=combobox] input[readonly]:focus, [role=combobox] input[readonly].slds-has-focus, input[readonly][role=combobox]:focus, input[readonly][role=combobox].slds-has-focus {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.zs_monthyear_card input[aria-readonly=true][lightning-baseCombobox_baseCombobox] {
+  box-shadow: none;
+}
+
+.slds-combobox__input:focus {
+  box-shadow: none;
+  outline: 0;
+  border-color: transparent;
+}
+
+.zs_monthyear_layout lightning-combobox .slds-form-element__label, .zs_order_layout lightning-input .slds-form-element__label {
+  font-family: "GothamNarrow";
+}
+
+.zs_monthyear_layout lightning-combobox .slds-form-element__help, .zs_order_layout lightning-input .slds-form-element__help {
+  position: absolute;
+}
+
+.zs_monthyear_layout .slds-has-error input, .zs_order_layout .slds-has-error input {
+  box-shadow: none;
+  border-bottom: 1px solid red !important;
+}
+
+.zs_fc_list_searchbtn button {
+  background-color: #285770;
+  border-color: #285770;
+  border-radius: 10px;
+}
+
+.slds-required {
+  width: 6.26px;
+  height: 16px;
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 16px;
+  color: #f65c00;
+  float: right;
+}
+
+.zs_fc_listview_table .slds-th__action-button {
+  display: none;
+}
+
+.zs_fc_listview_table table > thead .slds-cell-fixed.slds-has-button-menu {
+  background: #005670;
+  height: 57px;
+  padding-top: 10px;
+}
+
+.zs_fc_listview_table .slds-table_header-fixed_container, .zs_fc_listview_table .slds-table--header-fixed_container {
+  padding-top: 3.5rem;
+}
+
+.zs_fc_listview_table table > thead .slds-cell-fixed .slds-truncate {
+  color: #fff;
+  max-width: 100%;
+  overflow: initial !important;
+  text-overflow: initial !important;
+  white-space: initial !important;
+}
+
+.zs_fc_listview_table .slds-table_bordered:not(.slds-no-row-hover) tbody tr:hover > td:not(.slds-has-focus), .zs_fc_listview_table .slds-table_bordered:not(.slds-no-row-hover) tbody tr:hover > th:not(.slds-has-focus), .zs_fc_listview_table .slds-table_bordered:not(.slds-no-row-hover) tbody tr:focus > td:not(.slds-has-focus), .zs_fc_listview_table .slds-table_bordered:not(.slds-no-row-hover) tbody tr:focus > th:not(.slds-has-focus), .zs_fc_listview_table .slds-table--bordered:not(.slds-no-row-hover) tbody tr:hover > td:not(.slds-has-focus), .zs_fc_listview_table .slds-table--bordered:not(.slds-no-row-hover) tbody tr:hover > th:not(.slds-has-focus), .zs_fc_listview_table .slds-table--bordered:not(.slds-no-row-hover) tbody tr:focus > td:not(.slds-has-focus), .zs_fc_listview_table .slds-table--bordered:not(.slds-no-row-hover) tbody tr:focus > th:not(.slds-has-focus) {
+  box-shadow: none;
+}
+
+.zs_fc_listview_table .slds-table:not(.slds-no-row-hover) tbody tr:hover > td, .zs_fc_listview_table .slds-table:not(.slds-no-row-hover) tbody tr:hover > th, .zs_fc_listview_table .slds-table:not(.slds-no-row-hover) tbody tr:focus > td, .zs_fc_listview_table .slds-table:not(.slds-no-row-hover) tbody tr:focus > th {
+  background: none;
+}
+
+.zs_fc_listview_table .slds-th__action:focus, .zs_fc_listview_table .slds-th__action:hover {
+  background-color: #005670 !important;
+  box-shadow: none !important;
+}
+
+.zs_fc_listview_table tbody th lightning-primitive-cell-factory span, .zs_fc_listview_table tbody td lightning-primitive-cell-factory span {
+  border: 0.25px solid #969696;
+  box-sizing: border-box;
+  box-shadow: inset 0px 1px 2px rgb(0 0 0 / 25%);
+  padding: 5px;
+  min-height: 30px;
+}
+
+.zs_fc_upload_block lightning-input lightning-primitive-file-droppable-zone label {
+  background: #ffffff;
+  color: #fff;
+  padding: 30px;
+  padding-bottom: 20px;
+}
+
+.zs_fc_upload_block .slds-file-selector__dropzone {
+  border: 0;
+  border-radius: 10px;
+}
+
+.zs_fc_upload_block .slds-file-selector__dropzone .slds-file-selector__button {
+  border: 0;
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  padding-left: 65px;
+  padding-top: 5%;
+  box-shadow: none !important;
+  outline: 0 !important;
+  border: 0 !important;
+}
+
+.slds-file-selector__dropzone .slds-button_neutral:hover, .slds-file-selector__dropzone .slds-button_neutral:focus, .slds-file-selector__dropzone .slds-button--neutral:hover, .slds-file-selector__dropzone .slds-button--neutral:focus {
+  background: none;
+  border: 0 !important;
+}
+
+.slds-file-selector__dropzone .slds-file-selector__body {
+  background: transparent;
+}
+
+.slds-file-selector__dropzone .slds-file-selector__body .slds-medium-show {
+  display: none;
+}
+
+.zs_fc_upload_block lightning-input .slds-form-element__label {
+  position: absolute;
+  display: block;
+  text-align: center;
+  width: 100%;
+  font-size: 14px;
+  font-weight: bold;
+  color: #6fb1cb;
+  padding-top: 5%;
+  padding-left: 20%;
+  letter-spacing: 0.121875px;
+}
+
+.zs_fc_upload_block .slds-file-selector__dropzone .slds-file-selector__button .slds-button__icon {
+  display: none;
+}
+
+.zs_fc_upload_block .slds-file-selector__dropzone .slds-file-selector__button {
+  font-size: 0;
+}
+
+.zs_fc_upload_block .slds-file-selector__dropzone .slds-file-selector__button:before {
+  content: 'Drop your files here or BROWSE';
+  font-size: 12px;
+  color: #6fb1cb;
+  letter-spacing: 0.121875px;
+}
+
+.zs_fc_addupdate_wrapper lightning-card .slds-card {
+  background: #dedede;
+  border: 0;
+  overflow: auto;
+}
+
+.zs_fc_addupdate_wrapper .slds-card__header-title span {
+  font-family: "GothamNarrow";
+  color: #005670;
+  letter-spacing: 0.121875px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.zs_fc_addupdate_wrapper lightning-input label, .zs_fc_addupdate_wrapper .zs_prod_desc {
+  font-family: "GothamNarrow";
+  font-size: 13px;
+  letter-spacing: 0.121875px;
+  color: #585858;
+  line-height: 24px;
+}
+
+.zs_fc_addupdate_wrapper lightning-input input {
+  background: #ffffff;
+  box-shadow: inset 0px 0px 1px rgb(0 0 0 / 25%);
+  border-radius: 2px;
+  border-color: transparent;
+  height: 50px;
+  padding-right: 5px !important;
+}
+
+.zs_fc_addupdate_wrapper .slds-input[disabled], .zs_fc_addupdate_wrapper .slds-input.slds-is-disabled .zs_fc_addupdate_wrapper .slds-input[disabled]:focus, .zs_fc_addupdate_wrapper .slds-input[disabled]:active, .zs_fc_addupdate_wrapper .slds-input.slds-is-disabled:focus, .zs_fc_addupdate_wrapper .slds-input.slds-is-disabled:active {
+  background: #f5d1bf;
+}
+
+.fc_add_update_btn button, .fc_add_update_btn button:hover, .fc_add_update_btn button:focus {
+  background: #ee6d2d;
+  border-radius: 10px;
+  border-color: #ee6d2d;
+  font-family: "GothamNarrow";
+  font-size: 16px;
+  padding: 3% 27%;
+}
+
+.zs_review_submit_btn button, .zs_review_submit_btn button:hover, .zs_review_submit_btn button:focus {
+  background: #ee6d2d;
+  border-radius: 10px;
+  border-color: #ee6d2d;
+  font-family: "GothamNarrow";
+  font-size: 16px;
+}
+
+.product_search .slds-input-has-icon input {
+  text-align: left;
+  padding-left: 10px;
+}
+
+.product_search .slds-input-has-icon input::placeholder {
+  text-align: center;
+}
+
+.zs_listdropdown_box lightning-pill .slds-pill {
+  width: 100%;
+  border-radius: 2px;
+  border-color: transparent;
+  height: 50px;
+  background: #ffffff;
+  box-shadow: inset 0px 0px 1px rgb(0 0 0 / 25%);
+}
+
+.zs_listdropdown_box lightning-pill .slds-pill a {
+  border: 0;
+}
+
+.zs_entry_table tr td input {
+  border: 0.25px solid #969696 !important;
+  box-sizing: border-box;
+  box-shadow: inset 0px 1px 2px rgb(0 0 0 / 25%);
+  min-height: 30px;
+  background-color: #fff !important;
+  padding-left: 5px !important;
+}
+
+.slds-file-selector__dropzone .slds-button_neutral:hover, .slds-file-selector__dropzone .slds-button_neutral:focus, .slds-file-selector__dropzone .slds-button--neutral:hover, .slds-file-selector__dropzone .slds-button--neutral:focus {
+  box-shadow: none !important;
+}
+
+.datePicker {
+  position: absolute;
+  z-index: 1000;
+}
+
+.zs_order_layout input {
+  background: #ffffff;
+  box-shadow: inset 0px 2px 2px rgb(0 0 0 / 25%);
+  border: 0;
+  height: 50px;
+}
+
+.zs_orderlist_rows tr td lightning-input input {
+  border: 0.25px solid #969696 !important;
+  box-sizing: border-box;
+  box-shadow: inset 0px 1px 2px rgb(0 0 0 / 25%);
+  border-radius: 0;
+}
+
+.zs_orderdetails_table input {
+  background: #ffffff;
+  border: 0.25px solid #969696;
+  box-shadow: inset 0px 1px 1px rgb(0 0 0 / 25%);
+  font-size: 12px;
+}
+
+.zs_orderdetails_table input:disabled {
+  background: #ffffff;
+  opacity: 0.6;
+  font-size: 12px;
+  color: #000;
+}
+
+.zs_remarks_total input {
+  border: 0;
+  background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #ffffff;
+}
+
+.zs_remarks_total input:disabled {
+  border: 0;
+  background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(0deg, #FFFFFF, #FFFFFF), #ffffff;
+  opacity: 0.6;
+  color: #000;
+}
+
+.zs_createorder_submit lightning-button button {
+  background: #005670;
+  border-radius: 4px;
+  padding: 5px 25px;
+}
+
+.zs_company_card lightning-input input, .zs_company_card lightning-combobox input, .zs_order_card lightning-input input, .zs_order_card lightning-combobox input, .zs_caseform_card lightning-input input, .zs_caseform_card lightning-combobox input, .zs_caseform_card lightning-textarea textarea {
+  height: 45px;
+  border: 0;
+  box-shadow: inset 0px 2px 2px rgb(0 0 0 / 25%);
+  border-radius: 0;
+}
+
+.zs_company_card lightning-combobox input, .zs_order_card lightning-combobox input, .zs_caseform_card lightning-combobox input {
+  border-bottom: 0 !important;
+  padding-left: 8px !important;
+}
+
+.zs_company_card lightning-input label, .zs_company_card lightning-combobox label, .zs_order_card lightning-input label, .zs_order_card lightning-combobox label, .zs_caseform_card lightning-combobox label, .zs_caseform_card lightning-input label, .zs_caseform_card lightning-textarea label {
+  font-family: GothamNarrow;
+  font-size: 13px;
+  line-height: 16px;
+  color: #585858;
+}
+
+.zs_shipping_table_wrap table lightning-input .slds-checkbox {
+  background: #fff;
+}
+
+.zs_caseform_card .zs_case_desc textarea {
+  min-height: 200px;
+  box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.zs_case_submit lightning-button button {
+  background: rgb(0,86,112,0.5);
+  padding: 5px 18px;
+  border: 0;
+  border-radius: 4px;
+}
+
+.customer_faq_container button.slds-button.slds-button_reset.slds-accordion__summary-action:before {
+  content: '';
+  background-image: url('../images/icons/plus_icon.png');
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  z-index: 1;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.zs_cb_distname_wrap .btnIconOverlay {
+  margin-top: 1%;
+  right: 27%;
+}
+
+.zs_cb_distname_wrap .product_search .slds-input-has-icon input {
+  height: 50px;
+}
+
+.zs_cb_fso_landing_wrap a:hover {
+  text-decoration: none;
+}
+
+.zs_cb_custom_multilookup .btnIconOverlay {
+  position: absolute;
+  z-index: 1;
+  right: 7%;
+  margin-top: -1px;
+}
+
+.zs_cb_custom_multilookup .btnIconOverlay .slds-button {
+  border: 0;
+}
+
+.zs_create_orderbtn lightning-primitive-icon svg {
+  width: 25px;
+  height: 25px;
+}
+
+.zs_fc_listview_table lightning-datatable .slds-scrollable_y {
+  overflow: initial;
+}
+
+.zs_fc_listview_table tr th:nth-child(2) {
+  width: 360px !important;
+}
+
+.zs_fc_listview_table tr th:nth-child(2) .slds-cell-fixed {
+  width: 360px !important;
+}

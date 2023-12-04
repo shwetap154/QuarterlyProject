@@ -1,0 +1,155 @@
+.THIS.label {
+  width: 66%;
+  font-family: arial;
+}
+.THIS .slds-accordion__summary-heading {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.THIS span.slds-truncate{ 
+  white-space: normal; 
+}
+
+/* Edited by Keerthana */
+.THIS{
+  overflow: auto;
+}
+.THIS .zs_bc{
+  font-family: GothamNarrow;
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: 0.121875px;
+  text-transform: capitalize;
+  color: #F65C00;
+}
+.THIS .zs_active_bc{
+  color: #9B9B9B;
+  font-size: 12px;
+  font-family: GothamNarrow;
+}
+.THIS .zs_entry_title{
+  font-family: 'Arial';
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0.121875px;
+  text-transform: capitalize;
+  color: #005670;
+}
+.THIS .zs_abbr_btn{
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0.121875px;
+  text-transform: capitalize;
+  color: #FFFFFF;
+  padding: 4px 20px;
+  background: #005670;
+  border-radius: 10px;
+  border: 0;
+}
+.THIS .zs_abbr_popup .Header p {
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.8px;
+  color: #000000;
+  padding-bottom: 12px;
+  font-family: 'GothamNarrow';
+}
+.THIS .zs_abbr_popup{
+  width: 42%;
+}
+.THIS .zs_abbr_popup .zs_abbr_popup_header{
+  background: #005670;
+}
+.THIS .zs_abbr_popup .zs_abbr_popup_header h2{
+  color: #fff;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: 0.8px;
+  text-transform: capitalize;
+  font-family: 'GothamNarrow';
+  text-align: left;
+}
+.THIS .customer_team_container{
+	background: rgb(64,148,172,0.2);
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 10px;
+  height: 485px;
+  padding: 5% 3%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.THIS .customer_team_container h2{
+  font-family: GothamNarrow;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.121875px;
+  text-transform: capitalize;
+  color: #080D1C;
+}
+.THIS .customer_team{
+  overflow: auto;
+	width: 100%;
+}
+.THIS .customer_thumb{
+  float: left;
+  width: 10%;
+  background: #fff;
+  border-radius: 10px;
+  padding: 22px;
+}
+.THIS .customer_thumb img {
+  display: block;
+  margin: 0 auto;
+}
+.THIS .customer_content{
+  float: left;
+	width: 90%;
+  padding: 1% 5%;
+}
+.THIS .customer_content p{
+  margin: 0;
+  font-family: GothamNarrow;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.121875px;
+  text-transform: capitalize;
+  color: #080D1C;
+}
+
+.THIS .customer_faq_container{
+    background: #fff;
+  box-shadow: 0px 4px 2px rgb(0 0 0 / 25%);
+  padding: 2%;
+}
+.THIS .customer_faq_container h2{
+  font-family: GothamNarrow;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 20px;
+  color: #005670;
+  padding: 2% 3%;
+}
+.THIS .customer_faq_container .slds-accordion__list-item {
+  border: 0;
+  padding-bottom: 1%;
+}
+.THIS .customer_faq_container button.slds-button.slds-button_reset.slds-accordion__summary-action lightning-primitive-icon{
+  display: none;
+}
+.THIS .customer_faq_container button.slds-button.slds-button_reset.slds-accordion__summary-action span{
+  padding-left: 25px;
+  font-family: GothamNarrow;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 20px;
+  color: #080D1C;
+}
+.THIS .customer_faq_container .slds-accordion__section .slds-accordion__content p{
+  padding-left: 25px;
+  font-family: GothamNarrow;
+  font-size: 14px;
+  line-height: 20px;
+  color: #080D1C;
+}

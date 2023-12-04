@@ -1,0 +1,4 @@
+<apex:page standardController="Case" extensions="ZTS_EU_ServiceRequestOverride" action="{!redirect}">
+
+             
+</apex:page>

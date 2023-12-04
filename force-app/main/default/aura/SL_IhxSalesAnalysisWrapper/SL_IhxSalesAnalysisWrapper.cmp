@@ -1,0 +1,3 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    <iframe src="{! '/apex/ZTS_EU_IXHsalesAnalysis?Id=' + v.recordId }" width="100%" height="500px;" frameBorder="0"/>
+</aura:component>

@@ -1,0 +1,319 @@
+<apex:page standardController="Lead" applyHtmlTag="false" applyBodyTag="false" 
+           extensions="ZoetisForShelters" standardStylesheets="false" 
+           showHeader="false" renderAs="pdf"  >
+    <head>
+        
+        <style type="text/css"  >
+            
+            @page {  
+                @bottom-right {
+                content: element(footer); 
+                }
+            }
+            div.footer {
+            margin-left:640px;
+            display: block;
+            padding: 5px;
+            position: running(footer); 
+            }      
+            .headerRow .headerStyle{
+            background-color:#ADD8E6;
+            color:#000000;
+            text-align:center;
+            } 
+            .tableClass tbody{
+            text-align:center;
+            }
+            body,td {                
+            font-size: 13px;
+            font-family: Arial,Helvetica,sans-serif;
+            } 
+            td { 
+            padding: 2px;
+            }
+            .bPageBlock .detailList  {
+            padding: 2px 2px 2px 2px;
+            
+            width: 100%;
+            font-family: Arial,Helvetica,sans-serif;
+            } 
+            .pageBlockTable {
+            font-size:11.5px; 
+            font-family: Arial,Helvetica,sans-serif;
+            page-break-after:always;
+            }
+            .pageBlockTableHeader {
+            font-size:9.5px;
+            border-color: white;
+            font-family: Arial,Helvetica,sans-serif;
+            }
+            h1, h2, h3
+            {
+            margin: 2px;
+            padding: 2px;
+            color: white;
+            background-color:#2f94bc;            
+            } 
+             .headers  {
+                color: white;
+                text-align: center;
+                position: relative;
+                text-transform: uppercase;
+                background-color: #6dd2de;
+                padding: 0.25em 0 0.1em;
+                font-family: "proxima-nova-extra-condensed", Helvetica, Arial, sans-serif;
+                
+                font-size: 1.5em;
+                line-height: 1;
+                width:100%;
+                float:left;
+            }
+            
+            .esignTagSize{
+                font-size: 2em;
+                font-weight: bold;
+            }
+
+            .esignDEATag{
+                font-size: 1em;
+                font-weight: bold;           
+            }
+        </style>
+</head>
+     
+    <div class="footer">
+        <span>  <apex:image value="{! $Resource.ZoetisLogo}"   />       </span>
+    </div>
+   
+    <c:ZFS_header shelterObj="{!shelter}"  displayChat="false" ></c:ZFS_header>
+    <apex:form style="width :100%">         
+      
+        <apex:outputPanel id="fnr" layout="block" >
+         <!--      <apex:outputLabel value="Zoetis For Shelters" styleClass="headers"   /> -->
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>  
+            <apex:pageBlock id="fnr1" > 
+                
+                <apex:pageBlockSection title="Basic Information" columns="1" >
+                    <apex:outputField value="{!shelter.Shelter_Application_Number__c}"/>
+                    <apex:outputField value="{!shelter.Salutation}" label="Prefix"/>
+                    <apex:outputField value="{!shelter.FirstName}"/>
+                    <apex:outputField value="{!shelter.LastName}"/>
+                    <apex:outputField value="{!shelter.Email}"/>
+                    <apex:outputField value="{!shelter.Phone}"/>
+                    <apex:outputField value="{!shelter.Shelter_Name__c}"/>
+                    <apex:outputField value="{!shelter.Shelter_Website__c}"/>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Qualification" columns="1">
+                    <apex:outputField value="{!shelter.Type_of_Organization__c}"/>
+<!--                    <apex:pageBlockSection rendered="{! shelter.Type_of_Organization__c == 'Other'}" columns="1">   -->
+                        <apex:outputField value="{!shelter.If_Other_please_describe__c}" label="Description" rendered="{! shelter.Type_of_Organization__c == 'Other'}" />
+<!--                    </apex:pageBlockSection>    -->
+                    <apex:outputField value="{!shelter.Type_of_Sanctuary_Animals__c}" label="What types of animals receive sanctuary with your organization?" rendered="{! shelter.Type_of_Organization__c == 'Animal Sanctuary'}" />
+                    <apex:outputField value="{!shelter.Type_of_Sanctuary_Animals_Other__c}" label="If Other, please specify:" rendered="{! shelter.Type_of_Sanctuary_Animals__c == 'Other'}" />
+                    <apex:outputField value="{!shelter.annual_cat_dog__c}"/>
+                    <apex:outputField value="{!shelter.Do_you_currently_purchase_from_Zoetis__c}"/>
+                    <apex:outputField value="{!shelter.Existing_account_with_Zoetis__c}"/>
+                    
+                 <!--   <apex:pageBlockSection rendered="{! shelter.Existing_account_with_Zoetis__c == 'Yes'}" columns="1"  >   -->
+                        <apex:outputField value="{!shelter.Account_Prefix__c}" rendered="{! shelter.Existing_account_with_Zoetis__c == 'Yes'}" />
+                        <apex:outputField value="{!shelter.Account_First_Name__c}" rendered="{! shelter.Existing_account_with_Zoetis__c == 'Yes'}" />
+                        <apex:outputField value="{!shelter.Account_Last_Name__c}" rendered="{! shelter.Existing_account_with_Zoetis__c == 'Yes'}" />
+                        <apex:outputField value="{!shelter.Shelter_Account_Name__c}" rendered="{! shelter.Existing_account_with_Zoetis__c == 'Yes'}" />
+                        <apex:outputField value="{!shelter.Zoetis_Account__c}" rendered="{! shelter.Existing_account_with_Zoetis__c == 'Yes'}" />
+              <!--      </apex:pageBlockSection>    -->
+                    
+                    <apex:outputField value="{!shelter.How_did_you_hear_about_us2__c}"/>
+                    <apex:outputField label="Do you work with a licensed veterinarian?" value="{!shelter.Do_you_have_a_licensed_veterinarian__c}"/>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Contact" columns="1">
+                    <apex:outputField value="{!shelter.Contact_Phone__c}" label="Shelter Phone"/>
+                    <apex:outputField value="{!shelter.Contact_Email__c}" label="Shelter Email"/>
+                    <apex:outputField value="{!shelter.Contact_Fax__c}" label="Shelter Fax"/> 
+                    <apex:outputField value="{!shelter.Contact_Preference__c}" label="Contact Preference"/> 
+                    <br/>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Billing Address" style="font-weight:bold;color:#4295d1"/>
+                    </apex:pageBlockSectionItem> 
+                    <apex:outputField value="{!shelter.Billing_Street_1__c}" label="Street1"/>
+                    <apex:outputField value="{!shelter.Billing_Street_2__c}" label="Street2"/>
+                    <apex:outputField value="{!shelter.Billing_City__c}" label="City"/>
+                    <apex:outputField value="{!shelter.Billing_Country__c}" label="Country"/>
+                    <apex:outputField value="{!shelter.Billing_State__c}" label="State"/>
+                    <apex:outputField value="{!shelter.Billing_Zip_Code__c}" label="Zip code"/><br/>
+                    <!--<div style="text-align: center;">
+                        <span style="margin-left:10px;"><h1><br/> Shipping Address </h1></span><apex:outputText />
+                    </div>-->
+                    <!--<div style="float:center; position:absolute;">
+                        <h3>Shipping Address</h3>
+                    </div>--> 
+                    <apex:outputField value="{!shelter.Shipping_Address_Type__c}" label="Shipping Address Type"/>
+                    <apex:pageBlockSection rendered="{!shelter.Shipping_Address_Type__c == 'Same as Billing'}" columns="1">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Shipping Address Details" style="font-weight:bold;color:#4295d1"/>
+                        
+                        </apex:pageBlockSectionItem>
+                        <apex:outputField value="{!shelter.Billing_Street_1__c}" label="Street1"/>
+                        <apex:outputField value="{!shelter.Billing_Street_2__c}" label="Street2"/>
+                        <apex:outputField value="{!shelter.Billing_City__c}" label="City"/>
+                        <apex:outputField value="{!shelter.Billing_Country__c}" label="Country"/>
+                        <apex:outputField value="{!shelter.Billing_State__c}" label="State"/>
+                        <apex:outputField value="{!shelter.Billing_Zip_Code__c}" label="Zip Code"/>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection rendered="{!shelter.Shipping_Address_Type__c == 'Shelter'}" columns="1">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Shipping Address" style="font-weight:bold;color:#4295d1"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:outputField value="{!shelter.Shipping_Street_1__c}" label="Street1"/>
+                        <apex:outputField value="{!shelter.Shipping_Street_2__c}" label="Street2"/>
+                        <apex:outputField value="{!shelter.Shipping_City__c}" label="City"/>
+                        <apex:outputField value="{!shelter.Shipping_Country__c}" label="Country"/>
+                        <apex:outputField value="{!shelter.Shipping_State__c}" label="State"/>
+                        <apex:outputField value="{!shelter.Shipping_Zip_Code__c}" label="Zip Code"/>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection rendered="{!shelter.Shipping_Address_Type__c == 'Veterinarian'}" columns="1" >
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Shipping Address:" style="font-weight:bold;color:#4295d1"/>
+                        </apex:pageBlockSectionItem> 
+                        <apex:outputField value="{!shelter.Shipping_Street_1__c}" label="Street1"/>
+                        <apex:outputField value="{!shelter.Shipping_Street_2__c}" label="Street2"/>
+                        <apex:outputField value="{!shelter.Shipping_City__c}" label="City"/>
+                        <apex:outputField value="{!shelter.Shipping_Country__c}" label="Country"/>
+                        <apex:outputField value="{!shelter.Shipping_State__c}" label="State"/>
+                        <apex:outputField value="{!shelter.Shipping_Zip_Code__c}" label="Zip Code"/>
+                    </apex:pageBlockSection>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Stats" columns="1"> 
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Dog & Puppy Statistics" style="font-weight:bold;color:#4295d1"></apex:outputLabel>
+                    </apex:pageBlockSectionItem>
+                    <apex:outputField value="{!shelter.Puppy_Intakes_Yr__c}" label="# Puppy Intakes/yr"/>
+                    <apex:outputField value="{!shelter.Dog_Intakes_Yr__c}" label="# Dog Intakes/yr"/>
+                    <apex:outputField value="{!shelter.Puppy_Adoptions_Yr__c}" label="# Puppy Adoptions/yr"/>
+                    <apex:outputField value="{!shelter.Dog_Adoptions_Yr__c}" label="# Dog Adoptions/yr"/>                    
+                    <apex:outputField value="{!shelter.Resurrenders_for_Dogs__c}" label="# Resurrenders"/>
+                    <apex:outputField value="{!shelter.Max_Capacity_for_Dogs__c}" label="Max Capacity for Dogs"/>
+                    <br/>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Cat & Kitten Statistics" style="font-weight:bold;color:#4295d1"></apex:outputLabel>
+                    </apex:pageBlockSectionItem>
+                    <apex:outputField value="{!shelter.Kitten_Intakes_Yr__c}" label="# Kitten Intakes/yr"/>
+                    <apex:outputField value="{!shelter.Cat_Intakes_Yr__c}" label="# Cat Intakes/yr"/>
+                    <apex:outputField value="{!shelter.Kitten_Adoptions_Yr__c}" label="# Kitten Adoptions/yr"/>
+                    <apex:outputField value="{!shelter.Cat_Adoptions_yr__c}" label="# Cat Adoptions/yr"/>                    
+                    <apex:outputField value="{!shelter.Resurrenders_for_Cats__c}" label="# Resurrenders"/>
+                    <apex:outputField value="{!shelter.Max_Capacity_for_Cats__c}" label="Max Capacity for Cats"/>
+                    <br/>
+                    <apex:outputField value="{!shelter.Does_org_perform_Spay_Neuter_operations__c}" label="Does your organization perform spay and neuter operations?"/>
+                    <apex:outputField value="{!shelter.In_House_Clinic__c}" label="Do you operate a clinic at your shelter that sees animals that are not in the shelter's care?"/>
+                    <apex:outputField value="{!shelter.Estimated_S_N_performed_average_yr__c}" label="Estimated number of spays/neuters your shelter performs in an average year"/>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Veterinarian" columns="1">
+                    <apex:outputField value="{!shelter.Vet_Prefix__c}" label="Prefix"/>
+                    <apex:outputField value="{!shelter.Vet_First_Name__c}" label="First Name"/>
+                    <apex:outputField value="{!shelter.Vet_Last_Name__c}" label="Last Name"/>
+                    <apex:outputField value="{!shelter.DVM_Phone__c}" label="Phone"/>
+                    <apex:outputField value="{!shelter.DVM_Address__c}" label="Street 1"/>
+                    <apex:outputField value="{!shelter.DVM_Address_2__c}" label="Street 2"/>
+                    <apex:outputField value="{!shelter.DVM_City__c}" label="City"/>
+                    <apex:outputField value="{!shelter.DVM_County__c}" label="Country"/>
+                    <apex:outputField value="{!shelter.DVM_State__c}" label="State"/>
+                    <apex:outputField value="{!shelter.DVM_Zip__c}" label="Zip Code"/>
+                    <apex:outputField value="{!shelter.DVM_Email__c}" label="Email"/>
+                    <apex:outputField value="{!shelter.DVM_Fax__c}" label="Fax"/>
+                    <apex:outputField value="{!shelter.DVM_ST__c}" label="State Vet License Number"/>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="References" columns="1">
+                    <apex:outputField value="{!shelter.Principal_Bank_Name__c}" label="Principal Bank Name"/>
+                    <apex:outputField value="{!shelter.Principal_Bank_Phone__c}" label="Principal Bank Phone"/>
+                    <!--<label><B>Trade References 1</B></label><br/>-->
+                    <br/>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Trade References 1" style="font-weight:bold;color:#4295d1"></apex:outputLabel>
+                    </apex:pageBlockSectionItem>
+                    <apex:outputField value="{!shelter.Trade_Reference_1_Company_Name__c}" label="Company Name"/>
+                    <apex:outputField value="{!shelter.Trade_Reference_1_Company_Phone__c}" label="Phone"/>
+                    <!--<label><B>Trade References 2</B><br/></label><br/>-->
+                    <br/>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Trade References 2" style="font-weight:bold;color:#4295d1"></apex:outputLabel>
+                    </apex:pageBlockSectionItem>
+                    <apex:outputField value="{!shelter.Trade_Reference_2_Company_Name__c}" label="Company Name"/>
+                    <apex:outputField value="{!shelter.Trade_Reference_2_Company_Phone__c}" label="Phone"/>
+                    <!--<label><B>Trade References 3</B><br/></label>-->
+                    <br/>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Trade References 3" style="font-weight:bold;color:#4295d1"></apex:outputLabel>
+                    </apex:pageBlockSectionItem>
+                    <apex:outputField value="{!shelter.Trade_Reference_3_Company_Name__c}" label="Company Name"/>
+                    <apex:outputField value="{!shelter.Trade_Reference_3_Company_Phone__c}" label="Phone"/>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Sales Tax Status" columns="1">
+                    <apex:outputField value="{!shelter.Sales_Tax_Status_Type__c}" label="Customer Type"/>
+                    <apex:outputField value="{!shelter.Sales_Tax_Status__c}" label="Sales Tax Status"/>
+                    <apex:outputField value="{!shelter.Tax_Permit__c}" label="Tax Permit #"/>
+                </apex:pageBlockSection>
+                <br/>
+                                        <b>Note: </b>If you are unable to upload your signed documents on the website you may send the requested documents via email, fax, or mail:
+                                        <br/> 
+                                        <table>
+                                            <tr><td><b>Email: </b></td><td><apex:outputlink value="mailto:CustomerAccounts@zoetis.com" style="color:#ff6400 " > CustomerAccounts@zoetis.com </apex:outputLink></td></tr>
+                                            <tr><td><b>Fax: </b></td><td>1-800-741-1301</td></tr>
+                                            <tr><td width="5%"><b>Mail: </b></td><td>Attn: Zoetis Customer Accounts</td></tr>
+                                            <tr><td></td><td>2476 Swedesford Road – Suite 250</td></tr>
+                                            <tr><td></td><td>Malvern, PA 19355</td></tr>
+                                        </table> 
+                <br/><br/>
+                
+                <apex:pageBlockSection title="Must be completed by Veterinarian" columns="1" rendered="{!downloadFlag}" >
+                    <label>As a veterinarian of record for this animal welfare organization I authorize the use of Zoetis products and agree to be responsible for the oversight and use of all products for the animals under the care of this account</label><br/><br/>
+                    
+                    <label><b>Veterinarian signature:____________________________</b> </label><br/><br/>
+                    <label><b>Date: _____________</b></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><b>Including DEA:_____________________ </b> </label>
+                    <br/><br/>
+                 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    <br/><br/>
+                    <label>By signing below you are authorizing Zoetis to contact above listed for references, and you hereby provide Zoetis consent to send the Company communications and advertisements (including via facsimile). The signature below represents that (a) the party signing below is an authorized representative of the company; (b) the party signing below has the authority to bind the company financially or otherwise, and (c) that the information provided herein is a complete and accurate representation of the company as of the date hereof.  If Veterinarian owner, sign here and Veterinarian portion of form.</label><br/><br/>
+                    <label><b>Shelter Applicant Signature: _______________________________</b></label><br/><br/>
+                    <label><b>Shelter Applicant Printed Name:______________________________________</b></label><br/><br/>
+                    <label><b>Date:__________________</b></label>
+                    
+                
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Must be completed by Veterinarian" columns="1" rendered="{!!downloadFlag}" >
+                    <label>As a veterinarian of record for this animal welfare organization I authorize the use of Zoetis products and agree to be responsible for the oversight and use of all products for the animals under the care of this account</label><br/><br/>
+                    <label><b>Veterinarian signature: </b></label> <apex:outputText styleClass="esignTagSize" value="{!eSignTagsMap[shelter.DVM_Email__c]}" />  <br/><br/>
+                    <apex:pageBlock rendered="{!shelter.DVM_Email__c == shelter.Email}" >
+                        <label><b>Date: {{Date1_es_:signer1:date}} </b></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><b>Including DEA: </b> </label> <b> <apex:outputText styleClass="esignDEATag" value="{{*d1_es_:signer1:dropdown(options='Yes,No')}}" /> </b> 
+                    </apex:pageBlock>
+                    <apex:pageBlock rendered="{!shelter.DVM_Email__c != shelter.Email}" >
+                        <label><b>Date: {{Date2_es_:signer2:date}} </b></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><b>Including DEA: </b> </label> <b> <apex:outputText styleClass="esignDEATag" value="{{*d1_es_:signer2:dropdown(options='Yes,No')}}" /> </b> 
+                    </apex:pageBlock>
+
+                    <br/><br/>
+                 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    <br/><br/>
+                    <label>By signing below you are authorizing Zoetis to contact above listed for references, and you hereby provide Zoetis consent to send the Company communications and advertisements (including via facsimile). The signature below represents that (a) the party signing below is an authorized representative of the company; (b) the party signing below has the authority to bind the company financially or otherwise, and (c) that the information provided herein is a complete and accurate representation of the company as of the date hereof.  If Veterinarian owner, sign here and Veterinarian portion of form.</label><br/><br/>
+                    <label><b>Shelter Applicant Signature: </b></label>  <apex:outputText styleClass="esignTagSize" value="{!eSignTagsMap[shelter.Email]}" /> <br/><br/>
+                    <b><apex:outputText value="Shelter Applicant Name: {!shelter.FirstName} {!shelter.LastName}" /> </b> <br/><br/>
+                    <label><b>Date: {{Date1_es_:signer1:date}} </b></label>
+                    
+                
+                </apex:pageBlockSection>
+                
+            </apex:pageBlock>
+        </apex:outputPanel>
+  </apex:form>
+        
+</apex:page>

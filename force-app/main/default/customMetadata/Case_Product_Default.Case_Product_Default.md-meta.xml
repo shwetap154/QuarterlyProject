@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Case Product Default</label>
+    <protected>false</protected>
+    <values>
+        <field>Dose_Unit__c</field>
+        <value xsi:type="xsd:string">Dose</value>
+    </values>
+    <values>
+        <field>Dose__c</field>
+        <value xsi:type="xsd:double">1.0</value>
+    </values>
+    <values>
+        <field>Excluded_Product_Lines__c</field>
+        <value xsi:type="xsd:string">Cytopoint</value>
+    </values>
+    <values>
+        <field>Interval_Unit__c</field>
+        <value xsi:type="xsd:string">Animal</value>
+    </values>
+    <values>
+        <field>MAH_Country__c</field>
+        <value xsi:type="xsd:string">US</value>
+    </values>
+    <values>
+        <field>Per__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Product_Category__c</field>
+        <value xsi:type="xsd:string">BIO</value>
+    </values>
+    <values>
+        <field>Reason_for_Use__c</field>
+        <value xsi:type="xsd:string">Immunoprophylaxis</value>
+    </values>
+    <values>
+        <field>Route__c</field>
+        <value xsi:type="xsd:string">SC</value>
+    </values>
+</CustomMetadata>

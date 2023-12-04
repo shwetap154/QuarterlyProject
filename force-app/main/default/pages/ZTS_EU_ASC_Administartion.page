@@ -1,0 +1,85 @@
+<apex:page id="pg" standardController="ZTS_EU_Account_Species_Potential__c" extensions="ZTS_EU_ASC_Administartion" action="{!displayQuetions}" LightningStyleSheets="true">
+    <apex:slds />
+    <div class="slds-scope slds-p-horizontal_medium" >
+        
+        <apex:form id="frm1">    
+    
+            <apex:actionStatus id="loading" >
+                <apex:facet name="start">
+                    <apex:image value="{!$Resource.loadingImage}" style="height:150px;width:150px;  
+                                                                         margin-left: 30%;
+                                                                         margin-Top: 5%;
+                                                                         position: absolute;
+                                                                         z-index: 1;"/>
+                </apex:facet>
+                <apex:facet name="stop"></apex:facet>
+            </apex:actionStatus> 
+            
+            <apex:actionFunction name="refreshSpecies" action="{!refreshSpecies}" status="loading" reRender="showAccountSpecieParameterSection,pb1,op" />
+            <apex:actionFunction name="displayQuetions" action="{!displayQuetions}" status="loading" reRender="showAccountSpecieParameterSection,op,pb2" />
+        
+            <br/><br/>
+             <apex:outputLink value="/{!accountId}">
+                <b>  {!$Label.ZTS_EU_Back_To} {!accountName}</b>
+             </apex:outputLink>  
+            <br/><br/> 
+            <apex:pageBlock id="pb1" title="{!$Label.Account_Specie_Consultation_Administration}" rendered="{!If(mode != 'Detail',true,false)}">
+                <apex:pageBlocksection id="pbs1" rendered="{!If(mode == 'Detail',false,true)}">
+                    <apex:pageblocksectionItem id="BUSI">
+                        <apex:outputLabel > {!$Label.Select_Business_Unit_s} </apex:outputLabel>
+                        <apex:outputPanel >
+                            <apex:selectList style="width: 280px;" id="businessUnit" size="5" value="{!selectedBusinessUnits}" onChange="refreshSpecies()">
+                                <apex:selectOption itemLabel="-None-" itemValue=""/><!--  rendered="{!if(businessUnits.size == 0 , true, false)}"/> -->
+                                <apex:selectOptions value="{!businessUnits}"/>
+                            </apex:selectList>      
+                        </apex:outputPanel>
+                    </apex:pageblocksectionItem>
+                
+                    <apex:pageblocksectionItem id="specieSI" rendered="{!If(and(selectedBusinessUnits != '', selectedBusinessUnits != null),true,false)}">
+                        <apex:outputLabel > {!$Label.Select_Specie_s} </apex:outputLabel>
+                        <apex:outputPanel >  
+                            <apex:selectList style="width: 380px;" id="species" size="5" value="{!selectedSpecie}" onChange="displayQuetions()">
+                                <apex:selectOption itemLabel="-None-" itemValue="" rendered="{!if(species.size == 0 , true, false)}"/>
+                                <apex:selectOptions value="{!species}"/>
+                            </apex:selectList>      
+                        </apex:outputPanel> 
+                    </apex:pageblocksectionItem>
+                
+                </apex:pageBlocksection>
+            </apex:pageBlock> 
+            <apex:outputPanel id="op">
+            <apex:pageBlock id="pb2" title="{!$Label.Account_Specie_Parameters}" rendered="{!If(OR(showAccountSpecieParameterSection,mode == 'Detail'),true,false)}">   
+                
+                <apex:pageMessages /> 
+                <div style="font-weight:bold;font-size:91%;">
+                <table style="width:50%">
+                    <tr>
+                        <td><apex:outputLabel style="color: #4a4a56;">{!$Label.Animal_Consultations_new}</apex:outputLabel></td>
+                        <td style="width:65%"><apex:inputField value="{!ascObj.ZTS_EU_Animal_Consultations_new__c}"/></td>
+                    </tr>
+                     
+                </table>
+                
+                <apex:repeat value="{!dynamicField}" var="lst">
+                    <hr/><br/><br/>
+                    <table>
+                        <apex:repeat value="{!dynamicField[lst]}" var="apiName">
+                            <tr>
+                                <td><apex:outputLabel style="color: #4a4a56;">{!fieldLabels[apiName]}</apex:outputLabel></td>
+                                <td><apex:inputField value="{!ascObj[apiName]}"/></td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </apex:repeat>
+                            
+                </div>
+                <apex:pageblockButtons location="bottom">
+                    <apex:commandButton value="{!$Label.Save}" action="{!updateRecord}"/>
+                    <apex:commandButton value="{!$Label.Cancel}" action="{!If(ascObj.id != null, '/'+ascObj.id,'/'+accountId)}"/>
+                </apex:pageblockButtons>
+            </apex:pageBlock> 
+            </apex:outputPanel>
+        </apex:form>
+    </div>
+    
+</apex:page>

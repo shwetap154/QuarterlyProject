@@ -1,0 +1,70 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+	<aura:attribute name="activeSections" type="List" default="['A']" />
+
+  <lightning:accordion
+    class="custom-header"
+    allowMultipleSectionsOpen="true"
+    onsectiontoggle="{! c.handleSectionToggle }"
+    activeSectionName="{! v.activeSections }"
+  >
+    <lightning:accordionSection
+      name="A"
+      label="Legal"
+    >
+      <aura:set attribute="body">
+        <p>
+         You will find here all the info, requirements and all relevant documents (for download at the bottom of the page) in relation to your commitment to compliance when working with Zoetis.
+            If you want to know more about Zoetis’ own commitment to ethical business practises and legal requirements, please visit the Zoetis Code of Conduct website (add link).</p>
+          
+          
+<p>Zoetis is committed to acting ethically and legally in accordance with all applicable and local laws and regulations. We expect the same commitment from the distributors, as well as those acting on behalf of the distributors and who are distributing Zoetis’ products.
+</p>
+
+          <p>    An important aspect of the Zoetis corporate policy is that it prohibits anyone acting on behalf of Zoetis from providing any payment or benefit to any person or entity in order to improperly influence a government official or other third party or to gain an unfair business advantage.  
+          </p>
+
+          <p>For that reason, every distributor needs to complete Zoetis Due Diligence Questionnaire (Zoetis DDQ) (add hyperlink).</p>
+
+          <p>If you have completed a Zoetis DDQ within the past 24 months, it is not necessary for you to complete a new DDQ again. Instead, it is sufficient if you update earlier answers with any new information that has arisen since the last time you completed the Zoetis DDQ (e.g. change in ownership or address). </p>
+
+
+          <p>Below this page you can also download the Zoetis Global Anti-bribery and Anti-Corruption Principles (add hyperlink).as well as the summary of Zoetis Policies on Business Conduct for distributors and agents (add hyperlink).</p>
+
+
+          <p>In case of any legal questions in relation to your contract or the business you do with Zoetis, please reach out to Legal via Customer Service.
+
+          <a
+            href="https://atgalpha-zoetis.cs45.force.com/ZoetisDistributorCommunity/s/library"
+            target="_blank"
+            style=" font-size: 1em! important; color:#FF6400 !important;"
+          >
+            
+          </a>
+          .
+        </p>
+      </aura:set>
+    </lightning:accordionSection>
+
+    <lightning:accordionSection name="B" label="Regulatory">
+        <p>Advertising and promotional activities should be in accordance with international, national legislations and Zoetis policies. All promotional materials and communications must also be accurate and not misleading.</p>
+<p>Pharmacovigilance (PV) is defined as the science and activities relating to the detection, assessment, understanding and prevention of adverse drug experiences or any other drug-related problem associated with the use of marketed veterinary drugs. Please follow the Introduction to Pharmacovigilance training and contact with your Zoetis regulatory affairs colleague in case of questions. All pharmacovigilance reports (see below for download) must be sent to PVAfrica@zoetis.com.
+      </p>
+<p>The identification of potential new products is key before initiating any registration activity. Some countries and/or product types might not require registration but still there are several steps to be followed in order to supply the products in countries. </p>
+<p>The regulatory framework to approve animal health medicines around the globe is legislated on formal legal statutes (laws/codes, regulations, directives) in that country and/or region.  </p>
+<p>Authorization to market these products is granted by country or regional regulatory agencies only when they are satisfied that the product has demonstrated required levels of efficacy (to meet label claims), safety (target animal, consumer, handler and environment), and quality (product/manufacturing/control). The process requires applicants to submit comprehensive data which is reviewed by the relevant governmental agency. 
+</p>
+      <p>
+        
+        <a
+          href="https://atgalpha-zoetis.cs45.force.com/ZoetisDistributorCommunity/s/library"
+          target="_blank"
+          style=" font-size: 1em! important; color:#FF6400 !important;"
+        >
+         
+        </a>
+       
+      </p>
+    
+    </lightning:accordionSection>
+  </lightning:accordion>
+</aura:component>

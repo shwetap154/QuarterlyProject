@@ -1,0 +1,194 @@
+<apex:component layout="none">
+    <head>
+        <title>Zoetis US</title> 
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+        
+        <apex:stylesheet value="{!URLFOR($Resource.NOA_ZoetisHeader, 'css/style.css')}"/>
+        <style type="text/css">
+            .navigationIcons {
+            float: right;
+            padding: 0px 10px 0px 10px;
+            }
+            .zoetisus>a {
+            border-right: 1px solid #333;
+            }
+            .moreInfo, .mailId, .phoneText{
+            color:#ff6400;
+            }  
+            #popUp{
+            margin-top: -30px;
+            } 
+            .feedback{
+            font-family: proxima-nova-extra-condensed, Helvetica, Arial, sans-serif;
+            border-right: none;
+            background-color: #FF6400;
+            margin-left: 12px;
+            text-transform: uppercase;
+            color: white !important;
+            padding: 3px 6px 3px 6px !important;
+            margin-left: 10px;
+            margin-right: 20px;
+            }
+            
+            
+            .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 250px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+            
+            /* Modal Content */
+            .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            }
+            
+            /* The Close Button */
+            .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            }
+            
+            .close:hover,
+            .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+            }
+            
+            .fixheader {
+            position: fixed !important;
+            width: 100%;
+            background-color: lightyellow;
+            }
+            
+            .browsermsg{
+            text-align: center;
+            color:black;
+            }
+            
+        </style>
+        
+        <script type="text/javascript" >
+        
+        var orgOpen = window.open;
+        window.open = function (url, windowName, windowFeatures) { 
+            if(windowName != null && windowName != undefined && windowName.includes('liveagent')){                    
+                /* Width of the chat window. Use your own value. */
+                var chatWindowHeight=250;
+                
+                /* Height of the chat window. Use your own value. */
+                var chatWindowWidth=377;
+                
+                /* Calculate the left position to keep the chatwindow in center */ 
+                var left = parseInt((screen.availWidth/2) - (chatWindowWidth/2));
+                
+                /* Calculate the top position to keep the chatwindow in center */
+                var top = parseInt((screen.availHeight/2) - (chatWindowHeight/2));
+                
+                /* Create the arguments for window.open method. */
+                var windowFeatures = "width=" + chatWindowWidth + ",height=" + chatWindowHeight + ",status,resizable,left=" + left + ",top=" + top + "screenX=" + left + ",screenY=" + top;
+                
+                return orgOpen(url, windowName, windowFeatures); 
+            }else{
+                return orgOpen(url, windowName, windowFeatures); 
+            }
+        }    
+        
+        function openContactUs(){ 
+            // Get the modal
+            var modal = document.getElementById('contactModal');   
+            var span = document.getElementsByClassName("close")[0]; 
+            modal.style.display = "block"; 
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+        </script>
+        
+        <script type='text/javascript' src='https://c.la1-c1-iad.salesforceliveagent.com/content/g/js/43.0/deployment.js'></script>
+        <script type='text/javascript'>
+            liveagent.init('https://d.la1-c1-iad.salesforceliveagent.com/chat', '5720Z000000NXMH', '00Di0000000egzN');
+        </script>
+        
+        <script type="text/javascript">
+        if (!window._laq) { window._laq = []; }
+        window._laq.push(function(){liveagent.showWhenOnline('5730Z000000Na0t', document.getElementById('liveagent_button_online_5730Z000000Na0t'));
+                                    liveagent.showWhenOffline('5730Z000000Na0t', document.getElementById('liveagent_button_offline_5730Z000000Na0t'));
+                                   });</script>
+        
+        
+        
+    </head>
+    <body class="mainContent">
+        <div class="fixheader">
+            <nav >            
+                <div class="navigationIcons">
+                    <div>
+                        <img id="liveagent_button_online_5730Z000000Na0t" style="display: none; border: 0px none; cursor: pointer" onclick="liveagent.startChat('5730Z000000Na0t')" src="https://zoetisus.secure.force.com/zoetisforshelters/resource/1497487720000/ChatOnline" />
+                        <div id="liveagent_button_offline_5730Z000000Na0t" style="display: none;"><!-- Offline Chat Content --></div>
+                        
+                    </div>
+                    
+                    <div class="contact">
+                        <apex:outputLink value="#" onclick="openContactUs();" >Contact Us</apex:outputLink>                   
+                    </div>
+                    <div class="zoetisus">
+                        <apex:outputLink value="https://www.zoetisus.com" target="_blank" >ZoetisUS.com</apex:outputLink>
+                    </div>
+                    <!--
+                    <div class="zoetisDot">
+                        <apex:outputLink styleClass="feedback" value="http://o.zoetisus.com/customer-satisfaction-survey-ver-2-lp2.html" target="_blank" >Feedback</apex:outputLink>
+                    </div> 
+					-->
+                </div>	
+            </nav>
+            
+           
+        
+        
+        <apex:outputText style="color: #0096af; font-size: 15px; text-align: left; float: left;" value="<b>Do not use browser buttons when navigating. <br/>Loss of information will occur.</b>" escape="false" />
+        <br/>
+    </div>
+    
+    <br/><br/><br/>
+    
+    
+</body> 
+     <div id="contactModal" class="modal">
+                
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>
+                        <div class="moreInfo">FOR MORE INFORMATION:</div>
+                    <apex:outputLink styleClass="mailId" value="mailto:ShelterTeam@zoetis.com" >ShelterTeam@zoetis.com </apex:outputLink>
+                    <div class="phone phoneText">1-866-225-9777</div>
+                </p>
+            </div>
+            
+        </div>
+
+</apex:component>

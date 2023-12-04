@@ -1,0 +1,53 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" controller="LegalContentController">
+	<aura:attribute name="contentVersions" type="ContentVersion[]" default="[]" access="global" />
+    <aura:attribute name="baseURL" type="String" access="global" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="slds-form-element__control">
+       
+    <table class="slds-table slds-m-bottom_large slds-border--right slds-border--left">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Name">Name</div>
+                </th>
+                <!--<th class="" scope="col">
+                    <div class="slds-truncate" title="Species">Species</div>
+                </th>
+                 <th class="" scope="col">
+                    <div class="slds-truncate" title="Species">Species</div>
+                </th>-->
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Type">Type</div>
+                </th>
+                <th class="" scope="col">
+                    <div class="slds-truncate" title="Actions">Actions</div>
+                </th>
+            </tr>
+
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.contentVersions}" var="contentVersion">
+                <tr class="slds-hint-parent zs_name_table">
+                    <td data-label="Product Name" scope="row">
+                        <div class="slds-truncate" title="Product Name">{!contentVersion.Title}</div>
+                    </td>
+                    <!--<td data-label="Species">
+                    <div class="slds-truncate" title="Species">{!contentVersion.Applicable_Species__c}</div>
+                    </td>-->
+                    <td data-label="File Type">
+                        <div class="slds-truncate" title="Type">{!contentVersion.Library_File_Type__c}</div>
+                    </td>
+                    <td data-label="Action">
+                        <!-- <lightning:button label="Download" onclick="{!c.callDownloadFile}" value="{!this}" iconName="utility:download" iconPosition="left" name="{!contentVersion.Id}"/> -->
+                        <a class="slds-button slds-button_neutral" href="{!'/ZoetisDistributorCommunity/sfc/servlet.shepherd/version/download/' + contentVersion.Id + '?operationContext=S1'}" download="{!contentVersion.Title}">
+                              
+                            <img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/filedownload_icon.png'}"></img>
+                        </a>
+                    </td>
+                    <!-- on click call method on controller.. to download? Lightning:button --> 
+                </tr>
+            </aura:iteration>
+        </tbody>
+    </table>
+    </div>
+</aura:component>

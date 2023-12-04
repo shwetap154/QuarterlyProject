@@ -1,0 +1,6204 @@
+{
+  "salesItems": [
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000465",
+        "crmTechnicalKey": "a1ci0000000JtnMAAS",
+        "productName": "Strongid C-1165",
+        "productType": "Item",
+        "species": "Equine",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jst6AAC",
+            "code": "PRODUCT_LINE",
+            "name": "Strongid C"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsrAAAS",
+            "code": "BRAND",
+            "name": "Strongid"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz2AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Parasiticides"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspFAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Internal Parasites"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 442,
+          "previousUnits": 9,
+          "diffSales": -442,
+          "diffUnits": -9,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 147,
+          "previousUnits": 3,
+          "diffSales": -147,
+          "diffUnits": -3,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 295,
+          "previousUnits": 6,
+          "diffSales": -295,
+          "diffUnits": -6,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 196,
+          "currentUnits": 4,
+          "previousSales": 736,
+          "previousUnits": 15,
+          "diffSales": -540,
+          "diffUnits": -11,
+          "percDiffSales": -73.33,
+          "percDiffUnits": -73.33
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 589,
+          "currentUnits": 12,
+          "previousSales": 442,
+          "previousUnits": 9,
+          "diffSales": 147,
+          "diffUnits": 9,
+          "percDiffSales": 33.33,
+          "percDiffUnits": 33.33
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 785,
+          "currentUnits": 16,
+          "previousSales": 147,
+          "previousUnits": 3,
+          "diffSales": 638,
+          "diffUnits": 13,
+          "percDiffSales": 433.33,
+          "percDiffUnits": 433.33
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 147,
+          "currentUnits": 3,
+          "previousSales": 393,
+          "previousUnits": 8,
+          "diffSales": -245,
+          "diffUnits": -5,
+          "percDiffSales": -62.5,
+          "percDiffUnits": -62.5
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 884,
+          "currentUnits": 18,
+          "previousSales": 98,
+          "previousUnits": 2,
+          "diffSales": 785,
+          "diffUnits": 16,
+          "percDiffSales": 800,
+          "percDiffUnits": 800
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 196,
+          "currentUnits": 4,
+          "previousSales": 286,
+          "previousUnits": 6,
+          "diffSales": -90,
+          "diffUnits": -2,
+          "percDiffSales": -31.33,
+          "percDiffUnits": -33.33
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 245,
+          "currentUnits": 5,
+          "previousSales": 572,
+          "previousUnits": 12,
+          "diffSales": -326,
+          "diffUnits": -7,
+          "percDiffSales": -57.08,
+          "percDiffUnits": -58.33
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 147,
+          "currentUnits": 3,
+          "previousSales": 572,
+          "previousUnits": 12,
+          "diffSales": -425,
+          "diffUnits": -9,
+          "percDiffSales": -74.25,
+          "percDiffUnits": -75
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 442,
+          "currentUnits": 9,
+          "previousSales": 238,
+          "previousUnits": 5,
+          "diffSales": 204,
+          "diffUnits": 4,
+          "percDiffSales": 85.4,
+          "percDiffUnits": 80
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 3633,
+        "previousYearSalesTotal": 4368,
+        "diffSalesTotal": -735,
+        "percDiffSalesTotal": -16.84,
+        "currentYearUnitTotal": 74,
+        "previousYearUnitTotal": 90
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000468",
+        "crmTechnicalKey": "a1ci0000000JtkkAAC",
+        "productName": "Strongid Pst Bl",
+        "productType": "Item",
+        "species": "Equine",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jst5AAC",
+            "code": "PRODUCT_LINE",
+            "name": "Strongid Paste"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsrAAAS",
+            "code": "BRAND",
+            "name": "Strongid"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz2AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Parasiticides"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspFAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Internal Parasites"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 20,
+          "previousUnits": 3,
+          "diffSales": -20,
+          "diffUnits": -3,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 193,
+          "previousUnits": 29,
+          "diffSales": -193,
+          "diffUnits": -35,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 233,
+          "previousUnits": 35,
+          "diffSales": -233,
+          "diffUnits": -35,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 329,
+          "previousUnits": 51,
+          "diffSales": -329,
+          "diffUnits": -51,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 207,
+          "previousUnits": 32,
+          "diffSales": -207,
+          "diffUnits": -32,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 982,
+        "diffSalesTotal": -982,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 150
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10003796",
+        "crmTechnicalKey": "a1ci0000000JtlwAAC",
+        "productName": "Orbeseal 144ct",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jso8AAC",
+            "code": "PRODUCT_LINE",
+            "name": "Orbeseal"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsqbAAC",
+            "code": "BRAND",
+            "name": "Orbeseal"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuFAAS",
+            "code": "DISEASE_CONDITION",
+            "name": "Anti-Infective Intramammary"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuGAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Intramammary - Dry"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": -1,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 291,
+          "previousUnits": 1,
+          "diffSales": -291,
+          "diffUnits": -1,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 291,
+        "diffSalesTotal": -291,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 1
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10003974",
+        "crmTechnicalKey": "a1ci0000000JtWRAA0",
+        "productName": "ScourGuard 4K\/C",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jso0AAC",
+            "code": "PRODUCT_LINE",
+            "name": "Scourguard"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsr0AAC",
+            "code": "BRAND",
+            "name": "Scourguard"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsp5AAC",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals Enteric"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": -262,
+          "previousUnits": -7,
+          "diffSales": 262,
+          "diffUnits": 7,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": -363,
+          "previousUnits": -10,
+          "diffSales": 363,
+          "diffUnits": 10,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 77,
+          "previousUnits": 2,
+          "diffSales": -77,
+          "diffUnits": -2,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": -335,
+          "previousUnits": -9,
+          "diffSales": 335,
+          "diffUnits": 9,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 76,
+          "previousUnits": 2,
+          "diffSales": -76,
+          "diffUnits": -2,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 193,
+          "currentUnits": 5,
+          "previousSales": 150,
+          "previousUnits": 4,
+          "diffSales": 44,
+          "diffUnits": 1,
+          "percDiffSales": 29.38,
+          "percDiffUnits": 25
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 193,
+        "previousYearSalesTotal": -657,
+        "diffSalesTotal": 850,
+        "percDiffSalesTotal": 0,
+        "currentYearUnitTotal": 5,
+        "previousYearUnitTotal": -18
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10003976",
+        "crmTechnicalKey": "a1ci0000000JtWTAA0",
+        "productName": "ScourGuard 4K\/C",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jso0AAC",
+            "code": "PRODUCT_LINE",
+            "name": "Scourguard"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsr0AAC",
+            "code": "BRAND",
+            "name": "Scourguard"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsp5AAC",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals Enteric"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": -148,
+          "previousUnits": -1,
+          "diffSales": 148,
+          "diffUnits": 1,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": -148,
+        "diffSalesTotal": 148,
+        "percDiffSalesTotal": 0,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": -1
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10004019",
+        "crmTechnicalKey": "a1ci0000000JtC0AAK",
+        "productName": "Clovite 5lb",
+        "productType": "Item",
+        "species": "Equine",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jt3QAAS",
+            "code": "PRODUCT_LINE",
+            "name": "Clovite Conditioner"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsy0AAC",
+            "code": "BRAND",
+            "name": "Clovite"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuDAAS",
+            "code": "DISEASE_CONDITION",
+            "name": "Other Products"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuVAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Nutritionals"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 33,
+          "previousUnits": 1,
+          "diffSales": -33,
+          "diffUnits": -1,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 33,
+          "currentUnits": 1,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 33,
+          "diffUnits": 1,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 33,
+        "previousYearSalesTotal": 33,
+        "diffSalesTotal": 0,
+        "percDiffSalesTotal": 0,
+        "currentYearUnitTotal": 1,
+        "previousYearUnitTotal": 1
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000469",
+        "crmTechnicalKey": "a1ci0000000JtksAAC",
+        "productName": "RFD Bulk 60ml",
+        "productType": "Item",
+        "species": "Small Animal",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jst3AAC",
+            "code": "PRODUCT_LINE",
+            "name": "RFD"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsqyAAC",
+            "code": "BRAND",
+            "name": "RFD"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz2AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Parasiticides"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspFAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Internal Parasites"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 89,
+          "previousUnits": 8,
+          "diffSales": -89,
+          "diffUnits": -8,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 64,
+          "previousUnits": 6,
+          "diffSales": -64,
+          "diffUnits": -6,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 152,
+        "diffSalesTotal": -152,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 14
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000474",
+        "crmTechnicalKey": "a1ci0000000JtkzAAC",
+        "productName": "TM Opthal Oint",
+        "productType": "Item",
+        "species": "Small Animal",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000JssmAAC",
+            "code": "PRODUCT_LINE",
+            "name": "Ophthalmics"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsqaAAC",
+            "code": "BRAND",
+            "name": "Opthalmics"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsyzAAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Anti-infective"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuTAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "AIF Other"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 151,
+          "previousUnits": 10,
+          "diffSales": -151,
+          "diffUnits": -10,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 151,
+        "diffSalesTotal": -151,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 10
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10004018",
+        "crmTechnicalKey": "a1ci0000000JtC1AAK",
+        "productName": "Clovite 25lb",
+        "productType": "Item",
+        "species": "Equine",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jt3QAAS",
+            "code": "PRODUCT_LINE",
+            "name": "Clovite Conditioner"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsy0AAC",
+            "code": "BRAND",
+            "name": "Clovite"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuDAAS",
+            "code": "DISEASE_CONDITION",
+            "name": "Other Products"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuVAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Nutritionals"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 222,
+          "currentUnits": 3,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 222,
+          "diffUnits": 3,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 74,
+          "currentUnits": 1,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 74,
+          "diffUnits": 1,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 296,
+        "previousYearSalesTotal": 0,
+        "diffSalesTotal": 296,
+        "percDiffSalesTotal": 0,
+        "currentYearUnitTotal": 4,
+        "previousYearUnitTotal": 0
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10004043",
+        "crmTechnicalKey": "a1ci0000000Jt4sAAC",
+        "productName": "EquiloidInn1",
+        "productType": "Item",
+        "species": "Equine",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jt3GAAS",
+            "code": "PRODUCT_LINE",
+            "name": "Equiloid Innovator"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsvSAAS",
+            "code": "BRAND",
+            "name": "Equiloid Innovator"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsvNAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals Neurological"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 8,
+          "previousUnits": 1,
+          "diffSales": -8,
+          "diffUnits": -1,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 8,
+          "previousUnits": 1,
+          "diffSales": -8,
+          "diffUnits": -1,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": -36,
+          "currentUnits": -5,
+          "previousSales": 8,
+          "previousUnits": 1,
+          "diffSales": -44,
+          "diffUnits": -5,
+          "percDiffSales": -532.36,
+          "percDiffUnits": -600
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 1,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 1,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 33,
+          "previousUnits": 4,
+          "diffSales": -33,
+          "diffUnits": -4,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 8,
+          "currentUnits": 1,
+          "previousSales": 96,
+          "previousUnits": 12,
+          "diffSales": -87,
+          "diffUnits": -11,
+          "percDiffSales": -91.2,
+          "percDiffUnits": -91.67
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 84,
+          "currentUnits": 10,
+          "previousSales": 16,
+          "previousUnits": 2,
+          "diffSales": 68,
+          "diffUnits": 8,
+          "percDiffSales": 428.23,
+          "percDiffUnits": 400
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 8,
+          "currentUnits": 1,
+          "previousSales": 16,
+          "previousUnits": 2,
+          "diffSales": -8,
+          "diffUnits": -1,
+          "percDiffSales": -47.18,
+          "percDiffUnits": -50
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 17,
+          "currentUnits": 2,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 17,
+          "diffUnits": 2,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 83,
+        "previousYearSalesTotal": 185,
+        "diffSalesTotal": -102,
+        "percDiffSalesTotal": -55.13,
+        "currentYearUnitTotal": 9,
+        "previousYearUnitTotal": 23
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10004106",
+        "crmTechnicalKey": "a1ci0000000Jt7RAAS",
+        "productName": "Quest Gel 2x20",
+        "productType": "Item",
+        "species": "Equine",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jt3bAAC",
+            "code": "PRODUCT_LINE",
+            "name": "Quest"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsyAAAS",
+            "code": "BRAND",
+            "name": "Quest"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz2AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Parasiticides"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspFAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Internal Parasites"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 114,
+          "previousUnits": 12,
+          "diffSales": -114,
+          "diffUnits": -12,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 114,
+        "diffSalesTotal": -114,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 12
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10004663",
+        "crmTechnicalKey": "a1ci0000000JtXcAAK",
+        "productName": "Inforce 3 25 ds",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jt2iAAC",
+            "code": "PRODUCT_LINE",
+            "name": "Inforce"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jt2nAAC",
+            "code": "BRAND",
+            "name": "Inforce 3"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsp8AAC",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals Respiratory"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 26,
+          "previousUnits": 1,
+          "diffSales": -26,
+          "diffUnits": -1,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 26,
+        "diffSalesTotal": -26,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 1
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10006825",
+        "crmTechnicalKey": "a1ci0000000JtKiAAK",
+        "productName": "Deccox 50lb bag",
+        "productType": "Item",
+        "species": "Cattle Poultry",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000JsyWAAS",
+            "code": "PRODUCT_LINE",
+            "name": "Deccox"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsyfAAC",
+            "code": "BRAND",
+            "name": "Deccox"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JswDAAS",
+            "code": "DISEASE_CONDITION",
+            "name": "Medicated Feed Additives"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JswEAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "MFA - Coccidiostat"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": -1,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": -1,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": -1,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": -1,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": -1,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": -1,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": -2,
+        "previousYearSalesTotal": 0,
+        "diffSalesTotal": -2,
+        "percDiffSalesTotal": 0,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 0
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10009506",
+        "crmTechnicalKey": "a1ci0000000Jt8JAAS",
+        "productName": "Lyme Vax 10ds",
+        "productType": "Item",
+        "species": "Small Animal",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jt3hAAC",
+            "code": "PRODUCT_LINE",
+            "name": "Lyme Vax"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsyFAAS",
+            "code": "BRAND",
+            "name": "Lyme Vax"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsp6AAC",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals -Other"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 178,
+          "currentUnits": 1,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 178,
+          "diffUnits": 1,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 178,
+        "previousYearSalesTotal": 0,
+        "diffSalesTotal": 178,
+        "percDiffSalesTotal": 0,
+        "currentYearUnitTotal": 1,
+        "previousYearUnitTotal": 0
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10009520",
+        "crmTechnicalKey": "a1ci0000000JtBuAAK",
+        "productName": "WestNileIn1dsx",
+        "productType": "Item",
+        "species": "Equine",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jt3NAAS",
+            "code": "PRODUCT_LINE",
+            "name": "West Nile-Innovator"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsvYAAS",
+            "code": "BRAND",
+            "name": "West Nile"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsvNAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals Neurological"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 266,
+          "currentUnits": 12,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 266,
+          "diffUnits": 12,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 266,
+        "previousYearSalesTotal": 0,
+        "diffSalesTotal": 266,
+        "percDiffSalesTotal": 0,
+        "currentYearUnitTotal": 12,
+        "previousYearUnitTotal": 0
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10009694",
+        "crmTechnicalKey": "a1ci0000000JtCrAAK",
+        "productName": "PneumabortK1b1d",
+        "productType": "Item",
+        "species": "Equine",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jt3MAAS",
+            "code": "PRODUCT_LINE",
+            "name": "Pneumabort-K+1b"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsvXAAS",
+            "code": "BRAND",
+            "name": "Pneumabort"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsp7AAC",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals Reproductive"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 360,
+          "currentUnits": 24,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 360,
+          "diffUnits": 24,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 360,
+        "previousYearSalesTotal": 0,
+        "diffSalesTotal": 360,
+        "percDiffSalesTotal": 0,
+        "currentYearUnitTotal": 24,
+        "previousYearUnitTotal": 0
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10009768",
+        "crmTechnicalKey": "a1ci0000000Jt4tAAC",
+        "productName": "EquiloidInn1",
+        "productType": "Item",
+        "species": "Equine",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jt3GAAS",
+            "code": "PRODUCT_LINE",
+            "name": "Equiloid Innovator"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsvSAAS",
+            "code": "BRAND",
+            "name": "Equiloid Innovator"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsvNAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals Neurological"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 8,
+          "currentUnits": 1,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 8,
+          "diffUnits": 1,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 8,
+          "currentUnits": 1,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 8,
+          "diffUnits": 1,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 8,
+          "currentUnits": 1,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 8,
+          "diffUnits": 1,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 8,
+          "currentUnits": 1,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 8,
+          "diffUnits": 1,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 34,
+        "previousYearSalesTotal": 0,
+        "diffSalesTotal": 34,
+        "percDiffSalesTotal": 0,
+        "currentYearUnitTotal": 4,
+        "previousYearUnitTotal": 0
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10009722",
+        "crmTechnicalKey": "a1ci0000000JtXbAAK",
+        "productName": "Inforce 3 10 ds",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jt2iAAC",
+            "code": "PRODUCT_LINE",
+            "name": "Inforce"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jt2nAAC",
+            "code": "BRAND",
+            "name": "Inforce 3"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsp8AAC",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals Respiratory"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 11,
+          "previousUnits": 1,
+          "diffSales": -11,
+          "diffUnits": -1,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 12,
+          "currentUnits": 1,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 12,
+          "diffUnits": 1,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 12,
+        "previousYearSalesTotal": 11,
+        "diffSalesTotal": 1,
+        "percDiffSalesTotal": 10,
+        "currentYearUnitTotal": 1,
+        "previousYearUnitTotal": 1
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10009897",
+        "crmTechnicalKey": "a1ci0000000JtPHAA0",
+        "productName": "CalfGuard 25u0027s",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jso0AAC",
+            "code": "PRODUCT_LINE",
+            "name": "Scourguard"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsr0AAC",
+            "code": "BRAND",
+            "name": "Scourguard"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsp5AAC",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals Enteric"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 75,
+          "currentUnits": 25,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 75,
+          "diffUnits": 25,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 75,
+        "previousYearSalesTotal": 0,
+        "diffSalesTotal": 75,
+        "percDiffSalesTotal": 0,
+        "currentYearUnitTotal": 25,
+        "previousYearUnitTotal": 0
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10009913",
+        "crmTechnicalKey": "a1ci0000000JtSJAA0",
+        "productName": "UltraChoic 7 10",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000JsnsAAC",
+            "code": "PRODUCT_LINE",
+            "name": "UltraChoice"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsrIAAS",
+            "code": "BRAND",
+            "name": "UltraChoice"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspBAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals Clostridial"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": -192,
+          "currentUnits": -35,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": -192,
+          "diffUnits": -35,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 219,
+          "currentUnits": 40,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 219,
+          "diffUnits": 40,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 27,
+        "previousYearSalesTotal": 0,
+        "diffSalesTotal": 27,
+        "percDiffSalesTotal": 0,
+        "currentYearUnitTotal": 5,
+        "previousYearUnitTotal": 0
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10010462",
+        "crmTechnicalKey": "a1ci0000000JtabAAC",
+        "productName": "Anthel EQ Paste",
+        "productType": "Item",
+        "species": "Equine",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000JssyAAC",
+            "code": "PRODUCT_LINE",
+            "name": "Anthelcide Paste"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsupAAC",
+            "code": "BRAND",
+            "name": "Anthelcide"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz2AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Parasiticides"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspFAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Internal Parasites"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 261,
+          "previousUnits": 41,
+          "diffSales": -261,
+          "diffUnits": -41,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 57,
+          "previousUnits": 9,
+          "diffSales": -57,
+          "diffUnits": -9,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 25,
+          "previousUnits": 4,
+          "diffSales": -25,
+          "diffUnits": -4,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 343,
+        "diffSalesTotal": -343,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 54
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000277",
+        "crmTechnicalKey": "a1ci0000000JtlTAAS",
+        "productName": "Re-Sorb Packett",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jso7AAC",
+            "code": "PRODUCT_LINE",
+            "name": "Resorb"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsqvAAC",
+            "code": "BRAND",
+            "name": "Resorb"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuDAAS",
+            "code": "DISEASE_CONDITION",
+            "name": "Other Products"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuVAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Nutritionals"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 69,
+          "previousUnits": 2,
+          "diffSales": -69,
+          "diffUnits": -2,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 35,
+          "previousUnits": 1,
+          "diffSales": -35,
+          "diffUnits": -1,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 104,
+        "diffSalesTotal": -104,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 3
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000279",
+        "crmTechnicalKey": "a1ci0000000JtlkAAC",
+        "productName": "Entrolyte H.E.",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jso5AAC",
+            "code": "PRODUCT_LINE",
+            "name": "Entrolyte"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspwAAC",
+            "code": "BRAND",
+            "name": "Entrolyte"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuDAAS",
+            "code": "DISEASE_CONDITION",
+            "name": "Other Products"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuVAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Nutritionals"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 91,
+          "previousUnits": 20,
+          "diffSales": -91,
+          "diffUnits": -20,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 181,
+          "previousUnits": 40,
+          "diffSales": -181,
+          "diffUnits": -40,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 272,
+        "diffSalesTotal": -272,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 60
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000334",
+        "crmTechnicalKey": "a1ci0000000JtoDAAS",
+        "productName": "Therabloat 2oz",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000JsoIAAS",
+            "code": "PRODUCT_LINE",
+            "name": "Bloatguard"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsutAAC",
+            "code": "BRAND",
+            "name": "Bloatguard"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuDAAS",
+            "code": "DISEASE_CONDITION",
+            "name": "Other Products"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuVAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Nutritionals"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 17,
+          "previousUnits": 2,
+          "diffSales": -17,
+          "diffUnits": -2,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 117,
+          "previousUnits": 14,
+          "diffSales": -117,
+          "diffUnits": -6,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 50,
+          "previousUnits": 6,
+          "diffSales": -50,
+          "diffUnits": -6,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 204,
+          "previousUnits": 24,
+          "diffSales": -204,
+          "diffUnits": -24,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 100,
+          "previousUnits": 12,
+          "diffSales": -100,
+          "diffUnits": -12,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 218,
+          "previousUnits": 26,
+          "diffSales": -218,
+          "diffUnits": -26,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 201,
+          "previousUnits": 24,
+          "diffSales": -201,
+          "diffUnits": -24,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 75,
+          "previousUnits": 9,
+          "diffSales": -75,
+          "diffUnits": -9,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 96,
+          "previousUnits": 12,
+          "diffSales": -96,
+          "diffUnits": -12,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 1078,
+        "diffSalesTotal": -1078,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 129
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000341",
+        "crmTechnicalKey": "a1ci0000000Jtq9AAC",
+        "productName": "VALBAZEN SUSP",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000JsoDAAS",
+            "code": "PRODUCT_LINE",
+            "name": "Valbazen"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsrLAAS",
+            "code": "BRAND",
+            "name": "Valbazen"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz2AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Parasiticides"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspFAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Internal Parasites"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 311,
+          "previousUnits": 9,
+          "diffSales": -311,
+          "diffUnits": -11,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 380,
+          "previousUnits": 11,
+          "diffSales": -380,
+          "diffUnits": -11,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 483,
+          "previousUnits": 14,
+          "diffSales": -483,
+          "diffUnits": -14,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 276,
+          "previousUnits": 8,
+          "diffSales": -276,
+          "diffUnits": -8,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 518,
+          "previousUnits": 15,
+          "diffSales": -518,
+          "diffUnits": -15,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 242,
+          "previousUnits": 7,
+          "diffSales": -242,
+          "diffUnits": -7,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 276,
+          "previousUnits": 8,
+          "diffSales": -276,
+          "diffUnits": -8,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 173,
+          "previousUnits": 5,
+          "diffSales": -173,
+          "diffUnits": -5,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 2657,
+        "diffSalesTotal": -2657,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 77
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000401",
+        "crmTechnicalKey": "a1ci0000000JtRfAAK",
+        "productName": "TSV-2 1 ds",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000JsnqAAC",
+            "code": "PRODUCT_LINE",
+            "name": "TSV 2"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsrGAAS",
+            "code": "BRAND",
+            "name": "TSV-2"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz1AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Biologicals"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsp8AAC",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Biologicals Respiratory"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": -14,
+          "currentUnits": -10,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": -14,
+          "diffUnits": -10,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": -25,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 39,
+          "previousUnits": 25,
+          "diffSales": -39,
+          "diffUnits": -25,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": -14,
+        "previousYearSalesTotal": 39,
+        "diffSalesTotal": -52,
+        "percDiffSalesTotal": -135.35,
+        "currentYearUnitTotal": -10,
+        "previousYearUnitTotal": 25
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000450",
+        "crmTechnicalKey": "a1ci0000000JtdxAAC",
+        "productName": "Mita-Clear 12ml",
+        "productType": "Item",
+        "species": "Small Animal",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000JsshAAC",
+            "code": "PRODUCT_LINE",
+            "name": "Mita-Clear"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsqRAAS",
+            "code": "BRAND",
+            "name": "Mita Clear"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz2AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Parasiticides"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspCAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "External Parasites"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 167,
+          "previousUnits": 31,
+          "diffSales": -167,
+          "diffUnits": -31,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 130,
+          "previousUnits": 24,
+          "diffSales": -130,
+          "diffUnits": -24,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 211,
+          "previousUnits": 39,
+          "diffSales": -211,
+          "diffUnits": -39,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 389,
+          "previousUnits": 73,
+          "diffSales": -389,
+          "diffUnits": -14,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 75,
+          "previousUnits": 14,
+          "diffSales": -75,
+          "diffUnits": -14,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 208,
+          "previousUnits": 39,
+          "diffSales": -208,
+          "diffUnits": -39,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 85,
+          "previousUnits": 16,
+          "diffSales": -85,
+          "diffUnits": -16,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 117,
+          "previousUnits": 22,
+          "diffSales": -117,
+          "diffUnits": -22,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 171,
+          "previousUnits": 32,
+          "diffSales": -171,
+          "diffUnits": -32,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 144,
+          "previousUnits": 27,
+          "diffSales": -144,
+          "diffUnits": -27,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": -5,
+          "currentUnits": -1,
+          "previousSales": 151,
+          "previousUnits": 29,
+          "diffSales": -157,
+          "diffUnits": -30,
+          "percDiffSales": -103.57,
+          "percDiffUnits": -103.45
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": -5,
+        "previousYearSalesTotal": 1849,
+        "diffSalesTotal": -1854,
+        "percDiffSalesTotal": -100.29,
+        "currentYearUnitTotal": -1,
+        "previousYearUnitTotal": 346
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000456",
+        "crmTechnicalKey": "a1ci0000000JtmhAAC",
+        "productName": "Dectomax PO 5 l",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jso6AAC",
+            "code": "PRODUCT_LINE",
+            "name": "Dectomax Pour-On"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspmAAC",
+            "code": "BRAND",
+            "name": "Dectomax"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz2AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Parasiticides"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspEAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Internal and External Parasites"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 508,
+          "previousUnits": 2,
+          "diffSales": -508,
+          "diffUnits": -2,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 508,
+        "diffSalesTotal": -508,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 2
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000459",
+        "crmTechnicalKey": "a1ci0000000JtmlAAC",
+        "productName": "StrongidC2X10lb",
+        "productType": "Item",
+        "species": "Equine",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jst6AAC",
+            "code": "PRODUCT_LINE",
+            "name": "Strongid C"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsrAAAS",
+            "code": "BRAND",
+            "name": "Strongid"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000Jsz2AAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Parasiticides"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspFAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "Internal Parasites"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 615,
+          "previousUnits": 17,
+          "diffSales": -615,
+          "diffUnits": -17,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 580,
+          "currentUnits": 15,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 580,
+          "diffUnits": 15,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 619,
+          "currentUnits": 16,
+          "previousSales": 868,
+          "previousUnits": 24,
+          "diffSales": -249,
+          "diffUnits": -8,
+          "percDiffSales": -28.67,
+          "percDiffUnits": -33.33
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 812,
+          "currentUnits": 21,
+          "previousSales": 506,
+          "previousUnits": 14,
+          "diffSales": 306,
+          "diffUnits": 14,
+          "percDiffSales": 60.5,
+          "percDiffUnits": 50
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 310,
+          "currentUnits": 8,
+          "previousSales": 253,
+          "previousUnits": 7,
+          "diffSales": 56,
+          "diffUnits": 1,
+          "percDiffSales": 22.28,
+          "percDiffUnits": 14.29
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 271,
+          "currentUnits": 7,
+          "previousSales": 687,
+          "previousUnits": 19,
+          "diffSales": -416,
+          "diffUnits": -12,
+          "percDiffSales": -60.58,
+          "percDiffUnits": -63.16
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 929,
+          "currentUnits": 24,
+          "previousSales": 143,
+          "previousUnits": 4,
+          "diffSales": 786,
+          "diffUnits": 20,
+          "percDiffSales": 551.44,
+          "percDiffUnits": 500
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 542,
+          "currentUnits": 14,
+          "previousSales": 456,
+          "previousUnits": 13,
+          "diffSales": 85,
+          "diffUnits": 1,
+          "percDiffSales": 18.67,
+          "percDiffUnits": 7.69
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 1045,
+          "currentUnits": 27,
+          "previousSales": 492,
+          "previousUnits": 14,
+          "diffSales": 553,
+          "diffUnits": 13,
+          "percDiffSales": 112.52,
+          "percDiffUnits": 92.86
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 774,
+          "currentUnits": 20,
+          "previousSales": 211,
+          "previousUnits": 6,
+          "diffSales": 563,
+          "diffUnits": 14,
+          "percDiffSales": 267.32,
+          "percDiffUnits": 233.33
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 72,
+          "currentUnits": 2,
+          "previousSales": 386,
+          "previousUnits": 11,
+          "diffSales": -314,
+          "diffUnits": -9,
+          "percDiffSales": -81.27,
+          "percDiffUnits": -81.82
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 5953,
+        "previousYearSalesTotal": 4616,
+        "diffSalesTotal": 1337,
+        "percDiffSalesTotal": 28.96,
+        "currentYearUnitTotal": 154,
+        "previousYearUnitTotal": 129
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000460",
+        "crmTechnicalKey": "a1ci0000000Jtn9AAC",
+        "productName": "TM ScrTab 24",
+        "productType": "Item",
+        "species": "Cattle",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000JsoUAAS",
+            "code": "PRODUCT_LINE",
+            "name": "Calf Boluses"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsuzAAC",
+            "code": "BRAND",
+            "name": "Calf Boluses"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsyzAAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Anti-infective"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspAAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "AIF Broad Spectrum"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 48,
+          "previousUnits": 2,
+          "diffSales": -48,
+          "diffUnits": -2,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 0,
+        "previousYearSalesTotal": 48,
+        "diffSalesTotal": -48,
+        "percDiffSalesTotal": -100,
+        "currentYearUnitTotal": 0,
+        "previousYearUnitTotal": 2
+      }
+    },
+    {
+      "market": "US",
+      "marketIsoCode": "US",
+      "salesType": "G",
+      "aggregationLevel": "ITEM",
+      "accountAggregationLevel": "CHILD",
+      "territory": "48-0;4892-0;50-0;5006-0;58-0;6005-0;7523-0;8180-0;8182-0;825-0;844-0;8451-0;8455-0;863-0;8635-0;870-0;8702-0;8703-0;881-0;8811-0;8815-0;89-0;8999-0;9100-0;914-0;9192-0;9501-0",
+      "asOfDate": "12\/01\/2016",
+      "account": {
+        "masterId": "110876",
+        "erpBusinessKey": "110876",
+        "crmTechnicalKey": "001i000000zfnJuAAI",
+        "businessName": "D u0026 B Supply",
+        "accountType": "BILL-TO",
+        "currencyIsoCode": "USD"
+      },
+      "product": {
+        "erpBusinessKey": "10000462",
+        "crmTechnicalKey": "a1ci0000000JtnEAAS",
+        "productName": "Liq LA-200 100m",
+        "productType": "Item",
+        "species": "Cattle Pork",
+        "productHierarchies": [
+          {
+            "crmTechnicalKey": "a1ci0000000Jso2AAC",
+            "code": "PRODUCT_LINE",
+            "name": "LA-200"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsqEAAS",
+            "code": "BRAND",
+            "name": "LA 200"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JsyzAAC",
+            "code": "DISEASE_CONDITION",
+            "name": "Anti-infective"
+          },
+          {
+            "crmTechnicalKey": "a1ci0000000JspAAAS",
+            "code": "THERAPEUTIC_GROUP",
+            "name": "AIF Broad Spectrum"
+          }
+        ]
+      },
+      "salesRecords": [
+        {
+          "period": 1,
+          "accountingPeriod": "DEC",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 2,
+          "accountingPeriod": "NOV",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 3,
+          "accountingPeriod": "OCT",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 4,
+          "accountingPeriod": "SEP",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 5,
+          "accountingPeriod": "AUG",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 6,
+          "accountingPeriod": "JUL",
+          "currentSales": 87,
+          "currentUnits": 5,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 87,
+          "diffUnits": 5,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 7,
+          "accountingPeriod": "JUN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 8,
+          "accountingPeriod": "MAY",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 69,
+          "previousUnits": 4,
+          "diffSales": -69,
+          "diffUnits": -4,
+          "percDiffSales": -100,
+          "percDiffUnits": -100
+        },
+        {
+          "period": 9,
+          "accountingPeriod": "APR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 10,
+          "accountingPeriod": "MAR",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 11,
+          "accountingPeriod": "FEB",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        },
+        {
+          "period": 12,
+          "accountingPeriod": "JAN",
+          "currentSales": 0,
+          "currentUnits": 0,
+          "previousSales": 0,
+          "previousUnits": 0,
+          "diffSales": 0,
+          "diffUnits": 0,
+          "percDiffSales": 0,
+          "percDiffUnits": 0
+        }
+      ],
+      "totalSalesRecord": {
+        "currentYearSalesTotal": 87,
+        "previousYearSalesTotal": 69,
+        "diffSalesTotal": 18,
+        "percDiffSalesTotal": 26.23,
+        "currentYearUnitTotal": 5,
+        "previousYearUnitTotal": 4
+      }
+    }
+  ]
+}

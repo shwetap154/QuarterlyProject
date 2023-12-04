@@ -1,0 +1,53 @@
+<apex:component layout="none" >   
+    <apex:attribute name="shelterObj" description="This is the value for Shelter Lead" type="Lead" required="true" />
+    <apex:attribute name="displayChat" description="This is control the display of chat header" type="String" required="false" />
+
+    <head>
+       <style>
+           .headers  {
+                color: white;
+                text-align: center;
+                position: relative;
+                text-transform: uppercase;
+                background-color: #6dd2de;
+                padding: 0.25em 0 0.1em;
+                font-family: Arial,Helvetica,sans-serif;
+                font-size: 2.5em;
+                line-height: 1;
+                width:100%;
+                float:left;
+            }
+           .appid { 
+                font-size: 0.5em;
+            }
+           .status{
+                font-size: 0.5em !important;
+                text-transform: initial !important;
+           }
+           header h2 span {
+            font-weight: 200;
+             font-family: Arial,Helvetica,sans-serif;;
+           }
+        </style>
+    </head> 
+    
+    <c:ZFS_ChatHeader rendered="{!IF(displayChat != null && displayChat == 'false', false, true)}" />
+
+    <div class="headers">
+        <p>
+            <b>Zoetis For Shelters </b> <span>Application</span>
+        </p>
+        <span class="appid"> 
+            <apex:outputText value="Application Number: {!shelterObj.Shelter_Application_Number__c}" rendered="{!shelterObj.Shelter_Application_Number__c != null}" />
+          <!--  Application Number: {!shelterObj.Shelter_Application_Number__c} -->
+        </span>
+        <br/>
+        <!-- added for SC-009254 -->
+        <span class="status"> 
+            <b><apex:outputText value="Application Status: {!shelterObj.Status}" rendered="{!shelterObj.Status != null}" /></b>
+          <!--  Application Number: {!shelterObj.Shelter_Application_Number__c} -->
+        </span>
+        
+    </div>
+     
+</apex:component>

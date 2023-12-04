@@ -1,0 +1,46 @@
+.embeddedServiceHelpButton .helpButton .uiButton {
+	background-color: #ff6400;
+	font-family: "GothamNarrowSSm-Book","Helvetica", "sans-serif";
+}
+.embeddedServiceHelpButton .helpButton .uiButton:focus {
+	outline: none;
+}
+.slds-rich-text-editor__output span a {
+    color: #f65c00;
+}
+.chasitor[c-chatMessageOverride_chatMessageOverride] a {
+	color: #ffffff;
+}
+.chatMessage[c-chatMessageOverride_chatMessageOverride] {
+    line-height: normal;
+}
+/* h2[embeddedService-chatHeader_chatHeader] {
+
+} */
+.embeddedServiceLiveAgentStateChatItem.chatMessage button {
+	font-family:"GothamNarrowSSm-Book","Helvetica", "sans-serif";
+	font-size: 14px;
+}
+.embeddedServiceLiveAgentStateChatMenuMessage .chatContent .rich-menu-item:hover, 
+.embeddedServiceLiveAgentStateChatMenuMessage .chatContent .rich-menu-item:active, 
+.embeddedServiceLiveAgentStateChatMenuMessage .chatContent .rich-menu-item:hover:active, 
+.embeddedServiceLiveAgentStateChatMenuMessage .chatContent .rich-menu-item:focus, 
+.embeddedServiceLiveAgentStateChatMenuMessage .chatContent .rich-menu-item:focus:hover {
+	background: #007b8f;
+	color:#ffffff;
+}
+.embeddedServiceLiveAgentStateChatItem.chatMessage button:hover, 
+.embeddedServiceLiveAgentStateChatItem.chatMessage button:hover:focus {
+	opacity: 1;
+}
+.embeddedServiceLiveAgentStateChatItem.chatMessage button:hover, 
+.embeddedServiceLiveAgentStateChatItem.chatMessage button:hover:focus, 
+.embeddedServiceLiveAgentStateChatItem.chatMessage button:hover span, 
+.embeddedServiceLiveAgentStateChatItem.chatMessage button:hover:focus span {
+	background: #007b8f;
+	box-shadow: none;
+}
+.announcement[embeddedService-chatHeaderAnnouncement_chatHeaderAnnouncement]{
+	visibility: hidden;
+	animation: announcement-embeddedService-chatHeaderAnnouncement_chatHeaderAnnouncement 10s;
+}

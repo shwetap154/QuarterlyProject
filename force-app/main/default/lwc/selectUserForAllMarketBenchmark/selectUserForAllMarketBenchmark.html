@@ -1,0 +1,10 @@
+<template>
+    <div class="">
+        <c-lookup selection={initialUser} objects="User"
+            errors={userErrors} onsearch={handleSearch}
+            onselectionchange={handleSelectionChange} label={label}
+            placeholder={username} component-index="1" 
+            required></c-lookup>
+    </div>
+    
+</template>

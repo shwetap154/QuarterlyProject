@@ -1,0 +1,5 @@
+<aura:event type="COMPONENT" description="Communities_SpeciesFilter_EV">
+  <aura:attribute name="label" type="String" />
+  <aura:attribute name="active" type="Boolean" />
+  <aura:attribute name="isPhone" type="Boolean" />
+</aura:event>

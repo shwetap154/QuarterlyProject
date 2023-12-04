@@ -1,0 +1,95 @@
+<apex:component > 
+    <head>
+        <style>
+            
+            footer img{height:2.25em;vertical-align:middle;float: left;} 
+            footer .logo{padding:.75em 0;float:left} 
+            footer{margin:0;margin-top: 5em} 
+            footer .inner{text-align:right;max-width:1000px;margin:auto;padding:0 20px} 
+            footer .contact{display:inline-block;position:relative;vertical-align:middle;margin:1.25em 0} 
+            footer .contact>a{text-transform:uppercase;padding-bottom:1px;border-bottom:thin solid rgba(255,100,0,0.5)} 
+            footer .contact>a,footer .contact>a:visited,footer .contact>a:hover,footer .contact>a:active{color:inherit} 
+            footer .popup_container{display:none;position:absolute;bottom:0;padding-bottom:3.5em;left:50%;margin-left:-3.5em} 
+            footer .popup{position:relative;padding:1.5em;background-color:white;color:#585858;text-align:center;width:15em} 
+            footer .popup a{display:block;color:#ff6400;margin:1em 0} 
+            footer .popup .text{text-transform:uppercase;font-weight:bold;font-size:0.75em;line-height:1} 
+            footer .popup .email,footer .popup .phone{font-size:1.125em} 
+            footer .popup:after{content:'';display:block;position:absolute;left:-1em;margin-left:50%;top:100%;border-color:transparent;border-width:1em;border-style:solid;border-top-color:white} 
+            footer .contact:hover .popup_container{display:block} 
+            footer .popup_container:hover{display:block}  
+            footer .popup{right:0;position:relative;bottom:100%} 
+            footer .popup:after{display:none} 
+            footer .popup_container:after{content:'';display:block;position:absolute;left:-1em;margin-left:50%;top:0;border-color:transparent;border-width:1em;border-style:solid;border-top-color:white} 
+            }   
+            footer .legal { 
+                Font: 0.7em Arial,Helvetica,sans-serif !important;
+                text-align: left; 
+            }
+            footer ul li, ol li {
+                margin-left: 0 !important;
+                padding-left: 0 !important;
+            }
+        </style>
+    </head>
+    <footer>
+            <div class="inner">
+                <div class="logo"> 
+                    <table style="padding-left: 2em;"  >
+                         <tr>
+                             <td>
+                                 <apex:image value="{! $Resource.ZoetisLogo}"   /> <br/><br/><br/>
+                                 <span class="legal">
+                        <span style="float:left !important;text-align: left; font-size: 0.8em;">
+                            This site is intended for U.S. Animal Healthcare Professionals.<br/>
+                            All trademarks are the property of Zoetis Services LLC or a related company or a licensor unless otherwise noted. <br/>
+                            © 2018 Zoetis Services LLC. All rights reserved.
+                        </span>
+                         
+                    </span>
+                             </td>
+                         </tr>
+                        
+                         
+                         <tr>
+                             <td>
+                                 <div class="legal">
+                        <ul style="float: left; padding: inherit; color:#ff671f !important;">
+                            <li style="float: left; list-style: none; " >
+                                
+                                <a href="https://www.zoetisus.com/responsibility/policies/privacy_policy.aspx" target="_blank" style="font-size: 0.6em !important; color:#ff671f !important;" >
+                                    Privacy Policy
+                                </a>
+                            </li>
+                            <li style="float: left; list-style: none; " >
+                                <span style="letter-spacing: 0;">&nbsp; | &nbsp;</span>
+                                <a href="https://www.zoetisus.com/responsibility/policies/terms_of_use.aspx" target="_blank" style="font-size: 0.6em !important; color:#ff671f !important;" >
+                                    Terms Of Use
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                             </td>
+                         </tr>
+                     </table> 
+                    
+                </div>
+
+                <div class="contact">
+                    <a style="color:#ff6400;">Contact Us</a>
+                    <div class="popup_container">
+                        <div class="popup">
+                            <div class="text">
+                                For more information
+                            </div>
+                            <a class="email" href="mailto:shelterteam@zoetis.com">
+                                shelterteam@zoetis.com 
+                            </a>
+                            <div class="phone">
+                                1 (866) 225-9777
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+</apex:component>

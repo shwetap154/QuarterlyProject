@@ -1,0 +1,49 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_CompetitorProductLookupOnPAP
+* Description   :   This vf page is called when Competitor Product lookup icon is clicked from PAP edit page.                        
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     4th-May-15   Shreyas             Created the vf page.
+
+********************************************************************************************************************************************
+-->
+<apex:page controller="ZTS_EU_PAPController" showHeader="false" sidebar="true">
+  
+  <apex:form >
+      <apex:pageblock title="Competitor Product">
+      
+          <apex:pageblockSection >
+          
+              <apex:pageblockTable value="{!cpList}" var="cp">
+              
+              <apex:column headerValue="{!$ObjectType.ZTS_EU_Competitor_Product__c.Fields.Name.Label}">
+                  <apex:commandLink value="{!cp.ZTS_EU_Competitor_Product__r.Name}" onclick="selectCompetitorProduct('{!cp.ZTS_EU_Competitor_Product__c}','{!cp.ZTS_EU_Competitor_Product__r.Name}');"/>
+              </apex:column>
+              
+              </apex:pageblockTable>
+          
+          </apex:pageblockSection>
+      
+      </apex:pageblock>
+  </apex:form>
+  
+  <script>
+      function selectCompetitorProduct(cpId, cpName){
+          try {
+            cpId= cpId.substring(0,15);
+            top.window.opener.lookupPick('editPage','pg:frm_edit:pb_edit:pbs_edit:competitorproduct_lkid','pg:frm_edit:pb_edit:pbs_edit:competitorproduct','',cpId,cpName,'null','');
+          }
+          catch (e){
+            alert(e);
+          }
+      } 
+      
+   </script>
+  
+  
+</apex:page>

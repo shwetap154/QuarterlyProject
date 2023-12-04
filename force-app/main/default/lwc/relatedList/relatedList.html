@@ -1,0 +1,13 @@
+<template>
+    <lightning-card class="header" icon-name={iconName} title={header}>
+        <template if:true={displayTable} >
+            <lightning-datatable
+                    data={data}
+                    columns={columns}
+                    show-row-number-column
+                    hide-checkbox-column
+                    key-field="id">
+            </lightning-datatable>
+        </template>
+    </lightning-card>
+</template>

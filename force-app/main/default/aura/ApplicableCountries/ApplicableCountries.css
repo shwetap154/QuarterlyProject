@@ -1,0 +1,17 @@
+.THIS .Online {
+   color:#252525;
+    font-family: arial;
+    font-size:26pt;
+    font-weight: bold;
+ 	font-style: italic;
+    position:relative;
+    top:6px;
+    
+    padding-left:12px;
+  
+    
+}
+.THIS.background {
+    position: absolute;
+
+}

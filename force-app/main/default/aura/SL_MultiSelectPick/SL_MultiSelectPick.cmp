@@ -1,0 +1,47 @@
+<aura:component access="global">
+    
+    <!-- public attributes -->
+    <aura:attribute name="options" type="object[]" />
+    <aura:attribute name="selectedItems" type="String[]" />
+    <aura:attribute name="width" type="String" default="240px;" />
+    <aura:attribute name="dropdownLength" type="Integer" default="5" />
+    <aura:attribute name="dropdownOver" type="Boolean" default="false" />
+    
+    <!--private attributes-->
+    <aura:attribute name="options_" type="object[]" />
+    <aura:attribute name="fieldApi" type="String" />
+    <aura:attribute name="infoText" type="String" default="Select an option..." />
+    
+    <!--let the framework know that we can dispatch this event-->
+    <aura:registerEvent name="selectChange" type="c:SL_evt_MultiSelect" /> 
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />  
+    
+    <div aura:id="main-div"  class=" slds-picklist slds-dropdown-trigger slds-dropdown-trigger--click " style="width:100%">
+        
+        <!--the disclosure triangle button-->
+        <button class="slds-button slds-button--neutral slds-picklist__label" style="{!'width:' + v.width }"
+                aria-haspopup="true"  onclick="{!c.handleClick}">
+            <span class="slds-truncate" title="{!v.infoText}">{!v.infoText}</span>
+            <lightning:icon iconName="utility:down" size="small" class="slds-icon" />
+        </button>
+        
+        <!--the multiselect list-->
+        <div class="slds-dropdown slds-dropdown--left" onmouseleave="{!c.handleMouseLeave}" style="max-width:none;Width:100%;Z-index: 111;position: relative;">
+            <ul class="{!'slds-dropdown__list slds-dropdown--length-' + v.dropdownLength}" role="menu">
+                
+                <aura:iteration items="{!v.options_}" var="option">
+                    <li onclick="{!c.handleSelection}" class="{!'slds-dropdown__item ' + (option.selected ? 'slds-is-selected' : '')}"
+                        role="presentation"  data-label="{!option.label}" data-value="{!option.value}" data-selected="{!option.selected}">
+                        <a href="javascript:void(0);" role="menuitemcheckbox" aria-checked="true" tabindex="0" >
+                            <span class="slds-truncate">
+                                <lightning:icon iconName="utility:check" size="x-small" class="slds-icon slds-icon--selected slds-icon--x-small slds-icon-text-default slds-m-right--x-small" />{!option.label}
+                            </span>
+                        </a>
+                    </li>
+                </aura:iteration>
+                
+            </ul>
+        </div>
+    </div>
+</aura:component>

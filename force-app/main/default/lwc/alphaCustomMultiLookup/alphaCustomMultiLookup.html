@@ -1,0 +1,31 @@
+<template>
+    <template if:false={disabled}>
+        <div class="slds-m-padding_around zs_cb_custom_multilookup" style="margin-top: 20px;">
+            <c-alpha-child-search-bar-comp onsearch={handleSearch} search-label={label} onclearfield={handleClearField}></c-alpha-child-search-bar-comp>
+        </div>
+    </template>
+    <div class="slds-m-padding_around">
+        <template if:true={records}>
+            <template for:each={records} for:item="rec" for:index="index">
+                <ul key={rec.Id} class="slds-listbox">
+                    <c-alpha-child-record-collection-comp key={rec.Id} rec={rec} iconname={iconname} onselect={handleSelect}>
+                    </c-alpha-child-record-collection-comp>
+                </ul>
+            </template>
+        </template>
+        <!--
+        <span class="slds-pill-container">
+            <template for:each={selectedRecords} for:item='record' for:index='index'>
+                    <lightning-pill key={record.Id} class="pillSize" href="JavaScript:void(0);" label={record.Name} name={record.Name} onremove={handleRemove}>
+                        <lightning-icon icon-name={iconname} variant="circle" alternative-text={objectName}></lightning-icon>        
+                    </lightning-pill>
+            </template>
+        </span>
+        -->
+        <lightning-pill-container items={selectedRecords} onitemremove={handleRemove}></lightning-pill-container>
+    </div>
+
+    <!-- how to use in parent!!!
+    <c-alpha-custom-multi-lookup object-name="Lead" field-name="Name"
+    label="Lead" iconname="standard:lead" ></c-alpha-custom-multi-lookup> -->
+</template>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>ABS_HUM_SYM</label>
+    <protected>false</protected>
+    <values>
+        <field>ZTS_US_Abstract_Summary_Template__c</field>
+        <value xsi:type="xsd:string">This is a Human Exposure - Symptomatic report in a human involving ZTS_US_Case_Product__c.ZTS_US_PVW_Product__c. The clinical signs included ZTS_US_VedDRA_Event__c.ZTS_US_VedDRA_Coding__c and the outcome was ZTS_US_Event_Narrative__c.ZTS_US_Outcome_of_Reaction__c.</value>
+    </values>
+    <values>
+        <field>ZTS_US_Case_Type__c</field>
+        <value xsi:type="xsd:string">Human Exposure</value>
+    </values>
+    <values>
+        <field>ZTS_US_Contains__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>ZTS_US_Problem_Product_Type__c</field>
+        <value xsi:type="xsd:string">Human Exposure - Symptomatic</value>
+    </values>
+    <values>
+        <field>ZTS_US_VedDra_Code__c</field>
+        <value xsi:type="xsd:string">Ignore</value>
+    </values>
+</CustomMetadata>

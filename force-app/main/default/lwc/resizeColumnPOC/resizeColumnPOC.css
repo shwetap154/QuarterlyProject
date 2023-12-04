@@ -1,0 +1,69 @@
+.custom-data-table {
+    font-family: Arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.custom-data-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+   
+}
+
+.custom-data-table th, .custom-data-table td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+.custom-data-table tr:hover {
+    background-color: #ddd;
+}
+.custom-data-table th:hover {
+    background-color: #ddd;
+}
+table {
+    overflow: hidden;
+  }
+  
+  tr:hover {
+    background-color: rgb(180, 180, 178);
+  }
+  
+  td, th {
+    position: relative;
+  }
+  td:hover::after,
+  th:hover::after {
+    content: "";
+    position: absolute;
+    background-color: rgb(180, 180, 178);
+    left: 0;
+    top: -5000px;
+    height: 10000px;
+    width: 100%;
+    z-index: -1;
+  }
+
+
+  
+  .custom-data-table {
+    position: relative;
+    overflow-x: auto; /* Add horizontal scrolling if needed */
+}
+
+.resizable-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.resizable-table th,
+.resizable-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    position: relative; /* Ensure stacking context for child elements */
+}
+
+.resizable-table .column:hover {
+    background-color: #f2f2f2; /* Set your desired hover background color */
+}

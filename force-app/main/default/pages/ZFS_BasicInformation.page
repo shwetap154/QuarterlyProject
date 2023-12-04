@@ -1,0 +1,277 @@
+<apex:page title="Zoetis For Shelters" standardController="Lead" extensions="ZoetisForShelters" cache="false" 
+           showChat="false" showHeader="false" sidebar="false">
+    <head>
+        <style type="text/css"  >
+            th {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+            }     
+            td {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+            }
+            .btn {  
+            line-height:1.5 !important;border:2px solid transparent !important;min-width:8em !important;
+            background-color:#ff6400 !important;
+            background:#ff6400 !important;
+            color:white !important;
+            }  
+            pbSubheader{
+            background-color:#1696ad !important;
+            color:white !important;
+            }
+            .individualPalette .leadBlock .tertiaryPalette{
+            background-color:#0096AF !important;
+            border-color:#0096AF !important;
+            }
+            .individualPalette .leadBlock .secondaryPalette {
+            border-color:#0096AF !important;
+            }
+            body .bEditBlock .pbBody .pbSubheader{
+            background-image:none !important;
+            color:#ffffff !important;
+            }
+            .requiredLegend{
+            color:#ffffff !important;
+            }
+            .message{
+            background-color: #ffffff !important;
+            padding: 0px 0px 0px 0px !important;
+            margin: 2px 0px !important;
+            width: 100% !important;
+            }
+            .instruction {
+            background-color: #ffffff !important;
+            text-align: left;
+            color: black;
+            padding: 0px 0px 0px 0px !important;
+            margin: 2px 0px !important;
+            width: 100% !important;
+            }
+            body{
+            font-size: 85% !important;
+            }
+            body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label{
+            font-size: 1.4em;
+            }
+            input{
+                height:2em !important; 
+                font-size:1em !important; 
+            } 
+            body .bPageBlock .pbBody .labelCol{
+                vertical-align:middle !important;
+                font-size:1em !important; 
+            }
+            select{
+                height:2em !important; 
+            }
+        </style>
+        <script type='text/javascript'>
+            function openPopup(){
+                window.open('/zoetisforshelters/ZFS_TermsConditions','_blank', 'scrollbars=yes, resizable=no, location=no, titlebar=no, top=150, left=400, width=600, height=300');
+            }
+        </script>
+    </head> 
+    <c:ZFS_header shelterObj="{!shelter}" ></c:ZFS_header>
+   
+    
+    <table style="width:100%;">
+        <tr>
+            <td style="width:10%;"></td>
+            <td style="vertical-align: top; text-align: right;">
+                <c:ZFS_Page_Navigation leadId="{!LeadId}" currStepNo="1" compStepNo="{! IF(LeadId==null,0,shelter.Step_Number__c)}"></c:ZFS_Page_Navigation>
+            </td>
+            <td style="width:50%;vertical-align: top;">
+                <center> 
+                    <apex:form >
+                        <apex:pageMessages rendered="{!hasErrors}" ></apex:pageMessages>
+                        
+                        <apex:outputPanel id="basic_info" style="">
+                            <!-- Added for SC-009254 -->
+                            <apex:pageBlock >
+                            <span class="instruction">
+                            <p>
+                                <b>
+                                  In preparation for completing your application, please have the following documents available:
+                                  <ol>
+                                      <li>Veterinarian of Record's state veterinary license</li>
+									  <li> Organization's 501c3</li>
+									  <li>Shelter business license/permit </li>
+									  <li>Based on your state requirements, additional documentation may be required:</li>
+                                      <ol>
+                                          State Tax Exemption Certificate, if applicable<br/>
+										  Veterinarian of Record's DEA license, if applicable<br/>
+										  State specific licensing, if applicable (i.e., Ohio TDDD)<br/>
+                                      </ol>
+
+                                  </ol>
+                              </b>  
+                            </p>
+                                
+                            <p>
+                                <b>
+                                Directions for completing the Zoetis for Shelters application:
+                                <br/> 
+                                <br/>
+                                &emsp; Apply to Zoetis for Shelters by filling out the information below. Please keep in mind there are no obligations or purchase requirements should you qualify for membership. Our commitment is to help animals and serve the organizations that save them.
+                                The Zoetis for Shelters application guides you through the process, step by step. If you need to leave the application for any reason, you will be able to pick up where you left off when you return. There are two ways to come back to the step where you left off:
+                                <ol>
+                                    <li>After finishing Step 1, clicking the <span style="background-color: yellow">"Save &amp; Exit"</span> button at any time will send an email to your inbox containing a link you can click to bring you back to the last step you finished.</li>
+                                    <br/>
+                                    <li>After finishing Step 1, clicking the <span style="background-color: yellow">"Save &amp; Next"</span> button will reveal an application number at the top of the page in all subsequent steps. Write this number down for reference, so you can use it to bring you back into the application.</li>
+                                </ol>
+                                </b>
+                                
+                            </p>
+                            </span>
+                            </apex:pageBlock>
+                            <!-- EOC - Added for SC-009254 -->
+                            <apex:pageBlock mode="edit" >
+                                
+                                <apex:pageBlockSection title="Basic Information" columns="1"  >
+                                    <!--<apex:pageBlockSectionItem >
+                                        <label>Prefix</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:selectList value="{!shelter.Salutation}" label="" multiselect="false" size="1" style="width:50%" >
+                                                    <apex:selectOption itemValue="" itemLabel="--None--" ></apex:selectOption>
+                                                    <apex:selectOptions value="{!prefix}" ></apex:selectOptions>
+                                                </apex:selectList>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem> --> <!-- Removed for SC-009254 -->
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>First Name</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.FirstName}" label="" style="width:50%"/>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Last Name</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.LastName}" label="" style="width:50%" required="false"/>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Job Role</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.Job_Role__c}" label="" style="width:50%" required="false"/>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Email</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.Email}" label="" style="width:50%"/>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Phone</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.Phone}" label="" style="width:50%"/>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Organization Name</label> <!-- Changed the label as per SC-009254 -->
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.Shelter_Name__c}" label="" style="width:50%"/>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Organization Website</label> <!-- Changed the label as per SC-009254 -->
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!shelter.Shelter_Website__c}" label="" style="width:50%"/>
+                                            </div>
+                                        </apex:outputPanel> 
+                                    </apex:pageBlockSectionItem>
+                                </apex:pageBlockSection>    
+
+                                <!--Pooja Added TPDEV-1355 -->
+                                <apex:pageBlockSection title="Secondary Contact" columns="1" >
+
+                                    <apex:pageBlockSectionItem >
+                                        <label>First Name</label>
+                                        <apex:inputField value="{!shelter.Secondary_Contact_First_Name__c}" label="" style="width:50%"/>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Last Name</label>
+                                        <apex:inputField value="{!shelter.Secondary_Contact_Last_Name__c}" label="" style="width:50%" required="false"/>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Job Role</label>
+                                        <apex:inputField value="{!shelter.Secondary_Contact_Job_Role__c}" label="" style="width:50%" required="false"/>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Email</label>
+                                        <apex:inputField value="{!shelter.Secondary_Contact_Email__c}" label="" style="width:50%"/>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Phone</label>
+                                        <apex:inputField value="{!shelter.Secondary_Contact_Phone__c}" label="" style="width:50%"/>
+                                    </apex:pageBlockSectionItem>
+
+
+                                    <apex:pageBlockSectionItem >
+                                        <apex:outputPanel >
+                                        <apex:inputCheckbox id="iautho" value="{!shelter.I_agree_to_the_terms_and_conditions__c}" label="" onkeypress="return noenter(event);"></apex:inputCheckbox>
+                                        <apex:outputLabel for="iautho" value="I agree to the " ></apex:outputLabel>
+                                        <apex:outputLink style="color:#ff6400" onclick="openPopup();return false;">terms and conditions</apex:outputLink>.<br/>
+                                    </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                </apex:pageBlockSection>
+                               <!--Pooja Added TPDEV-1355 --> 
+                                <br/><br/>
+                                <apex:outputPanel rendered="{! !readonly}">
+                                    <apex:outputPanel style="float: left; padding-left:6%;">
+                                        <apex:commandButton value="Save & Next" action="{!saveShelter}" /> 
+                                        <apex:commandButton value="Save & Exit" action="{!saveExit}"  /> 
+                                    </apex:outputPanel>
+                                    <apex:outputPanel style="float: right; padding-right:6%;">
+                                        <apex:commandButton value="Reset Form" onclick="return confirm('Are you sure you want to remove all entered details? \nPlease click \'OK\' to continue.')" action="{!reset}" immediate="true"  />
+                                        <apex:commandButton value="Discard Form" onclick="return confirm('Are you sure you want to discard your application? \nPlease click \'OK\' to continue.');" action="{!discard}" immediate="true" />
+                                    </apex:outputPanel>
+                                    <br/><br/><br/>
+                                </apex:outputPanel>
+                                <br/>
+                                
+                            </apex:pageBlock> 
+                        </apex:outputPanel>
+                    </apex:form> 
+                </center>
+            </td>
+            <td style="width:25%;"><apex:outputPanel ></apex:outputPanel></td>
+        </tr>
+    </table>
+    <c:ZFS_footer /> 
+</apex:page>

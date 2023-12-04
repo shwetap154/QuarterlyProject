@@ -1,0 +1,233 @@
+<!--
+  @description       : 
+  @author            : Morgan Marchese @ Zoetis Inc
+  @group             : 
+  @last modified on  : 09-22-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   07-13-2021   Morgan Marchese @ Zoetis Inc   Initial Version
+-->
+<apex:page standardController="Contact" extensions="GigyaRegistrationController">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+  <apex:includeScript value="https://cdns.gigya.com/js/gigya.js?apikey={!apiKey}" />
+
+  <apex:variable var="contactId" value="{!Contact.Id}" />
+  <style type="text/css">
+    .hide {
+      display: none !important;
+    }
+
+    .notification {
+      width: 60%;
+      text-align: center;
+      color: #000;
+      font-weight: bold;
+      font-size: 16px;
+      margin: 0 auto;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      border: 4px solid black;
+    }
+
+    .notification a:link,
+    .notification a:visited,
+    .notification a:hover,
+    .notification a:active {
+      color: #000;
+    }
+
+    #success {
+      border-color: green;
+    }
+
+    #alert {
+      border-color: #fe9339;
+    }
+
+    #error {
+      border-color: red;
+    }
+  </style>
+  <script>
+
+    const profileId = '{!distributorProfile.Id}';
+
+    gigya.accounts.showScreenSet({
+      screenSet: 'RegistrationLogin',
+      startScreen: 'gigya-register-screen',
+      containerID: 'RegistrationGigya',
+      onBeforeSubmit: beforeSubmit,
+      onAfterSubmit: afterSubmit,
+      onAfterScreenLoad: afterLoad
+    });
+
+    gigya.accounts.addEventHandlers({
+      onLogin: displayLogin
+    });
+
+function afterLoad(eventObj) {
+      var idParams = {
+        loginID: '{!Contact.Email}',
+        callback: userCheckCallback
+      };
+
+      gigya.accounts.isAvailableLoginID(idParams);
+      let x = document.getElementsByClassName("ContactId");
+      let y = document.getElementsByClassName("ProfileId");
+      //let z= document.getElementsByClassName("RoleId");
+      let fName = document.getElementsByName("profile.firstName");
+      let lName = document.getElementsByName("profile.lastName");
+      let email = document.getElementsByName("email");
+      let lastEmailElement = email.length - 1; 
+
+      x[1].children[1].value = '{!contactId}';
+      y[1].children[1].value = profileId;
+      //z[1].children[1].value = 'nothing';
+      fName[3].value = '{!Contact.FirstName}';
+      lName[3].value = '{!Contact.LastName}';
+      email[lastEmailElement ].value = '{!Contact.Email}';
+      fName[3].disabled = true;
+      lName[3].disabled = true;
+      email[lastEmailElement].disabled = true;
+    }
+    
+    function beforeSubmit(eventObj) {
+
+    }
+
+    function afterSubmit(eventObj) {
+      resetPassword();
+      let errorCode = eventObj.response.errorCode;
+      let gigyaUI = document.getElementById('RegistrationGigya');
+      let successUI = document.getElementById('success');
+      let errorUI = document.getElementById('error');
+      let successMessageHTML = 'User registered successfully. You\'ll be redirected to the Contact Page automatically in 3 seconds. <br /><br />If you aren\'t redirected automatically, <a href="{!$Site.BaseUrl}/{!contactId}">Click Here to Return to the Contact Page.</a>';
+      let errorMessageHTML = 'Something went wrong during registration. Please contact your system administrator.';
+      gigyaUI.classList.add('hide');
+      if (errorCode == 0) {
+        successUI.innerHTML = successMessageHTML;
+        successUI.classList.remove('hide');
+        setTimeout(function () {
+          window.location.href = '{!$Site.BaseUrl}/{!contactId}';
+        }, 3000);
+      } else {
+        errorUI.innerHTML = errorMessageHTML;
+        errorUI.classList.remove('hide');
+      }
+    }
+
+    function displayLogin(response) {
+      console.log('Response==>', response);
+    }
+    
+    function userCheckCallback(response) {
+      if (!response.isAvailable) {
+        console.log('Unavailable: ' + response);
+        let gigyaUI = document.getElementById('RegistrationGigya');  
+        let alertUI = document.getElementById('alert');
+        gigyaUI.classList.add('hide');
+        alertUI.innerHTML = 'A User with this username already exists: {!Contact.Email}.<br /><br /><a href="#" onclick="resetPassword();">Send Password Reset Email</a>';
+        alertUI.classList.remove('hide');
+      } else {
+        console.log('Available: ' + response);
+      }
+    }
+    
+
+    function resetPasswordCallback(response) {
+      if (response) {
+        console.log(response);
+        if (typeof (response.errorCode) !== 'undefined' && response.errorCode !== null) {
+          if (response.errorCode == 0) {
+            sforce.one.showToast({
+              "title": "Notification",
+              "message": "Password Reset E-mail has been sent successfully",
+              "type": "success"
+            });
+          } else {
+            sforce.one.showToast({
+              "title": "Notification",
+              "message": "An Error Occurred: " + response.errorDetails + " .",
+              "type": "error"
+            });
+          }
+        }
+        else {
+          sforce.one.showToast({
+            "title": "Notification",
+            "message": "Something went wrong. Please contact your system administrator.",
+            "type": "error"
+          });
+        }
+      }
+    }
+
+    function resetPassword() {
+        console.log('{!existingUser.Email}');
+      console.log('{!Contact.Email}');
+      // Call accounts.resetPassword(email);
+      var resetParams;
+        if ('{hasExistingUser}' === true) { //updated check condition for javascript error NamrataP[9/20]
+        resetParams = {
+          loginID: '{!existingUser.Email}',
+          format: 'jsonp',
+          callback: resetPasswordCallback // Callback for handling success/failure
+        };
+      } else {
+        resetParams = {
+          loginID: '{!Contact.Email}',
+          format: 'jsonp',
+          callback: resetPasswordCallback // Callback for handling success/failure
+        };
+      }
+
+      gigya.accounts.resetPassword(resetParams);
+    }          
+  </script>
+
+  <body>
+    <div style="text-align: center;font-weight:bold;font-size:20px">
+      <apex:outputPanel rendered="{!isRegisterable}">
+        Manage {!contactMarket} User
+        <br />
+        <div id="RegistrationGigya">
+        </div>
+        <div id="alert" class="hide notification">
+          <!-- Alert Messages go here using .innerHTML -->
+        </div>
+        <div id="success" class="hide notification">
+          <!-- Success Messages go here using .innerHTML -->
+        </div>
+        <div id="error" class="hide notification">
+          <!-- Error Messages go here using .innerHTML -->
+        </div>
+      </apex:outputPanel>
+      <apex:outputPanel rendered="{!!isRegisterable}">
+        <apex:outputText rendered="{!!isPartnerEnabled}">Please Enable This Account as a Partner before attempting to register Users.
+          <br />
+        </apex:outputText>
+        <apex:outputText rendered="{!!isMarketAdmin}">You cannot Register new Users because you are not a Market Admin.
+          <br />
+        </apex:outputText>
+        <apex:outputText rendered="{!!isMarketMatch}">You cannot Register Users from another Market. Your Market(s): {!userMarket}. Contact Market: {!contactMarket}.
+          <br />
+        </apex:outputText>
+        <apex:outputText rendered="{!!hasAPIKey}">Registration Key missing or invalid.
+          <br />
+        </apex:outputText>
+        <apex:outputText rendered="{!hasExistingUser}">You cannot Register this User because they are already registered.
+          <br />
+          <p style="font-size:16px;">
+            <b>Gigya User ID: </b>{!existingUserId}
+            <br />
+            <b>User Email: </b> {!existingUser.Email}</p>
+          <a href="#" onclick="resetPassword();" style="font-size:16px;">Send Password Reset Email</a>
+        </apex:outputText>
+      </apex:outputPanel>
+    </div>
+  </body>
+</apex:page>

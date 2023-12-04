@@ -1,0 +1,30 @@
+<template>
+    <h2> <b>Duplicates Detected!!</b></h2>
+    This record looks like an existing contact. Please make sure to check any potential duplicate records before creating this contact. If the contact you select is showing a different account name, it will create a new affiliation to the account you are entering the Case for.
+    <div if:false={isLoaded}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </div>
+    <template for:each={conRecords} for:item="contact">
+        <div key={contact.Id}>
+            <lightning-layout>
+                <lightning-layout-item padding="around-small" size="1">
+                  <p><lightning-input type="checkbox" name={contact.Id} data-element="ExistingContact" checked={contact.checked} onchange={handleRowSelection}> </lightning-input></p>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small" size="11">
+                    <p><strong>Name:</strong> <a href={contact.contactRef} target="_blank"> {contact.Name}</a></p>
+                    <p><strong>Account:</strong> {contact.Account_Name__c}</p>
+                    <p><strong>Phone:</strong> {contact.Phone}</p>
+                    <p><strong>Status:</strong> {contact.ZTS_EU_Contact_Status__c}</p>
+                    <p><strong>Email:</strong> {contact.Interface_Email__c}</p>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </template>
+    <lightning-button icon-name="utility:check"
+        label="Add Selected Contact" variant="Neutral" padding="around-small"
+        onclick={addContactToCall}>
+    </lightning-button>
+    <lightning-button icon-name="utility:save" label="Create Duplicate" padding="around-small"
+        variant="Neutral" onclick={saveDuplicateContact}>
+    </lightning-button>                                            
+</template>

@@ -1,0 +1,39 @@
+<!--
+    Visualfocre Page : ChangeRequestEditSubmitPage
+    Description : Custom Edit Page for Save and submit button (DEF-00723)
+    Author : Sohil Shah(CloudSense)
+    Created Date : 8th Aug,2015
+-->
+
+<apex:page standardcontroller="ZTS_EU_Request__c" extensions="changeRequestEditSubmitController">
+    <apex:form >
+        <apex:image id="theImage" value="{!$Resource.ChangeRequestLogo}" width="35" height="35" />       
+        <font margin-top="0"><b>Change Request Edit</b></font><br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b><font size="4">
+        <apex:OutputText value="New Change Request" rendered="{!newcr}"/>
+        <apex:OutputText value="{!cr.Name}" rendered="{!edit}"/></font></b>
+         <br/><br/><br/>
+        <apex:pageBlock Title="Change Request Edit">
+             <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!UpdateCR}"/>
+                <apex:commandButton value="Save & New" action="{!insertCR}" rendered="{!newcr}"/>
+                <apex:commandButton value="Save & Submit" action="{!updateandSumbit}"/>
+                <apex:commandButton value="Cancel" action="{!cancelCR}" immediate="true"/>
+             </apex:pageBlockButtons>
+             <apex:pageblocksection title="Information" collapsible="false">
+                <apex:outputField value="{!cr.Name}" rendered="{!edit}"/>
+                <apex:OutputText value="{!OwnerName}" Label="Owner" rendered="{!newcr}"/>   
+                <apex:outputField value="{!cr.OwnerId}" rendered="{!edit}"/>
+                <apex:inputField value="{!cr.ZTS_EU_Status__c}" />
+                <apex:inputField value="{!cr.ZTS_EU_Requestor__c}" required="true"/>
+                <apex:inputField value="{!cr.ZTS_EU_Object_Type__c}" required="true"/>
+                <apex:inputField value="{!cr.ZTS_EU_Account_To_Be_Changed__c}"/>
+                <apex:inputField value="{!cr.ZTS_EU_Contact__c}"/>
+            </apex:pageblocksection>
+             <apex:pageblocksection title="Comments" collapsible="false"> 
+                <apex:inputField value="{!cr.ZTS_EU_Reviewer_Comments__c}"/>
+             </apex:pageblocksection> 
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

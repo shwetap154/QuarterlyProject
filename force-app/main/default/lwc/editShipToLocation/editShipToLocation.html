@@ -1,0 +1,83 @@
+<template>
+  <div class="slds-box slds-m-around_large">
+    <lightning-record-edit-form object-api-name="Ship_to_Configuration__c" record-id={shipTo.RecordId}>
+      <lightning-layout multiple-rows>
+        <lightning-layout-item padding="around-small" style="text-align: right;" size="2">{label.ShipToAddress}</lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="6">
+          <c-atg-lookup
+            placeholder="Search Salesforce"
+            selection={initialSelection}
+            errors={errors}
+            onsearch={handleSearch}
+            onselectionchange={handleSelectionChange}
+            onselectionremoved={handleSelectionRemoved}
+            is-multi-entry={multiEntry}
+            key={shipTo.RecordId}
+          >
+          </c-atg-lookup>
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="4">
+          <template if:false={shipTo.IsDefaultShipTo}>
+            <lightning-button
+              variant="destructive-text"
+              label={label.RemoveShipToLocation}
+              icon-name="utility:delete"
+              class="slds-m-left_x-small"
+              onclick={handleRemoveShipToLocation}
+            ></lightning-button>
+          </template>
+        </lightning-layout-item>
+
+        <lightning-layout-item padding="around-small" style="text-align: right;" size="2">
+          {label.OffersAtLocation} {shipTo.Index}
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="6">
+        <lightning-input
+        class = "validate" 
+        type = "Number" 
+        value = {qtyValue}
+        onchange={handleQuantityChange}
+        min="1" max={maxQuantityAllowed}
+        message-when-range-overflow = {label.MaxQuantityAllowedError}
+        message-when-range-underflow = {label.MinQuantityAllowedError}
+        >
+        </lightning-input>
+        
+       <!--  <lightning-combobox
+            style="width: 100px;"
+            variant="label-hidden"
+            name="quantity"
+            value={qtyValue}
+            onchange={handleQuantityChange}
+            options={quantities}
+          >
+          </lightning-combobox>-->
+         
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="4"> </lightning-layout-item>
+
+        <lightning-layout-item padding="around-small" style="text-align: right;" size="2">
+          {label.OverrideQuantities}
+          <lightning-icon
+            icon-name="utility:info"
+            size="xx-small"
+            class="slds-m-left_x-small"
+            title={label.OverrideQuantitiesOnlyAcillary}
+          ></lightning-icon>
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="6">
+          <c-edit-ship-to-location-quantity
+            quote-lines={quoteLines}
+            base-quantity={shipTo.BaseQuantity}
+            onqtyoverride={handleQtyOverride}
+            initial-over-qty={initialOverQty}
+            display-over-qty={displayOverrideQty}
+            ship-to-add={shipTo.ShipToAddressId}
+          >
+          </c-edit-ship-to-location-quantity>
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="4"></lightning-layout-item>
+      </lightning-layout>
+    </lightning-record-edit-form>
+  </div>
+</template>

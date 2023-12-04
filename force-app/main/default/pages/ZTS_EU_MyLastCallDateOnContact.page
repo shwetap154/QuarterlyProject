@@ -1,0 +1,31 @@
+<apex:page standardController="Contact" extensions="ZTS_EU_MyLastCallDateController"  sidebar="false" showHeader="false" tabStyle="Contact" LightningStyleSheets="true">
+    <style>
+        body .bPageBlock .detailList .dataCol, 
+        body .bPageBlock .detailList .data2Col, 
+        .slds-vf-scope .bPageBlock .detailList .dataCol, 
+        .slds-vf-scope .bPageBlock .detailList .data2Col
+        {
+                width: 50%;
+                float: left;
+        }
+    </style>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+            <apex:panelgroup >
+               <Label><b>Last Call Date:</b></Label> <apex:outputtext value="{0, date, MM/dd/yyyy}">
+                             <apex:param value="{!LastcallDate}"/>
+                        </apex:outputText>
+                        </apex:panelgroup>                             
+                <apex:outputPanel >
+                    <B><apex:outputLabel value="{!$Label.ZTS_EU_MyLastCallDate}"></apex:outputLabel></B>
+                        <apex:outputText id="myLastCallDate" value="{0, date, MM/dd/yyyy}">
+                             <apex:param value="{!myLastCallDate}" />
+                        </apex:outputText>
+                       
+                </apex:outputPanel> 
+               
+            </apex:pageBlockSection>    
+        </apex:pageBlock>    
+    </apex:form>
+</apex:page>

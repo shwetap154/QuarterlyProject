@@ -1,0 +1,239 @@
+<apex:page controller="ZTS_EuDynamicReport" id="thePage" sidebar="false" LightningStyleSheets="true">
+    <script type="text/javascript">
+        window.onload = hideRating;
+        function hideRating(){
+            
+            document.getElementById('thePage:theForm:thePageBlock:productPanel').style.display = "none";
+            var reportVal = document.getElementById('thePage:theForm:thePageBlock:report').value;
+            if(reportVal == 'Activity Analysis' || reportVal == 'Time Management'){
+                document.getElementById('thePage:theForm:thePageBlock:ratingsPanel').style.display = "none";
+                document.getElementById('thePage:theForm:thePageBlock:businessPanel').style.display = "none";
+                if(document.getElementById('thePage:theForm:thePageBlock:productPanel') != null)
+                document.getElementById('thePage:theForm:thePageBlock:productPanel').style.display = "none";
+                document.getElementById('thePage:theForm:thePageBlock:multipleBU').style.display = "none";
+            }else if(reportVal == 'Brand Sales Report YTD'){
+                document.getElementById('thePage:theForm:thePageBlock:ratingsPanel').style.display = "none";
+                document.getElementById('thePage:theForm:thePageBlock:businessPanel').style.display = "none";
+                if(document.getElementById('thePage:theForm:thePageBlock:productPanel') != null)
+                document.getElementById('thePage:theForm:thePageBlock:productPanel').style.display = "none";
+                document.getElementById('thePage:theForm:thePageBlock:multipleBU').style.display = "block";
+            }else if(reportVal == 'Monthly Segment Sales'){
+                document.getElementById('thePage:theForm:thePageBlock:ratingsPanel').style.display = "none";
+                document.getElementById('thePage:theForm:thePageBlock:businessPanel').style.display = "block";
+                if(document.getElementById('thePage:theForm:thePageBlock:productPanel') != null)
+                document.getElementById('thePage:theForm:thePageBlock:productPanel').style.display = "block";
+                document.getElementById('thePage:theForm:thePageBlock:multipleBU').style.display = "none";
+            }else if(reportVal == 'Monthly Brand Sales'){
+                document.getElementById('thePage:theForm:thePageBlock:ratingsPanel').style.display = "block";
+                document.getElementById('thePage:theForm:thePageBlock:businessPanel').style.display = "block";
+                if(document.getElementById('thePage:theForm:thePageBlock:productPanel') != null)
+                document.getElementById('thePage:theForm:thePageBlock:productPanel').style.display = "none";
+                document.getElementById('thePage:theForm:thePageBlock:multipleBU').style.display = "none";
+            }else{
+                document.getElementById('thePage:theForm:thePageBlock:ratingsPanel').style.display = "block";
+                document.getElementById('thePage:theForm:thePageBlock:businessPanel').style.display = "block";
+                if(document.getElementById('thePage:theForm:thePageBlock:productPanel') != null)
+                document.getElementById('thePage:theForm:thePageBlock:productPanel').style.display = "none";
+                document.getElementById('thePage:theForm:thePageBlock:multipleBU').style.display = "none";
+            }
+        }
+        function hideTable(){
+            if(document.getElementById('thePage:theForm:thePageBlock:monthlyBlock') != null)
+                document.getElementById('thePage:theForm:thePageBlock:monthlyBlock').style.display = "none";
+            if(document.getElementById('thePage:theForm:thePageBlock:brandBlock') != null)
+                document.getElementById('thePage:theForm:thePageBlock:brandBlock').style.display = "none";
+        }
+    </script>
+    
+    <style>
+        th.headerRow {
+            text-align:center;
+            color: #fc8744 !important;
+        }
+    </style>
+    
+    <apex:pagemessages ></apex:pagemessages>
+    <apex:form id="theForm">
+    
+        <apex:pageBlock title="Report Navigation Wizard" id="thePageBlock">
+            <apex:outputLabel value="Report Name : " style="font-weight:bold;"></apex:outputLabel>
+            <apex:selectList value="{!reportName}" size="1" id="report">
+                <apex:selectOptions value="{!Reports}"></apex:selectOptions>
+                <apex:actionSupport event="onchange" reRender="ratings,products,buttonPanel,businessPanel,multipleBU" oncomplete="hideRating(),hideTable();" action="{!changeReportType}"/>
+            </apex:selectList> <br/><br/>
+            <apex:outputPanel id="businessPanel">
+                <apex:outputLabel value="Business Unit: " style="font-weight:bold;"></apex:outputLabel>
+                <apex:selectList value="{!businessUnit}" size="1" id="business">
+                    <apex:selectOptions value="{!businessUnits}"></apex:selectOptions>
+                    <apex:actionSupport event="onchange" reRender="ratings,products,buttonPanel" oncomplete="hideRating();" action="{!showProducts}"/>
+                </apex:selectList>
+                <br/>
+            </apex:outputPanel>
+            <apex:outputPanel id="multipleBU">
+                <apex:outputLabel value="Business Unit: " style="font-weight:bold;"></apex:outputLabel>
+                <apex:selectList value="{!businessUnitMS}" size="1" id="businessMS" multiselect="true">
+                    <apex:selectOptions value="{!businessUnitsMS}"></apex:selectOptions>
+                    <apex:actionSupport event="onchange" reRender="ratings,products,buttonPanel" oncomplete="hideRating();" action="{!showProducts}"/>
+                </apex:selectList>
+                <br/>
+            </apex:outputPanel>
+            
+            <apex:outputPanel id="ratingsPanel">
+            <br/>
+                <apex:outputLabel value="Rating: " style="font-weight:bold;padding-left:41px;"></apex:outputLabel>
+                <apex:selectList value="{!filterValue}" size="6" id="ratings" disabled="{!renderRating}" style="width:75px;" multiselect="true">
+                    <apex:selectOptions value="{!addFilter}" ></apex:selectOptions>
+                </apex:selectList>
+            </apex:outputPanel>
+            <apex:outputPanel id="productPanel" >
+            <br/>
+                <apex:outputLabel value="Product: " style="font-weight:bold;padding-left:33px;"></apex:outputLabel>
+                <apex:selectList value="{!selectedProduct}" size="1" id="products" style="width:75px;" >
+                    <apex:selectOptions value="{!listProductNames}" ></apex:selectOptions>
+                </apex:selectList>
+            </apex:outputPanel>
+            
+            <br/><br/>
+            <apex:outputPanel id="buttonPanel">
+                
+                <center>
+                    <apex:commandButton value="View Report" action="{!showReport}" rendered="{!NOT(isStdReport)}"/>
+                    <apex:commandLink value="View Report" action="{!showReport}" target="_blank" styleclass="btn" style="padding: 4px 3px;text-decoration:none;" rendered="{!isStdReport}"/>
+                </center>
+            </apex:outputPanel>
+            <br/><br/>
+            
+            <apex:pageBlockSection title="{!reportSecName}" collapsible="false" columns="1" rendered="{!IF(AND(listMonthlySegment != null , listMonthlySegment.size>0 , reportName=='Monthly Segment Sales'),true,false)}" id="monthlyBlock">
+                <apex:pageBlockTable value="{!listMonthlySegment}" var="msegment" id="segmentSalesTable" style="text-align:center">
+                    <apex:column headerValue="Segment">
+                        <apex:outputText value="{!msegment.segment}" rendered="{!msegment.type == 'CY'}"/>
+                    </apex:column>
+                    <apex:column headerValue="Year Type">
+                        <apex:outputText value="{!msegment.type}"/>
+                    </apex:column>
+                    <apex:column style="text-align:center">
+                        <apex:facet name="header">Total YTD</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.totalVal}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP1</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon1Val}"/></apex:outputText>
+                     </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP2</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon2Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP3</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon3Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP4</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon4Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP5</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon5Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP6</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon6Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP7</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon7Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP8</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon8Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP9</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon9Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP10</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon10Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP11</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon11Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP12</apex:facet>
+                        <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!msegment.values.mon12Val}"/></apex:outputText>
+                    </apex:column>
+                </apex:pageBlockTable>
+                  <apex:outputText value="*Sales Data of all the accounts that logged-in user has access to are used to generate this report.(So for a typical user, that would be their entire market)" />
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection collapsible="false" columns="1" title="{!reportSecName}" rendered="{!IF(AND(listMonthlySegment != null , listMonthlySegment.size>0, reportName=='Monthly Brand Sales'),true,false)}" id="brandBlock">
+                <apex:pageBlockTable value="{!listMonthlySegment}" var="groupParam" id="segmentMonthlyTable" style="text-align:center">
+                    <apex:column >
+                        <apex:facet name="header">Brand</apex:facet>
+                        <apex:outputText style="align:middle"  rendered="{!groupParam.type == 'CY'}">{!groupParam.segment}</apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Year Type</apex:facet>
+                        <apex:outputText style="align:middle"  >{!groupParam.type}</apex:outputText>
+                    </apex:column>
+                    <apex:column style="text-align:center">
+                        <apex:facet name="header">Total YTD</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.totalVal}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP1</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon1Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP2</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon2Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP3</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon3Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP4</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon4Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP5</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon5Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP6</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon6Val}"/></apex:outputText>
+                   </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP7</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon7Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP8</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon8Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP9</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon9Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP10</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon10Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP11</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon11Val}"/></apex:outputText>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">AP12</apex:facet>
+                         <apex:outputText value="{0, number, ###,###,###,##0}" style="float:right;"><apex:param value="{!groupParam.values.mon12Val}"/></apex:outputText>
+                    </apex:column>
+                </apex:pageBlockTable>
+                  <apex:outputText value="*Sales Data of all the accounts that logged-in user has access to are used to generate this report.(So for a typical user, that would be their entire market)" />
+            </apex:pageBlockSection>
+          
+        </apex:pageBlock>
+    
+    </apex:form>
+</apex:page>

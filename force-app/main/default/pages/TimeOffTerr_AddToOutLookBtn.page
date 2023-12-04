@@ -1,0 +1,4 @@
+<apex:page standardController="Time_Out_of_Territory__c" extensions="ZTS_EU_TOTDetailViewController" 
+                action="{!doAddToCal}">
+
+</apex:page>

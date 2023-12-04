@@ -1,0 +1,107 @@
+<apex:page standardController="Contract" extensions="Adobe_Send_For_Signature" renderAs="PDF" applyhtmlTag="false"
+           cache="false" showHeader="false" title="{!Contract.Name} - Addendum"> 
+    <head>
+        <style type="text/css" media="print">
+            @page { 
+            @bottom-right {
+            content: element(footer); 
+            }
+            }
+            div.footer {
+                margin-left:640px;
+                display: block;
+                padding: 5px;
+                position: running(footer); 
+            }      
+            .headerRow .headerStyle{
+                background-color:#ADD8E6;
+                color:#000000;
+                text-align:center;
+            } 
+            .tableClass tbody{
+                text-align:center;
+            }
+        </style>
+    </head>  
+    <div class="footer">
+        <span>  <apex:image value="{! $Resource.ZoetisLogo}"   />       </span>
+    </div>
+    <div class="content">         
+        <apex:pageBlock rendered="{!addlLocations.size > 0}" >
+            <h2>
+                Locations 
+            </h2> 
+            <apex:pageBlockTable value="{!addlLocations}" var="al" border="1" cellpadding="3" width="100%" > 
+                <apex:column headerValue="Delete?" headerClass="headerStyle" style="text-align:center;" > 
+                    <apex:outputText value="{!al.tagName}" />   
+                </apex:column>
+                <apex:column headerValue="Name" headerClass="headerStyle" >
+                    <apex:outputText value="{!al.accName}" />
+                </apex:column>
+                <apex:column headerValue="Address" headerClass="headerStyle" >
+                    <apex:outputText value="{!al.address}" />
+                </apex:column>
+                <apex:column headerValue="City, State, ZIP" headerClass="headerStyle" >
+                    <apex:outputText value="{!al.cityStateZip}" />
+                </apex:column>
+                <apex:column headerValue="NARC#" headerClass="headerStyle" >
+                    <apex:outputText value="{!al.NARC}" />
+                </apex:column> 
+            </apex:pageBlockTable> 
+            <br/> 
+            <br/> 
+        </apex:pageBlock>
+        <apex:pageBlock rendered="{!suppliers.size > 0}">
+            <h2>
+                Suppliers
+            </h2>
+            <apex:pageBlockTable value="{!suppliers}" var="supp" border="1" cellpadding="3" width="100%"  >
+                <apex:column headerValue="Delete?" headerClass="headerStyle" style="text-align:center;"  >
+                    <apex:outputText value="{!supp.tagName}" />
+                </apex:column>
+                <apex:column headerValue="Service Supplier" headerClass="headerStyle" >
+                    <apex:outputText value="{!supp.accName}" />
+                </apex:column>
+                <apex:column headerValue="Address" headerClass="headerStyle" >
+                    <apex:outputText value="{!supp.cityStateZip}" />
+                </apex:column> 
+            </apex:pageBlockTable> 
+        </apex:pageBlock>
+        <apex:pageBlock rendered="{!distributors.size > 0}">
+            <h2>
+                Distributors
+            </h2> 
+            <apex:pageBlockTable value="{!distributors}" var="dist" border="1" cellpadding="3" width="100%"  >
+                <apex:column headerValue="Delete?" headerClass="headerStyle" style="text-align:center;"  >
+                    <apex:outputText value="{!dist.tagName}" />
+                </apex:column>
+                <apex:column headerValue="Name" headerClass="headerStyle" >
+                    <apex:outputText value="{!dist.accName}" />
+                </apex:column>
+                <apex:column headerValue="Address" headerClass="headerStyle" >
+                    <apex:outputText value="{!dist.cityStateZip}" />
+                </apex:column> 
+            </apex:pageBlockTable> 
+        </apex:pageBlock> 
+    </div>
+
+    <table style="font-size:4pt">       
+        <apex:repeat var="item" value="{!adobeTags}">
+            <tr>
+                <td>{!item}</td>
+            </tr>
+        </apex:repeat> 
+            <!--<tr>
+                <td>{!supplierId}</td>
+            </tr>
+            <tr>
+                <td>{!locationId}</td>
+            </tr>
+            <tr>
+                <td>{!distributorId}</td>
+            </tr>       
+            <tr>
+                <td>{!locSupDistId}</td>
+            </tr>-->  
+    </table>
+</apex:page>

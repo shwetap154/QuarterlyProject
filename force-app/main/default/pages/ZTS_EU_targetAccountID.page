@@ -1,0 +1,25 @@
+<!--
+/*************************************************************************************************************************
+Class Name : ZTU_EU_UpdateAffiliatedContacts
+Description : Replaced the input field ZTS_EU_SFDC_IDs__c to ZTS_EU_ZOETIS_SFDC_IDs__c for Bug fix- DEF-000057 - Zoetis SFDC Id for targeting accounts
+Modified By : Sohil Shah (CloudSense)
+Edited On   : 02/09/2014
+
+***************************************************************************************************************************/
+-->
+
+<apex:page standardController="ZTS_EU_Campaign_Account__c" extensions="ZTS_EU_targetAccountIDController" LightningStyleSheets="true">
+  <apex:form id="frm">
+        <apex:pageMessages ></apex:pageMessages>
+        <apex:pageBlock id="pb"  title="New Targeted Accounts :">
+            <apex:pageBlocksection id="TopSection" columns="1" collapsible="false" >                   
+               <apex:inputField value="{!campAccnt.ZTS_EU_Campaign__c}"/>                  
+               <apex:inputField value="{!campAccnt.ZTS_EU_ZOETIS_SFDC_IDs__c}"/>                 
+            </apex:pageBlocksection>
+            <apex:pageBlockButtons location="bottom">
+            <apex:commandButton action="{!addTargetAccountID}" value="Add"/>          
+            <apex:commandButton action="/{!campId}" value="Cancel" immediate="true" />            
+          </apex:pageBlockButtons>
+        </apex:pageBlock>  
+    </apex:form>
+</apex:page>

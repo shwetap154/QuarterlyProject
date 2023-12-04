@@ -1,0 +1,107 @@
+  
+html,body{height:95%} 
+body{text-align:center;font-family:"proxima-nova", Helvetica, Arial, sans-serif;background-color:#f9f9f9;color:#585858} 
+footer{color:#ff6400;background-color:white;margin:3em 0 0} 
+footer img{height:2.25em;vertical-align:middle} 
+footer .logo{padding:.75em 0;float:left} 
+footer{margin:0;margin-top:-3.75em} 
+.main_container{padding-bottom:3.75em;min-height:100%} 
+.main_container h2{text-transform:uppercase;font-family:"proxima-nova-extra-condensed", Helvetica, Arial, sans-serif;font-size:2.5em;line-height:1;color:#ff6400;margin:0;margin-bottom:0.5em;padding-top:1em} 
+.main_container h2 span{font-weight:200;font-family:"proxima-nova-condensed", Helvetica, Arial, sans-serif} 
+.main_container h3{color:#1696ad;font-weight:normal;font-size:1.5em} 
+.main_container .input{max-width:28em;margin:0 auto 1em} 
+.main_container label{display:block;text-align:left} 
+.main_container input{text-align:left;display:block;width:100%;padding:0.9em 0.5em;border:none;background:white} 
+.main_container input:focus{outline:0} 
+.main_container input::-webkit-input-placeholder{color:#bababa} 
+.main_container input:-moz-placeholder{color:#bababa;opacity:1} 
+.main_container input::-moz-placeholder{color:#bababa;opacity:1} 
+.main_container input:-ms-input-placeholder{color:#bababa} 
+.main_container .button{width:inherit; font-size:1.125em;display:inline-block;padding:0.75em 1em;line-height:1;border:2px solid transparent;min-width:8em;text-transform:uppercase;background-color:#ff6400;color:white;margin-top:2em}         
+.main_container .forgot{position:relative;display:inline-block;margin-bottom:2em} 
+.main_container .forgot a{color:#ff6400;display:inline-block;padding-bottom:2px;border-bottom:thin solid rgba(255,100,0,0.5);text-decoration:none} 
+.main_container .popup{position:relative;padding:1.5em;background-color:white;color:#585858;text-align:center;width:15em;margin:2em auto 0} 
+.main_container .popup:after{content:'';display:block;position:absolute;left:-1em;margin-left:50%;top:100%;border-color:transparent;border-width:1em;border-style:solid;border-top-color:white} 
+.main_container .popup:after{border-top-color:transparent;border-bottom-color:white;top:auto;bottom:100%} 
+.main_container .popup{visibility:hidden} 
+.main_container .forgot:hover .popup{visibility:visible} 
+.main_container .email{margin:1em} 
+.main_container .text{text-transform:uppercase;font-size:0.75em;font-weight:bold} 
+footer .inner{text-align:right;max-width:1000px;margin:auto;padding:0 20px} 
+footer .contact{display:inline-block;position:relative;vertical-align:middle;margin:1.25em 0} 
+footer .contact>a{text-transform:uppercase;padding-bottom:1px;border-bottom:thin solid rgba(255,100,0,0.5)} 
+footer .contact>a,footer .contact>a:visited,footer .contact>a:hover,footer .contact>a:active{color:inherit} 
+footer .popup_container{display:none;position:absolute;bottom:0;padding-bottom:3.5em;left:50%;margin-left:-7.5em} 
+footer .popup{position:relative;padding:1.5em;background-color:white;color:#585858;text-align:center;width:15em} 
+footer .popup a{display:block;color:#ff6400;margin:1em 0} 
+footer .popup .text{text-transform:uppercase;font-weight:bold;font-size:0.75em;line-height:1} 
+footer .popup .email,footer .popup .phone{font-size:1.125em} 
+footer .popup:after{content:'';display:block;position:absolute;left:-1em;margin-left:50%;top:100%;border-color:transparent;border-width:1em;border-style:solid;border-top-color:white} 
+footer .contact:hover .popup_container{display:block} 
+footer .popup_container:hover{display:block}  
+footer .popup{right:0;position:absolute;bottom:100%} 
+footer .popup:after{display:none} 
+footer .popup_container:after{content:'';display:block;position:absolute;left:-1em;margin-left:50%;top:0;border-color:transparent;border-width:1em;border-style:solid;border-top-color:white} 
+}   
+#header  {
+            	color: white;
+                text-align: center;
+                position: relative;
+            	text-transform: uppercase;
+                background-color: #6dd2de;
+                padding: 0.25em 0 0.1em;
+                font-family: "proxima-nova-extra-condensed", Helvetica, Arial, sans-serif;
+            	font-weight: bold;
+                font-size: 2.5em;
+                line-height: 1;
+                width:100%;
+                float:left;
+            }
+            body .bPageBlock .pbTitle { 
+                font-weight: normal;
+                font-size: 1em;
+                font-weight: bold;
+                float:left; 
+            	width:111%;
+           	 	background-color: #1696ad; 
+            }
+            body .bPageBlock .pbTitle h2{ 
+            	color: white; 
+            }
+            select {
+                padding: 0.75em 0.625em;
+                padding-right: 2em;
+                border: none;
+                background: white;
+                min-width: 26.7em;
+                max-width: 100%;
+                font-size: 1em;
+                margin-left: 1px;
+                border-left: 5px solid transparent; 
+                text-indent: 1px;
+                text-overflow: '';
+                position: relative; 
+                background: no-repeat #fff;
+                background-size: 1em;
+                background-position: 96% center;
+            } 
+            select option, select optgroup {
+                font-size: 150%;
+            }
+            label{
+            	font-size: 1.3em;
+            }
+.headers  {
+            	color: white;
+                text-align: center;
+                position: relative;
+            	text-transform: uppercase;
+                background-color: #6dd2de;
+                padding: 0.25em 0 0.1em;
+                font-family: "proxima-nova-extra-condensed", Helvetica, Arial, sans-serif;
+            	font-weight: bold;
+                font-size: 2.5em;
+                line-height: 1;
+                width:100%;
+                float:left;
+            }

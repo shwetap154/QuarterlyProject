@@ -1,0 +1,334 @@
+<apex:page title="Zoetis For Shelters" standardController="Lead" extensions="ZoetisForShelters" cache="false" showChat="false" showHeader="false" sidebar="false" 
+           standardStylesheets="true">   
+    <c:ZFS_header shelterObj="{!shelter}" ></c:ZFS_header>
+    <style type="text/css"  > 
+        .ct{
+        text-align:center;
+        }
+        .individualPalette .leadBlock .tertiaryPalette{
+        background-color:#0096AF !important;
+        }
+        .individualPalette .leadBlock .secondaryPalette {
+        border-color:#0096AF !important;
+        }
+        body .bEditBlock .pbBody .pbSubheader{
+        background-image:none !important;
+        color:#ffffff !important;
+        }
+        .requiredLegend{
+        color:#ffffff !important;
+        }
+        body{
+        font-size: 85% !important;
+        }
+        body .bPageBlock .pbBody .pbSubheader h3, body .bWizardBlock .bPageBlock .pbBody .pbSubheader label{
+        font-size: 1.4em;
+        }
+        .submitMessage{
+        background-color: #ffc !important;
+        border-style: solid;
+        border-width: 1px;
+        font-weight:bold;
+        padding: 6px 6px 6px 6px !important;
+        margin: 0px 0px 4px -7px !important;
+        width: 100% !important;
+        border-radius: 4px !important;
+        border-color:   #39f !important;
+        float: left;
+        vertical-align:text-bottom; 
+        }
+    </style>
+    
+    <center> 
+        <apex:form style="width:50%;">
+            <apex:outputPanel id="Submitted_Form" style="text-align: left;">
+                <apex:pageBlock >
+                    <apex:outputPanel styleClass="submitMessage" rendered="{!$CurrentPage.parameters.submitted == 'true'}" > 
+                        <!--<apex:image url="{!URLFOR($Resource.ZoetisForShelters, 'ZFS_greenTick.png')}"  width="25" height="25" /> -->
+                        <apex:image url="{!$Resource.ZFS_Submitted_Green_Check}" style="vertical-align:text-bottom;"/>
+                        <apex:outputlabel value="Your application has been submitted successfully with the following details." />   
+                    </apex:outputPanel>  
+                    <apex:outputPanel styleClass="submitMessage" rendered="{!shelter.Signature_Status__c == 'Out for Signature'}" >                         
+                        <apex:image url="{!$Resource.ZFS_Submitted_Green_Check}" style="vertical-align:text-bottom;"/>
+                        <apex:outputlabel value="The application has been sent for electronic signature. Once all signatures are received, the application will be submitted for Zoetis review automatically." />   
+                    </apex:outputPanel>  
+                    <apex:pageBlockSection title="1. Basic Information" columns="1" >
+                        <apex:outputText label="Prefix" value="{!shelter.Salutation}"/>
+                        <apex:outputText value="{!shelter.FirstName}" label="First Name"/>
+                        <apex:outputText value="{!shelter.LastName}" label="Last Name"/>
+                        <apex:outputText value="{!shelter.Email}" label="Email"/>
+                        <apex:outputText value="{!shelter.Phone}" label="Phone"/>
+                        <apex:outputText value="{!shelter.Shelter_Name__c}" label="Shelter Name"/>
+                        <apex:outputText value="{!shelter.Shelter_Website__c}" label="Shelter Website"/>
+                    </apex:pageBlockSection>   
+                    
+                    <apex:pageBlockSection columns="1" title="2. Qualification Criteria" > 
+                        <apex:outputPanel >
+                            <label style="color:#4A4A56;"><b>Which of the following describes your shelter? </b><br/>
+                                (Please choose one)</label>
+                            <apex:selectRadio label="" value="{!shelter.Type_of_Organization__c}" layout="pageDirection" disabled="true">
+                                <apex:selectOptions value="{!shelterType}" />
+                            </apex:selectRadio>
+                            <apex:pageBlockSection columns="1" rendered="{!shelter.Type_of_Organization__c == 'Other'}">
+                                <label style="color:#4A4A56;"><b>If other, please describe:</b></label>
+                                <apex:outputText id="other" label="" value="{!shelter.If_Other_please_describe__c}" />
+                            </apex:pageBlockSection>
+                            <apex:outputLabel value="<b>What types of animals receive sanctuary with your organization?</b>" escape="false" rendered="{!shelter.Type_of_Organization__c == 'Animal Sanctuary'}" style="color:#4A4A56;" />                            
+                            <apex:selectRadio label="" value="{!shelter.Type_of_Sanctuary_Animals__c}" rendered="{!shelter.Type_of_Organization__c == 'Animal Sanctuary'}"  layout="pageDirection" disabled="true">
+                                <apex:selectOptions value="{!typeOfSancAnimals}" />
+                            </apex:selectRadio>
+                            <apex:pageBlockSection columns="1" rendered="{!shelter.Type_of_Sanctuary_Animals__c == 'Other'}">
+                                <label style="color:#4A4A56;"><b>If Other, Please Specify:</b></label>
+                                <apex:outputText id="other" label="" value="{!shelter.Type_of_Sanctuary_Animals_Other__c}" />
+                            </apex:pageBlockSection>
+
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <b><label style="color:#4A4A56;">Does your organization adopt out cats or dogs?</label></b>
+                            <apex:selectRadio label="" value="{!shelter.annual_cat_dog__c}" style="width:40%" disabled="true">
+                                <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                            </apex:selectRadio>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <b><label style="color:#4A4A56;">Do you currently purchase from Zoetis?</label></b>
+                            <apex:selectRadio label="" value="{!shelter.Do_you_currently_purchase_from_Zoetis__c}" style="width:40%" disabled="true">
+                                <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                            </apex:selectRadio>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <b><label style="color:#4A4A56;">Is there currently an account with Zoetis at this location?</label></b>
+                            <apex:selectRadio label="" value="{!shelter.Existing_account_with_Zoetis__c}" style="width:40%" disabled="true">
+                                <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                            </apex:selectRadio>
+                            <apex:pageBlockSection columns="1" rendered="{! shelter.Existing_account_with_Zoetis__c == 'Yes'}">
+                                <b><label style="color:#4A4A56;">Account details:</label></b>
+                                <apex:outputText label="Prefix" value="{!shelter.Account_Prefix__c}"/>
+                                <apex:outputText label="First Name" value="{!shelter.Account_First_Name__c}"/>
+                                <apex:outputText label="Last Name" value="{!shelter.Account_Last_Name__c}"/>
+                                <apex:outputText label="Account Name" value="{!shelter.Shelter_Account_Name__c}"/>
+                                <apex:outputText label="Zoetis Account#" value="{!shelter.Zoetis_Account__c}"/>
+                            </apex:pageBlockSection>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <b><label style="color:#4A4A56;">How did you hear about Zoetis for Shelters?</label></b><br/><br/>
+                            <apex:outputText label="" value="{!shelter.How_did_you_hear_about_us2__c}" />
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <b><label style="color:#4A4A56;">Do you work with a licensed veterinarian who is willing to sign off as the vet on record?</label></b>
+                            <apex:selectRadio label="" value="{!shelter.Do_you_have_a_licensed_veterinarian__c}" style="width:40%" disabled="true">
+                                <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                            </apex:selectRadio>
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>  
+                    
+                    <apex:pageBlockSection columns="1" title="3. Contact Information" >
+                        <apex:outputText label="Shelter Phone" value="{!shelter.Contact_Phone__c}"/>
+                        <apex:outputText label="Shelter Email" value="{!shelter.Contact_Email__c}"/>
+                        <apex:outputText label="Shelter Fax" value="{!shelter.Contact_Fax__c}"/>
+                        <apex:outputPanel >
+                            <b><label style="color:#4A4A56;">Billing Address </label></b><br/><br/>
+                            <apex:pageBlockSection columns="1">
+                                <apex:outputText label="Street 1" value="{!shelter.Billing_Street_1__c}"/>
+                                <apex:outputText label="Street 2" value="{!shelter.Billing_Street_2__c}"/>
+                                <apex:outputText label="City" value="{!shelter.Billing_City__c}"/>
+                                <apex:outputText label="County" value="{!shelter.Billing_County__c}"/>
+                                <apex:outputText label="State" value="{!shelter.Billing_State__c}"/>
+                                <apex:outputText label="Zip code" value="{!shelter.Billing_Zip_Code__c}"/>
+                            </apex:pageBlockSection>
+                        </apex:outputPanel>
+                        <apex:outputPanel >                                 
+                            <b><label style="color:#4A4A56;">Shipping Address</label></b><br/><br/>
+                            *(Shelters Only: orders for rescues will be shipped to vet)
+                            <apex:selectRadio value="{!shelter.Shipping_Address_Type__c}" disabled="true">
+                                <apex:selectOption itemLabel="Same as Billing" itemValue="Same as Billing"></apex:selectOption>
+                                <apex:selectOption itemLabel="Shelter" itemValue="Shelter"></apex:selectOption>
+                                <apex:selectOption itemLabel="Veterinarian" itemValue="Veterinarian"></apex:selectOption>
+                            </apex:selectRadio>
+                            <apex:pageBlockSection columns="1" rendered="{! shelter.Shipping_Address_Type__c == 'Veterinarian'}">
+                                <apex:outputText label="Street 1" value="{!shelter.Shipping_Street_1__c}"/>
+                                <apex:outputText label="Street 2" value="{!shelter.Shipping_Street_2__c}"/>
+                                <apex:outputText label="City" value="{!shelter.Shipping_City__c}"/>
+                                <apex:outputText label="County" value="{!shelter.Shipping_County__c}"/>
+                                <apex:outputText label="State" value="{!shelter.Shipping_State__c}"/>
+                                <apex:outputText label="Zip code" value="{!shelter.Shipping_Zip_Code__c}"/>
+                            </apex:pageBlockSection>
+                            <apex:pageBlockSection columns="1" rendered="{! shelter.Shipping_Address_Type__c == 'Shelter'}">
+                                <apex:outputText label="Street 1" value="{!shelter.Shipping_Street_1__c}"/>
+                                <apex:outputText label="Street 2" value="{!shelter.Shipping_Street_2__c}"/>
+                                <apex:outputText label="City" value="{!shelter.Shipping_City__c}"/>
+                                <apex:outputText label="County" value="{!shelter.Shipping_County__c}"/>
+                                <apex:outputText label="State" value="{!shelter.Shipping_State__c}"/>
+                                <apex:outputText label="Zip code" value="{!shelter.Shipping_Zip_Code__c}"/>
+                            </apex:pageBlockSection>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <b><label style="color:#4A4A56;">Delivery Preference for Invoices and Statements </label></b>
+                            <apex:selectRadio value="{!shelter.Contact_Preference__c}" label="" style="width:35%" disabled="true">
+                                <apex:selectOption itemLabel="Fax" itemValue="Fax"></apex:selectOption>
+                                <apex:selectOption itemLabel="Email" itemValue="Email"></apex:selectOption>
+                                <apex:selectOption itemLabel="Mail" itemValue="Mail"></apex:selectOption>
+                            </apex:selectRadio> 
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <apex:inputCheckbox id="iauth" value="{!shelter.Authorization_Flag__c}" label="" disabled="true"/>
+                            <apex:outputLabel for="iauth" value="I authorize Zoetis to send invoices and statements to the above billing Fax or Email or Mail address"></apex:outputLabel> 
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>   
+                    
+                    <apex:pageBlockSection columns="1" title="4. Statistics"  >
+                        <apex:outputPanel >
+                            <label><B>Dog &amp; Puppy Statistics</B></label><br/><br/>
+                            <apex:pageBlockSection columns="1">
+                                <apex:outputText label="# Puppy Intakes/yr" value="{!shelter.Puppy_Intakes_Yr__c}"/>
+                                <apex:outputText label="# Dog Intakes/yr" value="{!shelter.Dog_Intakes_Yr__c}"/>
+                                <apex:outputText label="# Puppy Adoptions/yr" value="{!shelter.Puppy_Adoptions_Yr__c}"/>
+                                <apex:outputText label="# Dog Adoptions/yr" value="{!shelter.Dog_Adoptions_Yr__c}"/>                                
+                                <apex:outputText label="# Resurrenders" value="{!shelter.Resurrenders_for_Dogs__c}"/>
+                                <apex:outputText label="Max Capacity for Dogs" value="{!shelter.Max_Capacity_for_Dogs__c}"/>
+                            </apex:pageBlockSection>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <label><B>Cat &amp; Kitten Statistics</B></label><br/><br/>
+                            <apex:pageBlockSection columns="1">
+                                <apex:outputText label="# Kitten Intakes/yr" value="{!shelter.Kitten_Intakes_Yr__c}"/>
+                                <apex:outputText label="# Cat Intakes/yr" value="{!shelter.Cat_Intakes_Yr__c}"/>
+                                <apex:outputText label="# Kitten Adoptions/yr" value="{!shelter.Kitten_Adoptions_Yr__c}"/>
+                                <apex:outputText label="# Cat Adoptions/yr" value="{!shelter.Cat_Adoptions_yr__c}"/>                                
+                                <apex:outputText label="# Resurrenders" value="{!shelter.Resurrenders_for_Cats__c}"/>
+                                <apex:outputText label="Max Capacity for Cats" value="{!shelter.Max_Capacity_for_Cats__c}"/>
+                            </apex:pageBlockSection>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <b><label style="color:#4A4A56;">Does your organization perform spay and neuter operations?</label></b>
+                            <apex:selectRadio label="" value="{!shelter.Does_org_perform_Spay_Neuter_operations__c}" style="width:40%" disabled="true">
+                                <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                            </apex:selectRadio>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <b><label style="color:#4A4A56;">Do you operate a clinic at your shelter that sees animals that are not in the shelter's care?</label></b>
+                            <apex:selectRadio label="" value="{!shelter.In_House_Clinic__c}" style="width:40%" disabled="true">
+                                <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                            </apex:selectRadio>
+                        </apex:outputPanel>                
+                        <apex:outputPanel >
+                            <label style="color:#4A4A56;"><b>Estimated number of spays/neuters your shelter performs in an average year.</b>
+                                <br/>(Not required)</label><br/><br/>
+                            <apex:outputText label="" value="{!shelter.Estimated_S_N_performed_average_yr__c}"/>
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="1"  title="5. Veterinarian Information"> 
+                        <apex:outputText label="Prefix" value="{!shelter.Vet_Prefix__c}"/>
+                        <apex:outputText label="First Name" value="{!shelter.Vet_First_Name__c}"/>
+                        <apex:outputText label="Last Name" value="{!shelter.Vet_Last_Name__c}"/>
+                        <apex:outputText label="Phone" value="{!shelter.DVM_Phone__c}"/>
+                        <apex:outputText label="Street 1" value="{!shelter.DVM_Address__c}"/>
+                        <apex:outputText label="Street 2" value="{!shelter.DVM_Address_2__c}"/>
+                        <apex:outputText label="City" value="{!shelter.DVM_City__c}"/>
+                        <apex:outputText label="County" value="{!shelter.DVM_County__c}"/>
+                        <apex:outputText label="State" value="{!shelter.DVM_State__c}"/>
+                        <apex:outputText label="Zip Code" value="{!shelter.DVM_Zip__c}"/>
+                        <apex:outputText label="Email" value="{!shelter.DVM_Email__c}"/>
+                        <apex:outputText label="Fax" value="{!shelter.DVM_Fax__c}"/>
+                        <apex:outputText label="State Vet License Number" value="{!shelter.DVM_ST__c}"/>
+                    </apex:pageBlockSection> 
+                    
+                    <apex:pageBlockSection columns="1" title="6. Credit References" >
+                        <apex:outputPanel >
+                            <label><b>Principal Bank</b></label>
+                            <apex:pageblockSection columns="1">
+                                <apex:outputText label="Principal Bank Name" value="{!shelter.Principal_Bank_Name__c}"/>
+                                <apex:outputText label="Principal Bank Phone" value="{!shelter.Principal_Bank_Phone__c}"/>
+                            </apex:pageblockSection>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <label><B>Trade References 1</B><br/>
+                                (A Trade Reference is any company that you’ve done business with within the veterinary industry. This can be any distributor, veterinary company, pet food or supplies stores, diagnostics labs, pharmacies or veterinarians.)</label>
+                            <apex:pageblockSection columns="1">
+                                <apex:outputText label="Company Name" value="{!shelter.Trade_Reference_1_Company_Name__c}"/>                      
+                                <apex:outputText label="Phone" value="{!shelter.Trade_Reference_1_Company_Phone__c}"/>
+                            </apex:pageBlockSection>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <label><B>Trade References 2</B></label>
+                            <apex:pageblockSection columns="1">
+                                <apex:outputText label="Company Name" value="{!shelter.Trade_Reference_2_Company_Name__c}"/>                      
+                                <apex:outputText label="Phone" value="{!shelter.Trade_Reference_2_Company_Phone__c}"/>
+                            </apex:pageBlockSection>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <label><B>Trade References 3</B></label>
+                            <apex:pageblockSection columns="1">
+                                <apex:outputText label="Company Name" value="{!shelter.Trade_Reference_3_Company_Name__c}"/>                      
+                                <apex:outputText label="Phone" value="{!shelter.Trade_Reference_3_Company_Phone__c}"/>
+                            </apex:pageBlockSection>
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="1" title="7. Sales Tax Status"  >
+                        <apex:outputPanel >
+                            <label  style="color:#4A4A56;"><B>Customer Type:</B></label>
+                            <apex:selectRadio label="" value="{!shelter.Sales_Tax_Status_Type__c}" layout="pageDirection" disabled="true">
+                                <apex:selectOptions value="{!salesTaxStatusType}"/>
+                            </apex:selectRadio>     
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <label  style="color:#4A4A56;"><B>Sales Tax Status:</B></label>
+                            <apex:selectRadio label="" value="{!shelter.Sales_Tax_Status__c}" layout="pageDirection" disabled="true">
+                                <apex:selectOptions value="{!salesTaxStatus}"/>
+                            </apex:selectRadio> 
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <label style="color:#4A4A56;"><B>Tax Permit #</B></label><p></p>
+                            <apex:outputText label="" value="{!shelter.Tax_Permit__c}" />
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageblockSection columns="1" title="8. Signed Application & Additional Uploads">
+                        <apex:outputPanel >    
+                            <B><Label style="color:#4A4A56;">Uploaded signed application form:</Label></B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:outputLink value="{! URLFOR($Action.Attachment.Download, existingSignedAtt.Id)}" target="_blank" rendered="{!existingSignedAtt.Id!=null}">{!existingSignedAtt.Name}</apex:outputLink>
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <label style="color:#4A4A56;"><B>Uploaded Shelter/Rescue 501(c)(3) file:</B></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:outputLink value="{! URLFOR($Action.Attachment.Download, existingNpoAtt.Id)}" target="_blank" rendered="{!existingNpoAtt.Id!=null}">{!existingNpoAtt.Name}</apex:outputLink>
+                        </apex:outputPanel>
+                        <apex:outputPanel >    
+                            <B><Label style="color:#4A4A56;">Uploaded additional files:</Label></B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:outputLabel rendered="{! existingOtherAtt==null || existingOtherAtt.size==0}" value="No additional files uploaded."></apex:outputLabel>
+                            <br/><br/>
+                            <apex:outputPanel rendered="{! !(existingOtherAtt==null || existingOtherAtt.size==0)}">
+                                <apex:dataTable value="{!existingOtherAtt}" var="exAtt" columns="2" border="1" width="90%" columnsWidth="35%,55%" style="table-layout:fixed;"> 
+                                    <apex:column headerValue="File Name" style="word-wrap:break-word; word-break: break-all;white-space: normal;">
+                                        <apex:outputLink value="{! URLFOR($Action.Attachment.Download, exAtt.Id)}" target="_blank">{!exAtt.Name}</apex:outputLink>
+                                    </apex:column>
+                                    <apex:column headerValue="Description"  style="word-wrap:break-word; word-break: break-all;white-space: normal;">
+                                        {!exAtt.Description}
+                                    </apex:column>
+                                </apex:dataTable><br/><br/>
+                            </apex:outputPanel>
+                        </apex:outputPanel>                    
+                    </apex:pageblockSection>      
+                    <br/>
+                    <b>Note: </b>If you are unable to upload your signed documents on the website you may send the requested documents via email, fax, or mail:
+                    <br/> 
+                    <table>
+                        <tr><td><b>Email: </b></td><td><apex:outputlink value="mailto:CustomerAccounts@zoetis.com" style="color:#ff6400 " > CustomerAccounts@zoetis.com </apex:outputLink></td></tr>
+                        <tr><td><b>Fax: </b></td><td>1(844)-842-2183</td></tr>
+                        <tr><td width="5%"><b>Mail: </b></td><td>Attn: Zoetis Customer Accounts</td></tr>
+                        <tr><td></td><td>2476 Swedesford Road – Suite 250</td></tr>
+                        <tr><td></td><td>Malvern, PA 19355</td></tr>
+                    </table>  
+                </apex:pageBlock> 
+            </apex:outputPanel>
+            
+        </apex:form> 
+    </center>
+    <c:ZFS_footer /> 
+</apex:page>

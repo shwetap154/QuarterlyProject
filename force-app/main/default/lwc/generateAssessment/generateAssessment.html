@@ -1,0 +1,21 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-top_large">
+            <template if:true={loadSpinner}>
+                <lightning-spinner variant="brand" alternative-text="Loading"></lightning-spinner>
+            </template>
+        </div>
+        <div class="slds-card__header-title slds-p-top_xx-small" style = "background: lightgray" >
+            <header slot="title" class="slds-page-header slds-page-header_record-home slds-p-bottom_xxx-small margin-bottom:0px THIS slds-card__header ">
+                <lightning-icon icon-name="custom:custom63" class="iconPadding"></lightning-icon>
+                Generate Case Assessments
+            </header>
+        </div>
+
+        <div slot = "footer" >
+            <lightning-button size="1" variant="Neutral" label="Create Local Assessments" class="slds-var-p-right_xxx-small" onclick={handleClick_LA}></lightning-button>
+        
+            <lightning-button size="1" variant="Neutral" label="Create Product Assessments" class="slds-var-p-left_medium" onclick={handleClick_PA}></lightning-button>
+        </div>
+    </lightning-card>
+</template>

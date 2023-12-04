@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>CEM_020</label>
+    <protected>false</protected>
+    <values>
+        <field>Bit_Position__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Error_Code__c</field>
+        <value xsi:type="xsd:string">4044</value>
+    </values>
+    <values>
+        <field>Message__c</field>
+        <value xsi:type="xsd:string">The analyzer will not be able to determine the exposure status if the QC beads have not mixed correctly. Rerun with a new disposable.</value>
+    </values>
+    <values>
+        <field>Short_Description__c</field>
+        <value xsi:type="xsd:string">iQC Bead Mix Error</value>
+    </values>
+    <values>
+        <field>Type__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Vet_Message__c</field>
+        <value xsi:type="xsd:string">The analyzer will not be able to determine the exposure status if the QC beads have not mixed correctly. Rerun with a new rotor.</value>
+    </values>
+</CustomMetadata>

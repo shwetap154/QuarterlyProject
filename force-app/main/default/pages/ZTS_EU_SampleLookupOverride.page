@@ -1,0 +1,96 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_SampleLookupOverride
+* Description   :   This is the customized lookup window for Sample Selection.                        
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     20th-Nov-14   Shreyas             Created the vf page.
+
+********************************************************************************************************************************************
+-->
+
+<apex:page standardController="ZTS_EU_Sample__c" extensions="ZTS_EU_SampleLookupOverrideController" action="{!getSampleRecords}" sidebar="false" showHeader="false" LightningStyleSheets="true">
+    
+    <style>
+        .slds-scope
+        {
+            margin-top:10px;
+        }
+    </style>
+    <apex:slds />
+    <div class="slds-scope slds-p-horizontal_medium">
+        <apex:form id="frm_Samples">
+        
+            <apex:pageblock title="Samples" id="pb_Samples">
+                
+                <apex:messages layout="list" style="color:red;"/>
+                
+                <apex:inputText id="searchText" value="{!searchText}" onkeypress="return searchSampleOnEnter(event);"/>
+                <apex:commandButton value="Go" action="{!searchSample}" rerender="frm_Samples" status="status_Loading"/>
+                <br></br> 
+                
+                <apex:pageMessage summary="{!$Label.ZTS_EU_NoSamplesFound}" severity="Error" strength="1" rendered="{!NOT (showSamples)}"/>
+                  
+                <apex:pageBlockTable value="{!sampleList}" var="sample" id="pdtable_Samples" rendered="{!showSamples}" style="margin-top: 10px;">
+                  
+                  <apex:column headerValue="{!$ObjectType.ZTS_EU_Sample__c.Fields.Name.Label}">
+                      <apex:commandLink value="{!sample.name}" onclick="selectSample('{!sample.Id}','{!sample.name}');"/>
+                  </apex:column>
+                  <apex:column headerValue="{!$ObjectType.ZTS_EU_Sample__c.Fields.ZTS_EU_Contact__c.Label}">
+                      <apex:outputText value="{!sample.ZTS_EU_Contact__r.Name}"/>
+                  </apex:column>
+                  <apex:column headerValue="{!$ObjectType.ZTS_EU_Sample__c.Fields.ZTS_EU_On_Hand_Balance__c.Label}">
+                      <apex:outputText value="{!sample.ZTS_EU_On_Hand_Balance__c}"/>
+                  </apex:column>
+                  <apex:column headerValue="{!$ObjectType.ZTS_EU_Sample__c.Fields.ZTS_EU_Year__c.Label}">
+                      <apex:outputText value="{!sample.ZTS_EU_Year__c}"/>
+                  </apex:column>
+                  <apex:column headerValue="{!$ObjectType.ZTS_EU_Sample__c.Fields.ZTS_EU_Product__c.Label}">
+                      <apex:outputText value="{!sample.ZTS_EU_Product__r.Name}"/>
+                  </apex:column>
+                  
+                  
+              </apex:pageBlockTable>
+              
+              <apex:actionFunction name="searchSampleOnEnterKey" action="{!searchSample}" reRender="frm_Samples" status="status_Loading">
+                  <apex:param name="param" assignTo="{!searchText}" value=""/>
+              </apex:actionFunction>
+              
+              <apex:actionStatus id="status_Loading">
+                <apex:facet name="start"> 
+                    <c:ZTS_EnhancedActionStatus BackColor="#F1F2C6" borderColor="#336699" borderSize="1" height="30px" width="120px" ImageUrl="{!$Resource.AjaxAnimation}" Message="{!$Label.ZTS_EU_Loading}" messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+                </apex:facet>
+            </apex:actionStatus>
+          
+            </apex:pageblock>
+        
+        </apex:form>
+    
+        <script>
+          function selectSample(sampleId, sampleName){
+              try {
+                sampleId= sampleId.substring(0,15);
+                top.window.opener.lookupPick('editPage','pg:frm_sampledrop:pb_sampledropdetails:pb_newSampleDrop:pbs_newSampleDrop:sampleLookup_lkid','pg:frm_sampledrop:pb_sampledropdetails:pb_newSampleDrop:pbs_newSampleDrop:sampleLookup','',sampleId,sampleName,'null','');
+              }
+              catch (e){
+                alert(e);
+              }
+          } 
+          
+          function searchSampleOnEnter(ev)  {
+                
+                var searchText=document.getElementById('j_id0:frm_Samples:pb_Samples:searchText').value;
+                
+                if (window.event && window.event.keyCode == 13 || ev.which == 13) {            
+                    searchSampleOnEnterKey(searchText);          
+                    return false;           
+                 } 
+             }
+             
+       </script>
+    </div>
+</apex:page>

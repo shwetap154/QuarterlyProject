@@ -1,0 +1,92 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_NewOrderDetail
+* Description   :   This vf page is called when the New button from the Order Detail related list is clicked.                        
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     13th-Apr-15   Shreyas             Created the vf page.
+
+********************************************************************************************************************************************
+-->
+
+<apex:page controller="ZTS_EU_NewOrderDetailController">
+
+    <script>
+    
+    
+    
+    
+    function checkAll(chkbx1,chkbx2Id){
+        var inputElem = document.getElementsByTagName("input");                     
+        for(var i=0; i<inputElem.length; i++){             
+             if(inputElem[i].id.indexOf(chkbx2Id)!=-1){                                        
+                inputElem[i].checked = chkbx1.checked;
+            }
+        }
+    }
+    
+    function recalculateTotalPoints(quantity, unitPoints, totalPoints){
+        var q = document.getElementById(quantity).value;
+        var total = q*unitPoints;
+        var total_2DecimalPlaces = total.toFixed(2);
+        document.getElementById(totalPoints).value = total_2DecimalPlaces;
+    }
+                   
+    </script>
+    
+    <apex:form id="frm_orderDetail">
+    
+        <apex:sectionHeader title="{!$Label.ZTS_EU_AddOrderDetail}" subtitle="{!orderName}" />
+        <apex:messages />
+        
+        <apex:pageBlock id="pb_orderDetail">
+            
+            <apex:pageblockTable value="{!skuWrapperList}" var="skuObj" id="pbt_orderDetail">
+                
+                <apex:column width="1%">
+                      <apex:facet name="header"> 
+                      <apex:inputCheckbox id="checkbox1_obj" selected="false" onclick="checkAll(this,'checkbox2_obj')"/>                          
+                      </apex:facet>
+                      <apex:inputCheckbox value="{!skuObj.checkBox}"  id="checkbox2_obj"/>               
+                </apex:column>
+                
+                <apex:column value="{!skuObj.skuRecord.Name}" headerValue="{!$ObjectType.Order_Detail__c.Fields.ZTS_EU_Species_Product__c.Label}"/>
+                
+                <apex:column headerValue="{!$ObjectType.Order_Detail__c.Fields.Unit_Points__c.Label}">
+                    <apex:outputField id="unitPoints" value="{!skuObj.skuRecord.ZTS_EU_Unit_Points__c}"/>
+                </apex:column>
+                
+                <apex:column headerValue="{!$ObjectType.Order_Detail__c.Fields.ZTS_EU_Quantity__c.Label}">
+                    <apex:inputtext id="quantity" value="{!skuObj.quantity}" onblur="recalculateTotalPoints('{!$Component.quantity}','{!skuObj.skuRecord.ZTS_EU_Unit_Points__c}','{!$Component.totalPoints}')"/>
+                </apex:column>
+                
+                <apex:column headerValue="{!$ObjectType.Order_Detail__c.Fields.Total_Line_Points__c.Label}">
+                    <apex:inputText id="totalPoints" style="width:80px" disabled="true" value="{!skuObj.totalPoints}"/>
+                </apex:column>
+                
+                <apex:column headerValue="{!$ObjectType.Order_Detail__c.Fields.ZTS_EU_Discount_Price__c.Label}" rendered="{!showDiscount}">
+                    <apex:inputtext value="{!skuObj.discountPrice}"/>
+                </apex:column>
+                <!--Added by Mayukh as part of Brazil Historical Order System Change-->
+                <apex:column headerValue="{!$ObjectType.Order_Detail__c.Fields.ZTS_BR_Modified_Price__c.Label}" rendered="{!showModPrice}">
+                    <apex:inputtext value="{!skuObj.modifiedPrice}"/>
+                </apex:column>
+            
+            </apex:pageblockTable>
+            
+            <apex:pageBlockButtons location="top">
+            
+                <apex:commandButton value="{!$Label.ZTS_EU_Add_Product}" action="{!addProduct}"/>
+                <apex:commandButton value="{!$Label.ZTS_EU_ReturnToOrder}" action="{!returnToOrder}" />
+            
+            </apex:pageBlockButtons>  
+                  
+        </apex:pageBlock>
+        
+    
+    </apex:form>
+</apex:page>

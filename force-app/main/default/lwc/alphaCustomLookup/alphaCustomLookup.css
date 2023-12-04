@@ -1,0 +1,10 @@
+.zs_listdropdown_box .zs_record_list{
+    position: absolute;
+    background: #fff;
+    z-index: 999;
+    width: 41%;
+    padding: 0px 10px;
+    height: 182px;
+    border: 2px solid #dedede;
+    overflow-y: scroll;
+}

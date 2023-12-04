@@ -1,0 +1,73 @@
+<apex:page controller="ZTS_EU_AddKeyMsgController" sidebar="false" showHeader="false" id="pg">
+    <style>
+        .activeTab {background-color: #FFFFFF; background-image:none}
+        .inactiveTab { background-color: #DFDFDF; background-image:none}
+    </style>
+    <apex:form id="frm">
+         <apex:pageBlock title="Search for a Key Message" id="searchPB">
+              <apex:outputText value="Enter the search text: "></apex:outputText>
+             <apex:inputText value="{!searchString}" id="srchTxt"  /> 
+             <apex:commandButton value="Search" action="{!searchKeyMessage}"  onclick=" return checkSearchBox();"/><br/>
+             <div style="padding-top:20px;">
+                <div><apex:outputText value="Active Key Message can be searched by Name." style=" font-style: italic"/></div>
+            </div> 
+         </apex:pageBLock>
+         <apex:pageBlock id="keyPgID" rendered="{!NOT(ISNULL(KeyMessage)) && KeyMessage.size > 0}">
+             <apex:outputPanel id="SearchedMessage">
+                 <apex:pageBlockTable id="keyTb" value="{!KeyMessage}" var="k" title="Key Messages">
+                     <apex:column headerValue="Key Message" value="{!k.Name}"/>                                         
+                      <apex:column >
+                        <apex:commandLink value="Add" style="text-decoration:none" styleClass="btn" action="{!addKeyMessage}" reRender="SearchedMessage,outCall" rendered="{!mapSearchedKMsgIdBool[k.Id]}">
+                            <apex:param name="KeyMsgId" assignTo="{!addKeyMsgId}" value="{!k.Id}" />
+                            <apex:param name="KeyMsgName" assignTo="{!kMsgName}" value="{!k.Name}" />
+                        </apex:commandLink>
+                    </apex:column>
+                 </apex:pageBlockTable>
+             </apex:outputPanel>
+             <apex:outputPanel layout="block" styleClass="pSearchShowMore" id="otpNav1" rendered="{!NOT(ISNULL(setKMsgCont))}">   
+                  Total Products: <apex:outputText rendered="{!IF(setKMsgCont.resultSize==10000,true,false)}">10000 +</apex:outputText>
+                  <apex:outputText rendered="{!IF(setKMsgCont.resultSize < 10000,true,false)}">{!setKMsgCont.resultSize}</apex:outputText>
+                  <apex:image url="/img/search_prevarrow_disabled.gif" styleClass="prevArrow" rendered="{!NOT(setKMsgCont.hasPrevious)}"/>
+                  <apex:image url="/img/search_prevarrow.gif" title="Previous Page" styleClass="prevArrow" rendered="{!setKMsgCont.hasPrevious}"/>   
+                  <apex:commandLink action="{!setKMsgCont.previous}" rendered="{!setKMsgCont.hasPrevious}" reRender="keyPgID">Previous</apex:commandLink>
+                  <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(setKMsgCont.hasPrevious)}">Previous Page</apex:outputPanel>
+                  &nbsp;({!IF(setKMsgCont.PageNumber == 1,1,((setKMsgCont.PageNumber -1) * setKMsgCont.PageSize)+1)}-{!IF(setKMsgCont.resultSize < setKMsgCont.PageSize,setKMsgCont.resultSize,setKMsgCont.PageNumber * setKMsgCont.pageSize)})&nbsp;   
+                  <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(setKMsgCont.hasNext)}">Next Page</apex:outputPanel>
+                  <apex:commandLink value="Next Page" rendered="{!setKMsgCont.hasNext}" action="{!setKMsgCont.next}" reRender="keyPgID"/>&nbsp;   
+                  <apex:image url="/img/search_nextarrow.gif" title="Next Page" styleClass="nextArrow" rendered="{!setKMsgCont.hasNext}"/>   
+                  <apex:image url="/img/search_nextarrow_disabled.gif" rendered="{!NOT(setKMsgCont.hasNext)}"/>                                  
+             </apex:outputPanel>
+          </apex:pageBlock>
+             <apex:outputPanel id="outCall">
+            <apex:pageBlock title="Currently added to this Call:" rendered="{!NOT(ISNULL(KMsgList)) && KMsgList.size > 0}">
+                <apex:pageBlockTable value="{!KMsgList}" var="kMsg">
+                    <apex:column headerValue="Key Message" value="{!kMsg.name}"/>
+                    <apex:column >
+                        <apex:commandLink action="{!removeKMsg}" value="Remove" status="" style="text-decoration:none" styleClass="btn" immediate="" reRender="outCall,SearchedMessage">
+                          <apex:param name="productId" assignTo="{!removeMsgId}" value="{!kMsg.Id}" />                      
+                      </apex:commandLink>                      
+                    </apex:column>         
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+         </apex:outputPanel>
+         <apex:commandButton value="Done" onclick="closeWindow();" style="margin-left:33%" /> 
+       
+    </apex:form>
+    <script type = "text/javascript">
+            function checkSearchBox(){      
+                var search = document.getElementsByName("pg:frm:searchPB:srchTxt");            
+                    if(search[0].value == '' || search[0].value == null){
+                        alert('Search Text Cannot be Blank');  
+                        return false;
+                    } 
+            }
+            
+            function closeWindow(){
+                //window.parent.location.reload();
+                opener.location.reload(true);
+                window.close();
+                return;
+            }
+        </script> 
+
+</apex:page>

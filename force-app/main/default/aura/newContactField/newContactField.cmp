@@ -1,0 +1,9 @@
+<aura:component>
+    <aura:attribute name="apiName" type="String"/>
+    <aura:attribute name="objCase" type="Object"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:inputField fieldName="{!v.apiName}" variant="label-stacked" aura:id="field"/>
+
+</aura:component>

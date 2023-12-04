@@ -1,0 +1,10 @@
+<apex:page standardController="ZTS_EU_Affiliations__c" recordSetVar="affiliateRecords" tabStyle="ZTS_EU_Affiliations__c"> 
+
+    <script>
+        
+        if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) 
+	        sforce.one.createRecord('ZTS_EU_Affiliations__c', null,{'Name': '-Autopopulates on Save-', 'ZTS_EU_Account__c' : '{!$CurrentPage.parameters.id}'}); 
+        
+    </script>
+    
+</apex:page>

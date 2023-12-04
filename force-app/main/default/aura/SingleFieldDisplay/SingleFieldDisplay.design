@@ -1,0 +1,29 @@
+<!-- 
+/******************************************************//**
+@design		SingleFieldDisplay
+@brief		Displays a single field on a record page.
+
+@revision	2020-06-03	Glyn Anderson
+    Created.
+    
+@revision   2020-06-10  Aleksandar Basic
+    Added edit functionality for the field and customizable header title + icon displayed in the component.
+**********************************************************/
+ -->
+<design:component>
+	<!-- **************************************************
+					public attributes
+	************************************************** -->
+    <design:attribute name="objectName" label="Object Name" default="Account" required="true"
+        description="The API name of the object to be displayed." />
+    <design:attribute name="fieldName" label="Field Name" default="Name" required="true"
+        description="The API name of the field to be displayed." />
+    <design:attribute name="titleText" label="Title" default="Account Alert" required="true"
+        description="Text that appears at the header of the component" />
+    <design:attribute name="titleIcon" label="Icon" default="standard:announcement" required="false"
+        description="Icon that appears at the header of the component (input as type:name format)." />
+	<design:supportedFormFactors>
+        <design:supportedFormFactor type="Large"/>
+        <design:supportedFormFactor type="Small"/>
+    </design:supportedFormFactors>
+</design:component>

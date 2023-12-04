@@ -1,0 +1,125 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="CreateQuoteController">
+  <aura:html tag="style">
+    .cuf-content { padding: 0 0rem !important; } .slds-p-around--medium { padding: 0rem !important; } .slds-modal__content{
+    overflow-y:hidden !important; height:unset !important; max-height:unset !important; }
+  </aura:html>
+
+  <aura:attribute name="recordId" type="Id" />
+  <aura:attribute name="displayErrors" type="Boolean" default="false" />
+  <aura:attribute name="loaded" type="Boolean" default="false" />
+  <aura:attribute name="errors" type="List" />
+  <aura:attribute name="address" type="Id" />
+
+  <aura:attribute name="distributors" type="List" />
+  <aura:attribute name="leasingAgents" type="List" />
+  <aura:attribute name="selectedDistributor" type="String" />
+  <aura:attribute name="selectedLeasingAgent" type="String" />
+    
+  <aura:attribute name="countryflag" type="Boolean" default="false" />
+  <aura:attribute name="opp" type="opportunity" default="{'sObjectType':'opportunity'}"/>
+  <aura:attribute name="languagevalue" type="List"/>
+
+  <aura:attribute name="vrIsChecked" type="Boolean" default="false" />
+  <aura:attribute name="vrIsDisabled" type="Boolean" default="false" />
+  <aura:attribute name="vrIsEnabled" type="Boolean" default="false" />
+
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <div class="modal-header slds-modal__header" data-aura-rendered-by="1883:0">
+    <h2 class="title slds-text-heading--medium slds-hyphenate" id="title_1866:0" data-aura-rendered-by="1886:0">
+      {! $Label.c.Create_New_Quote_Title }
+    </h2>
+  </div>
+
+  <lightning:recordEditForm aura:id="recordEditForm" objectApiName="SBQQ__Quote__c">
+    <aura:renderIf isTrue="{!v.displayErrors}">
+      <ui:message title="Please check errors" severity="error">
+        <aura:iteration items="{!v.errors}" var="error">
+          <li>
+            {!error}
+          </li>
+        </aura:iteration>
+      </ui:message>
+    </aura:renderIf>
+    <div class="container slds-grid slds-wrap padding" style="padding-left: 20px; padding-right: 20px;">
+      <aura:renderIf isTrue="{! v.loaded }">
+        <div class="holder">
+          <lightning:spinner alternativeText="Loading" size="medium" />
+        </div>
+      </aura:renderIf>
+
+      <div class="slds-col slds-size_2-of-4">
+        <lightning:inputField aura:id="primary" fieldName="SBQQ__Primary__c" />
+      </div>
+      <div class="slds-col slds-size_2-of-4">
+        <lightning:inputField disabled="true" aura:id="opportunity2" fieldName="SBQQ__Opportunity2__c" />
+      </div>
+      <div class="slds-col slds-size_4-of-4">
+        <lightning:inputField aura:id="startDate" fieldName="SBQQ__StartDate__c" />
+      </div>
+      <aura:if isTrue="{!v.countryflag}">
+          <div class="slds-col slds-size_2-of-4">
+              <lightning:select name="cStat" label="Customer Language" value="None" aura:id="calanguage" >
+                  <option value="None">--None--</option>
+                  <aura:iteration items="{!v.languagevalue}" var="language">
+                      <option value="{!language}">{!language}</option>
+                  </aura:iteration>
+              </lightning:select>
+          </div>
+          <div class="slds-col slds-size_2-of-4">
+              <lightning:inputField disabled="false" required="true" aura:id="intSpeed" fieldName="Internet_Speed_Available__c"/>
+          </div>
+          <aura:set attribute="else">
+              <div class="slds-col slds-size_2-of-4">
+                  <lightning:inputField disabled="true" aura:id="language" fieldName="Customer_Language__c" />
+              </div>
+          </aura:set>
+      </aura:if>
+        
+      <aura:if isTrue="{!v.vrIsEnabled}">
+        <div class="slds-col slds-size_2-of-4 slds-p-around_small">
+          <lightning:input type="checkbox" label=" Virtual Recall " aura:id="vrcheckbox" checked="{!v.vrIsChecked}" disabled="{!v.vrIsDisabled}" fieldLevelHelp="Select this checkbox to designate this quote as Virtual Recall and enable VR functionality"/>
+        </div>
+      </aura:if>
+
+        <div class="slds-col slds-size_4-of-4">
+            <lightning:inputField aura:id="account" disabled="true" fieldName="SBQQ__Account__c" />
+        </div>
+
+      <div class="slds-col slds-size_4-of-4">
+        <lightning:inputField aura:id="address" fieldName="Initial_Address__c" required="true" />
+      </div>
+
+      <!--
+      <div class="slds-col slds-size_2-of-4">
+        <lightning:select name="distributorId" label="{! $Label.c.Create_New_Quote_Distributor }" aura:id="distributorId" value="{!v.selectedDistributor}" class="select-list" >
+            <aura:iteration items="{!v.distributors}" var="dist">
+                <option text="{!dist.label}" value="{!dist.value}"/>
+            </aura:iteration>
+        </lightning:select>
+      </div>
+      <div class="slds-col slds-size_2-of-4">
+        <lightning:select name="leasingAgentId" label="{! $Label.c.Create_New_Quote_Leasing_Agent }" aura:id="leasingAgentId" value="{!v.selectedLeasingAgent}" class="select-list" >
+            <aura:iteration items="{!v.leasingAgents}" var="la">
+                <option text="{!la.label}" value="{!la.value}"/>
+            </aura:iteration>
+        </lightning:select>
+      </div>
+      -->
+    </div>    
+    <div class="modal-footer slds-modal__footer">
+      <lightning:button
+        class="slds-button slds-button--neutral cuf-publisherCancelButton uiButton--default uiButton--brand uiButton"
+        type="button"
+        onclick="{!c.closeModal}"
+        label="{! $Label.c.Create_New_Quote_Cancel }"
+      />
+
+      <lightning:button
+        class="slds-button slds-button_brand cuf-publisherShareButton undefined uiButton"
+        type="button"
+        onclick="{!c.handleSubmit}"
+        label="{! $Label.c.Create_New_Quote_Create_New }"
+      />
+    </div>
+  </lightning:recordEditForm>
+</aura:component>

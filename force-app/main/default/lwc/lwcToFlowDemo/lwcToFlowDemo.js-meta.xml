@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <propertyType name="sObjects" extends="SObject" label="Select an SObject" description="Select an SObject"/> 
+            <property name="records" type="{sObjects[]}" label="Records" description="List of Records" role="inputOnly"/>
+            <property name="testString" type="String" label="Test String" description="Demo of Validate Not Working with FlowAttributeChangeEvent" role="outputOnly"/>
+            <property name="lstObserCompSkill" type="@salesforce/schema/Observed_Competency__c[]" label="Observed Competency Record" description="List of Observed Competency Records" role="outputOnly"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

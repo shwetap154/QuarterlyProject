@@ -1,0 +1,92 @@
+<!--
+  @description       : Collects Prepopulated Data to populate on New Contact form
+  @author            : Morgan Marchese @ Zoetis Inc
+  @group             : 
+  @last modified on  : 03-08-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   03-04-2021   Morgan Marchese @ Zoetis Inc   Initial Version
+-->
+<aura:component
+  controller="ContactAuraCtrl"
+  implements="force:appHostable,flexipage:availableForAllPageTypes,lightning:actionOverride,force:hasRecordId,lightning:isUrlAddressable,lightning:hasPageReference"
+>
+  <lightning:navigation aura:id="navService" />
+  <lightning:workspaceAPI aura:id="workspace"/>
+  <!-- Begin Handlers -->
+  <aura:handler name="init" value="{!this}" action="{!c.init}" />
+  <!-- This line ensures that init always fires if pageReference changes -->
+  <aura:handler name="change" value="{!v.pageReference}" action="{!c.init}" />
+  <!-- End Handlers -->
+
+  <!-- Begin Attributes -->
+  <aura:attribute type="Object" name="pageReference" />
+  <aura:attribute type="String" name="RecordTypeId" />
+  <aura:attribute type="String" name="recordMarket" />
+  <aura:attribute type="String" name="userMarket" />
+  <aura:attribute type="Object" name="returnVal" />
+  <aura:attribute type="Object" name="accountObject" />
+  <!-- End Attributes -->
+
+  <!-- Begin Page Content -->
+  <div class="slds-page-header">
+    <div class="slds-page-header__row">
+      <div class="slds-page-header__col-title">
+        <div class="slds-media">
+          <div class="slds-media__figure">
+            <span
+              class="slds-icon_container slds-icon-standard-account"
+              title="account"
+            >
+            <aura:if isTrue="{!v.recordId != null}">
+              <lightning:icon
+                iconName="standard:account"
+                alternativeText="Account"
+                title="Account"
+              />
+            </aura:if>
+              <span class="slds-assistive-text">Account</span>
+            </span>
+          </div>
+          <div class="slds-media__body">
+            <div class="slds-page-header__name">
+              <div class="slds-page-header__name-title">
+                <h1>
+                  <span
+                    class="slds-page-header__title slds-truncate"
+                    title="{!v.accountObject.Name}"
+                  >
+                    {!v.accountObject.Name}
+                  </span>
+                </h1>
+              </div>
+            </div>
+            <p class="slds-page-header__name-meta"></p>
+          </div>
+        </div>
+      </div>
+      <div class="slds-page-header__col-actions">
+        <div class="slds-page-header__controls">
+          <div class="slds-page-header__control">
+            <ul class="slds-button-group-list">
+              <li>
+                <lightning:button
+                  label="Exit Contact Wizard"
+                  onclick="{!c.return}"
+                />
+              </li>
+              <li>
+                <lightning:button
+                  label="Add Another Contact"
+                  onclick="{!c.gotoPage}"
+                />
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Page Content -->
+</aura:component>

@@ -1,0 +1,93 @@
+<!--
+ - Created by jerridkimball on 2018-05-17.
+ -->
+
+<aura:interface
+    description="SL_NestedTables_ITableMain"
+>
+    
+    <aura:attribute
+        description="The object name of the records that the table will display."
+        name="mainObjectName"
+        type="String"
+        default=""            
+    />
+    <aura:attribute
+        description="A comma-separated list of field API names of the object to display."
+        name="mainFieldList"
+        type="String"
+        default=""            
+    />
+    <aura:attribute
+        description="The title to display on the main table of records. It may be desirable to set this to the object label."
+        name="mainTitle"
+        type="String"
+        required="true"
+        default="Default Title"
+    />
+    <aura:attribute
+        description="The field API name by which to sort the main table when it loads. The default is the first field in the Field List."
+        name="mainSortField"
+        type="String"
+        default=""            
+    />
+    <aura:attribute
+        description="Sort in either ascending (A-Z, 0-9) or descending (Z-A, 9-0) order."
+        required="true"
+        default="ASC"
+        name="mainSortDirection"
+        type="String"
+    />
+    <aura:attribute
+        description="A SOQL filter condition, i.e., what follows a WHERE keyword."
+        name="mainQueryFilter"
+        type="String"
+        default=""
+    />
+    <aura:attribute
+        description="The link to the parent record. e.g.: To show Contacts for an Account, this value should be AccountId as that is the field on Contact that references the Account."
+        name="mainLookupFieldName"
+        type="String"
+        default=""
+    />
+    <aura:attribute
+        description="If true, show the Edit button on the record rows of the main table for which the user has permission to edit."
+        required="true"
+        default="false"
+        name="mainEnableEditButton"
+        type="Boolean"
+    />
+    <aura:attribute
+        description="If true, show the Delete button on the record rows of the main table for which the user has permission to delete."
+        required="true"
+        default="false"
+        name="mainEnableDeleteButton"
+        type="Boolean"
+    />
+    <aura:attribute
+        description="A comma-separated list specifying the widths of the respective fields in the field list. Widths can be any number from 1 - 11, but the sum of all the widths should be no more than 11."
+        name="mainColumnWidths"
+        type="String"
+        default=""
+    />
+    <aura:attribute
+        description="Number of records to show per page."
+        name="nestedNumberOfRecords"
+        default="10"
+        type="String"
+    />
+    <!-- here above--> 
+    <aura:attribute
+        description="To Keep the nested lookup field API Name always"
+        name="nestedLookUPFieldAPI"
+        type="String"
+        default=""
+    />
+
+    <aura:attribute
+        description="To detect IE browser"
+        name="isIEbrowser"
+        type="Boolean"
+        default="false"
+    />
+</aura:interface>

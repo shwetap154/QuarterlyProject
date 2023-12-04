@@ -1,0 +1,221 @@
+<apex:page standardController="PIT_STOMP__c" extensions="PIT_STOMP_editController">
+
+  <script type="text/javascript">
+        function addLoadEvent(func)
+        {
+            var oldonload = window.onload;
+            if (typeof window.onload != 'function')
+            {
+                window.onload = func;
+            }
+            else
+            {
+                window.onload = function() {
+                    if (oldonload)
+                    {
+                        oldonload();
+                    }
+                    func();
+                }
+            }
+        }
+        
+        addLoadEvent(function()  {
+            if(document.getElementById('{!$Component.STOMPform.sEdit.sInfo.ApprovingVet}_top') != null &&
+                document.getElementById('{!$Component.STOMPform.sEdit.sInfo.ApprovingVet}_top').children.length > 0 &&
+                document.getElementById('{!$Component.STOMPform.sEdit.sInfo.ApprovingVet}_top').children[0].options.length > 0) {
+                document.getElementById('{!$Component.STOMPform.sEdit.sInfo.ApprovingVet}_top').children[0].options.remove(1);
+            }
+            
+        });
+          
+      
+      
+    
+      function openLookup(baseURL, width, modified, searchParam){
+        var originalbaseURL = baseURL;
+        var originalwidth = width;
+        var originalmodified = modified;
+        var originalsearchParam = searchParam;
+        var lookupType;
+        
+        var baseUrlSplit = baseURL.split('&');
+        for(var i = 0; i < baseUrlSplit.length; ++i) {            
+            if(baseUrlSplit[i].lastIndexOf('lktp',0) === 0) {
+                lookupType = baseUrlSplit[i].substring(5);
+            }
+        }
+        
+        if (modified == '1') baseURL = baseURL + searchParam;
+        
+        var isCustomLookup = false;
+
+        // Following "005" is the lookup type for User object
+        if(lookupType == "005" || lookupType == "StandardUserLookup" || lookupType == "PartnerUserLookup"){
+      
+          var urlArr = baseURL.split("&");
+          var txtId = '';
+          if(urlArr.length > 2) {
+            urlArr = urlArr[1].split('=');
+            txtId = urlArr[1];
+          }
+          
+          // Following is the url of Custom Lookup page.
+          baseURL = "/apex/PIT_CustomUserLookup?txt=" + txtId;
+          
+          // Following is the id of apex:form control "STOMPform". 
+          baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.STOMPform}");
+          if (modified == '1') {
+            baseURL = baseURL + "&lksearch=" + searchParam +"&accId="+"{!PIT_STOMP__c.PIT_Account__c}";
+          }
+          
+          // Following is the ID of inputField that is the lookup to be customized as custom lookup
+          if(txtId.indexOf('ApprovingVet') > -1 ){
+            isCustomLookup = true;
+          }
+        }
+        
+        // Following "003" is the lookup type for Contact object
+        if(lookupType == "003"){
+      
+          var urlArr = baseURL.split("&");
+          var txtId = '';
+          if(urlArr.length > 2) {
+            urlArr = urlArr[1].split('=');
+            txtId = urlArr[1];
+          }
+          
+          // Following is the url of Custom Lookup page.
+          baseURL = "/apex/PIT_CustomContactLookup?txt=" + txtId;
+          
+          // Following is the id of apex:form control "STOMPform". 
+          baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.STOMPform}");
+          if (modified == '1') {
+            baseURL = baseURL + "&lksearch=" + searchParam +"&accId="+"{!PIT_STOMP__c.PIT_Account__c}";
+          }
+          
+          // Following is the ID of inputField that is the lookup to be customized as custom lookup
+          if(txtId.indexOf('ConsultingVet') > -1 ){
+            isCustomLookup = true;
+          }
+        }
+        
+        
+        if(isCustomLookup == true){
+          openPopup(baseURL, "lookup", 350, 480, "width="+width+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+        }
+        else {
+          if (modified == '1') originalbaseURL = originalbaseURL + originalsearchParam;
+          openPopup(originalbaseURL, "lookup", 350, 480, "width="+originalwidth+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+        } 
+      }
+    </script>
+    <style>
+    
+    /* This is for the full screen DIV */
+    .popupBackground {
+        /* Background color */
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        /* Dimensions */
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 998;
+        position: absolute;
+        /* Mouse */
+        cursor:wait;
+    }
+     
+    /* This is for the message DIV */
+    .PopupPanel {
+        /* Background color */
+        border: solid 2px red;
+        background-color: white;
+         
+        /* Dimensions */
+        left: 50%;
+        width: 200px;
+        margin-left: -100px;
+        top: 50%;
+        height: 80px;
+        margin-top: -25px;
+        z-index: 999;
+        position: fixed;
+        /* Mouse */
+        cursor:pointer;
+    }
+    </style>
+    <apex:actionStatus id="statusSaveTrip" stopText="">
+        <apex:facet name="start">
+            <div>
+                <div class="popupBackground" />
+                    <div class="PopupPanel">
+                    <table border="0" width="100%" height="100%">
+                        <tr>
+                            <td align="center"><b>Please Wait</b></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="/img/loading32.gif"/></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </apex:facet>
+    </apex:actionStatus>
+  
+  <apex:form id="STOMPform">
+      <apex:pageBlock id="sEdit" title="STOMP Edit">
+          
+          <apex:pageBlockButtons >
+              <apex:commandButton value="Cancel" action="{!customCancel}" immediate="true"/>
+              <apex:commandButton value="Save" action="{!CustomSave}"/>
+          </apex:pageBlockButtons>
+          <apex:pageBlockSection id="sInfo" columns="2" title="Information" collapsible="false">
+              <apex:outputField value="{!stomp.PIT_Status__c}"/>
+              <apex:outputField value="{!stomp.PIT_Owner_Manager__c}"/>
+              <apex:outputField value="{!stomp.PIT_Account__c}" />
+              <apex:inputField id="ApprovingVet" value="{!stomp.PIT_Approving_Vet__c}" required="true"/>
+              <apex:inputField value="{!stomp.PIT_Site__c}"/>
+              <apex:inputField id="ConsultingVet" value="{!stomp.PIT_Consulting_Vet__c}"/>
+              <apex:inputField value="{!stomp.PIT_Diagnostic_Lab__c}" rendered="{!IF(stomp.id == null, true, false)}" required="true"/>
+              <apex:outputField value="{!stomp.PIT_Diagnostic_Lab__c}" rendered="{!IF(stomp.id == null, false, true)}"/>              
+              <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+              <apex:inputField value="{!stomp.PIT_What_Question_Needs_to_be_Answered__c}" required="true" style="width:95%;"/>
+              <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+              <apex:inputField value="{!stomp.PIT_Describe_Problem_On_Farm__c}" required="true" style="width:95%;"/>
+              <apex:inputField value="{!stomp.Reason_for_STOMP__c}" required="true"/>
+              <apex:inputField value="{!stomp.Follow_Up_Notes__c}" style="width:95%;"/>
+              <apex:inputField value="{!stomp.Date_Follow_Up_Completed__c}" />
+              <apex:inputField value="{!stomp.Outcome__c}" />
+          </apex:pageBlockSection>
+      </apex:pageBlock>   
+      
+      <apex:actionFunction action="{!removeProduct}" name="removeAction" rerender="productList" status="statusSaveTrip">
+          <apex:param name="productToRemove" assignTo="{!productToRemove}" value="a"/>
+      </apex:actionFunction>
+            
+      <apex:outputPanel id="productList">
+          <apex:pageMessages />
+          <apex:pageBlock title="Add product" >  
+                  <apex:outputLabel >Select new Product: </apex:outputLabel>
+                  <apex:inputField value="{!newProduct.PIT_Product__c}" style="width: 200px;"/>  <br/> 
+                  <apex:commandButton value="Add Product" action="{!addProduct}" rerender="productList" status="statusSaveTrip"/>       
+          </apex:pageBlock>
+          <apex:pageBlock title="Selected products">          
+              <apex:pageBlockTable value="{!stompProducts}" var="prod">
+                  <apex:column width="50 px;">
+                      <apex:facet name="header">Action</apex:facet>
+                      <apex:outputPanel onclick="removeAction('{!prod.PIT_Product__c}')" styleClass="btn" >
+                          Remove
+                      </apex:outputPanel>
+                  </apex:column>
+                  <apex:column value="{!prod.PIT_Product__c}"/>            
+              </apex:pageBlockTable>
+          </apex:pageBlock>
+       </apex:outputPanel>
+    </apex:form>   
+      
+</apex:page>

@@ -1,0 +1,26 @@
+<aura:component controller="SL_ContactNewButtonOverride" implements="lightning:actionOverride,force:hasRecordId,force:hasSObjectName,lightning:isUrlAddressable,flexipage:availableForAllPageTypes">
+        
+    <aura:attribute name="errorMessage" type="string" default="" />
+    <aura:attribute name="accountId" type="string" default="" />
+    <aura:attribute name="listViewDetails" type="Object" />
+    <aura:attribute name="isLoading" type="boolean" default="false" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.redirect}" />
+    <aura:handler name="change" value="{!v.pageReference}" action="{!c.redirect}"/>
+
+    <aura:if isTrue="{!v.isLoading}">
+        <div class="spinner">
+            <lightning:spinner alternativeText="Loading" size="medium" variant="brand" title="Things are getting ready."/>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.errorMessage!=''}">
+        {!v.errorMessage}
+    </aura:if>
+
+    <lightning:card title="">
+        <div style="text-align:right; margin-right: .5rem;">
+            <lightning:button variant="brand" label="Exit from Contact Creation Wizard" onclick="{!c.exit}"></lightning:button>
+        </div>
+    </lightning:card>
+
+</aura:component>

@@ -1,0 +1,366 @@
+<!-- 
+
+@@Modified By:Pavan Kumar
+@@Change: Given DOM ids for all the components. 
+@@Date: 26-Nov-2014 
+
+@@Modified By: Chandana
+@@Change:Modified to implement translations for China.
+
+@@Modified By: Aritra (SC-004984) on 12/29/2020
+@@Change: Added Javascript prompt alert for survey prompt on Account Call for AUS and NZ markets
+
+@@Modified By: Sathiya TPDEV-327 on 11/04/2023
+@@Change: Modified the page due to dependency added between subtype and local subtype in Call__c
+
+-->
+<apex:page standardController="Call__c" extensions="ZTS_EU_SalesCallController" tabstyle="Call__c" id="pg" LightningStyleSheets="true" action="{!redirectEditCloneNew}">
+    <style type="text/css">
+        
+        body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+        background-color: rgba(0, 0, 0, 0);
+        border-color: #FF6400;
+        border-radius: 0;
+        border-style: solid none none;
+        border-width: 1px medium medium;
+        }
+        .bEditBlock .pbHeader > table, .apexp .bPageBlock.apexDefaultPageBlock .pbHeader > table, #ep.bLayoutBlock .pbHeader > table {
+        border-bottom: medium none;
+        }
+        body .bPageBlock .pbBody hr {
+        border: none;
+        border-bottom: 1px solid #DBDBDB;
+        }
+        .add {
+        color: #0096AF !important;
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        text-decoration: none;
+        }
+        .add:hover{
+        opacity: .5;
+        text-decoration: none;
+        }
+        body .bPageBlock .pbBody .labelCol,
+        body .bPageBlock .pbBody .dataCol,
+        body .bPageBlock .pbBody .data2Col,
+        .apexp .detailList .list .headerRow th,
+        .apexp .bPageBlock .detailList .list,
+        body .pbBody table.list tr.dataRow th, 
+        body .pbBody table.list tr.dataRow td,
+        body .bEditBlock .pbBottomButtons, 
+        body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+        border: medium none;
+        }
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader {
+        background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+        border-top: 0 none;
+        color: #000000;
+        }
+        .apexp .detailList .list .headerRow th {
+        background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+        text-align: center;
+        }
+        body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow td {
+        border-bottom: 1px solid #DBDBDB !important;
+        padding: 5px 0;
+        text-align: center;
+        }
+        body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow:last-child td {
+        border-bottom: none !important;
+        }
+        .pbSubheader > img {
+        display: none;
+        }
+        .pbSubheader > h3 {
+        font-size: 1.2em;
+        }
+        .pbBody > a {
+        display: block;
+        float: left;
+        font-size: 1em;
+        font-weight: bold;
+        left: 0;
+        margin-bottom: 10px;
+        margin-left: 10px;
+        margin-top: 10px;
+        text-decoration: none;
+        }
+        
+        .pbBody a > i{
+        color: #0096AF;
+        display: block;
+        float: left;
+        font-size: 2.5em;
+        font-weight: normal;
+        margin-right: 2px;
+        margin-top: -11px;
+        }
+        
+        .listRelatedObject .bPageBlock .pbHeader .btn, .listRelatedObject .bPageBlock .pbBottomButtons .btn, .apexp .bPageBlock .pbHeader .btn, .apexp .bPageBlock .pbBottomButtons .btn, div.buttons .btn, div.pbBottomButtons > .btn,
+        body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+        background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+        border-color: #DBDBDB;
+        font-size: 1em;
+        font-weight: normal;
+        margin: 0 10px;
+        }
+        
+        .listRelatedObject .bPageBlock .pbHeader .btn:hover, .listRelatedObject .bPageBlock .pbBottomButtons .btn:hover, .apexp .bPageBlock .pbHeader .btn:hover, .apexp .bPageBlock .pbBottomButtons .btn:hover, div.buttons .btn:hover, div.pbBottomButtons > .btn:hover,
+        body button:hover, body .x-btn:hover, body .btn:hover, body .btnDisabled:hover, body .btnCancel:hover, body .menuButton .menuButtonButton:hover {
+        background: linear-gradient(to bottom, #DBDBDB 0%, #808080 99%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+        }
+        
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader h3 {
+        font-size: 1.3em;
+        }
+        .errorConsole .x-grid3-row-over, body .pbBody table.list tr.dataRow.highlight td, body .pbBody table.list tr.dataRow.highlight th {
+        background-color: #FFC19B;
+        }
+        .listRelatedObject .bPageBlock .pbHeader .btn:hover, .listRelatedObject .bPageBlock .pbBottomButtons .btn:hover, 
+        .apexp .bPageBlock .pbHeader .btn:hover, .apexp .bPageBlock .pbBottomButtons .btn:hover, div.buttons .btn:hover, 
+        div.pbBottomButtons > .btn:hover, body button:hover, body .x-btn:hover, body .btn:hover, body .btnDisabled:hover, 
+        body .btnCancel:hover, body .menuButton .menuButtonButton:hover
+        {
+        background:rgb(244, 246, 249);
+        }
+    </style>
+    <script type="text/javascript">
+    function handlenextcalltype(ev, val) {
+        var value=document.getElementById('{!$Component.frm:pb:nextcallPBSI:nextCallDatePBSI:if}').value;      
+        var stylevar = document.getElementById('{!$Component.frm:pb:nextcallPBSI:nct}');
+        if (value !== null && value !== '') {
+            document.getElementById('{!$Component.frm:pb:nextcallPBSI:nextcalltype}').style.display = "block";
+            stylevar.required=true;
+        } else {
+            document.getElementById('{!$Component.frm:pb:nextcallPBSI:nextcalltype}').style.display = "none";
+            stylevar.required=false;
+        }
+        window.addEventListener('DOMContentLoaded', function() {
+            handlenextcalltype(null, document.getElementById('{!$Component.frm:pb:nextcallPBSI:nextCallDatePBSI:if}').value);
+        });
+    }
+    </script>
+    <!-- TPDEV-1266-->
+    <script type="text/javascript">
+    var subtypeMandatoryMapJS = {
+        <apex:repeat value="{!subtypeMandatoryMap}" var="subtypeKey">
+        '{!JSINHTMLENCODE(subtypeKey)}': {!subtypeMandatoryMap[subtypeKey]},
+        </apex:repeat>
+    };
+    
+    function validatesubtype(id,ev,val) {
+        if(id==='pg:frm:pb:basicInfo:pgblkscitm:pgblksc:subTypePBSI:subtypefield'){
+            document.getElementById('{!$Component.pg:frm:pb:basicInfo:pgblkscitm:pgblksc:LocalSubtypePBSI:if2}').value = null;
+        }
+        var selectedSubType =document.getElementById('{!$Component.pg:frm:pb:basicInfo:pgblkscitm:pgblksc:subTypePBSI:subtypefield}').value;
+        var localsubtype=document.getElementById('{!$Component.pg:frm:pb:basicInfo:pgblkscitm:pgblksc:LocalSubtypePBSI:if2}');
+        var msg=document.getElementById('{!$Component.pg:frm:op}');
+        var localsubtypenew=document.getElementById('{!$Component.pg:frm:pb:basicInfo:pgblkscitm:pgblksc:LocalSubtypePBSI:if2}').value;
+        if(subtypeMandatoryMapJS[selectedSubType]){
+            localsubtype.required=true; 
+            if(localsubtypenew===null || localsubtypenew===''){
+                msg.style.display='block';
+                return false;
+            }
+            else{
+                msg.style.display='none';
+            }
+        }
+        else{
+            localsubtype.required=false;
+            msg.style.display='none';
+        }
+        return true;
+    }
+    window.onload = function () {
+        validatesubtype(null,null); 
+    };
+    </script>
+    <!--- TPDEV-1266 end-->
+    <apex:form id="frm">
+        <apex:sectionHeader id="sh" title="Sales Call Planning" subtitle="{!$Label.ZTS_EU_Create_Sales_Call}" rendered="true"/>
+        <!-- To display error message in call creation pop up -->
+        <apex:outputlabel id="op" style="color:red;font-weight:bold;font-family:Arial;display:none">
+            <apex:pageMessage severity="Warning" strength="3" title="warning" id="pgmsg">
+                Enter local subtype.
+            </apex:pageMessage>
+        </apex:outputlabel>
+        <apex:pageBlock id="pb" title="{!$Label.ZTS_EU_Sales_Call_Edit}" >
+            <hr/>
+            <apex:pageblocksection id="basicInfo" title="{!$Label.ZTS_EU_Basic_Information}" columns="2">
+                <apex:pageblocksectionitem id="pgblkscitm">
+                    <apex:pageBlockSection columns="1" id="pgblksc">
+                        <apex:pageblocksectionItem id="subTypePBSI" >
+                            <apex:outputLabel id="ol" value="{!$ObjectType.Call__c.Fields.ZTS_EU_Sub_Type__c.Label}" />
+                            <apex:outputPanel id="op">
+                                <div class="requiredInput" id="ri">
+                                    <div class="requiredBlock" id="rb"></div>
+                                    <!--     <apex:selectList id="sl" value="{!selectedop}" size="1" required="true"> -->
+                                    
+                                    <apex:inputField id="subtypefield" value="{!call.ZTS_EU_Sub_Type__c}" onchange=" return validatesubtype(this.id,event, this.value)" />
+                                    <apex:selectOptions id="so"  value="{!subtypelist}">                                
+                                    </apex:selectOptions>                            
+                                    <!--    </apex:selectList> -->
+                                </div>
+                                
+                            </apex:outputPanel>
+                            
+                        </apex:pageblocksectionItem>
+                        <apex:pageBlockSectionItem id="LocalSubtypePBSI">
+                            <apex:outputlabel id="ol2" value="{!$ObjectType.Call__c.Fields.ZTS_EU_Local_Subtype__c.Label}"/>
+                            <apex:inputField id="if2" value="{!call.ZTS_EU_Local_Subtype__c}" onchange="validatesubtype(this.id,event,this.value)" /> 
+                        </apex:pageBlockSectionItem>
+                        <apex:pageblocksectionitem id="activityDatePBSI">
+                            <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Start_Date_Time__c.Label}" id="ol"/>
+                            <apex:inputField value="{!call.ZTS_EU_Start_Date_Time__c}" required="true" id="if" html-autocomplete="off"/>
+                            
+                        </apex:pageblocksectionitem>
+                        <script type="text/javascript">
+                        function setFocusOnLoad() {}
+                        
+                        </script>
+                    </apex:pageBlockSection>                  
+                    
+                </apex:pageblocksectionitem>    
+                
+                <!--<apex:pageblocksectionitem >
+<apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Sub_Type__c.Label}:"/>
+<apex: value="{!call.ZTS_EU_Sub_Type__c}" rendered="{!$ObjectType.Call__c.Fields.ZTS_EU_Sub_Type__c.Accessible}" required="true"/>
+</apex:pageblocksectionitem> -->
+                
+                
+                <apex:pageBlockSection columns="1">
+                    <apex:pageblocksectionitem id="accPBSI">
+                        <apex:outputLabel id="ol" value="{!$ObjectType.Call__c.Fields.ZTS_EU_Account__c.Label}"/>
+                        <apex:actionRegion id="ar" renderRegionOnly="false">               
+                            <apex:inputField id="if" value="{!call.ZTS_EU_Account__c}">
+                                <apex:actionSupport id="as" event="onchange" reRender="addID,ci,callObjDel"  action="{!accountChange}"/>
+                            </apex:inputField>                             
+                        </apex:actionRegion>
+                    </apex:pageblocksectionitem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Unique_Call_Number__c.Label}" />
+                        <apex:outputField id="CallNumof" value="{!call.ZTS_EU_Unique_Call_Number__c}" />
+                    </apex:pageBlockSectionItem>
+                    <apex:inputField value="{!call.ZTS_EU_Status__c}" id="statusId"/>
+                    <script type="text/javascript">
+                    var inputStatus=document.querySelectorAll('[id$="statusId"]')[0];
+                    for (var i=0; i<inputStatus.length; i++){
+                        if (inputStatus.options[i].value == 'Submitted' )
+                            inputStatus.remove(i);
+                    }
+                    </script>
+                    <apex:pageblocksectionitem id="durationPBSI">
+                        <apex:outputLabel value="{!$ObjectType.Call__c.Fields.ZTS_EU_Duration__c.Label}" id="ol"/>
+                        <apex:inputField value="{!Call.ZTS_EU_Duration__c}" required="true" id="if"/>
+                    </apex:pageblocksectionitem>
+                    
+                </apex:pageBlockSection>
+                
+                
+                
+                
+                
+                <apex:pageblocksectionitem id="submittedPBSI">
+                    <apex:outputText id="ot" value="{!Call.ZTS_EU_Submitted_Date__c}" />
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem id="purchasePBSI" rendered="{!isMarketFromCLAR}" >
+                    <apex:outputlabel id="ol" value="{!$ObjectType.Call__c.Fields.ZTS_EU_Agree_To_Purchase__c.Label}" />
+                    <apex:inputField id="if" value="{!Call__c.ZTS_EU_Agree_To_Purchase__c}" />
+                </apex:pageblocksectionitem>   
+                
+                
+                
+                
+                
+                
+            </apex:pageblocksection>
+            
+            
+            <hr/>
+            <apex:pageblocksection id="addtionalDetails" title="{!$Label.ZTS_EU_Additional_Details}" columns="1" >
+                <apex:pageblocksectionitem id="callPObjPBSI">
+                    <apex:outputlabel id="ol" value="{!$ObjectType.Call__c.Fields.ZTS_EU_Call_Objectives__c.Label}" />
+                    <apex:inputTextarea id="callObjDel" value="{!call.ZTS_EU_Call_Objectives__c}" rows="5" style="width:70%"/>
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem id="notesPBSI">
+                    <apex:outputlabel id="ol" value="{!$ObjectType.Call__c.Fields.ZTS_EU_Additional_Notes__c.Label}" />
+                    <apex:inputTextarea id="it" value="{!call.ZTS_EU_Additional_Notes__c}" rows="5" style="width:70%"/>
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem id="nextstepPBSI">
+                    <apex:outputlabel id="ol" value="{!$ObjectType.Call__c.Fields.ZTS_EU_Next_Step__c.Label}" />
+                    <apex:inputTextarea id="it" value="{!call.ZTS_EU_Next_Step__c}" rows="5" style="width:70%"/>
+                </apex:pageblocksectionitem>
+            </apex:pageblocksection>         
+            <apex:pageblocksection id="nextcallPBSI" >
+                <apex:pageblocksectionitem id="nextCallDatePBSI">
+                    <apex:outputlabel id="ol" value="{!$ObjectType.Call__c.Fields.ZTS_EU_Next_Call_Date__c.Label}" />
+                    <apex:inputField id="if"  value="{!call.ZTS_EU_Next_Call_Date__c}" html-autocomplete="off" onchange="handlenextcalltype(event, this.value)" onkeyup="handlenextcalltype(event, this.value)" />            
+                </apex:pageblocksectionitem>
+                <!--TPDEV-346-->
+                <apex:outputPanel style="display:{!IF(NOT(ISNULL(call.ZTS_EU_Next_Call_Date__c)), 'block', 'none')};" id="nextcalltype">
+                    <div style="display:flex;" id="sampleId">
+                        <apex:outputLabel id="ol"  value="{!$ObjectType.Call__c.Fields.ZTS_EU_Next_Call_Type__c.Label}" />
+                        <div class="requiredInput" id="ri">
+                            <div class="requiredBlock" id="rb"></div>
+                            <apex:inputField id="nct" value="{!call.ZTS_EU_Next_Call_Type__c}" />
+                        </div>
+                    </div>  
+                </apex:outputPanel>
+                <!--TPDEV-346 end-->
+            </apex:pageblocksection>
+            <hr/>
+            <!-- Srinivas 9th-Feb-2015 hide Expenses section for Italy-->
+            <apex:pageblocksection rendered="{!IF(AND($Profile.Name != $Label.ZTS_ITA_BA_Hide_Expenses,$Profile.Name != $Label.ZTS_ITA_FB_Hide_Expenses,$Profile.Name != $Label.ZTS_ITA_MM_Hide_Expenses,$Profile.Name != $Label.ZTS_ITA_Tec_Hide_Expenses),true, false)}" id="expences" title="{!$Label.ZTS_EU_Expenses}" columns="2" >
+                <apex:pageblocksectionitem id="expenceValPBSI">
+                    <apex:outputlabel id="ol" value="{!$ObjectType.Call__c.Fields.ZTS_EU_Expense_Value__c.Label}" />
+                    <apex:inputField id="callObjDel" value="{!call.ZTS_EU_Expense_Value__c}" />
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem id="expenceTypePBSI">
+                    <apex:outputlabel id="ol" value="{!$ObjectType.Call__c.Fields.ZTS_EU_Expense_Type__c.Label}" />
+                    <apex:inputField id="if" value="{!call.ZTS_EU_Expense_Type__c}" />
+                </apex:pageblocksectionitem>
+            </apex:pageblocksection>
+            <apex:pageblocksection columns="1" id="pbs">
+                <apex:pageblocksectionitem id="commentsPBSI">
+                    <apex:outputlabel id="ol" value="{!$ObjectType.Call__c.Fields.ZTS_EU_Expense_Comments__c.Label}" />
+                    <apex:inputTextarea id="it" value="{!call.ZTS_EU_Expense_Comments__c}" rows="5" style="width:70%"/>
+                </apex:pageblocksectionitem>
+                
+            </apex:pageblocksection>
+            
+            <apex:pageBlockButtons location="bottom" id="PBbuttons"> 
+                <apex:commandButton value="{!$Label.ZTS_EU_Save_Call}" action="{!saveCall}" id="save" onclick="handlenextcalltype(event, this.value);validatesubtype(this.id,event,this.value)"/>&nbsp;&nbsp;<!--Added onclick function call on submit (SC-004984) -->
+                <apex:commandButton value="{!$Label.ZTS_EU_Cancel}" action="{!cancelCall}" id="cancel"/>
+            </apex:pageBlockButtons> 
+        </apex:pageBlock>        
+    </apex:form>
+    <apex:form id="formID1">
+        <apex:inputHidden id="acc" value="{!Call__c.ZTS_EU_Account__c}"/>
+        <apex:inputHidden id="startDate" value="{!Call__c.ZTS_EU_Start_Date_Time__c}"/>
+        <apex:inputHidden id="endDate" value="{!Call__c.ZTS_EU_End_Date_Time__c}"/>
+        <apex:inputHidden id="name" value="{!Call__c.Name}"/>
+        <apex:inputHidden id="city" value="{!Call__c.ZTS_EU_City__c}"/>
+        <apex:inputHidden id="selectAddr" value="{!Call__c.ZTS_EU_SelectedAdress__c }"/>
+        <apex:inputHidden id="addr" value="{!Call__c.ZTS_EU_Address__c}"/>
+        <apex:inputHidden id="callObj" value="{!Call__c.ZTS_EU_Call_Objectives__c}"/>
+        <apex:inputHidden id="nextStep" value="{!Call__c.ZTS_EU_Next_Step__c}"/>
+        <apex:inputHidden id="status" value="{!Call__c.ZTS_EU_Status__c}"/>
+        <apex:inputHidden id="addtnlnotes" value="{!Call__c.ZTS_EU_Additional_Notes__c}"/>
+        <apex:inputHidden id="duration" value="{!Call__c.ZTS_EU_Duration__c}"/>
+        <apex:inputHidden id="subDate" value="{!Call__c.ZTS_EU_Submitted_Date__c}"/>
+        <apex:inputHidden id="nextCallDate" value="{!Call__c.ZTS_EU_Next_Call_Date__c}"/>
+        <apex:inputHidden id="subType" value="{!Call__c.ZTS_EU_Sub_Type__c}"/>
+        <apex:inputHidden id="localSubType" value="{!Call__c.ZTS_EU_Local_Subtype__c}"/>
+        <apex:inputHidden id="expenseVal" value="{!Call__c.ZTS_EU_Expense_Value__c}"/>
+        <apex:inputHidden id="expenseType" value="{!Call__c.ZTS_EU_Expense_Type__c}"/>
+        <apex:inputHidden id="expenseComm" value="{!Call__c.ZTS_EU_Expense_Comments__c}"/>
+        <apex:inputHidden id="callNum" value="{!Call__c.ZTS_EU_Unique_Call_Number__c}"/>
+        <apex:inputHidden id="nextcalltype" value="{!Call__c.ZTS_EU_Next_Call_Type__c}"/>
+        <apex:inputHidden value="{!Call__c.CreatedByID}"/>
+        <apex:inputHidden id="callowner" value="{!Call__c.ZTS_EU_Call_Owner__c}"/>
+    </apex:form>   
+    
+</apex:page>

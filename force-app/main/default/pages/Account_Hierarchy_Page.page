@@ -1,0 +1,162 @@
+<!--
+
+* Name: Account_Hierarchy_Page.vfp
+* Description: This will be added as a lightning action on account page to show full account hierarchy, also will have button to download account hierarchy in PDF format (SC-009096/SC-008493)
+* Created By: Aritra (Cognizant)
+* Created: January 12 2022
+
+-->
+<apex:page controller="hierarchyComponentController" sidebar="false"> 
+    <head>
+        <!--for treegrid-->
+        <apex:includescript value="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" / >
+            <apex:stylesheet value=" https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+            <apex:stylesheet value=" https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/css/jquery.treegrid.css" />
+            <apex:includescript value="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/js/jquery.treegrid.js" / > 
+                <apex:includescript value="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/js/jquery.treegrid.bootstrap3.js" />
+                <apex:includescript value="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"/> 
+                <apex:includescript value="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"/>
+                
+                <!--treegrid resources end-->
+                
+                <script>
+                
+                var ng= $.noConflict();
+                ng(document).ready(function() {
+                    
+                    ng('#loadingImage').show();
+                    ng('#HierarchyDiv').hide();
+                    FindHierarchyDetails();
+                    
+                }); 
+                
+                function displayHierarchy(){
+                    ng('#HierarchyDiv').show();
+                    ng('#loadingImage').hide();
+                }
+                </script>
+                
+            </head>
+            <body>
+                <style>
+                    .container {
+                    background: white;
+                    }
+                    .heading {
+                    padding: 1em 1em 1em 1em !important;
+                    }
+                </style>
+                <apex:form id="f1">
+                    <script>
+                    
+                    ng('.tree-3').treegrid({
+                        expanderExpandedClass: 'glyphicon glyphicon-triangle-bottom',
+                        expanderCollapsedClass: 'glyphicon glyphicon-triangle-right',
+                        initialState:'expanded'
+                    });
+                    
+                    
+                    //ng('.tree-3').treegrid('getRootNodes').treegrid('expand');
+                    
+                    function expandAll(){
+                        
+                        ng('.tree-3').treegrid('expandAll');
+                    }
+                    
+                    function collapseAll(){
+                        
+                        ng('.tree-3').treegrid('collapseAll');
+                    }
+                    
+                    function downloadPDF2() {               
+                        
+                        /*let doc = new jsPDF('landscape');
+                        let elem1 = document.getElementById("HierarchyDiv");
+                        var options = {
+                            background  : '#eee'
+                        };
+                        doc.addHTML(elem1, options,function() {
+                            doc.save('Account-Hierarchy.pdf');
+                        }); */
+                        window.open("/apex/Account_Hierarchy_Page_PrintPDF?id={!recordid}","_blank"); 
+                        
+                         
+                    }
+                    /* June 29th 2022: Pooja added SC-9787 */
+                       function downloadexcel() {              
+                        
+                        /*let doc = new jsPDF('landscape');
+                        let elem1 = document.getElementById("HierarchyDiv");
+                        var options = {
+                            background  : '#eee'
+                        };
+                        doc.addHTML(elem1, options,function() {
+                            doc.save('Account-Hierarchy.pdf');
+                        }); */
+                        window.open("/apex/Account_Hierarchy_Page_DownloadExcel?id={!recordid}&type=excel","_blank"); 
+                        
+                         
+                    }
+                    
+                    
+                    </script>
+                    <apex:pageMessages />
+                    <apex:pageMessages />
+                    <apex:actionFunction name="FindHierarchyDetails" id="gsb" reRender="f1" oncomplete="displayHierarchy()"/>
+                    
+                    <div class="container" id="containerDiv">
+                        <div class="heading">
+                            <h3 class="text-muted">Account Hierarchy View of {!accountname}</h3>
+                        </div>
+                        <!-- Content Section start -->
+                        
+                        <div class="tab-content" style="margin-top: 10px;">
+                            <div id="allcontentsection"  class="tab-pane fade active in">
+                                <div id="loadingImage">
+                                    <img src="/img/loading.gif" /> &nbsp;&nbsp; <h5>
+                                    	Loading Account Hierarchy....
+                                    </h5>
+                                </div>
+                                
+                                <div align="right" draggable="false">
+                                <button type="button" style="background:LightBlue;width:100px;font-size:15px;" id="btnexpand" onClick="expandAll();">Expand All</button>
+                                <button type="button" style="background:LightBlue;width:100px;font-size:15px;" id="btncollapse" onClick="collapseAll();">Collapse All</button>
+                                <button type="button" style="background:LightBlue;width:150px;font-size:15px;" id="download-pdf2" onClick="downloadPDF2();">Download PDF</button>
+                               <button type="button" style="background:LightBlue;width:150px;font-size:15px;" id="download-Excel" onClick="downloadexcel();">Download Excel</button> <!--Pooja June 29th 2022 -->
+                                </div>
+                                <br/>                                    
+                                <!-- Div for hierarchy-->
+                                <div id="HierarchyDiv">
+                                    
+                                    <table class="table tree-3 table-bordered  table-striped table-condensed">
+                                        <tr>
+                                            <apex:repeat value="{!ColumnsLabelListForUI}" var="label">
+                                                <th><b><h5><apex:outputtext value="{!label}" /></h5></b> </th> 
+                                            </apex:repeat>
+                                        </tr>
+                                        <apex:repeat value="{!sortedHierarchyData}" var="obj">
+                                            <tr  class="{!obj.idForNode}">
+                                                <apex:repeat value="{!obj.recordtDetails}" var="ColValue">
+                                                    <td >
+                                                        <h5>
+                                                        <apex:outputLink value="/{!obj.recordId}" rendered="{!if(obj.hyperlinkColumnValue==ColValue, true, false )}">{!ColValue}</apex:outputLink>
+                         								<apex:outputtext value="{!ColValue}" rendered="{!if(obj.hyperlinkColumnValue=ColValue, false, true)}"/>
+                                                       </h5>
+                                                    </td>
+                                                </apex:repeat>
+                                            </tr>
+                                        </apex:repeat>
+                                    </table> 
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Content Section end -->
+                        <!-- Footer Section start -->
+                        <footer class="footer">
+                            
+                        </footer>
+                        <!-- Footer Section start -->
+                    </div>
+                </apex:form>
+            </body>   
+        </apex:page>

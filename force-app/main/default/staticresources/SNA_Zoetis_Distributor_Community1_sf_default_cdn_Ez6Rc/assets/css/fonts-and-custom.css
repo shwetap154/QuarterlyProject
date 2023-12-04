@@ -1,0 +1,40 @@
+@font-face {
+    font-family: 'gothambold1';
+    src: url(../resource/gothambold1) format('woff');
+}
+@font-face {
+	font-family: "Arboria";
+	src: url("/sfsites/c/resource/1626872099000/Zoetis_Static_Resources/fonts/FontsFree-Net-arboria2.ttf") format("truetype")
+}
+@font-face {
+	font-family: "ArboriaBold";
+	src: url("/sfsites/c/resource/1626872099000/Zoetis_Static_Resources/fonts/FontsFree-Net-Arboria-Bold.ttf") format("truetype")
+}
+@font-face {
+	font-family: "GothamNarrow";
+	src: url("/sfsites/c/resource/1626872099000/Zoetis_Static_Resources/fonts/FontsFree-Net-GothamNarrowBook.ttf") format("truetype")
+}
+.siteforcePrmBody .cHeader .cHeaderTop{
+    padding: 0;
+}
+.siteforcePrmBody .cHeader .cBrandingLogo{
+	width: 325px !important;
+    height: 65px !important;
+}
+
+.myAccount{
+  display:none;  
+}
+
+.profile.uiMenuItem{
+    display: none;
+}
+
+.myAccount.uiMenuItem{
+    display: none;
+}
+
+.salesforceIdentityLoginBody2 .cCenterPanel {
+    max-width: 80% !important;
+}
+:root { --dxp-c-section-columns-max-width: 1170px; }

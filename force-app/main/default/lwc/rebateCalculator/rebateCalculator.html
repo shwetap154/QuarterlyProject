@@ -1,0 +1,100 @@
+<template>
+    <lightning-card title="Rebate Calculator" icon-name="standard:task" >
+    <div class="slds-m-around_medium">
+    <template if:true={rebateProductstList}>
+        <template if:true={wiredata}>
+            <div class="slds-box slds-theme_default">
+                <div style="margin-left:20px" class="slds-text-title_bold"> MAT Dx :{matDxAmount}  MAT Rx :{matRxAmount}</div>
+                <div style="margin-left:20px" class="slds-text-title_bold"> Quarterly Finance Payment :  {quarterlyLeaseAmount}</div>
+                <div style="margin-left:20px" class="slds-text-title_bold"> Maximum Rx/Vx Quarterly Rebate: {monthlyRXVXCAP}</div>
+                <br>
+                <div style="margin-left:30px"> Quarterly Rebate Amount: {quartTotalRebateAmt}</div>
+                <div style="margin-left:30px"> Quarterly Products By Units Rebate Total Amount: {quartByUnitsAmt}</div>
+                <br>
+                <div style="margin-left:20px" class="slds-text-title_bold"> Est. Rebate for Qualifying Products: {estRebateForQualifyProducts}</div>
+                <div style="margin-left:20px" class="slds-text-title_bold"> Difference (Qualifying Product Rebates - Finance Payment) : {estQuarContribuationRebate}</div>
+                <br>         
+            </div>
+        </template>
+        
+        <!-- class="slds-text-title_bold"lightning-accordion-section name="RebateCal" label = 'By Sale Amount' class="slds-button test-id__section-header-button slds-section__title-action"-->
+        <lightning-card  title='Monthly Total Sales Dollars' variant="narrow"> 
+            <div class="slds-grid" >
+                <div class="slds-col slds-size_1-of-2" >
+                    <div style="margin-left:8px">
+                        <label>{customlabel.labelRX} </label>
+                    </div>  
+                    <div style="margin-left:8px">
+                        <input data-target-id="EnterAmountRX" type="Currency" placeholder="0.00" class="slds-input" onblur={handleRXAmntChange} ></input>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-12"></div>  
+                <div class="slds-col slds-size_1-of-4">
+                    <label>{customlabel.labelCalAmnt}{displayPercentage}</label>
+                    <input type="Currency" tabindex="-1" id="calculatedRebateRX" readonly="" placeholder="" class="slds-input slds-text-title_bold" value={calRebateRXAmt}></input>
+                </div>
+                <div class="slds-col slds-size_1-of-4">
+                    <label>{customlabel.labelQauterCalAmnt}</label>
+                    <input type="Currency" tabindex="-1" id="calculatedRebateQRX" readonly="" placeholder="" class="slds-input slds-text-title_bold" value={calQuatRebateRXAmt}></input>
+                </div>
+            </div>
+            <div class="slds-grid" >
+                <div class="slds-col slds-size_1-of-2" >
+                    <div style="margin-left:8px">
+                        <label>{customlabel.labelLAB} </label>
+                    </div>
+                    <div style="margin-left:8px">
+                        <input data-target-id="EnterAmountLAB" type="Currency" placeholder="0.00" class="slds-input" onblur={handleLABAmntChange}></input>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-12"></div>  
+                <div class="slds-col slds-size_1-of-4">
+                    <label>{customlabel.labelCalAmnt}{displayPercentage}</label>
+                     <input type="Currency" tabindex="-1" id="calculatedRebateLAB" readonly="" placeholder="" class="slds-input" value={calRebateLABAmt}></input>
+                </div>
+                <div class="slds-col slds-size_1-of-4">
+                    <label>{customlabel.labelQauterCalAmnt}</label>
+                    <input type="Currency" tabindex="-1" id="calculatedRebateQLAB" readonly="" placeholder="" class="slds-input slds-text-title_bold" value={calQuatRebateLABAmt}></input>
+                </div>
+            </div>
+            <div class="slds-grid" >
+                <div class="slds-col slds-size_1-of-2" >
+                    <div style="margin-left:8px">
+                        <label >{customlabel.labelVRLAB} </label>
+                    </div>
+                    <div style="margin-left:8px">
+                        <input data-target-id="EnterAmountVRLAB" type="Currency" placeholder="0.00" class="slds-input" onblur={handleVRLABAmntChange}></input>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-12"></div>   
+                <div class="slds-col slds-size_1-of-4">
+                    <label>{customlabel.labelCalAmnt} {displayPercentage}</label>
+                     <input type="Currency" tabindex="-1"  id="calculatedRebateVRLAB" readonly="" placeholder="" class="slds-input" value={calRebateVRLABAmt}></input>
+                </div>
+                <div class="slds-col slds-size_1-of-4">
+                    <label>{customlabel.labelQauterCalAmnt}</label>
+                    <input type="Currency" tabindex="-1" id="calculatedRebateQVRLAB" readonly="" placeholder="" class="slds-input slds-text-title_bold" value={calQuatRebateVRLABAmt}></input>
+                </div>
+            </div>
+        </lightning-card> 
+        <div style="margin-left:8px">
+        <p><lightning-button class="slds-m-right_medium slds-theme_inverse slds-text-title_bold " label="Calculate" onclick={handleCalculate}></lightning-button>
+        </p></div>
+        <lightning-card  title='Monthly Products By Units' variant="narrow">  </lightning-card>
+            <lightning-datatable
+                key-field="Id"
+                data={rebateProductstList}
+                columns={columns}
+                column-widths-mode="auto"
+                draft-values={draftValues}
+                hide-checkbox-column = true
+                suppress-bottom-bar=true
+                >
+        </lightning-datatable>
+   </template>
+   <template if:true={error}>
+    <c-error-panel errors={error}></c-error-panel>
+</template>
+</div>
+</lightning-card>
+</template>

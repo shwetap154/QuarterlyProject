@@ -1,0 +1,8 @@
+<apex:page standardController="ZTS_US_Contract_Payments__c" extensions="GetInvoicePDFController" showHeader="false" sidebar="false" lightningStyleSheets="true">
+    <h1 style="color:red;">
+     {!error}   
+    </h1>
+
+    <apex:iframe rendered="{!noError}" src="data:application/pdf;base64,{!response}" scrolling="true" id="theIframe"/>    
+    
+</apex:page>

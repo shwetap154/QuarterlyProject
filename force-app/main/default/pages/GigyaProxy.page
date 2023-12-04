@@ -1,0 +1,18 @@
+<!--
+  @description       : 
+  @author            : Morgan Marchese @ Zoetis Inc
+  @group             : 
+  @last modified on  : 08-21-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   07-13-2021   Morgan Marchese @ Zoetis Inc   Initial Version
+-->
+<apex:page showHeader="false" sidebar="false" controller="GigyaRegistrationController">
+    <script src="https://cdns.gigya.com/js/gigya.saml.js?apiKey={!apiKey}">
+    {
+        loginURL:"{!$Site.BaseUrl}/GigyaLogin?market={!market}&currentSP=${spName}",
+        logoutURL: "{!$Site.BaseUrl}/GigyaLogout?market={!market}&currentSP=${spName}"
+    }
+</script>
+</apex:page>

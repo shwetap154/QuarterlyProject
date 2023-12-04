@@ -1,0 +1,97 @@
+<template>
+    <template if:true={showDuplicateScreen}>
+        <lightning-modal-header label="Duplicates Detected!!"></lightning-modal-header>
+    </template>
+    <template if:false={showDuplicateScreen}>
+        <lightning-modal-header label="New Contact"></lightning-modal-header>
+    </template>
+    <lightning-modal-body>
+        <div class="showSpinner" if:true={showLoading}>
+            <lightning-spinner class="slds-is-fixed" alternative-text="Loading" variant="brand"></lightning-spinner>
+        </div>
+        <template if:true={showDuplicateScreen}>
+            <div class="slds-align_absolute-center">
+                {duplicateContactMessage}
+            </div><br/>
+            <lightning-datatable key-field="id" data={conRecords}
+                                                            onrowselection={handleRowSelection} max-row-selection=1
+                                                            columns={conColumns} class="eighty-percent">
+                                                        </lightning-datatable>
+            <div class="slds-align_absolute-center slds-assistive-text" style="display: contents;font-weight: bold;color: red;">
+                {noSelectionErrorMsg}
+            </div><br/>
+            <div class="slds-col slds-size_2-of-2 slds-align_absolute-center contact-buttons">
+                <lightning-button icon-name="utility:check"
+                    label="Create Affliation for Selected Contact" variant="brand"
+                    onclick={createNewAffiliation}>
+                </lightning-button> &nbsp;&nbsp;
+                <lightning-button icon-name="utility:save" label="Create Duplicate"
+                    variant="brand" onclick={saveDuplicateContact}>
+                </lightning-button> &nbsp;&nbsp;
+                <lightning-button variant="neutral"
+                    label="Cancel" onclick={cancelDuplicateContact}>
+                </lightning-button>
+            </div>  
+        </template>
+        <template if:false={showDuplicateScreen}>
+        <lightning-record-edit-form class="create-contact-form" density="Comfy" record-id=""
+                                        onload={handleLoad} object-api-name="Contact" onsubmit={handleCreateContactSubmit} 
+                                        onsuccess={handleCreateContactSuccess} onerror={handleCreateContactError}>
+                                        <lightning-messages></lightning-messages>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="10" required field-name="FirstName" name="FirstName" value={contactInstance.FirstName} onchange={handleChange}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="10" required field-name="LastName" name="LastName" value={contactInstance.LastName} onchange={handleChange}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="10" required field-name="AccountId" name="AccountId" value={contactInstance.AccountId} onchange={handleChange}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="40" field-name="ZTS_US_Account_influence__c" name="ZTS_US_Account_influence__c" value={contactInstance.ZTS_US_Account_influence__c} onchange={handleChange}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="20" required field-name="ZTS_US_Profession__c" name="ZTS_US_Profession__c" value={contactInstance.ZTS_US_Profession__c} onchange={handleChange}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="30" field-name="Interface_Email__c" name="Interface_Email__c" value={contactInstance.Interface_Email__c} onchange={handleChange}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="50" required field-name="ZTS_US_Job_Function__c" name="ZTS_US_Job_Function__c" value={contactInstance.ZTS_US_Job_Function__c} onchange={handleChange}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="60" field-name="Phone" name="Phone" value={contactInstance.Phone} onchange={handleChange}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="70" field-name="Title" name="Title" value={contactInstance.Title} onchange={handleChange}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="80" field-name="ZTS_US_Primary_Species__c" name="ZTS_US_Primary_Species__c" value={contactInstance.ZTS_US_Primary_Species__c} onchange={handleChange}>
+                                                </lightning-input-field>
+                                            </div>
+                                            <div
+                                                class="slds-col slds-size_2-of-2 slds-align_absolute-center contact-buttons">
+                                                <lightning-button class="slds-m-left_small" variant="brand"
+                                                    type="submit" label="Save" title="Save">
+                                                </lightning-button>
+                                                <lightning-button class="slds-m-left_small" variant="neutral"
+                                                    label="Cancel" title="Close modal without making changes"
+                                                    onclick={handleCreateContactCancel}>
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    </lightning-record-edit-form>
+                                </template>                        
+                                
+    </lightning-modal-body>
+</template>

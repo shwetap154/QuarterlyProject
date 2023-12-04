@@ -1,0 +1,4 @@
+<apex:page standardController="ZTS_GL_ZipToBrick__c" extensions="ZTS_EU_ZipToBrickRedirect" action="{!ztbRedirect}">
+  
+
+</apex:page>

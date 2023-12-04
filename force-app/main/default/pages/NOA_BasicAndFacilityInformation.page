@@ -1,0 +1,815 @@
+<!--
+  @description       : 
+  @author            : Unknown
+  @group             : 
+  @last modified on  : 02-26-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   02-23-2021   Morgan Marchese @ Zoetis Inc   Header Creation
+-->
+<apex:page id="mainPage" title="New Online Account" standardController="Lead" extensions="NOA_NewOnlineAccount"
+           cache="false" showChat="false" showHeader="false" sidebar="false">
+    
+    <head>
+        <style type="text/css">
+            th {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+            }
+            
+            td {
+            padding-top: .5em !important;
+            padding-bottom: .5em !important;
+            }
+            
+            .btn {
+            line-height: 1.5 !important;
+            border: 2px solid transparent !important;
+            min-width: 8em !important;
+            background-color: #ff6400 !important;
+            background: #ff6400 !important;
+            color: white !important;
+            }
+            
+            pbSubheader {
+            background-color: #1696ad !important;
+            color: white !important;
+            }
+            
+            .individualPalette .leadBlock .tertiaryPalette {
+            background-color: #0096AF !important;
+            border-color: #0096AF !important;
+            }
+            
+            .individualPalette .leadBlock .secondaryPalette {
+            border-color: #0096AF !important;
+            }
+            
+            body .bEditBlock .pbBody .pbSubheader {
+            background-image: none !important;
+            color: #ffffff !important;
+            }
+            
+            .requiredLegend {
+            color: #ffffff !important;
+            }
+            
+            .message {
+            background-color: #ffffff !important;
+            padding: 0px 0px 0px 0px !important;
+            margin: 2px 0px !important;
+            width: 100% !important;
+            }
+            
+            body {
+            font-size: 85% !important;
+            }
+            
+            body .bPageBlock .pbBody .pbSubheader h3,
+            body .bWizardBlock .bPageBlock .pbBody .pbSubheader label {
+            font-size: 1.4em;
+            }
+            
+            input {
+            height: 2em !important;
+            font-size: 1em !important;
+            }
+            
+            body .bPageBlock .pbBody .labelCol {
+            vertical-align: middle !important;
+            font-size: 1em !important;
+            }
+            
+            select {
+            height: 2em !important;
+            } 
+            
+            .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader h3{
+               font-size: 1.4em;
+            } 
+          
+        </style>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript">
+           var $j = jQuery.noConflict();
+           $j(document).ready(function() { 
+               $j('[id$="mainPBS"] .requiredLegend').hide();
+           });
+        
+        </script>
+                                   
+    </head>
+    
+      <c:NOA_AnimalHeader />
+    <c:NOA_header noaLeadObj="{!newOnlineAcc}" renderRx="{!renderRx}"></c:NOA_header>
+    
+    <table style="width:100%;">
+        <tr>
+            <td style="width:10%;"></td>
+            <td style="vertical-align: top; text-align: left;width:20%;">
+                <c:NOA_Page_Navigation leadId="{!LeadId}" applicationType="Basic" currStepNo="1" compStepNo="{!IF(LeadId==null,0,newOnlineAcc.Step_Number__c)}"></c:NOA_Page_Navigation>
+            </td>
+            <td style="width:60%;vertical-align: top;">
+                <center> 
+                    <apex:form id="mainForm" enctype="multipart/form-data">
+                        <apex:pageMessages rendered="{!hasErrors}"></apex:pageMessages>                        
+                        <apex:outputPanel id="mainOP" style="">
+                            <apex:pageBlock id="mainPB" mode="edit"  >
+                                <apex:pageBlockSection id="mainPBS" title="{! IF(newOnlineAcc.New_Shipping_Location__c,'Applicant Information' ,'Applicant & Facility Information')}" columns="1"   >
+                                   <apex:pageBlockSectionItem rendered="{!newOnlineAcc.New_Shipping_Location__c}" >
+                                        <apex:outputText value="<b>Please contact Zoetis Customer Master Data at 855-721-0078 or by email at Customeraccounts@zoetis.com if you need to update existing information.</b>" escape="false" />
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Applicant Prefix</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!newOnlineAcc.Salutation}" style="width:30%"  /> 
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
+                                        <label>Applicant First Name</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!newOnlineAcc.FirstName}" label=""  />
+                                            </div>
+                                        </apex:outputPanel>
+                                        
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
+                                        <label>Applicant Last Name</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!newOnlineAcc.LastName}" label=""  required="false"/>
+                                            </div>
+                                        </apex:outputPanel>
+                                      </apex:pageBlockSectionItem>
+                                    
+                                    
+                               <apex:pageBlockSectionItem >
+                                        <label>Applicant Role</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!newOnlineAcc.Applicant_Role__c}" label=""  style="width:30%"/>
+                                                 </div>
+                                        </apex:outputPanel>
+                                </apex:pageBlockSectionItem>     
+                                    
+                                    
+                                    
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <label>Applicant Email</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!newOnlineAcc.Email}" label=""  />
+                                            </div>
+                                        </apex:outputPanel>
+                                        
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
+                                        <label>Applicant Phone</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!newOnlineAcc.Phone}" label=""  />
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem rendered="{!!newOnlineAcc.New_Shipping_Location__c}" >
+                                        <label>Business Name</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!newOnlineAcc.Business_Name__c}" label=""  />
+                                            </div>
+                                        </apex:outputPanel> 
+                                    </apex:pageBlockSectionItem>
+                                    <!-- SC-002745
+                                    <apex:pageBlockSectionItem rendered="{!!newOnlineAcc.New_Shipping_Location__c}" >
+                                        <label>Customer Type</label>
+                                        <apex:actionRegion >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!newOnlineAcc.Customer_Type__c}" style="width:30%" >
+                                                    <apex:actionSupport event="onchange" rerender="ctblock" status="ctypestatus" />
+                                                </apex:inputField> 
+                                            </div>
+                                            <apex:actionStatus id="ctypestatus" >
+                                                <apex:facet name="start" >
+                                                    <img src="/img/loading.gif" />                    
+                                                </apex:facet>
+                                            </apex:actionStatus>
+                                        </apex:actionRegion>
+                                        
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:outputPanel id="ctblock" rendered="{!!newOnlineAcc.New_Shipping_Location__c}">
+                                        <apex:pageBlockSectionItem rendered="{!newOnlineAcc.Customer_Type__c == 'Other'}">
+                                            <label style="vertical-align:top;font-weight:bold;color:#4a4a56;">If other, please describe:</label>
+                                            <apex:inputField id="ctypeOther" value="{!newOnlineAcc.Customer_Type_Other__c}" label=""
+                                                             style="width:34%" onkeypress="return noenter(event);"
+                                                             />
+                                            
+                                        </apex:pageBlockSectionItem>
+                                    </apex:outputPanel>
+                                    -->
+                                    <apex:pageBlockSectionItem rendered="{!!newOnlineAcc.New_Shipping_Location__c}" >
+                                        <label>Total number of practitioners at this location</label>
+                                        <apex:outputPanel > 
+                                            <apex:inputField value="{!newOnlineAcc.Total_number_of_practitioners__c}" label="" /> 
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                </apex:pageBlockSection> 
+                                
+                                <apex:pageBlockSection title="Business Segment" columns="1"> 
+                                        <apex:outputText style="font-weight:bold;color:#4a4a56;" escape="false" value="<b>Please indicate the business species split in percentages that total to 100% </b>" />
+                                        
+                                    <apex:pageBlockSection columns="2">
+                                        <apex:pageBlockSection columns="1">
+                                            <apex:pageBlockSectionItem >
+                                                <label>Small Animal</label>
+                                                <apex:outputPanel >
+                                                    <apex:inputField value="{!newOnlineAcc.Small_Animal__c}" label="" 
+                                                                     onkeypress="return noenter(event);"
+                                                                     />
+                                                    <label>%</label>
+                                                </apex:outputPanel>
+                                            </apex:pageBlockSectionItem>
+                                            
+                                            <apex:pageBlockSectionItem >
+                                                <label>Equine</label>
+                                                <apex:outputPanel >
+                                                    <apex:inputField value="{!newOnlineAcc.Equine__c}" label=""  onkeypress="return noenter(event);"
+                                                                     />
+                                                    <label>%</label>
+                                                </apex:outputPanel>
+                                            </apex:pageBlockSectionItem>
+                                            
+                                            <apex:pageBlockSectionItem >
+                                                <label>Beef</label>
+                                                <apex:outputPanel >
+                                                    <apex:inputField value="{!newOnlineAcc.Beef__c}" label=""  onkeypress="return noenter(event);"
+                                                                     />
+                                                    <label>%</label>
+                                                </apex:outputPanel>
+                                            </apex:pageBlockSectionItem>
+                                            
+                                            <apex:pageBlockSectionItem >
+                                                <label>Dairy</label>
+                                                <apex:outputPanel >
+                                                    <apex:inputField value="{!newOnlineAcc.Dairy__c}" label=""  onkeypress="return noenter(event);"
+                                                                     />
+                                                    <label>%</label>
+                                                </apex:outputPanel>
+                                            </apex:pageBlockSectionItem>
+                                            
+                                            <apex:pageBlockSectionItem >
+                                                <label>Swine</label>
+                                                <apex:outputPanel >
+                                                    <apex:inputField value="{!newOnlineAcc.Swine__c}" label=""  onkeypress="return noenter(event);"
+                                                                     />
+                                                    <label>%</label>
+                                                </apex:outputPanel>
+                                            </apex:pageBlockSectionItem>
+                                        </apex:pageBlockSection>
+                                        <apex:pageBlockSection id="poultryItems" columns="1">
+                                            <apex:pageBlockSectionItem >
+                                                <label>Feed</label>
+                                                <apex:outputPanel >
+                                                    <apex:inputField value="{!newOnlineAcc.Feed__c}" label=""  onkeypress="return noenter(event);"
+                                                                     />
+                                                    <label>%</label>
+                                                </apex:outputPanel>
+                                            </apex:pageBlockSectionItem>
+                                            
+                                            <apex:pageBlockSectionItem >
+                                                <label>Poultry</label>
+                                                <apex:outputPanel >
+                                                    <apex:actionRegion >
+                                                        <apex:inputField value="{!newOnlineAcc.Poultry__c}" label=""  onkeypress="return noenter(event);">
+                                                            <apex:actionSupport event="onchange" rerender="poultryValues" status="poultrystatus" />
+                                                        </apex:inputField>
+                                                    </apex:actionRegion>
+                                                    <label>%</label>
+                                                    <apex:actionStatus id="poultrystatus" >
+                                                        <apex:facet name="start" >
+                                                            <img src="/img/loading.gif" />                    
+                                                        </apex:facet>
+                                                    </apex:actionStatus>
+                                                </apex:outputPanel> 
+                                            </apex:pageBlockSectionItem>
+                                            
+                                            <apex:outputPanel id="poultryValues" > 
+                                                <apex:outputPanel rendered="{!newOnlineAcc.Poultry__c != null}">
+                                                    <apex:outputText style="font-weight:bold;color:#4a4a56;" value="<b>What % of your Poultry business is allocated between the business types below:</b>" escape="false" />
+                                                    <apex:pageBlockSection columns="1">
+                                                        <apex:pageBlockSectionItem >
+                                                            <label>Eggs</label>
+                                                            <apex:outputPanel >
+                                                                <apex:inputField value="{!newOnlineAcc.Eggs__c}" label=""  onkeypress="return noenter(event);"
+                                                                                 />
+                                                                <label>%</label>
+                                                            </apex:outputPanel>
+                                                        </apex:pageBlockSectionItem>
+                                                        
+                                                        <apex:pageBlockSectionItem >
+                                                            <label>Turkey</label>
+                                                            <apex:outputPanel >
+                                                                <apex:inputField value="{!newOnlineAcc.Turkey__c}" label=""  onkeypress="return noenter(event);"
+                                                                                 />
+                                                                <label>%</label>
+                                                            </apex:outputPanel>
+                                                        </apex:pageBlockSectionItem>
+                                                        
+                                                        <apex:pageBlockSectionItem >
+                                                            <label>Broiler</label>
+                                                            <apex:outputPanel >
+                                                                <apex:inputField value="{!newOnlineAcc.Broiler__c}" label=""  onkeypress="return noenter(event);"
+                                                                                 />
+                                                                <label>%</label>
+                                                            </apex:outputPanel>
+                                                        </apex:pageBlockSectionItem>
+                                                    </apex:pageBlockSection>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                        </apex:pageBlockSection>
+                                    </apex:pageBlockSection>
+                                    </apex:pageBlockSection>
+                                    <!-- Adding hospital type section for SC-006354 -->
+                                    <apex:pageBlockSection title="Hospital Type" columns="1">
+                                        <apex:outputText style="font-weight:bold;color:#4a4a56;" escape="false" value="<b>Please select one:</b>" />
+                                        <apex:selectRadio value="{!hospitalType}" layout="pageDirection">
+                                            <apex:selectOptions value="{!hospitalTypeItems}"/>
+                                            <apex:actionSupport event="onchange" reRender="specialtyOptions" />
+                                        </apex:selectRadio>
+                                        <apex:outputPanel id="specialtyOptions" layout="none">
+                                            <apex:outputPanel id="specialtyOptionsConditional" rendered="{!IF(hospitalType == 'Specialty',true,false)}">
+                                                <div style="padding-left:5%;">
+                                                    <apex:selectRadio value="{!hospitalSubType}" layout="pageDirection">
+                                                        <apex:selectOptions value="{!hospitalSubTypeItems}"/>
+                                                    </apex:selectRadio>
+                                                </div>
+                                                
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSection>
+                                    
+                                    
+                                    <apex:actionRegion >
+                                        <apex:pageBlockSection title="Billing Address" columns="1">
+                                             
+                                            <apex:pageBlockSectionItem rendered="{!!newOnlineAcc.New_Shipping_Location__c}" >
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <label style="white-space: nowrap;"><b> I authorize Zoetis to send Invoices and Statements via  </b></label></div>
+                                                <apex:outputPanel >
+                                                    <apex:selectRadio value="{!newOnlineAcc.Contact_Preference__c}" label="" immediate="true"  onkeypress="return noenter(event);">
+                                                        <apex:selectOption ItemLabel="Fax" ItemValue="Fax" onkeypress="return noenter(event);"></apex:selectOption>
+                                                        <apex:selectOption itemLabel="Email" itemValue="Email" ></apex:selectOption>
+                                                        <apex:selectOption itemLabel="Mail" itemValue="Mail" onkeypress="return noenter(event);"></apex:selectOption>
+                                                    </apex:selectRadio> 
+                                                </apex:outputPanel>
+                                            </apex:pageBlockSectionItem>
+                                             
+                                        
+                                        <apex:pageBlockSection id="billingAddInfo" columns="2">
+                                            <apex:pageBlockSection columns="1" collapsible="false">
+                                                <apex:pageBlockSectionItem >
+                                                    <label>Street 1</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputText value="{!newOnlineAcc.Billing_Street_1__c}" label=""  onkeypress="return noenter(event);" disabled="{!newOnlineAcc.New_Shipping_Location__c}" />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>Street 2</label>
+                                                    <apex:outputPanel > 
+                                                        <apex:inputText value="{!newOnlineAcc.Billing_Street_2__c}" label=""  onkeypress="return noenter(event);" disabled="{!newOnlineAcc.New_Shipping_Location__c}" />
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>County</label>
+                                                    <apex:outputPanel > 
+                                                        <apex:inputText value="{!newOnlineAcc.Billing_County__c}" label=""   onkeypress="return noenter(event);" disabled="{!newOnlineAcc.New_Shipping_Location__c}"  />
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                <apex:pageBlockSectionItem >
+                                                    <label>City</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputText value="{!newOnlineAcc.Billing_City__c}" label=""  onkeypress="return noenter(event);" disabled="{!newOnlineAcc.New_Shipping_Location__c}" />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>State</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:selectList value="{!newOnlineAcc.Billing_State__c}" label="" multiselect="false"
+                                                                             size="1"  onkeypress="return noenter(event);" disabled="{!newOnlineAcc.New_Shipping_Location__c}" >
+                                                                <apex:selectOption itemValue="--Select--" itemLabel="--Select--"></apex:selectOption>
+                                                                <apex:selectOptions value="{!statePicklist}"></apex:selectOptions>
+                                                            </apex:selectList>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label style="white-space: nowrap;">Zip Code</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputText value="{!newOnlineAcc.Billing_Zip_Code__c}" label=""  onkeypress="return noenter(event);" disabled="{!newOnlineAcc.New_Shipping_Location__c}" />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                            </apex:pageBlockSection>
+                                            <apex:pageBlockSection columns="1" collapsible="false">
+                                                <apex:pageBlockSectionItem >
+                                                    <label>Phone</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputField value="{!newOnlineAcc.Billing_Phone__c}" label="" onkeypress="return noenter(event);" rendered="{!!newOnlineAcc.New_Shipping_Location__c}" />
+                                                            <apex:inputText value="{!newOnlineAcc.Billing_Phone__c}" rendered="{!newOnlineAcc.New_Shipping_Location__c}"  disabled="{!newOnlineAcc.New_Shipping_Location__c}" />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>Fax</label>
+                                                    <apex:outputPanel > 
+                                                            <apex:inputField value="{!newOnlineAcc.Billing_Fax__c}" label=""  onkeypress="return noenter(event);" rendered="{!!newOnlineAcc.New_Shipping_Location__c}" />
+                                                        	<apex:inputText value="{!newOnlineAcc.Billing_Fax__c}" rendered="{!newOnlineAcc.New_Shipping_Location__c}"  disabled="{!newOnlineAcc.New_Shipping_Location__c}"  />
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>Email</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputField value="{!newOnlineAcc.Billing_Email__c}" label=""  onkeypress="return noenter(event);" rendered="{!!newOnlineAcc.New_Shipping_Location__c}" />
+                                                            <apex:inputText value="{!newOnlineAcc.Billing_Email__c}"   rendered="{!newOnlineAcc.New_Shipping_Location__c}"  disabled="{!newOnlineAcc.New_Shipping_Location__c}" />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                            </apex:pageBlockSection>
+                                        </apex:pageBlockSection>
+                                        </apex:pageBlockSection>
+                                        
+                                        <!--
+                                        <apex:pageBlocksection >
+                                            <apex:pageBlockSectionItem >
+                                                <div class="requiredInput">
+                                                    <div class="requiredBlock"></div>
+                                                    <label style="white-space: nowrap;"><b> I authorize Zoetis to send Invoices and Statements via  </b></label></div>
+                                                <apex:outputPanel >
+                                                    <apex:selectRadio value="{!newOnlineAcc.Contact_Preference__c}" label="" immediate="true"  onkeypress="return noenter(event);">
+                                                        <apex:selectOption ItemLabel="Fax" ItemValue="Fax" onkeypress="return noenter(event);"></apex:selectOption>
+                                                        <apex:selectOption itemLabel="Email" itemValue="Email" ></apex:selectOption>
+                                                        <apex:selectOption itemLabel="Mail" itemValue="Mail" onkeypress="return noenter(event);"></apex:selectOption>
+                                                    </apex:selectRadio> 
+                                                </apex:outputPanel>
+                                            </apex:pageBlockSectionItem>
+                                        </apex:pageBlocksection> 
+                                        -->
+                                         
+                                        
+                                        <apex:pageBlockSection id="shippingInfo" title="{! IF(newOnlineAcc.New_Shipping_Location__c,'Shipping Information' ,'Shipping Address')}">
+                                            <apex:pageBlockSection columns="1" collapsible="false"> 
+                                            <apex:pageBlockSectionItem rendered="{!newOnlineAcc.New_Shipping_Location__c}" >
+                                        <label style="white-space:nowrap">Business Name</label>
+                                        <apex:outputPanel >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!newOnlineAcc.Business_Name__c}" label="" />
+                                            </div>
+                                        </apex:outputPanel> 
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem rendered="{!newOnlineAcc.New_Shipping_Location__c}" >
+                                        <label style="white-space:nowrap">Customer Type</label>
+                                        <apex:actionRegion >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField value="{!newOnlineAcc.Customer_Type__c}"  >
+                                                    <apex:actionSupport event="onchange" rerender="ctblock" status="ctypestatus" />
+                                                </apex:inputField> 
+                                            </div>
+                                            <apex:actionStatus id="ctypestatus" >
+                                                <apex:facet name="start" >
+                                                    <img src="/img/loading.gif" />                    
+                                                </apex:facet>
+                                            </apex:actionStatus>
+                                        </apex:actionRegion>
+                                        
+                                                </apex:pageBlockSectionItem>
+                                                <apex:outputPanel id="ctblock" rendered="{!newOnlineAcc.New_Shipping_Location__c}">
+                                                    <apex:pageBlockSectionItem rendered="{!newOnlineAcc.Customer_Type__c == 'Other'}">
+                                                        <label style="vertical-align:top;font-weight:bold;color:#4a4a56;">If other, please describe:</label>
+                                                        <apex:inputField id="ctypeOther" value="{!newOnlineAcc.Customer_Type_Other__c}" label=""
+                                                                         style="width:34%" onkeypress="return noenter(event);"
+                                                                         />
+                                                        
+                                                    </apex:pageBlockSectionItem>
+                                                </apex:outputPanel>
+                                                
+                                                
+                                                
+                                                <apex:pageBlockSectionItem rendered="{!!newOnlineAcc.New_Shipping_Location__c}" >
+                                                    <label style="white-space:nowrap">Same as Billing</label> 
+                                                    <apex:outputPanel >
+                                                        <apex:inputCheckbox label="Same as Billing" value="{!sameAsBilling}">
+                                                            <apex:actionSupport event="onchange" action="{!copyBillingToShipping}" reRender="shippingInfo,billingAddInfo" status="sameasbillingstatus" />
+                                                        </apex:inputCheckbox> 
+                                                        <apex:actionStatus id="sameasbillingstatus" >
+                                                            <apex:facet name="start" >
+                                                                <img src="/img/loading.gif" />                    
+                                                            </apex:facet>
+                                                        </apex:actionStatus>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>Street 1</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputField value="{!newOnlineAcc.Shipping_Street_1__c}" label="" onkeypress="return noenter(event);" />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>Street 2</label>
+                                                    <apex:outputPanel > <apex:inputField value="{!newOnlineAcc.Shipping_Street_2__c}" label=""  onkeypress="return noenter(event);" />
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>County</label>
+                                                    <apex:outputPanel > 
+                                                        <apex:inputField value="{!newOnlineAcc.Shipping_County__c}" label=""   onkeypress="return noenter(event);" />
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>City</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputField value="{!newOnlineAcc.Shipping_City__c}" label=""   onkeypress="return noenter(event);" />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>State</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:selectList value="{!newOnlineAcc.Shipping_State__c}" label="" multiselect="false"
+                                                                             size="1"  onkeypress="return noenter(event);">
+                                                                <apex:selectOption itemValue="--Select--" itemLabel="--Select--"></apex:selectOption>
+                                                                <apex:selectOptions value="{!statePicklist}"></apex:selectOptions>
+                                                            </apex:selectList>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label style="white-space: nowrap;">Zip Code</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputField value="{!newOnlineAcc.Shipping_Zip_Code__c}" label="" onkeypress="return noenter(event);"  />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                            </apex:pageBlockSection>
+                                            <apex:pageBlockSection columns="1" collapsible="false">
+                                                <apex:pageBlockSectionItem >
+                                                    <label> </label> 
+                                                </apex:pageBlockSectionItem>
+                                                <apex:pageBlockSectionItem >
+                                                    <label>Phone</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputField value="{!newOnlineAcc.Shipping_Phone__c}" label="" onkeypress="return noenter(event);" />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>Fax</label>
+                                                    <apex:outputPanel >
+                                                        
+                                                            <apex:inputField value="{!newOnlineAcc.Shipping_Fax__c}" label=""   onkeypress="return noenter(event);"  />
+                                                        
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                                
+                                                <apex:pageBlockSectionItem >
+                                                    <label>Email</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputField value="{!newOnlineAcc.Shipping_Email__c}" label=""  onkeypress="return noenter(event);"  />
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </apex:pageBlockSectionItem>
+                                            </apex:pageBlockSection>
+                                        </apex:pageBlockSection>
+                                    </apex:actionRegion>
+                                    <!-- End tag for Shipping Address -->   
+                                    
+                                <apex:pageBlockSection columns="1"  >   
+                                    <apex:pageBlockSectionItem rendered="{!newOnlineAcc.New_Shipping_Location__c}" >
+                                        <label>Total number of practitioners at this location</label>
+                                        <apex:outputPanel > 
+                                            <apex:inputField value="{!newOnlineAcc.Total_number_of_practitioners__c}" label="" /> 
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem rendered="{!newOnlineAcc.New_Shipping_Location__c}" >
+                                        <label ><b>Business Permit / License Number to operate within your state</b></label> 
+                                        <apex:outputPanel >
+                                            <apex:inputField value="{!newOnlineAcc.Business_Permit_or_License_Number__c}" html-autocomplete="off" label=""  onkeypress="return noenter(event);" />
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                        
+                                    <apex:outputPanel id="op2">
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <label><b>Is there currently an account with Zoetis at this location?</b></label>
+                                        </div>
+                                        <apex:selectRadio label="" value="{!newOnlineAcc.Existing_account_with_Zoetis_at_this_Loc__c}"
+                                                          immediate="true" style="width:40%" onkeypress="return noenter(event);">
+                                            <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                            <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                                            <!-- <apex:actionSupport event="onchange" reRender="op2"/> -->
+                                        </apex:selectRadio>
+                                    </apex:outputPanel>
+                                    
+                                    
+                                    
+                                    <apex:outputPanel id="op3">
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <label><b>Has there been a change in ownership?</b></label>
+                                            <apex:actionStatus id="counterstatus" >
+                                                <apex:facet name="start" >
+                                                    <img src="/img/loading.gif" />                    
+                                                </apex:facet>
+                                            </apex:actionStatus>
+                                        </div> 
+                                        <apex:actionRegion >
+                                            <apex:selectRadio label="" value="{!newOnlineAcc.Ownership_Change__c}" immediate="true"
+                                                              style="width:40%" onkeypress="return noenter(event);">
+                                                <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                                <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                                                <apex:actionSupport event="onchange" rerender="op3" status="counterstatus" />
+                                            </apex:selectRadio>
+                                        </apex:actionRegion>
+                                        
+                                        <apex:pageBlockSection columns="1" rendered="{!newOnlineAcc.Ownership_Change__c == 'Yes'}">
+                                            <apex:pageBlockSectionItem >
+                                                <label style="white-space:nowrap;color:black;"><b>Please provide date of ownership change:</b></label>  
+                                                <apex:outputPanel >
+                                                    <div class="requiredInput">
+                                                        <div class="requiredBlock"></div>
+                                                        <apex:inputField value="{!newOnlineAcc.Date_of_Ownership_Change__c}" label="" 
+                                                                         onkeypress="return noenter(event);" />
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </apex:pageBlockSectionItem>
+                                        </apex:pageBlockSection>
+                                    </apex:outputPanel>
+                                    <!-- End tag for Ownership Change -->
+                                    
+                                    <apex:outputPanel id="existingAcc" rendered="{!!newOnlineAcc.New_Shipping_Location__c}" >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <label><b>Do you have an existing account with Zoetis?</b></label>
+                                            <apex:actionStatus id="existingAccstatus" >
+                                                <apex:facet name="start" >
+                                                    <img src="/img/loading.gif" />                    
+                                                </apex:facet>
+                                            </apex:actionStatus>
+                                        </div>
+                                        <apex:actionRegion >
+                                            <apex:selectRadio label="" value="{!newOnlineAcc.Existing_account_with_Zoetis__c}"
+                                                              immediate="true" style="width:40%" onkeypress="return noenter(event);">
+                                                <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                                <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                                                <apex:actionSupport event="onchange" rerender="existingAcc" status="existingAccstatus" />
+                                            </apex:selectRadio>
+                                        </apex:actionRegion>
+                                        <apex:outputPanel rendered="{!newOnlineAcc.Existing_account_with_Zoetis__c == 'Yes'}" >
+                                            <label><b>Please provide the account information below:</b></label><br/> 
+                                            <apex:pageBlockSection >  
+                                                <apex:pageBlockSectionItem >
+                                                    <label style="color:black" >Account Name</label>
+                                                    <apex:outputPanel id="exAcc" >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputField value="{!newOnlineAcc.Existing_Account_Name__c}" label="" 
+                                                                             onkeypress="return noenter(event);"
+                                                                             />
+                                                        </div>
+                                                    </apex:outputPanel> 
+                                                </apex:pageBlockSectionItem>   
+                                                <apex:pageBlockSectionItem >
+                                                    <label style="color:black">Account#</label>
+                                                    <apex:outputPanel >
+                                                        <div class="requiredInput">
+                                                            <div class="requiredBlock"></div>
+                                                            <apex:inputField value="{!newOnlineAcc.Zoetis_Account__c}" label="" 
+                                                                             onkeypress="return noenter(event);"
+                                                                             />
+                                                        </div>
+                                                    </apex:outputPanel> 
+                                                </apex:pageBlockSectionItem>
+                                            </apex:pageBlockSection>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                    <!--End tag for Existing Acc-->
+                                    
+                                    <apex:panelGrid columns="2"  > 
+                                            <div class="requiredInput">
+                                                        <div class="requiredBlock"></div>
+                                            <Label><B>Sales Tax Status:&nbsp;</B></Label>  
+                                            </div>
+                                                <apex:actionRegion > 
+                                                <apex:inputField value="{!newOnlineAcc.Sales_Tax_Status__c}" >
+                                                    <apex:actionSupport event="onchange" rerender="taxExemptPG" status="salesTaxStatus"  />
+                                                </apex:inputField>  
+                                                <apex:actionStatus id="salesTaxStatus" >
+                                                    <apex:facet name="start" >
+                                                        <img src="/img/loading.gif" />                    
+                                                    </apex:facet>
+                                                </apex:actionStatus>
+                                             </apex:actionRegion>
+                                           </apex:panelGrid> 
+                                           &nbsp;&nbsp;&nbsp;<label for="salesTaxStatusnote" style="white-space:nowrap;"><I>*Sales tax status is subject to respective state law</I></label>
+                                           <apex:panelGroup id="taxExemptPG" >
+                                               <apex:panelGroup rendered="{!newOnlineAcc.Sales_Tax_Status__c == 'Tax Exempt'}" >
+                                             <apex:pageBlockSection columns="1">
+                                                 <apex:pageBlockSectionItem >
+                                               <label style="white-space: nowrap;color:black;" ><b>Please provide Tax Permit Number:</b></label>  
+                                                <apex:outputPanel >
+                                                    <div class="requiredInput">
+                                                        <div class="requiredBlock"></div>
+                                                        <apex:inputText value="{!newOnlineAcc.Tax_Permit__c}" label=""   />
+                                                    </div>
+                                                </apex:outputPanel> 
+                                                </apex:pageBlockSectionItem>
+                                                
+                                              </apex:pageBlockSection>
+                                              </apex:panelGroup>
+                                              </apex:panelGroup> 
+                                </apex:pageBlockSection>
+                                
+                                <br/><br/>
+                                <apex:outputPanel rendered="{! !readonly}">
+                                    <apex:outputPanel style="float: left; padding-left:1%;">
+                                        <apex:commandButton value="Discard Form" action="{!discard}" onclick="return confirm('Are you sure you want to discard your application? \nPlease click \'OK\' to continue.');" immediate="true" />                                    	
+                                    </apex:outputPanel>
+                                    <apex:outputPanel style="float: right; padding-right:1%;">
+                                        <apex:commandButton value="Save & Exit" action="{!saveExit}"/>
+                                        <apex:commandButton value="Next Page" action="{!saveNewOnlineAccount}" />
+                                    </apex:outputPanel>
+                                    <br/><br/><br/>
+                                </apex:outputPanel>
+                                
+                                
+                            </apex:pageBlock>
+                            
+                        </apex:outputPanel>
+                        
+                    </apex:form>
+                </center>
+            </td>
+            <td style="width:10%;">
+                <apex:outputPanel ></apex:outputPanel>
+            </td>
+        </tr>
+    </table> <br/><br/><br/><br/>
+    <c:NOA_footerpage />
+    
+</apex:page>

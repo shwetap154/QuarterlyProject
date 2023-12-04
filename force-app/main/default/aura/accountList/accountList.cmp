@@ -1,0 +1,25 @@
+<aura:component controller="SL_RxNewCaseController">
+
+    <aura:attribute name="objCase" type="Object" />
+    <aura:attribute name="activeSectionName" type="string"/>
+    <aura:attribute name="rows" type="Map[]"/>
+    <aura:attribute name="cols" type="Map[]"/>
+    <aura:attribute name="showCMP" type="Boolean" default="false"/>
+
+    <aura:handler event="c:NewCaseReset" action="{!c.onNewCaseReset}"/>
+    <aura:handler event="c:acctsLoaded" action="{!c.onAccountsLoaded}"/>
+    <aura:registerEvent name="contactsLoaded" type="c:contactsLoaded"/>
+    
+    <aura:if isTrue="{!v.showCMP}" >
+        <lightning:card title="Account List" iconName="standard:account">
+            <lightning:datatable    class="slds-size--1-of-1"
+                                    data="{!v.rows}"
+                                    columns="{!v.cols}"
+                                    keyField="Id"
+                                    hideCheckboxColumn="false"
+                                    showRowNumberColumn="true"
+                                    onrowselection="{!c.selectedAccounts}"
+                                    maxRowSelection = "1"/> 
+        </lightning:card>
+    </aura:if>
+</aura:component>

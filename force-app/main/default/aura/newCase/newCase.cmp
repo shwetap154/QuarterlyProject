@@ -1,0 +1,63 @@
+<aura:component controller="SL_RxNewCaseController" implements="force:appHostable,flexipage:availableForAllPageTypes,lightning:actionOverride,force:hasRecordId,lightning:isUrlAddressable" access="global">
+    
+    <aura:attribute name="activeSectionName" type="string" default="AccountSearch"/>
+    <aura:attribute name="displayAccComponent" type="Boolean" default="true"/>
+    <aura:attribute name="displayContactComponent" type="Boolean" default="false"/>
+    <aura:attribute name="displayCaseComponent" type="Boolean" default="false"/>
+    <aura:attribute name="objCase" type="Object" />
+
+    <aura:handler event="c:NewCaseReset" action="{!c.onNewCaseReset}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+	 <!--Added to force reset for non console bug discovered after Org Con go-live Aug 2020 -->
+
+    <aura:handler name="change" value="{!v.pageReference}" action="{!c.reInit}" />
+
+    <lightning:card>
+        <lightning:accordion aura:id="accordion" activeSectionName="{!v.activeSectionName}" allowMultipleSectionsOpen="true">
+            <lightning:accordionSection name="AccountSearch" label="Account">
+                <aura:set attribute="actions">
+                    <lightning:badge label="{!v.objCase.AccountName}" title="{!v.objCase.AccountName}" class="slds-badge_inverse"/>
+                </aura:set>
+                <!-- Account Search -->
+                <aura:if isTrue="{!v.objCase.objectApiName == 'Case' }">
+                    <c:accountSearch />
+                    <c:accountList objCase="{!v.objCase}" activeSectionName="{!v.activeSectionName}"/>
+                    <aura:set attribute="else">
+                        You lauched the screen from the related list.
+                    </aura:set>
+                </aura:if>
+                
+            </lightning:accordionSection>
+
+            <lightning:accordionSection name="SAPSearch" label="SAP ID">
+                <aura:set attribute="actions">
+                    <lightning:badge label="{!v.objCase.SAPName}" title="{!v.objCase.SAPName}" class="slds-badge_inverse"/>
+                </aura:set>
+                <!-- sap number -->
+                <c:SAPNumberList activeSectionName="{!v.activeSectionName}" objCase="{!v.objCase}"/>
+            </lightning:accordionSection>
+
+            <lightning:accordionSection name="ContactSearch" label="Contact">
+                <aura:set attribute="actions">
+                    <lightning:badge label="{!v.objCase.ContactName}" title="{!v.objCase.ContactName}" class="slds-badge_inverse"/>
+                </aura:set>
+                <!-- contact search -->
+                <c:contactList  activeSectionName="{!v.activeSectionName}"
+                                displayCaseComponent="{!v.displayCaseComponent}"
+                                objCase="{!v.objCase}"/>
+            </lightning:accordionSection>
+
+            <lightning:accordionSection name="CaseDetails" label="Case Details">
+                <!-- Case Type -->
+                <aura:if isTrue="{!v.displayCaseComponent}">
+                    <c:createCase objCase="{!v.objCase}"/>
+                    <aura:set attribute="else">
+                        Please select Account, SAP ID, and Contact to proceed.
+                    </aura:set>
+                </aura:if>
+
+            </lightning:accordionSection>
+        </lightning:accordion>
+    </lightning:card>
+    <div class="slds-p-bottom_large"></div>
+</aura:component>

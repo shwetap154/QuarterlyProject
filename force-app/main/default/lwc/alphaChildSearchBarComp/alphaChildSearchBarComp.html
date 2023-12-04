@@ -1,0 +1,13 @@
+<template>
+    <lightning-button-icon class="btnIconOverlay" icon-name="utility:search">
+    </lightning-button-icon>
+    <lightning-input 
+        class="product_search"
+        type="search" 
+        value={searchKeyword}
+        onchange={handleChange}
+        label={searchLabel}
+        placeholder="Search"
+        variant="label-hidden"
+    > </lightning-input>
+</template>

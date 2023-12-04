@@ -1,0 +1,126 @@
+.accordion{
+    background-color: #ffffff;
+    color: #000000;
+    cursor: pointer;
+    padding: 15px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #e0e0e0;
+}
+
+.panel{
+    padding: 18px;
+    background-color: rgb(255, 255, 255);
+}
+
+.heading{
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    background-color: rgb(255, 255, 255)010;
+    color: #000000;
+    word-wrap: break-word;
+}
+
+.heading1{
+    width: 10%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    background-color: rgb(255, 255, 255)010;
+    color: #000000;
+    word-wrap: break-word;
+}
+
+.heading2{
+    width: 20%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    background-color: rgb(255, 255, 255)010;
+    color: #000000;
+    word-wrap: break-word;
+}
+
+.heading3{
+    width: 40%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    background-color: rgb(255, 255, 255)010;
+    color: #000000;
+    word-wrap: break-word;
+}
+
+.heading4{
+    width: 30%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    background-color: rgb(255, 255, 255)010;
+    color: #000000;
+    word-wrap: break-word;
+}
+
+.table {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  
+.td1 {
+    width: 10%;
+    text-align: center;
+    color: #000000;
+    border: 1px solid black;
+    border-collapse: collapse;
+    word-wrap: break-word;
+    font-weight: lighter;
+  }
+
+  .td2 {
+    width: 20%;
+    text-align: left;
+    color: #000000;
+    border: 1px solid black;
+    border-collapse: collapse;
+    word-wrap: break-word;
+    font-weight: lighter;
+  }
+
+  .td3 {
+    width: 40%;
+    text-align: left;
+    color: #000000;
+    border: 1px solid black;
+    border-collapse: collapse;
+    word-wrap: break-word;
+    font-weight: lighter;
+  }
+
+  .td4 {
+    width: 30%;
+    text-align: left;
+    color: #000000;
+    border: 1px solid black;
+    border-collapse: collapse;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-weight: lighter;
+  }
+  .dt1 { 
+  display: block;
+  font-size: 1.17em;
+  margin-bottom: 2em;
+  padding-left: 3%;
+  font-weight: bold;
+  text-align: center;
+  }

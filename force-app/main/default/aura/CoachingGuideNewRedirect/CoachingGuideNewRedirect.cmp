@@ -1,0 +1,8 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId,lightning:actionOverride,force:hasRecordId" >
+    <aura:attribute name="recordId" type="String" />
+    <div>
+        <c:coachingGuideRedirectLWC recordId="{!v.recordId}" onclose="{!c.closeChildLWC}"></c:coachingGuideRedirectLWC>
+        <lightning:spinner alternativeText="Loading" size="medium" variant="brand" />
+
+    </div>
+</aura:component>

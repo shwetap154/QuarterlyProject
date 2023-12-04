@@ -1,0 +1,58 @@
+<template>
+  <div class="slds-p-top_small">
+    <lightning-card variant="narrow">
+      <h4 slot="title">
+        <lightning-icon icon-name="custom:custom83" class="slds-m-right_x-small" size="small"></lightning-icon>
+        {automaticAddon.MaterialName}
+        <span class="slds-badge slds-m-left_x-large">
+          <lightning-icon icon-name="utility:info_alt" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+          {label.TargetQuantity}: <strong class="slds-m-left_xx-small">{automaticAddon.Quantity}</strong>
+        </span>
+        <span class={currQuantityClass}>
+          <lightning-icon icon-name={currQuantityIcon} variant="inverse" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+          {label.CurrentQuantity}: <strong class="slds-m-left_xx-small">{currentQuantity}</strong><strong>{quantityErrorMessage}</strong>
+        </span>
+      </h4>
+      <div class="slds-p-horizontal_small">
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+          <thead>
+            <tr class="slds-line-height_reset">
+              <th class="" scope="col"><div class="slds-truncate">{label.Quantity}</div></th>
+              <th class="" scope="col"><div class="slds-truncate">{label.MaterialNumber}</div></th>
+              <th class="" scope="col"><div class="slds-truncate">{label.Description}</div></th>
+              <th class="" scope="col"><div class="slds-truncate">{label.Price}</div></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr key={automaticAddon.Key}>
+              <th scope="row" style="font-weight: bold; padding-left: 2.5rem;">{automaticAddon.Quantity}</th>
+              <td><div class="slds-truncate">{automaticAddon.MaterialNumber}</div></td>
+              <td><div class="slds-truncate">{automaticAddon.MaterialName}</div></td>
+              <td><div class="slds-truncate">{automaticAddon.NetPrice}</div></td>
+            </tr>
+            <template for:each={shipToLocations} for:item="shipTo">
+              <tr key={shipTo.Id}>
+                <th scope="row">
+                  <lightning-input
+                    type="number"
+                    value="0"
+                    variant="label-hidden"
+                    max="9999"
+                    min="0"
+                    style="width: 50px;"
+                    disabled={quantityNotEditable}
+                    onchange={handleQuantityChange}
+                    label={automaticAddon.Key}
+                    aria-label={shipTo.Id}
+                  ></lightning-input>
+                  <!-- Using the aria-label to store the shipto id, and the label to store the material. This is temporary -->
+                </th>
+                <td colspan="3"># {label.Addons} @ {shipTo.Ship_to_Address__r.Name}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </lightning-card>
+  </div>
+</template>

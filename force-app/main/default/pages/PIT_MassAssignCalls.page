@@ -1,0 +1,28 @@
+<apex:page controller="PIT_MassAssignCallsController">
+    <apex:form >
+        <apex:pageMessages />
+       <apex:pageBlock title="Coachee's not assign calls">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!assignCalls}" value="Assign" rendered="{!foundEls.size > 0}"/>
+                <apex:commandButton action="{!goBack}" value="Go Back"/>
+            </apex:pageBlockButtons>
+            <apex:outputPanel rendered="{!foundEls.size > 0}">
+	            <apex:pageBlockTable value="{!foundEls}" var="rec1">
+	                <apex:column >
+	                    <apex:inputCheckbox value="{!rec1.selected}"/>
+	                </apex:column>
+	                <apex:column value="{!rec1.rec.Name}"/>
+	                <apex:column value="{!rec1.rec.ZTS_EU_Account__r.Name}"/>
+	                <apex:column value="{!rec1.rec.ZTS_EU_Start_Date_Time__c}"/>
+	                <apex:column value="{!rec1.rec.ZTS_EU_End_Date_Time__c}"/>
+	                <apex:column value="{!rec1.rec.ZTS_EU_Status__c}"/> 
+	            </apex:pageBlockTable>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!foundEls.size == 0}">
+                <br/>
+                <center><b>There are no calls without any assignment related to the Coachee.</b></center>
+                <br/>
+            </apex:outputPanel> 
+        </apex:pageBlock>
+    </apex:form>    
+</apex:page>

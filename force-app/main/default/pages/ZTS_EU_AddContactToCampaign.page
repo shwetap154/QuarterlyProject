@@ -1,0 +1,57 @@
+<!---
+    /****************************************************************************************************************************************** 
+     * Page Name       : ZTS_EU_AddContactToCampaign.vfp
+     * Description      : The Visual force is used to show list of contacts associated in Accounts in the Campaign for choosing (SC-008159)                                        
+     * Created By   : Cognizant
+     * Created Date : March 3rd, 2021
+     *
+     * Modification Log:  
+     * ---------------------------------------------------------------------------------------------------------------------------------------
+     * Developer                Date               Description 
+     * ---------------------------------------------------------------------------------------------------------------------------------------
+     * Aritra(Cognizant)        03/03/2021         Created
+    *****************************************************************************************************************************************/
+    -->
+
+<apex:page controller="ZTS_EU_AddContactToCampaignCtl" title="Add Contacts to Campaign" LightningStyleSheets="true">
+<h1>Add Contact to Campaign </h1>
+<h4>Adding contacts to Campaign : {!currentCampName}    </h4>
+<apex:form id="theForm" >      
+      <apex:outputPanel id="CurrentContacts" >
+      <apex:pageBlock >
+          <apex:pageMessages />
+          
+          <apex:pageBlockSection rendered="{!IF(categories.size==0, false, true)}" columns="1">
+          <apex:dataTable value="{!categories}" var="c" id="contactsTable">
+              <apex:column >
+               <apex:facet name="header">
+                  <apex:inputCheckbox value="{!allChecked}">
+                    <apex:actionSupport event="onclick" action="{!CheckAll}"
+                                        rerender="contactsTable"/>
+          			</apex:inputCheckbox>
+        		</apex:facet>
+                <apex:inputCheckbox value="{!c.checked}"/>
+              </apex:column>
+              <apex:column headerValue="Contact Name" value="{!c.con.ZTS_EU_Contact__r.LastName} {!c.con.ZTS_EU_Contact__r.firstName}" />
+              <apex:column headerValue="Account Name" value="{!c.con.ZTS_EU_Account__r.Name}" />
+              <apex:column headerValue="Contact Job Function" value="{!c.con.ZTS_EU_Contact__r.ZTS_US_Job_Function__c}" />
+              <apex:column headerValue="Contact Profession" value="{!c.con.ZTS_EU_Contact__r.ZTS_US_Profession__c}" />
+              <apex:column headerValue="Email" value="{!c.con.ZTS_EU_Contact__r.Interface_Email__c}" />
+              <apex:column headerValue="Email" value="{!c.con.ZTS_EU_Contact__r.Email}" />
+              <apex:column headerValue="Phone" value="{!c.con.ZTS_EU_Contact__r.Phone}" />
+              </apex:dataTable> 
+          </apex:pageBlockSection>
+          <apex:pageBlockSection columns="1">
+              <apex:outputPanel >
+                        <div align="center">
+                            <apex:commandButton action="{!saveContacts}" value="Add Contacts" rendered="{!IF(categories.size==0, false, true)}"/>
+            				<apex:commandButton action="{!cancel}" value="Cancel"/>
+                        </div>
+              </apex:outputPanel>
+          </apex:pageBlockSection>
+          
+          </apex:pageBlock>
+          
+    </apex:outputPanel>
+  </apex:form>
+</apex:page>

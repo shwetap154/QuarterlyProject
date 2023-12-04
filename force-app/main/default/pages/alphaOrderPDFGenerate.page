@@ -1,0 +1,3 @@
+<apex:page id="pdf" controller="alphaOrderPDFController" contentType="application/x-pdf#Order_Report.pdf"> <!---->
+    <apex:include pageName="alphaOrderPDF"/>
+</apex:page>

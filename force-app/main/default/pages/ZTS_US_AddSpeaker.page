@@ -1,0 +1,41 @@
+<apex:page standardController="ZTS_US_Speaker__c" extensions="ZTS_US_AddSpeakercontroller" lightningStyleSheets="True">
+    <style>
+        body .pbHeader .pbTitle:first-child, body .pbHeader .pbButton:first-child, .slds-vf-scope .pbHeader .pbTitle:first-child, 
+        .slds-vf-scope .pbHeader .pbButton:first-child
+        {
+            width: 50%
+        }
+        body .pbBottomButtons .pbTitle, .slds-vf-scope .pbBottomButtons .pbTitle
+        {
+            visibility: hidden;
+            display: block;
+        }
+        body .pbBottomButtons .pbButtonb, .slds-vf-scope .pbBottomButtons .pbButtonb
+        {
+            text-align: left;
+            padding-left: .25rem; 
+        }
+        .slds-scope caption, .slds-scope th, .slds-scope td
+        {
+            width: 50%;
+        }
+    </style>
+    <apex:slds />
+    <div class="slds-scope slds-p-horizontal_medium" >
+        <apex:form id="theForm">
+            <apex:pageMessages />
+            <apex:pageBlock title="New Speaker" id="thePageBlock" >
+                <apex:pageBlockSection columns="2">
+                    <apex:inputField value="{!speaker.ZTS_US_Event__c}"/>
+                    <apex:inputField value="{!speaker.ZTS_US_Contact__c}" id="contact"/> 
+                    <apex:inputField value="{!speaker.ZTS_US_Speaking_Date__c}"/>
+                    <apex:inputField value="{!speaker.ZTS_US_Speaker_Fee__c}"/>
+                </apex:pageBlockSection>
+                <apex:pageBlockButtons >
+                    <apex:commandButton action="{!save}" value="Save"/>
+                    <apex:commandButton action="/{!evntId}" value="Cancel" immediate="true" />
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+        </apex:form>
+    </div>
+</apex:page>

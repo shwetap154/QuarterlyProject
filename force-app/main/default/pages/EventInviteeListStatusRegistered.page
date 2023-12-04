@@ -1,0 +1,3 @@
+<apex:page standardController="ZTS_US_Event_Invitee__c" extensions="EventInviteeListController" recordSetVar="invitees" action="{!redirectToLC}">
+    
+</apex:page>

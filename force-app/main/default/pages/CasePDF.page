@@ -1,0 +1,506 @@
+<apex:page applyHtmlTag="false" Controller="CasePDFController" showQuickActionVfHeader="false" standardStylesheets="false" showHeader="false" renderAs="PDF">
+    <html>
+        <head>
+            <style>
+                body {
+                margin: 2px;
+                padding: 10px;
+                <!--border: .5px groove #000000;-->
+                }
+
+                table {
+                border-collapse: collapse;
+                margin-top: 25px;
+                width: 100%;
+                table-layout: fixed;<!--added-->
+                }
+                
+                .th {
+                background-color:rgb(243, 243, 243);
+                font-align: left;
+                font-size: 16px;
+                font-weight: medium;
+                padding: 5px;
+                width: 33%;
+                }
+                
+                td {
+                font-size: 12px;
+                padding: 5px;
+                text-align: left;
+                width: 25%;<!--33%;-->
+                white-space: wrap;
+                vertical-align: baseline;
+                max-width: 3em;
+               <!--  overflow-wrap: anywhere;
+				display: inline-block
+				x:autofilter='all'
+				text-overflow: inherit;
+                vertical-align: baseline;added
+                
+                overflow-wrap: break-word;-->
+                <!--word-wrap:break-word;
+				overflow: hidden;added-->
+                <!--
+                text-overflow: ellipsis;
+    			overflow: hidden;
+                white-space: nowrap;
+                overflow: visible;
+    			white-space: pre;-->
+                <!--text-align: justify;
+                text-justify: inter-word;-->
+                }     
+
+                .box--full {
+                float: left;
+                width: 100%;
+                }
+
+                .box--left {
+                float: left;
+                width: 25%;
+                }
+
+                .box--right {
+                float: left;
+                width: 75%;
+                }
+
+                table {
+                border-collapse: collapse;
+                margin-top: 25px;
+                width: 100%;
+                
+                }
+                
+                .th {
+                background-color: #c2c2c2;
+                font-align: left;
+                font-size: 16px;
+                font-weight: medium;
+                padding: 5px;
+                }
+
+                .th2 {
+                    font-size: 14px;
+                    font-weight: medium;
+                }
+                
+               <!-- td {
+                font-size: 12px;
+                padding: 5px;
+                text-align: left;
+                width: 25%;
+                vertical-align: baseline;added
+                } -->
+
+                .heading--main {
+                font-size: 18px;
+                }
+                
+                .heading--sub {
+                font-size: 16px;
+                font-weight: bold;
+                }
+
+                .heading--min {
+                font-size: 16px;
+                }
+
+                .para--min {
+                font-size: 16px;
+                text-align: justify;
+                text-justify: inter-word;
+                }
+
+				.row { display: flex; } .column { flex: 50%; }
+                .field_label {
+                    font-weight: bold;
+                    padding: 1px;
+                    vertical-align: top;
+                    width: 13%<!--13%;-->
+                }
+                .field_value {
+                    padding: 1px;
+                    vertical-align: top;
+                	font-family: 'Arial Unicode MS'; 
+                width: 37%;<!--37%;-->
+                }
+                
+            </style>
+        </head>
+        <body>
+          
+          <div class="box-full"> 
+                <table>
+                    <tr>
+                        <th class="th">Case Details</th>
+                    </tr>
+                </table>
+               <apex:panelGrid styleClass="panel" cellpadding="0" cellspacing="0" columns="4" columnClasses="field_label,field_value">
+                        <apex:outputText value="Case Number"/>
+                        <apex:outputText value="{!CaseNumber}"/>
+                        <apex:outputText value="PV Works ID"/>
+                        <apex:outputText value="{!PVWorksID}"/>
+                		<apex:outputText value="Date First Received"/>
+                        <apex:outputText value="{!DateFirstReceived}"/>
+                        <apex:outputText value="Date First Valid"/>
+                        <apex:outputText value="{!DateFirstValid}"/>
+                   		<apex:outputText value="Case Owner"/>
+                        <apex:outputText value="{!CaseOwner}"/>
+                        <apex:outputText value="Type"/>
+                        <apex:outputText value="{!Type}"/>
+                		<apex:outputText value="Sub-Type"/>
+                        <apex:outputText value="{!SubType}"/>
+                        <apex:outputText value="Status"/>
+                        <apex:outputText value="{!Status}"/>
+                   		<apex:outputText value="No More Information Expected"/>
+                        <apex:outputText value="{!NoMoreInformationExpected}"/>
+               </apex:panelGrid>
+             <!--  <table>
+                    <tr>
+                        <td class="td">Case Number :</td>
+                        <td class="td">{!CaseNumber}</td>
+                        <td class="td">PV Works ID :</td>
+                        <td class="td">{!PVWorksID}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Date First Received :</td>
+                        <td class="td">{!DateFirstReceived}</td>
+                        <td class="td">Date First Valid :</td>
+                        <td class="td">{!DateFirstValid}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Case Owner :</td>
+                        <td class="td">{!CaseOwner}</td>
+                        <td class="td">Type :</td>
+                        <td class="td">{!Type}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Sub-Type :</td>
+                        <td class="td">{!SubType}</td>
+                        <td class="td">Status :</td>
+                        <td class="td">{!Status}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">No More Information Expected :</td>
+                        <td class="td">{!NoMoreInformationExpected}</td>
+                       
+                    </tr>
+              </table>-->
+            </div>        
+            <div class="box-full"> 
+                <table>
+                    <tr>
+                        <th class="th">Contacts</th>
+                    </tr>
+                </table>
+                <apex:panelGrid styleClass="panel" cellpadding="0" cellspacing="0" columns="4" columnClasses="field_label,field_value">
+                        <apex:outputText value="Primary Reported"/>
+                        <apex:outputText value="{!PrimaryReporter}"/>
+                        <apex:outputText value="Case Role"/>
+                        <apex:outputText value="{!Caserole}"/>
+                		<apex:outputText value="Account Name"/>
+                        <apex:outputText value="{!AccountName}"/>
+                        <apex:outputText value="Contact Name"/>
+                        <apex:outputText value="{!ContactName}"/>
+                   		<apex:outputText value="Primary Address"/>
+                        <apex:outputText value="{!PrimaryAddress}"/>
+                        <apex:outputText value="Phone"/>
+                        <apex:outputText value="{!Phone}"/>
+                		
+               </apex:panelGrid>
+         <!--       <table>
+                    <tr>
+                        <td class="td">Primary Reported :</td>
+                        <td class="td">{!PrimaryReporter}</td>
+                        <td class="td">Case Role :</td>
+                        <td class="td">{!Caserole}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Account Name :</td>
+                        <td class="td">{!AccountName}</td>
+                        <td class="td">Contact Name :</td>
+                        <td class="td">{!ContactName}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Primary Address :</td>
+                        <td class="td">{!PrimaryAddress}</td>
+                        <td class="td">Phone :</td>
+                        <td class="td">{!Phone}</td>
+                    </tr>
+                  
+              </table>-->
+            </div>
+          
+            <div class="box-full"> 
+                <table>
+                    <tr>
+                        <th class="th">Patient</th>
+                    </tr>
+                </table>
+                 <apex:panelGrid styleClass="panel" cellpadding="0" cellspacing="0" columns="4" columnClasses="field_label,field_value">
+                        <apex:outputText value="Species"/>
+                        <apex:outputText value="{!Species}"/>
+                        <apex:outputText value="Sex"/>
+                        <apex:outputText value="{!Sex}"/>
+                		<apex:outputText value="Breed"/>
+                        <apex:outputText value="{!Breed}"/>
+                        <apex:outputText value="Date of Birth"/>
+                        <apex:outputText value="{!DateofBirth}"/>
+                   		<apex:outputText value="Age"/>
+                        <apex:outputText value="{!Age}"/>
+                        
+               </apex:panelGrid>
+            <!--    <table>
+                    <tr>
+                        <td class="td">Species :</td>
+                        <td class="td">{!Species}</td>
+                        <td class="td">Sex :</td>
+                        <td class="td">{!Sex}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Breed :</td>
+                        <td class="td">{!Breed}</td>
+                        <td class="td">Date of Birth :</td>
+                        <td class="td">{!DateofBirth}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Age :</td>
+                        <td class="td">{!Age}</td>
+                        
+                    </tr>
+                   
+              </table>-->
+            </div>
+            
+            <div class="box-full"> 
+                <table>
+                    <tr>
+                        <th class="th">Patient Details</th>
+                    </tr>
+                </table>
+                <apex:panelGrid styleClass="panel" cellpadding="0" cellspacing="0" columns="4" columnClasses="field_label,field_value">
+                        <apex:outputText value="Total Exposed"/>
+                        <apex:outputText value="{!TotalExposed}"/>
+                        <apex:outputText value="Total Reacted"/>
+                        <apex:outputText value="{!TotalReacted}"/>
+                		<apex:outputText value="Total Died"/>
+                        <apex:outputText value="{!TotalDied}"/>
+                        <apex:outputText value="Total Under Treatment"/>
+                        <apex:outputText value="{!TotalUnderTreatment}"/>
+                   
+                		
+               </apex:panelGrid>
+           <!--     <table>
+                    <tr>
+                        <td class="td">Total Exposed :</td>
+                        <td class="td">{!TotalExposed}</td>
+                        <td class="td">Total Reacted :</td>
+                        <td class="td">{!TotalReacted}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Total Died :</td>
+                        <td class="td">{!TotalDied}</td>
+                        <td class="td">Total Under Treatment :</td>
+                        <td class="td">{!TotalUnderTreatment}</td>
+                    </tr>
+                   
+              </table>-->
+            </div>
+            
+            <div class="box-full"> 
+                <table>
+                    <tr>
+                        <th class="th">Product</th>
+                    </tr>
+                </table>
+                <apex:panelGrid styleClass="panel" cellpadding="0" cellspacing="0" columns="4" columnClasses="field_label,field_value">
+                        <apex:outputText value="Case Product"/>
+                        <apex:outputText value="{!CaseProduct}"/>
+                        <apex:outputText value="Product Role"/>
+                        <apex:outputText value="{!ProductRole}"/>
+                		<apex:outputText value="Product Lot Number"/>
+                        <apex:outputText value="{!ProductLotNumber}"/>
+                        <apex:outputText value="Start Date"/>
+                        <apex:outputText value="{!StartDate}"/>
+                   		<apex:outputText value="Dose Unit"/>
+                        <apex:outputText value="{!DoseUnit}"/>
+                        <apex:outputText value="Problem Product Type"/>
+                        <apex:outputText value="{!ProblemProductType}"/>
+                		<apex:outputText value="LOE Reason"/>
+                        <apex:outputText value="{!LOEReason}"/>
+                        <apex:outputText value="Attending Vets Suspicion Level"/>
+                        <apex:outputText value="{!AttendingVetsSuspicionLevel}"/>
+                		<apex:outputText value="Previous Exposure"/>
+                        <apex:outputText value="{!PreviousExposure}"/>
+                        <apex:outputText value="Previous Reaction"/>
+                        <apex:outputText value="{!PreviousReaction}"/>
+                   		<apex:outputText value="Reason for Use"/>
+                        <apex:outputText value="{!ReasonforUse}"/>
+               </apex:panelGrid>
+         <!--       <table>
+                    <tr>
+                        <td class="td">Case Product :</td>
+                        <td class="td">{!CaseProduct}</td>
+                        <td class="td">Product Role :</td>
+                        <td class="td">{!ProductRole}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Product Lot Number :</td>
+                        <td class="td">{!ProductLotNumber}</td>
+                        <td class="td">Start Date :</td>
+                        <td class="td">{!StartDate}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Dose Unit :</td>
+                        <td class="td">{!DoseUnit}</td>
+                        <td class="td">Problem Product Type :</td>
+                        <td class="td">{!ProblemProductType}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">LOE Reason :</td>
+                        <td class="td">{!LOEReason}</td>
+                        <td class="td">Attending Vets Suspicion Level :</td>
+                        <td class="td">{!AttendingVetsSuspicionLevel}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Previous Exposure :</td>
+                        <td class="td">{!PreviousExposure}</td>
+                        <td class="td">Previous Reaction :</td>
+                        <td class="td">{!PreviousReaction}</td>
+                    </tr>
+                    <tr>
+                        <td class="td">Reason for Use :</td>
+                        <td class="td">{!ReasonforUse}</td>
+                    </tr>
+              </table>-->
+            </div>
+        <br /><br /><br /><br /><br />
+            <div class="box-full"> 
+                <table>
+                    <tr>
+                        <th class="th">Veddra Event Section</th>
+                    </tr>
+                </table>
+                 <apex:panelGrid styleClass="panel" cellpadding="0" cellspacing="0" columns="4" columnClasses="field_label,field_value">
+                        <apex:outputText value="Veddra Coding"/>
+                        <apex:outputText value="{!VedDRACoding}"/>
+                        <apex:outputText value="Start Date"/>
+                        <apex:outputText value="{!VedStartDate}"/>
+                		<apex:outputText value="End Date"/>
+                        <apex:outputText value="{!EndDate}"/>
+                        <apex:outputText value="Ongoing"/>
+                        <apex:outputText value="{!Ongoing}"/>
+                   		<apex:outputText value="Preferred"/>
+                        <apex:outputText value="{!Preferred}"/>
+                        <apex:outputText value="Duration Days"/>
+                        <apex:outputText value="{!DurationDays}"/>
+                		<apex:outputText value="Time to onset first dose"/>
+                        <apex:outputText value="{!Timetoonsetfirstdose}"/>
+                       
+               </apex:panelGrid>
+               
+             <!--   <table>
+                    <tr>
+                        <td class="td">Veddra Coding :</td>
+                        <td class="td">{!VedDRACoding}</td>
+                        <td class="td">Start Date :</td>
+                        <td class="td">{!VedStartDate}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">End Date :</td>
+                        <td class="td">{!EndDate}</td>
+                        <td class="td">Ongoing :</td>
+                        <td class="td">{!Ongoing}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Preferred :</td>
+                        <td class="td">{!Preferred}</td>
+                        <td class="td">Duration Days :</td>
+                        <td class="td">{!DurationDays}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Time to onset first dose :</td>
+                        <td class="td">{!Timetoonsetfirstdose}</td>
+                       
+                    </tr>
+                   
+              </table>-->
+            </div>
+           
+            <div class="box-full"> 
+                <table>
+                    <tr>
+                        <th class="th">Local Assessment Details</th>
+                    </tr>
+                </table>
+                
+                 <apex:panelGrid styleClass="panel" cellpadding="0" cellspacing="0" columns="4" columnClasses="field_label,field_value">
+                        <apex:outputText value="Local Assessment"/>
+                        <apex:outputText value="{!Localassessment}"/>
+                        <apex:outputText value="Is it serious"/>
+                        <apex:outputText value="{!Isitserious}"/>
+                		<apex:outputText value="Reportability"/>
+                        <apex:outputText value="{!Reportability}"/>
+                        
+               </apex:panelGrid>
+            <!--    <table>
+                    <tr>
+                        <td class="td">Local Assessment :</td>
+                        <td class="td">{!Localassessment}</td>
+                        <td class="td">Is it serious :</td>
+                        <td class="td">{!Isitserious}</td>
+                    </tr>
+                   <tr>
+                        <td class="td">Reportability :</td>
+                        <td class="td">{!Reportability}</td>
+                        
+                    </tr>
+                  
+              </table>-->
+            </div>
+            
+            <div class="box-full"> 
+                <table>
+                    <tr>
+                        <th class="th">Company Assessment Details</th>
+                    </tr>
+                </table>
+                <apex:panelGrid styleClass="panel" cellpadding="0" cellspacing="0" columns="4" columnClasses="field_label,field_value">
+                        <apex:outputText value="Is it serious"/>
+                        <apex:outputText value="{!ComIsitserious}"/>
+                        <apex:outputText value="Event Narrative"/>
+                        <apex:outputText value="{!EventNarrative}"/>
+        
+                        
+               </apex:panelGrid>
+             <!--   <table>
+                    <tr>
+                        <td class="td">Is it serious :</td>
+                        <td class="td">{!ComIsitserious}</td>
+                        <td class="td">Event Narrative :</td>
+                        <td class="td">{!EventNarrative}</td>
+                    </tr>
+                  
+              </table>-->
+            </div>
+           <!--<apex:panelGrid id="caseInfo" width="100%" cellpadding="0" cellspacing="0" columns="1">
+                    <apex:panelGrid styleClass="section_hdr" cellpadding="0" cellspacing="0" columns="1">
+                        <apex:image url="{!$Resource.Background_DEE5EC}" styleClass="section_bg"/>
+                        <apex:outputText value="Case Info" />
+                    </apex:panelGrid>
+           <apex:panelGrid styleClass="panel" cellpadding="0" cellspacing="0" columns="4" columnClasses="field_label,field_value">
+                        <apex:outputText value="Case Number"/>
+                        <apex:outputText value="{!CaseNumber}"/>
+                        <apex:outputText value="PV Works ID"/>
+                        <apex:outputText value="{!PVWorksID}"/>
+                <apex:outputText value="Case Number"/>
+                        <apex:outputText value="{!CaseNumber}"/>
+                        <apex:outputText value="PV Works ID"/>
+                        <apex:outputText value="{!PVWorksID}"/>
+                                          </apex:panelGrid>
+            </apex:panelGrid>-->
+        </body>
+    </html>
+</apex:page>

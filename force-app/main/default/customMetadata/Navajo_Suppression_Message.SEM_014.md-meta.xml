@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>SEM_014</label>
+    <protected>false</protected>
+    <values>
+        <field>Bit_Position__c</field>
+        <value xsi:type="xsd:double">22.0</value>
+    </values>
+    <values>
+        <field>Chemistry_Label__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Error_Message__c</field>
+        <value xsi:type="xsd:string">Rate In Endpoint, Bead or sample problem; Rerun NEW sample;  [For CHOL Only - Result may be close on TRB.]</value>
+    </values>
+    <values>
+        <field>Priority__c</field>
+        <value xsi:type="xsd:double">16.0</value>
+    </values>
+</CustomMetadata>

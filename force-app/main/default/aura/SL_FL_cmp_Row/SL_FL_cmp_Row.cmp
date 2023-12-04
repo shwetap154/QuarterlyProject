@@ -1,0 +1,542 @@
+<aura:component controller="SL_FormLayoutHandler">
+
+<!--controller="SL_FormLayoutRowController"  -->
+    <!-- FieldSet Details -->
+    <aura:attribute name="rows" type="Map[]" />
+    <aura:attribute name="col" type="String" />
+    <aura:attribute name="label" type="String" />
+    <aura:attribute name="type" type="String" />
+    <aura:attribute name="fieldPath" type="String" />
+    <aura:attribute name="helpText" type="String" />
+    <aura:attribute name="decimalFldLngth" type="Map" />
+    <aura:attribute name="editable" type="Boolean" />
+    <aura:attribute name="isReadOnly" type="boolean" />
+    <aura:attribute name="formatVal" type="String" />
+    <aura:attribute name="decimalCount" type="Integer" default="0"/>
+
+    <aura:attribute name="dateFormat" type="String" default="MM/dd/yyyy"/>
+    <aura:attribute name="timeFormat" type="String" default="hh:mm aaa"/>
+    
+    <aura:attribute access="private" name="picklistOptions" type="List" />
+    
+    <!-- Record Details -->
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="value" type="String" />
+    <aura:attribute name="valueEdit" type="String" />
+    <aura:attribute name="valueLabel" type="String" />
+    
+    <aura:attribute name="isEdit" type="Boolean" />
+    
+    <aura:registerEvent name="SL_FL_evt_FieldEdited" type="c:SL_FL_evt_FieldEdited"/>
+
+    <aura:attribute name="sObjectName" type="String" />
+    <aura:attribute name="parentObj" type="String" />
+    <aura:attribute name="selectedID" type="String" />
+    <aura:attribute name="selectedItems" type="String[]" />
+    <aura:attribute name="mpFieldDependence" type="Map" />
+    <aura:attribute name="stdDateFormat" type="String" />
+    <aura:attribute name="stdDateTimeFormat" type="String" />
+
+    <!-- Density setting -->
+    <aura:attribute name="displayDensity" type="String"/>
+
+    <!-- <aura:registerEvent name="componentEventFired" type="c:FetchObjFieldName"/> -->
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	
+    <div style="width: 100%;" class="slds-form-element slds-form-element_edit slds-grow slds-hint-parent override--slds-form-element " data-valueforautomation="{!v.label}" >    
+        <aura:if isTrue="{!(v.displayDensity == 'ViewOne')}">
+            <div style="margin-top: 4px;">
+                <span class="test-id__field-label-container">
+                    <span class="test-id__field-label slds-form-element__label">{!v.label}</span>
+                    <aura:if isTrue="{!!empty(v.helpText)}">
+                            <lightning:helptext content="{!v.helpText}" class="helpText"/>
+                    </aura:if>
+                </span>
+            </div>
+            
+            <div class="{!((v.isEdit == true) ? 'slds-form-element__control slds-grid itemBody':'slds-form-element__control slds-grid itemBody slds-border_bottom')}" style="{!(v.editable == true ? 'margin-top:-2px; padding-bottom: 2px;': 'margin-top:-2px; padding-bottom: 5px;')}">
+                <span class="test-id__field-value slds-form-element__static slds-grow" title="{!v.fieldVal}" >
+                    <span data-automationFieldLabel="{!v.label}" data-automationFieldValue="{!v.value}" data-automationFieldType="{!v.type}" data-automationIsEditable="{!v.editable}" >
+                        <aura:if isTrue="{!v.type == 'STRING' || v.type == 'PHONE' || v.type == 'COMBOBOX'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:inputText value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}"/>
+                                <aura:set attribute="else">
+                                    <aura:if isTrue="{!v.editable}">
+                                        <ui:outputText value="{!v.value}" class="paddZero textwrap"/>
+                                        <aura:set attribute="else">
+                                            <aura:unescapedHtml value="{!v.value}"/>
+                                        </aura:set>
+                                    </aura:if>
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.type == 'BOOLEAN'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:inputCheckbox value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                <aura:set attribute="else">
+                                    <ui:outputCheckbox value="{!v.value}" class="paddZero"/>
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.type == 'CURRENCY'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:inputCurrency value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                <aura:set attribute="else">
+                                    <!-- {!$Locale.currency}  -->
+                                    <!-- <lightning:formattedNumber value="{!v.value}" class="paddZero" /> -->
+                                    <ui:outputCurrency value="{!v.value}" format="{!v.formatVal}" currencySymbol="{!$Locale.currency}" />
+                                    <!--  -->
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.type == 'DOUBLE' || v.type == 'INTEGER' }">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:inputNumber value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                <aura:set attribute="else">
+                                    <ui:outputNumber value="{!v.value}" format="{!v.formatVal}" class="paddZero"/>
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+
+                        <aura:if isTrue="{!v.type == 'PERCENT' }">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <lightning:input aura:id="{!v.col}" type="number" value="{!v.value}" min="0" max="100" onblur="{!c.updateVal}"/>
+                                <aura:set attribute="else">
+                                   <lightning:formattedNumber value="{!v.value}" style="percent" maximumFractionDigits="{!v.decimalCount}" minimumFractionDigits="{!v.decimalCount}"/> <!-- <ui:outputNumber value="{!v.value}" format="{!v.formatVal}" class="paddZero"/> -->
+                                    <!-- <ui:outputText value="{!v.value}" format="{!v.formatVal}" class="paddZero"/> -->
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}"  class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.type == 'EMAIL'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:inputEmail value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                <aura:set attribute="else">
+                                    <ui:outputEmail value="{!v.value}" class="paddZero"/>
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.type == 'DATE'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:inputDate value="{!v.value}" aura:id="{!v.col}" format="{!$Locale.dateFormat}" displayDatePicker="true" blur="{!c.updateVal}" />
+                                <aura:set attribute="else">
+                                    <!-- <lightning:formattedDateTime year="numeric" value="{!v.value}" month="2-digit" day="2-digit" class="paddZero"/> -->
+                                <ui:outputDate value="{!v.value}" format="{!v.stdDateFormat}"/> 
+
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.type == 'TEXTAREA'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:inputTextArea value="{!v.value}" aura:id="{!v.col}" rows="3" blur="{!c.updateVal}" />
+                                <aura:set attribute="else">
+                                    <aura:unescapedHtml value="{!v.value}" />
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+
+                            </aura:if> <aura:if isTrue="{!v.type == 'RICHTEXTAREA'}">
+                                <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                    <lightning:inputRichText value="{!v.value}" aura:id="{!v.col}"  onblur="{!c.updateVal}" />
+                                    <aura:set attribute="else">
+                                        <aura:unescapedHtml value="{!v.value}"/>
+                                        <aura:if isTrue="{!v.editable}">
+                                            <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                                <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                                <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                            </button>
+                                        </aura:if>
+                                    </aura:set>
+                                </aura:if>
+                            </aura:if>
+                        
+                        <aura:if isTrue="{!v.type == 'URL'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:inputURL value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                <aura:set attribute="else">
+                                    <ui:outputURL value="{!v.value}" label="{!v.value}" class="paddZero"/>
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.type == 'PICKLIST'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:inputSelect aura:id="picklist" value="{!v.value}" mouseover="{!c.doInit}" change="{!c.onSelectChange}"  class="plStyle" options="{!v.picklistOptions}"/>
+                                <aura:set attribute="else">
+                                    <ui:outputText value="{!v.valueLabel}" class="paddZero"/>
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.type == 'REFERENCE'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                               <c:SL_DynamicLookup sObjectAPIName="{!v.parentObj}"
+                                                    selRecId="{!v.selectedID}"
+                                                    selRecName="{!v.value}"
+                                                    FieldApiName="{!v.fieldPath}"/>
+                                <aura:set attribute="else">
+                                    <a aura:id="{!v.selectedID}" id="{!v.selectedID}"  onclick="{!c.lookDetail}" >
+                                        <!-- <aura:unescapedHtml value="{!v.value}" /> -->
+                                        <ui:outputText value="{!v.value}" class="paddZero"/>
+                                    </a>
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+
+                        <aura:if isTrue="{!v.type == 'DATETIME'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:inputDateTime displayDatePicker="true" class="form-control customDate" value="{!v.value}" format="{!v.dateFormat + ' ' + timeFormat}" aura:id="{!v.col}" blur="{!c.updateVal}"/>
+                                <aura:set attribute="else">
+                                <!-- <lightning:formattedDateTime value="{!v.value}" year="numeric" month="2-digit" day="2-digit" hour="2-digit" minute="2-digit" timeZone="{!$Locale.timezone}" class="paddZero"/> -->
+                                <ui:outputDateTime value="{!v.value}" format="{!v.stdDateTimeFormat}"/> 
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+
+                        <aura:if isTrue="{!v.type == 'MULTIPICKLIST'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <c:SL_MultiSelectPick options="{!v.picklistOptions}" 
+                                                        selectedItems="{!v.selectedItems}" 
+                                                        fieldApi="{!v.fieldPath}" />
+                                <aura:set attribute="else">
+                                    <aura:unescapedHtml value="{!v.valueLabel}" />
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+
+                        <aura:if isTrue="{!v.type == 'ENCRYPTEDSTRING'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:inputSecret class="field" value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                <aura:set attribute="else">
+                                        <!-- <ui:outputText value="{!v.value}" class="paddZero"/> -->
+                                        XXXXXXXX
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+
+                        <aura:if isTrue="{!v.type == 'TIME'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <lightning:input type="time"  name="time" value="{!v.valueEdit}" aura:id="{!v.col}" onblur="{!c.timeField}"/>
+                                <aura:set attribute="else">
+                                    <!-- <lightning:formattedTime value="{!v.value}" /> -->
+                                       <span class="paddZero"> {!v.value} </span>
+                                    <aura:if isTrue="{!v.editable}">
+                                        <button onclick="{!c.handleClick}" class="slds-button slds-button_icon slds-float_right slds-button_icon slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                            <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                            <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                        </button>
+                                    </aura:if>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+
+                        <aura:if isTrue="{!v.type == 'ID'}">
+                            <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                <ui:outputText class="field" value="{!v.value}" aura:id="{!v.col}" />
+                                <aura:set attribute="else">
+                                    <ui:outputText value="{!v.value}" />
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+                    </span>
+                </span>
+            </div>
+            <aura:set attribute="else">
+                <div class="{!(v.isEdit == false ? 'slds-border_bottom':'')}" style="width: 100%; height: 100%; padding-bottom: 2px; padding-top: 7px;">
+                    <div style="{!(v.isEdit == true ? 'display: inline-block; width: 100%;': 'display: inline-block; width: 90%;')}">
+                        <div>
+                            <span>
+                                <div class="slds-truncate" style="width:38%; color: rgb(62, 62, 60); font-size: 0.75rem; display: inline-block; padding-right: 5px; vertical-align: top;">
+                                    {!v.label}
+                                    <aura:if isTrue="{!!empty(v.helpText)}">
+                                        <lightning:helptext content="{!v.helpText}" class="helpText"/>
+                                    </aura:if>
+                                </div>
+                                <div class="{!(v.isEdit == false ? 'slds-truncate':'')}" style="width: 62%; font-size: 0.875rem; color: rgb(8, 7, 7); display: inline-block; vertical-align: top;"  data-automationFieldLabel="{!v.label}" data-automationFieldValue="{!v.value}" data-automationFieldType="{!v.type}" data-automationIsEditable="{!v.editable}" >
+                                    
+                                    <aura:if isTrue="{!v.type == 'STRING' || v.type == 'PHONE' || v.type == 'COMBOBOX'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:inputText value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                            <aura:set attribute="else">
+                                                <!-- <ui:outputText value="{!v.value}"/> -->
+                                                <aura:if isTrue="{!v.editable}">
+                                                    <ui:outputText value="{!v.value}" class="paddZero textwrap"/>
+                                                    <aura:set attribute="else">
+                                                        <aura:unescapedHtml value="{!v.value}"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'BOOLEAN'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:inputCheckbox value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                            <aura:set attribute="else">
+                                                <ui:outputCheckbox value="{!v.value}" class="paddZero"/>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'CURRENCY'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:inputCurrency value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                            <aura:set attribute="else">
+                                                <ui:outputCurrency value="{!v.value}" format="{!v.formatVal}" currencySymbol="{!$Locale.currency}" />
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'DOUBLE' || v.type == 'INTEGER' }">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:inputNumber value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                            <aura:set attribute="else">
+                                                <ui:outputNumber value="{!v.value}" format="{!v.formatVal}" class="paddZero"/>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'PERCENT' }">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <lightning:input aura:id="{!v.col}" type="number" value="{!v.value}" min="0" max="100" onblur="{!c.updateVal}"/>
+                                            <aura:set attribute="else">
+                                                <lightning:formattedNumber value="{!v.value}" style="percent" maximumFractionDigits="{!v.decimalCount}" minimumFractionDigits="{!v.decimalCount}"/> <!-- <ui:outputNumber value="{!v.value}" format="{!v.formatVal}" class="paddZero"/> -->
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'EMAIL'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:inputEmail value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                            <aura:set attribute="else">
+                                                <ui:outputEmail value="{!v.value}" class="paddZero"/>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'DATE'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:inputDate value="{!v.value}" aura:id="{!v.col}" format="{!$Locale.dateFormat}" displayDatePicker="true" blur="{!c.updateVal}" />
+                                            <aura:set attribute="else">
+                                                <ui:outputDate value="{!v.value}" format="{!v.stdDateFormat}"/> 
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'TEXTAREA'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:inputTextArea value="{!v.value}" aura:id="{!v.col}" rows="3" blur="{!c.updateVal}" />
+                                            <aura:set attribute="else">
+                                                <span class="paddZero textwrap">
+                                                    <aura:unescapedHtml value="{!v.value}" />
+                                                </span>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'RICHTEXTAREA'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <lightning:inputRichText value="{!v.value}" aura:id="{!v.col}"  onblur="{!c.updateVal}" />
+                                            <aura:set attribute="else">
+                                                <span class="paddZero textwrap">
+                                                    <aura:unescapedHtml value="{!v.value}"/>
+                                                </span>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'URL'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:inputURL value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                            <aura:set attribute="else">
+                                                <ui:outputURL value="{!v.value}" label="{!v.value}" class="paddZero"/>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'PICKLIST'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:inputSelect aura:id="picklist" value="{!v.value}" mouseover="{!c.doInit}" change="{!c.onSelectChange}"  class="plStyle" options="{!v.picklistOptions}"/>
+                                            <aura:set attribute="else">
+                                                <ui:outputText value="{!v.valueLabel}" class="paddZero"/>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'REFERENCE'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <c:SL_DynamicLookup sObjectAPIName="{!v.parentObj}"
+                                                                selRecId="{!v.selectedID}"
+                                                                selRecName="{!v.value}"
+                                                                FieldApiName="{!v.fieldPath}"/>
+                                            <aura:set attribute="else">
+                                                <a aura:id="{!v.selectedID}" id="{!v.selectedID}"  onclick="{!c.lookDetail}" >
+                                                    <ui:outputText value="{!v.value}" class="paddZero"/>
+                                                </a>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'DATETIME'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:inputDateTime displayDatePicker="true" class="form-control customDate" value="{!v.value}" format="{!v.dateFormat + ' ' + timeFormat}" aura:id="{!v.col}" blur="{!c.updateVal}"/>
+                                            <aura:set attribute="else">
+                                                <ui:outputDateTime value="{!v.value}" format="{!v.stdDateTimeFormat}"/> 
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'MULTIPICKLIST'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <c:SL_MultiSelectPick options="{!v.picklistOptions}" 
+                                                                selectedItems="{!v.selectedItems}" 
+                                                                fieldApi="{!v.fieldPath}" />
+                                            <aura:set attribute="else">
+                                                <aura:unescapedHtml value="{!v.valueLabel}" />
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'ENCRYPTEDSTRING'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:inputSecret class="field" value="{!v.value}" aura:id="{!v.col}" blur="{!c.updateVal}" />
+                                            <aura:set attribute="else">
+                                                <!-- <ui:outputText value="{!v.value}" class="paddZero"/> -->
+                                                XXXXXXXX
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'TIME'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <lightning:input type="time"  name="time" value="{!v.valueEdit}" aura:id="{!v.col}" onblur="{!c.timeField}"/>
+                                            <aura:set attribute="else">
+                                                <span class="paddZero"> {!v.value} </span>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                    <aura:if isTrue="{!v.type == 'ID'}">
+                                        <aura:if isTrue="{!and(v.isEdit, v.editable)}">
+                                            <ui:outputText class="field" value="{!v.value}" aura:id="{!v.col}" />
+                                            <aura:set attribute="else">
+                                                <ui:outputText value="{!v.value}" />
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <div style="display: inline-block; width: 10%; vertical-align: top;" class="{!(v.isEdit == true? 'slds-hide':'')}">
+                        <div class="{!(v.isEdit == false ? 'slds-truncate':'')}" style="text-align: right;">
+                            <span>
+                                <span>
+                                    <aura:if isTrue="{!!v.isEdit}">
+                                        <aura:if isTrue="{!v.editable}">
+                                            <button onclick="{!c.handleClick}" class="slds-button slds-button_icon-small" title="{!'Edit ' + v.label}">
+                                                <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit" class="editBtnStyle" />
+                                                <span class="slds-assistive-text">{!'Edit ' + v.label}</span>
+                                            </button>
+                                        </aura:if>
+                                    </aura:if>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </aura:set>
+        </aura:if>
+    </div>     
+    
+</aura:component>

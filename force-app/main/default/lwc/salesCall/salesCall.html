@@ -1,0 +1,716 @@
+<!------------------------------------------------
+ * IMPORTANT!
+ * When rearranging lookups in markup, 
+ * make sure that the index value passed 
+ * in corresponds to its position on the page
+ * ---------------------------------------------->
+ <!-- Changes done by SC-010116 
+      Added class="slds-p-bottom_x-large" and removed class="formContainer"
+-->
+<template>
+    <div class="slds-p-bottom_x-large">
+        <lightning-record-edit-form class="sales-call-form" density="Comfy" record-id={callRecordId}
+            object-api-name="Call__c" onload={handleFormLoad} onsubmit={handleSubmit} onerror={handleError}
+            onsuccess={handleSuccess}>
+            <header class={headerClass}>
+                <h2 id="modal-heading-01" class={titleClass}>{modalHeader}</h2>
+            </header>
+            <!-- added below div to show buttons as part of SC-008816 -->
+            <header class="slds-modal__header" style="text-align: right;">
+                <lightning-button variant="neutral" label="Cancel" title="Close modal without making changes"
+                    onclick={cancelOnClick}>
+                </lightning-button>
+                <span if:true={renderSave}>
+                    <lightning-button class="slds-m-left_small" variant="brand" type="submit" label={buttonLabel}
+                        title={buttonTitle} onclick={saveOnClick}>
+                    </lightning-button>
+                </span>
+                <span if:true={renderSubmit}>
+                    <lightning-button class="slds-m-left_small" variant="brand" type="submit" label="Save & Submit"
+                        title="Submit" onclick={submitOnclick}>
+                    </lightning-button>
+                </span>
+            </header>
+            <div class={contentClass}>
+                <div if:true={isViewOnly}>
+                    <!-- <div class="demo-only" style="height:4rem"> -->
+                    <div class="slds-notify_container slds-is-relative">
+                        <div class="slds-notify slds-notify_toast slds-theme_info info-color" role="status">
+                            <!-- <span class="slds-assistive-text"></span> -->
+                            <span
+                                class="slds-icon_container slds-icon-utility-info slds-m-right_small slds-no-flex slds-align-top">
+                                <lightning-icon alternative-text="info" icon-name="utility:info" size="small"
+                                    variant="inverse"></lightning-icon>
+                            </span>
+                            <div class="slds-notify__content">
+                                <h2 class="slds-text-heading_small">{isViewOnlyMessage}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <div class="slds-section">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Call Information">Call
+                            Information</span>
+                    </h3>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <!-- Left column -->
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-combobox disabled={isViewOnly} label="Sub Type" class="ltng-input-fields"
+                            placeholder="Select Subtype" data-id="subtype" options={subTypeOptions}
+                            onchange={handleSubTypeChange} value={subTypeValue}>
+                        </lightning-combobox>
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields" value={activityDate}
+                            field-name="ZTS_EU_Start_Date_Time__c" data-name="ZTS_EU_Start_Date_Time__c" required>
+                        </lightning-input-field>
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields"
+                            field-name="ZTS_EU_Duration__c" data-name="ZTS_EU_Duration__c" required>
+                            <!-- added required flag for SC-008816 -->
+                        </lightning-input-field>
+                        <lightning-output-field disabled={isViewOnly} class="ltng-input-fields"
+                            field-name="ZTS_EU_End_Date_Time__c">
+                        </lightning-output-field>
+                    </div>
+                    <!-- Right column -->
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input-field disabled={isViewOnly} class="account-field ltng-input-fields"
+                            field-name="ZTS_EU_Account__c" data-name="ZTS_EU_Account__c" onchange={getCompetitor}>
+                        </lightning-input-field>
+                        <lightning-output-field disabled={isViewOnly} class="ltng-input-fields"
+                            field-name="ZTS_EU_Status__c">
+                        </lightning-output-field>
+                        <lightning-output-field class="ltng-input-fields" field-name="ZTS_EU_Submitted_Date__c">
+                        </lightning-output-field>
+                    </div>
+
+                    <div class="slds-col slds-size_2-of-2">
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields"
+                            field-name="ZTS_EU_Call_Objectives__c" data-name="ZTS_EU_Call_Objectives__c">
+                        </lightning-input-field>
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields"
+                            field-name="ZTS_EU_Additional_Notes__c" ata-name="ZTS_EU_Additional_Notes__c">
+                        </lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_2-of-2">
+                        <div class="ltng-input-fields">
+                            <!-- changed objects value to Affiliation(SC-008075) -->
+                            <c-lookup selection={initialAttendees} objects="ZTS_EU_Affiliations__c"
+                                errors={attendeeErrors} onsearch={handleSearch}
+                                onselectionchange={handleSelectionChange} label="Attendees"
+                                placeholder="Search Attendees by Contact Name and Email" is-multi-entry="true"
+                                component-index="0" is-disabled={isViewOnly} display-type="attendee"></c-lookup>
+                            <div class="new-contact-container" if:false={isViewOnly}>
+                                <div if:false={showNewContactform}>
+                                    <lightning-button variant="base" label="Add New Contact" title="Add Contact"
+                                        onclick={toggleNewContactForm} class="slds-m-left_x-small"></lightning-button>
+                                </div>
+                                <div if:true={showNewContactform} class="new-contact-form-container">
+                                    <lightning-record-edit-form class="create-contact-form" density="Comfy" record-id=""
+                                        object-api-name="Contact" onsubmit={handleCreateContactSubmit}
+                                        onsuccess={handleCreateContactSuccess} onerror={handleCreateContactError}>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="10" required
+                                                    class="new-contact-ltng-input-fields" field-name="FirstName"
+                                                    onchange={handleContactValueChange} data-name="FirstName">
+                                                    <!--saving input value in variable (SC-008149)-->
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="40"
+                                                    class="new-contact-ltng-input-fields"
+                                                    field-name="ZTS_US_Account_influence__c"
+                                                    onchange={handleContactValueChange}
+                                                    data-name="ZTS_US_Account_influence__c">
+                                                    <!--saving input value in variable (SC-008149)-->
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="10" required
+                                                    class="new-contact-ltng-input-fields" field-name="LastName"
+                                                    onchange={handleContactValueChange} data-name="LastName">
+                                                    <!--saving input value in variable (SC-008149)-->
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="20" required
+                                                    class="new-contact-ltng-input-fields"
+                                                    field-name="ZTS_US_Profession__c"
+                                                    onchange={handleContactValueChange}
+                                                    data-name="ZTS_US_Profession__c">
+                                                    <!--saving input value in variable (SC-008149)-->
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="30"
+                                                    class="new-contact-ltng-input-fields"
+                                                    field-name="Interface_Email__c" onchange={handleContactValueChange}
+                                                    data-name="Interface_Email__c">
+                                                    <!--saving input value in variable (SC-008149)-->
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="50" required
+                                                    class="new-contact-ltng-input-fields"
+                                                    field-name="ZTS_US_Job_Function__c"
+                                                    onchange={handleContactValueChange}
+                                                    data-name="ZTS_US_Job_Function__c">
+                                                    <!--saving input value in variable (SC-008149)-->
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="60"
+                                                    class="new-contact-ltng-input-fields" field-name="Phone"
+                                                    onchange={handleContactValueChange} data-name="Phone">
+                                                    <!--saving input value in variable (SC-008149)-->
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="70"
+                                                    class="new-contact-ltng-input-fields" field-name="Title"
+                                                    onchange={handleContactValueChange} data-name="Title">
+                                                </lightning-input-field>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <lightning-input-field tab-index="80"
+                                                    class="new-contact-ltng-input-fields"
+                                                    field-name="ZTS_US_Primary_Species__c"
+                                                    onchange={handleContactValueChange}
+                                                    data-name="ZTS_US_Primary_Species__c">
+                                                </lightning-input-field>
+                                            </div>
+                                            <div
+                                                class="slds-col slds-size_2-of-2 slds-align_absolute-center contact-buttons">
+                                                <lightning-button class="slds-m-left_small" variant="brand"
+                                                    type="submit" label="Save" title="Save">
+                                                </lightning-button>
+                                                <lightning-button class="slds-m-left_small" variant="neutral"
+                                                    label="Cancel" title="Close modal without making changes"
+                                                    onclick={handleCreateContactCancel}>
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    </lightning-record-edit-form>
+
+                                    <!-- <lightning-record-form
+                                        record-id=""
+                                        record-type-id="0123K0000008V2oQAE"
+                                        object-api-name="Contact"
+                                        fields={fields}
+                                        columns="2"
+                                        mode="edit"
+                                        onsubmit={handleCreateContactSubmit}
+                                        onsuccess={handleCreateContactSuccess}
+                                        oncancel={handleCreateContactCancel}
+                                        onerror={handleCreateContactError}
+                                        onload={handleCreateContactLoad}>
+                                    </lightning-record-form> -->
+                                </div>
+
+                                <div if:true={isContactProcessing}>
+                                    <lightning-spinner alternative-text="Loading" size="medium" class="medium-height">
+                                    </lightning-spinner>
+                                </div>
+
+                                <!-- below section to show duplicate contact (SC-008149) -->
+                                <!-- Uncommmened with TPDEV-320, as it should be for SC-008149-->
+                                <template if:true={showDupContactModal}>
+                                    <div class="slds-modal slds-fade-in-open slds-backdrop">
+                                        <div class="slds-modal__container duplicate-container-override">
+
+                                            <div class="slds-modal__header" style="background-color:coral;">
+                                                <h2> <b>Duplicates Detected!!</b></h2>
+                                            </div>
+
+                                            <div
+                                                class="slds-modal__content scrollable duplicate-content-override slds-p-around_medium">
+                                                <div class="slds-align_absolute-center">
+                                                    {duplicateContactMessage}
+                                                </div>
+                                            </div>
+
+                                            <template if:true={showDupContactTable}>
+
+                                                <lightning-datatable key-field="id" data={conRecords}
+                                                    onrowselection={handleRowSelection} max-row-selection=1
+                                                    columns={conColumns} class="eighty-percent">
+                                                </lightning-datatable>
+                                            </template>
+                                            <div class="slds-modal__footer">
+
+                                                <lightning-button icon-name="utility:check"
+                                                    label="Add Selected Contact to Call" variant="brand"
+                                                    onclick={addContactToCall}>
+                                                </lightning-button> &nbsp;&nbsp;
+                                                <lightning-button icon-name="utility:save" label="Create Duplicate"
+                                                    variant="brand" onclick={saveDuplicateContact}>
+                                                </lightning-button> &nbsp;&nbsp;
+                                                <lightning-button icon-name="utility:close" label="Cancel"
+                                                    variant="brand" onclick={cancelDuplicateContact}>
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="ltng-input-fields">
+                            <c-lookup selection={initialDiscussions}
+                                objects="ZTS_EU_Species_Product__c,Campaign,ZTS_EU_Discussion_Item__c"
+                                errors={discussionErrors} onsearch={handleSearch}
+                                onselectionchange={handleSelectionChange} label="Discussions"
+                                placeholder="Search Brands, Campaigns, and Programs" is-multi-entry="true"
+                                component-index="1" is-disabled={isViewOnly}></c-lookup>
+                        </div>
+                        <div class="ltng-input-fields">
+                            <c-lookup selection={initialColleagues} objects="User" errors={colleagueErrors}
+                                onsearch={handleSearch} onselectionchange={handleSelectionChange} label="Colleagues"
+                                placeholder="Search Colleagues" is-multi-entry="true" component-index="2"
+                                is-disabled={isViewOnly}></c-lookup>
+                        </div>
+                        <div class="ltng-input-fields">
+                            <c-lookup selection={initialSampleDrops} objects="ZTS_US_Sample__c"
+                                errors={sampleDropErrors} onsearch={handleSearch}
+                                onselectionchange={handleSelectionChange} label="Sample Drops"
+                                placeholder="Search Sample Drops" is-multi-entry="true" component-index="3"
+                                is-disabled={isViewOnly} display-type="sample"></c-lookup>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-section">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Follow Up Activities">Follow Up
+                            Activities</span>
+                    </h3>
+                </div>
+                <div class="">
+                    <div class="followup-container">
+                        <div class="followup-header row">
+                            <div class="slds-grid">
+                                <div class="assign-to-column">
+                                    <span class="header-span">Assigned To</span>
+                                </div>
+                                <div class="subject-column">
+                                    <span class="header-span">Task/Lead Subject</span>
+                                </div>
+                                <div class="due-date-column">
+                                    <span class="header-span">Due Date</span>
+                                </div>
+                                <div class="priority-column">
+                                    <span class="header-span">Priority</span>
+                                </div>
+                                <div class="status-column">
+                                    <span class="header-span">Status</span>
+                                </div>
+                                <div class="follow-up-item-column">
+                                    <span class="header-span">Follow-up Item</span>
+                                </div>
+                                <div class="button-column">
+
+                                </div>
+                            </div>
+                        </div>
+                        <template for:each={followUpActivities} for:item="task" for:index="taskInd">
+                            <div key={task.taskLookupIndex} class="row task-row">
+                                <div key={task.taskLookupIndex} class="slds-grid">
+                                    <div class="assign-to-column">
+                                        <!--Do not make change here for now-->
+                                        <div class="lookup-input">
+                                            <c-lookup selection={task.owner} objects="User" errors={taskErrors}
+                                                onsearch={handleSearch} onselectionchange={handleSelectionChange}
+                                                label="" placeholder="Search Users"
+                                                component-index={task.taskLookupIndex} is-disabled={isViewOnly}>
+                                            </c-lookup>
+                                        </div>
+                                    </div>
+                                    <div class="subject-column">
+                                        <lightning-input data-item={task.taskLookupIndex} data-id="subject"
+                                            value={task.subject} type="text" label="" disabled={isViewOnly}
+                                            variant="label-hidden" onchange={handleTaskChange}>
+                                        </lightning-input>
+                                    </div>
+                                    <div class="due-date-column">
+                                        <lightning-input data-item={task.taskLookupIndex} data-id="activityDate"
+                                            value={task.activityDate} type="date" label="" disabled={isViewOnly}
+                                            variant="label-hidden" onchange={handleTaskChange}>
+                                        </lightning-input>
+                                    </div>
+                                    <div class="priority-column">
+                                        <lightning-combobox data-item={task.taskLookupIndex} data-id="priority"
+                                            name="priority" label="" value={task.priority} placeholder="Select Priority"
+                                            options={priorityOptions} variant="label-hidden" onchange={handleTaskChange}
+                                            disabled={isViewOnly} required>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="status-column">
+                                        <lightning-combobox data-item={task.taskLookupIndex} data-id="status"
+                                            name="status" label="" value={task.status} placeholder="Select Status"
+                                            options={statusOptions} variant="label-hidden" onchange={handleTaskChange}
+                                            disabled required>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="followup-column">
+                                        <div class="lookup-input">
+                                            <c-lookup selection={task.followup} objects="ZTS_EU_Species_Product__c"
+                                                errors={taskErrors} onsearch={handleSearch}
+                                                onselectionchange={handleSelectionChange} label=""
+                                                placeholder="Search Follow-Up"
+                                                component-index={task.taskItemLookupIndex} is-disabled={isViewOnly}>
+                                            </c-lookup>
+                                        </div>
+                                    </div>
+
+                                    <div class="button-column slds-m-left_xx-small slds-m-top_x-small">
+                                        <lightning-button-icon data-item={task.taskLookupIndex} variant="bare"
+                                            size="large" icon-name="utility:delete" alternative-text="Delete"
+                                            class="slds-m-left_xx-small" title="Delete" value={task.taskId}
+                                            onclick={handleDelete} disabled={isViewOnly}>
+                                        </lightning-button-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <div if:false={isViewOnly}>
+                            <lightning-button variant="base" label="Add Follow Up Activity"
+                                title="Add Follow Up Activity" onclick={addFollowUpActivity}
+                                class="slds-m-left_x-small"></lightning-button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Added for competitor details (SC-009358) in US Call page -->
+                <div class="slds-section">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="competitors">Competitors</span>
+                    </h3>
+                </div>
+                <div class="followup-header row">
+                    <div class="slds-grid">
+                        <div class="competitor-column">
+                            <span class="header-span header-span-padding">Manufacturer</span>
+                        </div>
+                        <div class="competitor-column">
+                            <span class="header-span header-span-padding">Category</span>
+                        </div>
+                        <div class="competitor-column">
+                            <span class="header-span header-span-padding">Rx Competitor Product</span>
+                        </div>
+                       <!-- <div class="checkbox-column">
+                            <span class="header-span header-span-padding">Category Lost?</span>
+                        </div> -->
+                        <div class="competitor-column">
+                            <span class="header-span header-span-padding">Dx Competitor Product</span>
+                        </div>
+                        <div class="competitor-column">
+                            <span class="header-span header-span-padding">Date Contract Expires</span>
+                            <lightning-helptext
+                                content="If you don't know the date the contract expires or no contract was mentioned, please provide the date you would like to follow up with the customer on this competitor.">
+
+                            </lightning-helptext>
+                        </div>
+                        <div class="delete-comp-column">
+                        </div>
+                    </div>
+                </div>
+                <template for:each={competitors} for:item="item" for:index="itemInd">
+                    <template if:true={item.Competitor__c}>
+                        <!-- existing competitor record details in grid -->
+                        <lightning-record-edit-form key={item.Id} data-index={itemInd}
+                            object-api-name="ZTS_Competitor__c" density="Comfy" record-id={item.Competitor__c}
+                            onsubmit={handleExsCompSaveSubmit} onsuccess={handleExsCompSaveSuccess}
+                            onerror={handleExsCompSaveError}>
+                            <div class="row task-row">
+                                <div class="slds-grid">
+                                    <div class="competitor-column">
+                                        <lightning-input-field variant="label-hidden" field-name="Manufacturer__c"
+                                            data-index={itemInd} data-item={item.Competitor__c}
+                                            onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="competitor-column">
+                                        <lightning-input-field variant="label-hidden" field-name="US_Category__c"
+                                            data-index={itemInd} data-item={item.Competitor__c}
+                                            onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="competitor-column">
+                                        <lightning-input-field variant="label-hidden" field-name="Rx_Competitor_Product__c"
+                                            data-index={itemInd} data-item={item.Competitor__c}
+                                            onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                    </div>
+                                  <!-- <div class="checkbox-column checkbox-field">
+                                        <lightning-input-field variant="label-hidden" type="checkbox"
+                                            field-name="Lost_Category_to_competitor__c" data-index={itemInd}
+                                            data-item={item.Competitor__c} onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                        <lightning-output-field variant="label-hidden"
+                                            field-name="Lost_Category_to_competitor__c">
+                                        </lightning-output-field> 
+                                    </div> -->
+                                    <div class="competitor-column">
+                                        <lightning-input-field variant="label-hidden" field-name="Dx_Competitor_Product__c"
+                                            data-index={itemInd} data-item={item.Competitor__c}
+                                            onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="competitor-column">
+                                        <lightning-input-field variant="label-hidden"
+                                            field-name="Date_Contract_Expires__c" data-index={itemInd} type="date"
+                                            data-item={item.Competitor__c} onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="button-column">
+                                        <!-- <div class="button-column slds-m-left_xx-small slds-m-top_x-small"> -->
+                                        <lightning-button-icon variant="bare" size="large" icon-name="utility:delete"
+                                            alternative-text="Delete" class="slds-m-left_xx-small" title="Delete"
+                                            value={item.Competitor__c} onclick={deleteCompetitorSelection}
+                                            disabled={isDisabled}>
+                                        </lightning-button-icon>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning-record-edit-form>
+                    </template>
+                    <template if:false={item.Competitor__c}>
+                        <!-- existing competitor record details in grid -->
+                        <lightning-record-edit-form key={item.Id} data-index={itemInd}
+                            object-api-name="ZTS_Competitor__c" density="Comfy" record-id={item.Id}
+                            onsubmit={handleExsCompSaveSubmit} onsuccess={handleExsCompSaveSuccess}
+                            onerror={handleExsCompSaveError}>
+                            <div class="row task-row">
+                                <div class="slds-grid">
+                                    <div class="competitor-column">
+                                        <lightning-input-field variant="label-hidden" field-name="Manufacturer__c"
+                                            data-index={itemInd} data-item={item.Id} onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="competitor-column">
+                                        <lightning-input-field variant="label-hidden" field-name="US_Category__c"
+                                            data-index={itemInd} data-item={item.Id} onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="competitor-column">
+                                        <lightning-input-field variant="label-hidden" field-name="Rx_Competitor_Product__c"
+                                            data-index={itemInd} data-item={item.Id} onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                    </div>
+                                   <!-- <div class="checkbox-column checkbox-field">
+                                        <lightning-input-field variant="label-hidden" type="checkbox"
+                                            field-name="Lost_Category_to_competitor__c" data-index={itemInd}
+                                            data-item={item.Id} onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                    </div> -->
+                                    <div class="competitor-column">
+                                        <lightning-input-field variant="label-hidden" field-name="Dx_Competitor_Product__c"
+                                            data-index={itemInd} data-item={item.Id} onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="competitor-column">
+                                        <lightning-input-field variant="label-hidden"
+                                            field-name="Date_Contract_Expires__c" data-index={itemInd} type="date"
+                                            data-item={item.Id} onchange={handleCompChange}>
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="button-column">
+                                        <!-- <div class="button-column slds-m-left_xx-small slds-m-top_x-small"> -->
+                                        <lightning-button-icon variant="bare" size="large" icon-name="utility:delete"
+                                            alternative-text="Delete" class="slds-m-left_xx-small" title="Delete"
+                                            value={item.Id} data-index={itemInd} onclick={deleteCompetitorSelection}
+                                            disabled={isDisabled}>
+                                        </lightning-button-icon>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning-record-edit-form>
+                    </template>
+                </template>
+                <div class="new-contact-container" if:false={isViewOnly}>
+                    <div if:false={showNewCompetitorform}>
+                        <lightning-button variant="base" label="Add New Competitor" title="Add New Competitor"
+                            onclick={toggleNewCompForm} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                    <div if:true={showNewCompetitorform} class="new-contact-form-container">
+                        <lightning-record-edit-form class="create-competitor-form" density="Comfy" record-id=""
+                            object-api-name="ZTS_Competitor__c" onsubmit={handleCreateCompSubmit}
+                            onsuccess={handleCreateCompSuccess} onerror={handleCreateCompError}>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field tab-index="10" required class="new-contact-ltng-input-fields"
+                                        field-name="Manufacturer__c" data-name="Manufacturer__c">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field tab-index="20" class="new-contact-ltng-input-fields"
+                                        field-name="Other_Manufacturer__c" data-name="Other_Manufacturer__c">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field tab-index="30" class="new-contact-ltng-input-fields"
+                                        field-name="Species__c" data-name="Species__c" required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field tab-index="40" type="checkbox"
+                                        field-name="Lost_Category_to_competitor__c"
+                                        data-name="Lost_Category_to_competitor__c">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <!-- <label class="slds-form-element__label">
+                                        <abbr class="slds-required" title="required">*</abbr>
+                                        <span class="slds-m-right_x-small">Date Contract Expires</span>
+                                        <lightning-helptext content="text for help">
+                                        </lightning-helptext>
+                                    </label> -->
+                                    <lightning-input-field tab-index="50" required class="new-contact-ltng-input-fields"
+                                        type="date" field-name="Date_Contract_Expires__c"
+                                        data-name="Date_Contract_Expires__c">
+                                    </lightning-input-field>
+                                    <div class="slds-form-element__help" id="helptext"> <b>Note:</b> If you don't know
+                                        the <b>date the contract expires</b> or no contract was mentioned, please
+                                        provide the
+                                        date you would like to
+                                        follow up with the customer on this competitor.</div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field tab-index="60" class="new-contact-ltng-input-fields"
+                                        type="date" field-name="Date_Lost__c" data-name="Date_Lost__c">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field tab-index="70" required class="new-contact-ltng-input-fields"
+                                        type="date" field-name="US_Category__c" data-name="US_Category__c" onchange={checkRxProduct}>
+                                    </lightning-input-field>
+                                </div>
+                                <template if:true={isProductVisible}>
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <lightning-input-field tab-index="70" class="new-contact-ltng-input-fields"
+                                            field-name="Rx_Competitor_Product__c" data-name="Rx_Competitor_Product__c">
+                                        </lightning-input-field>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field tab-index="70" required class="new-contact-ltng-input-fields"
+                                        type="date" field-name="Dx_Competitor_Product__c" data-name="Dx_Competitor_Product__c">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field tab-index="70"  class="new-contact-ltng-input-fields"
+                                        type="date" field-name="Competitor_Contract_Type__c" data-name="Competitor_Contract_Type__c">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_2-of-2 slds-align_absolute-center contact-buttons">
+                                    <lightning-button class="slds-m-left_small" variant="brand" type="submit"
+                                        label="Save" title="Save">
+                                    </lightning-button>
+                                    <lightning-button class="slds-m-left_small" variant="neutral" label="Cancel"
+                                        title="Close modal without making changes" onclick={handleCreateCompCancel}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </lightning-record-edit-form>
+
+                    </div>
+
+                    <div if:true={isContactProcessing}>
+                        <lightning-spinner alternative-text="Loading" size="medium" class="medium-height">
+                        </lightning-spinner>
+                    </div>
+                </div>
+                <!-- End of change for Add Competitor details (SC-009358)-->
+                <div class="slds-section">
+                    <h3 class="slds-section__title slds-theme_shade">
+                        <span class="slds-truncate slds-p-horizontal_small" title="Next Call">Next Call</span>
+                    </h3>
+                </div>
+                <div class="slds-grid slds-wrap">
+
+                    <div class="slds-col slds-size_2-of-2">
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields"
+                            field-name="ZTS_EU_Next_Step__c" data-name="ZTS_EU_Next_Step__c">
+                        </lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input-field disabled={isViewOnly} class="ltng-input-fields"
+                            field-name="ZTS_EU_Next_Call_Date__c" data-name="ZTS_EU_Next_Call_Date__c">
+                        </lightning-input-field>
+                    </div>
+                </div>
+                <lightning-messages></lightning-messages>
+            </div>
+            <!-- changed the spinner class to make the page background read only.. CHANGED FOR SC-008846 -->
+            <div if:true={processing}>
+                <div class="slds-backdrop slds-fade-in-open">
+                    <lightning-spinner class="spins" size="large" variant="brand" alternative-text="Loading">
+                    </lightning-spinner>
+                </div>
+            </div>
+            <!-- below template to show duplicate call modal (SC-008846) -->
+            <div>
+                <template if:true={showDupCallModal}>
+                    <div class="slds-modal slds-fade-in-open slds-backdrop">
+                        <div class="slds-modal__container duplicate-container-override">
+
+                            <div class="slds-modal__header" style="background-color:coral;">
+                                <!--<lightning-button-icon icon-name="utility:close" alternative-text="Close this window" size="large"  
+                            variant="bare-inverse" onclick={closeModal} class="slds-modal__close">  
+                          </lightning-button-icon> -->
+                                <h2> <b>Probable Duplicates Detected!!</b></h2>
+                            </div>
+                            <div class="slds-modal__content scrollable duplicate-content-override slds-p-around_medium">
+                                <div class="slds-align_absolute-center">
+                                    {callDuplicateMessage}
+                                </div>
+                            </div>
+
+
+                            <lightning-datatable key-field="id" data={callRecords} columns={callColumns}
+                                hide-checkbox-column="true" onrowaction={handleCallRowAction}
+                                show-row-number-column="true" class="">
+                            </lightning-datatable>
+                            <!------Footer Section-->
+                            <div class="slds-modal__footer">
+
+                                <lightning-button icon-name="utility:save" label="Create Call" variant="brand"
+                                    onclick={saveDuplicateCall}>
+                                </lightning-button> &nbsp;&nbsp;
+                                <lightning-button icon-name="utility:close" label="Cancel" variant="brand"
+                                    onclick={cancelOnClick}>
+                                </lightning-button>
+                            </div>
+                            <div if:true={dupecallprocessing}>
+                                <div class="slds-backdrop slds-fade-in-open">
+                                    <lightning-spinner class="spins" size="large" variant="brand"
+                                        alternative-text="Loading"></lightning-spinner>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </template>
+            </div>
+            <footer class={footerClass}>
+                <lightning-button variant="neutral" label="Cancel" title="Close modal without making changes"
+                    onclick={cancelOnClick}>
+                </lightning-button>
+                <span if:true={renderSave}>
+                    <lightning-button class="slds-m-left_small" variant="brand" type="submit" label={buttonLabel}
+                        title={buttonTitle} onclick={saveOnClick}>
+                    </lightning-button>
+                </span>
+                <span if:true={renderSubmit}>
+                    <lightning-button class="slds-m-left_small" variant="brand" type="submit" label="Save & Submit"
+                        title="Submit" onclick={submitOnclick}>
+                    </lightning-button>
+                </span>
+            </footer>
+
+        </lightning-record-edit-form>
+    </div>
+</template>

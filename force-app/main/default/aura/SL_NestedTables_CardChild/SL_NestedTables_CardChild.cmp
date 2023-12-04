@@ -1,0 +1,36 @@
+<!--
+ - Created by jerridkimball on 2018-05-31.
+ -->
+
+<aura:component
+                description="SL_NestedTables_CardChild"
+                implements="c:SL_NestedTables_ITableMain"
+                extends="c:SL_NestedTables_CardBase"
+                >
+                
+                
+    <div class="{!( v.isIEbrowser ?  'infiniteScrollDiv show-' + v.nestedNumberOfRecords + '-rows' : 'otherBrowser') }">
+        
+        <c:SL_NestedTables_TableChild
+                                      recordCount="{!v.recordCount}"
+                                      
+                                      recordId="{!v.recordId}"
+                                      
+                                      mainObjectName="{!v.mainObjectName}"
+                                      mainFieldList="{!v.mainFieldList}"
+                                      mainTitle="{!v.mainTitle}"
+                                      mainSortField="{!v.mainSortField}"
+                                      mainSortDirection="{!v.mainSortDirection}"
+                                      mainQueryFilter="{!v.mainQueryFilter}"
+                                      mainLookupFieldName="{!v.mainLookupFieldName}"
+                                      mainEnableEditButton="{!v.mainEnableEditButton}"
+                                      mainEnableDeleteButton="{!v.mainEnableDeleteButton}"
+                                      mainColumnWidths="{!v.mainColumnWidths}"
+                                      
+                                      nestedNumberOfRecords="{!v.nestedNumberOfRecords}"
+                                      isIEbrowser1="{!v.isIEbrowser}"
+                                      
+                                      profileAccessForObject="{!v.profileAccessForObject}"
+                                      />
+    </div>
+</aura:component>

@@ -1,0 +1,25 @@
+<template>
+    <div class="slds-m-bottom_none slds-section has-header slds-is-open">
+        <h3 class="slds-section__title">
+            <button onclick={handleToggleClick} class="slds-section__title-action slds-button ">
+                <span class="slds-icon_container slds-m-right_x-small">
+                    <lightning-icon icon-name={iconName} size="x-small"></lightning-icon>
+                </span>
+                <span class="slds-truncate">
+                    {sectionHeader}
+                </span>
+            </button>
+        </h3>
+        <div class={cssClass}>
+            <div class="section-body">
+                <lightning-record-form
+                        record-id={recordId}
+                        object-api-name={objectApiName}
+                        columns="2"
+                        fields={fields}
+                        mode="view">
+                </lightning-record-form>
+            </div>
+        </div>
+    </div>
+</template>

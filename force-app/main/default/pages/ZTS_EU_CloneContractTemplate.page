@@ -1,0 +1,20 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_CloneContractTemplate
+* Description   :   This is the page which creates a Product Contract Template Association record 
+                    when the 'Clone Template' button is clicked on the Contract Template.                       
+
+* @author       :   CloudSense (Bimba)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     21st-Nov-14   CloudSense(Bimba)   Created the vf page.
+
+********************************************************************************************************************************************
+-->
+
+
+<apex:page standardController="ZTS_EU_ContractTemplate__c" extensions="ZTS_EU_CloneContractTemplateExtn" action="{!clonePCTA}" > 
+    <apex:messages />
+</apex:page>

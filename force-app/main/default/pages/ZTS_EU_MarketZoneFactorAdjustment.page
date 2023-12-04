@@ -1,0 +1,495 @@
+<apex:page id="pg" controller="ZTS_EU_MarketZoneFactorAdjustmentCtrl" tabstyle="ZTS_EU_Potential_Brands__c" LightningStyleSheets="true">
+
+   <apex:slds />
+   <style>
+        body select:focus, body select:active, body select[size="0"]:focus, body select[size="0"]:active, body select[size="1"]:focus, body select[size="1"]:active, 
+        .slds-vf-scope select:focus, .slds-vf-scope select:active, .slds-vf-scope select[size="0"]:focus, .slds-vf-scope select[size="0"]:active, 
+        .slds-vf-scope select[size="1"]:focus, .slds-vf-scope select[size="1"]:active
+        {
+            border: 1px solid rgb(221, 219, 218);
+            border-radius: .25rem;
+            padding: .25rem 0;
+            width: 13rem;
+            height: 15rem;
+            background-color: rgb(255, 255, 255);
+            overflow: auto;
+        }
+        body select[size], body select[multiple], .slds-vf-scope select[size], .slds-vf-scope select[multiple]
+        {
+            border: 1px solid rgb(221, 219, 218);
+            border-radius: .25rem;
+            padding: .25rem 0;
+            width: 13rem;
+            height: 15rem;
+            background-color: rgb(255, 255, 255);
+            overflow: auto;            
+        }
+   </style>
+   <div class="slds-scope slds-p-horizontal_medium">
+        <apex:form id="frm"> 
+    
+            <apex:actionfunction name="refreshSpecies" action="{!prepareSpecieList}" reRender="filters,specie,pb,paginationBlck,factorsTable,pageBlckTable"/>
+            <apex:actionfunction status="loading" name="displayPBRecords" action="{!sortList}" reRender="filters,paginationBlck,factorsTable,pageBlckTable">
+                <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+            </apex:actionfunction>
+            <apex:actionfunction status="loading" name="changeSpecie" action="{!changeSpecie}" reRender="filters,paginationBlck,factorsTable,pageBlckTable">
+                <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+            </apex:actionfunction>
+            <apex:actionStatus id="loading" >
+                <apex:facet name="start">
+                    <apex:image value="{!$Resource.loadingImage}" 
+                                style="height:150px;width:150px;position:absolute;margin-top:17%;margin-left:30%"/>
+                </apex:facet>
+                <apex:facet name="stop"></apex:facet>
+            </apex:actionStatus>
+            
+            <apex:outputpanel id="filters">
+                <apex:pageBlock >
+                    <table>
+                        <tr>
+                            <td><apex:outputPanel ><br></br><b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {!$Label.Select_Business_Unit_s}<br/><br/></b> </apex:outputPanel></td>
+                            <td><apex:outputPanel ><br></br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!$Label.Select_Specie_s} <br/><br/></b>  </apex:outputPanel></td>
+                            <td><apex:outputPanel rendered="{!ca}"><br></br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.Protocol_For_CA__c.Label} <br/><br/></b>  </apex:outputPanel></td>
+                            <td><apex:outputPanel rendered="{!ca}"><br></br><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.ZTS_EU_CA_Account_Type__c.Label} <br/><br/></b>  </apex:outputPanel></td> 
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <apex:selectlist size="5" value="{!selectedBu}" onchange="refreshSpecies()" id="bu">
+                                    <apex:selectOptions value="{!businessUnit}"/>
+                                </apex:selectlist>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <apex:selectlist size="5" value="{!selectedSpecie}" onchange="changeSpecie()" id="specie">
+                                    <apex:selectOptions value="{!specie}"/>
+                                </apex:selectlist>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <apex:outputpanel id="protocolpanel">
+                                    <apex:selectlist size="5" value="{!selectedProtocol}" onchange="displayPBRecords()" id="protocol" rendered="{!ca}">
+                                        <apex:selectOptions value="{!protocol}"/>
+                                    </apex:selectlist>
+                                </apex:outputpanel>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <apex:outputpanel id="accountTypepanel">
+                                    <apex:selectlist size="5" value="{!selectedAccountType}" onchange="displayPBRecords()" id="accountType" rendered="{!ca}">
+                                        <apex:selectOptions value="{!accountType}"/>
+                                    </apex:selectlist>
+                                </apex:outputpanel>
+                            </td>
+                        </tr>
+                    </table>
+                </apex:pageBlock>
+            </apex:outputpanel>
+            
+            <br/><b style="margin-left:35%;color:red"> {!$Label.Click_On_Save_Button} </b><br/>
+            <apex:pageBlock title="{!$Label.Market_Zone_Factor_Adjustment_Section}" id="pb">
+            <apex:inlineEditSupport event="ondblclick"/>
+            <apex:outputpanel style="margin-left:60%">
+                <apex:commandLink status="loading" value="A" action="{!resetPageTable}"  rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="A" name="A" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink> &nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="B" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="B" name="B" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="C" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="C" name="C" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="D" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="D" name="D" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="E" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="E" name="E" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="F" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="F" name="F" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="G" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="G" name="G" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="H" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="H" name="H" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="I" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="I" name="I" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="J" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="J" name="J" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="K" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="K" name="K" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="L" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="L" name="L" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="M" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="M" name="M" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="N" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="N" name="N" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="O" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="O" name="O" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="P" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="P" name="P" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="Q" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="Q" name="Q" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="R" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="R" name="R" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="S" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="S" name="S" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="T" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="T" name="T" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="U" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="U" name="U" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="V" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="V" name="V" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="W" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="W" name="W" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="X" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="X" name="X" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="Y" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="Y" name="Y" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="Z" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="Z" name="Z" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+                <apex:commandLink status="loading" action="{!resetPageTable}" value="All" rerender="pageBlckTable,factorsTable,paginationBlck">
+                   <apex:param value="All" name="All" assignTo="{!alphabit}" ></apex:param>
+                   <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                </apex:commandLink>&nbsp;&nbsp; 
+            </apex:outputpanel><br/>
+            <apex:outputPanel id="pageBlckTable">
+                <apex:pageBlockTable style="word-wrap: break-word;" id="PotBrandTable" var="pb" value="{!wrapperList}" 
+                 columnsWidth="1%,10%,10%,15%,5%,5%,5%,5%,5%,5%,5%,5%">
+                
+                    <apex:column headerValue="{!$Label.Select}">
+                        <apex:actionregion >
+                        <apex:inputCheckbox value="{!pb.selected}"> 
+                            <apex:actionSupport event="onchange" action="{!selection}" reRender="PotBrandTable,factorsTable,btn"/>
+                        </apex:inputcheckbox>
+                        </apex:actionregion>
+                    </apex:column>
+                    
+                    <!-- <apex:column >
+                        <apex:facet name="header">   
+                            <apex:commandLink status="loading" action="{!sortList}" value="{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.name.Label}{!IF(sortField=='name',IF(sortDirection='ASC','▼','▲'),'')}" rerender="pageBlckTable">
+                                <apex:param value="name" name="column" assignTo="{!sortField}" ></apex:param>
+                                <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:facet>
+                        <apex:commandLink action="/{!pb.pbObj.id}" target="_blank" id="clink">
+                            <apex:outputText value="{!pb.pbObj.name}" id="cval"></apex:outputText>
+                        </apex:commandlink>
+                    </apex:column>
+                    
+                    <apex:column >
+                        <apex:facet name="header">   
+                            <apex:commandLink status="loading" action="{!sortList}" value="{!$Label.Product}{!IF(sortField=='Brand__r.name',IF(sortDirection='ASC','▼','▲'),'')}" rerender="pageBlckTable">
+                                <apex:param value="Brand__r.name" name="column" assignTo="{!sortField}" ></apex:param>
+                                <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:facet>
+                        <apex:commandLink action="/{!pb.pbObj.Brand__c}" target="_blank">
+                            <apex:outputText value="{!pb.pbObj.Brand__r.name}"></apex:outputText>
+                        </apex:commandlink>
+                    </apex:column> -->
+                    <apex:column headerValue="{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.name.Label}">
+                        <apex:commandLink action="/{!pb.pbObj.id}" target="_blank" id="clink">
+                            <apex:outputText value="{!pb.pbObj.name}" id="cval"></apex:outputText>
+                        </apex:commandlink>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$Label.Product}">
+                        <apex:facet name="header">   
+                            <apex:commandLink status="loading" action="{!sortList}" value="{!$Label.Product}{!IF(sortField=='Brand__r.name',IF(sortDirection='ASC','▼','▲'),'')}" rerender="pageBlckTable">
+                                <apex:param value="Brand__r.name" name="column" assignTo="{!sortField}" ></apex:param>
+                                <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:facet>
+                        <apex:commandLink action="/{!pb.pbObj.Brand__c}" target="_blank">
+                            <apex:outputText value="{!pb.pbObj.Brand__r.name}"></apex:outputText>
+                        </apex:commandlink>
+                    </apex:column>
+                    
+                    <apex:column >
+                        <apex:facet name="header">   
+                            <apex:commandLink status="loading" action="{!sortList}" value="{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.Potential__c.Label}{!IF(sortField=='Potential__r.name',IF(sortDirection='ASC','▼','▲'),'')}" rerender="pageBlckTable">
+                                <apex:param value="Potential__r.name" name="column" assignTo="{!sortField}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:facet>
+                        <apex:commandLink action="/{!pb.pbObj.Potential__c}" target="_blank">
+                            <apex:outputText value="{!pb.pbObj.Potential__r.name}"></apex:outputText>
+                        </apex:commandlink>
+                    </apex:column>
+                     <apex:column rendered="{!ca}" headerValue="{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.ZTS_EU_CA_Account_Type__c.Label}" title="{!$Label.Double_Click_Here}">
+                        <apex:facet name="header">{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.Protocol_For_CA__c.Label}</apex:facet>
+                        <apex:outputfield value="{!pb.pbObj.Protocol_For_CA__c}" />
+                    </apex:column>  
+                    
+                    <apex:column rendered="{!ca}" headerValue="{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.ZTS_EU_CA_Account_Type__c.Label}" title="{!$Label.Double_Click_Here}">
+                        <apex:facet name="header">{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.ZTS_EU_CA_Account_Type__c.Label}</apex:facet>
+                        <apex:outputfield value="{!pb.pbObj.ZTS_EU_CA_Account_Type__c}" />
+                    </apex:column>   
+                    
+                    
+                    <apex:column headerValue="{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.Adjustment_Factor__c.Label}" title="{!$Label.Double_Click_Here}">
+                        <apex:facet name="header">{!$Label.Adjustment}<br/> {!$Label.Factor}</apex:facet>
+                        <apex:outputfield value="{!pb.pbObj.Adjustment_Factor__c}" />
+                    </apex:column>     
+                    <apex:column headerValue="MPG/SKU Mix %"  title="{!$Label.Double_Click_Here}">
+                        <apex:facet name="header">{!$Label.MPG_SKU}<br/> {!$Label.Mix}</apex:facet>
+                        <apex:outputfield value="{!pb.pbObj.MPG_SKU_Mix__c}" />
+                    </apex:column>  
+                    <apex:column headerValue="Annual Number of treatments / Animal"  title="{!$Label.Double_Click_Here}">
+                        <apex:facet name="header">{!$Label.Annual}<br/>{!$Label.Number_of}<br/>{!$Label.treatments} </apex:facet>
+                        <apex:outputfield value="{!pb.pbObj.Annual_Number_of_treatments_Animal__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Number of Doses per Animal"  title="{!$Label.Double_Click_Here}">
+                        <apex:facet name="header">{!$Label.Number_of}<br/>{!$Label.Doses}<br/>{!$Label.per_Animal}</apex:facet>
+                        <apex:outputfield value="{!pb.pbObj.Number_of_Doses_per_Animal__c}" />
+                    </apex:column>    
+                    <apex:column headerValue="{!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.Period_of_Use_Months__c.Label}"  title="{!$Label.Double_Click_Here}">
+                        <apex:facet name="header">{!$Label.Period_of_Use_Months_1}<br/>{!$Label.Period_of_Use_Months_2}</apex:facet>
+                        <apex:outputfield value="{!pb.pbObj.Period_of_Use_Months__c}" />
+                    </apex:column>    
+                    <apex:column headerValue="Number of Doses per SKU" title="{!$Label.Double_Click_Here}">
+                        <apex:facet name="header">{!$Label.Number_of}<br/>{!$Label.Doses}<br/>{!$Label.per_SKU}</apex:facet>
+                        <apex:outputfield value="{!pb.pbObj.Number_of_Doses_per_SKU__c}" />
+                    </apex:column>
+                    <apex:column headerValue="Price / SKU" title="{!$Label.Not_Editable}">
+                        <apex:outputfield value="{!pb.pbObj.Price_SKU__c}" />
+                    </apex:column>   
+                    <apex:column headerValue="Price / Doses or ml" title="{!$Label.Not_Editable}">
+                        <apex:facet name="header">{!$Label.Price_Doses}<br/>{!$Label.or_ml}</apex:facet>
+                        <apex:outputfield value="{!pb.pbObj.Price_Doses_or_ml__c}"/>
+                    </apex:column>    
+                </apex:pageBlockTable> 
+            </apex:outputPanel>
+            <br/>
+            <apex:outputPanel id="factorsTable">
+                <apex:outputPanel rendered="{!showFactors}">
+                    <apex:pageblock title="Potential Factors">
+                        <apex:pageMessages ></apex:pageMessages>
+                        <apex:pageblocksection >
+                            <apex:pageblocksectionitem >
+                                <apex:outputlabel style="font-weight:bold"> {!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.Adjustment_Factor__c.Label} </apex:outputlabel>
+                                <apex:inputText value="{!adjustmentFactr}"/>
+                            </apex:pageblocksectionitem>
+                            <apex:pageblocksectionitem >
+                                <apex:outputlabel style="font-weight:bold"> {!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.MPG_SKU_Mix__c.Label} </apex:outputlabel>
+                                <apex:inputText value="{!mpgSKUMix}"/>
+                            </apex:pageblocksectionitem>
+                            <apex:pageblocksectionitem >
+                                <apex:outputlabel style="font-weight:bold"> {!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.Annual_Number_of_treatments_Animal__c.Label} </apex:outputlabel>
+                                <apex:inputText value="{!annualNoOfTreatments}"/>
+                            </apex:pageblocksectionitem>
+                            <apex:pageblocksectionitem >
+                                <apex:outputlabel style="font-weight:bold"> {!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.Number_of_Doses_per_Animal__c.Label} </apex:outputlabel>
+                                <apex:inputText value="{!numOfDosesPerMl}"/>
+                            </apex:pageblocksectionitem>
+                            <apex:pageblocksectionitem >
+                                <apex:outputlabel style="font-weight:bold"> {!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.Period_of_Use_Months__c.Label} </apex:outputlabel>
+                                <apex:inputText value="{!productRotation}"/>
+                            </apex:pageblocksectionitem>
+                            <apex:pageblocksectionitem >
+                                <apex:outputlabel style="font-weight:bold"> {!$ObjectType.ZTS_EU_Potential_Brands__c.Fields.Number_of_Doses_per_SKU__c.Label} </apex:outputlabel>
+                                <apex:inputText value="{!numberOfDosesPerSku}"/>
+                            </apex:pageblocksectionitem>
+                        </apex:pageblocksection>
+                    </apex:pageblock>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <apex:outputpanel id="btn">
+                <apex:outputPanel >
+                    <apex:commandButton value="{!$Label.SetFactors}" action="{!setFactorsRedirect}" id="setFactorsButton" reRender="factorsTable,errorMessage,btn" 
+                                        rendered="{!if(showFactors,false,true)}" style="margin: 3px;"/> 
+                </apex:outputPanel>
+            </apex:outputpanel>
+            <apex:commandButton value="{!$Label.Save}" action="{!Save}" id="saveButton" reRender="PotBrandTable,factorsTable,btn" style="float:right;margin: 3px;"/><br/>
+               <apex:outputpanel id="errorMessage">
+                <apex:outputpanel id="errorMessage1" rendered="{!errorMessage}">
+                    <apex:outputLabel style="color:red" >
+                        {!$Label.Please_select_atlease_one_item_before_clicking_on_SetFactors_Buttons}
+                    </apex:outputLabel>
+                </apex:outputpanel>
+            </apex:outputpanel>
+           
+            </apex:pageBlock>
+            
+        <apex:outputPanel layout="block" id="paginationBlck" styleClass="listViewport">
+    
+            <div class="bottomNav">
+                <div class="paginator">
+                    <apex:panelGrid id="gridPaging" 
+                        columns="3"
+                        width="100%"
+                        columnclasses="left, center, right">
+    
+                        <apex:panelGroup >
+                            <span class="selectorTarget">
+                                <strong>
+                                    <apex:outputText value="{!$Label.Record_Counts}">
+                                        <apex:param value="{!fromRecords}" />
+                                        <apex:param value="{!toRecords}" />
+                                        <apex:param value="{!totalNumOfRecords}" />
+                                    </apex:outputText>
+                                </strong>
+                            </span>
+                            <span>&nbsp;&nbsp;</span>
+                            <apex:actionStatus id="statusPaging">
+                                <apex:facet name="start">
+                                    <img src="/img/loading.gif" height="14px" width="14px"/>
+                                </apex:facet>
+    
+                                <apex:facet name="stop">
+                                    <img src="/img/s.gif" height="14px" width="14px"/>
+                                </apex:facet>
+                            </apex:actionStatus>
+                        </apex:panelGroup>
+    
+                        <apex:panelGroup style="padding-left: 990px;">
+                            <span class="prevNextLinks">
+                                <span class="prevNext">
+                                    <apex:commandLink id="linkMoveFirst"
+                                        immediate="true"
+                                        status="statusPaging"
+                                        action="{!firstPage}"
+                                        rerender="paginationBlck,factorsTable,pageBlckTable"
+                                        rendered="{!hasPrevious}">
+    
+                                        <img src="/s.gif" title="{!$Label.First_Page}" alt="{!$Label.First_Page}" class="first" />
+                                        <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                                    </apex:commandLink>
+    
+                                    <apex:outputPanel layout="none" rendered="{!not(hasPrevious)}">
+    
+                                        <apex:image url="/s.gif" title="{!$Label.First_Page}" alt="{!$Label.First_Page}" styleclass="firstoff" />
+                                    </apex:outputPanel>
+                                </span>
+    
+                                <span class="prevNext">
+                                    <apex:commandLink id="linkMovePrev"
+                                        immediate="true"
+                                        title="{!$Label.Previous}"                                     
+                                        status="statusPaging"
+                                        action="{!previousPage}"
+                                        rerender="paginationBlck,factorsTable,pageBlckTable"
+                                        rendered="{!hasPrevious}">
+    
+                                        <img src="/s.gif" title="{!$Label.Previous}" alt="{!$Label.Previous}" class="prev" />
+                                        <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                                        <span>Previous</span>
+                                    </apex:commandLink>
+    
+                                    <apex:outputPanel layout="none" rendered="{!not(hasPrevious)}">
+    
+                                        <apex:image url="/s.gif" title="{!$Label.Previous}" alt="{!$Label.Previous}" styleclass="prevoff" />
+                                        <span>Previous</span>
+                                    </apex:outputPanel>
+                                </span>
+    
+                                <span class="prevNext">
+                                    <apex:commandLink id="linkMoveNext"
+                                                    immediate="true"
+                                                    title="{!$Label.Next}"
+                                                    status="statusPaging"
+                                                    action="{!nextPage}"
+                                                    rerender="paginationBlck,factorsTable,pageBlckTable"
+                                                    rendered="{!hasNext}">
+    
+                                        <span>Next</span>
+                                        <img src="/s.gif" title="{!$Label.Next}" alt="{!$Label.Next}" class="next" />
+                                        <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                                    </apex:commandLink>
+    
+                                    <apex:outputPanel layout="none"  rendered="{!not(hasNext)}">
+                                        <span>Next</span>
+                                        <apex:image url="/s.gif" title="{!$Label.Next}" alt="{!$Label.Next}" styleclass="nextoff" />
+                                        
+                                    </apex:outputPanel>
+                                </span>
+    
+                                <span class="prevNext">
+                                    <apex:commandLink id="linkMoveLast"
+                                        immediate="true"
+                                        status="statusPaging"
+                                        action="{!lastPage}" 
+                                        rerender="paginationBlck,factorsTable,pageBlckTable"
+                                        rendered="{!hasNext}">
+    
+                                        <img src="/s.gif" title="{!$Label.Last_Page}" alt="{!$Label.Last_Page}" class="last" />
+                                        <apex:param value="true" name="query" assignTo="{!query}" ></apex:param>
+                                    </apex:commandLink>
+    
+                                    <apex:outputPanel layout="none" rendered="{!not(hasNext)}">
+    
+                                        <apex:image url="/s.gif" title="{!$Label.Last_Page}" alt="{!$Label.Last_Page}" styleclass="lastoff" />
+                                    </apex:outputPanel>
+                                </span>
+                            </span>
+                        </apex:panelGroup>
+    
+                        <apex:panelGroup style="float:right;">
+                            <span class="selectorTarget">
+                                <strong>
+                                    <apex:outputText value="{!$Label.Page_Counts}">
+                                        <apex:param value="{!pageNumber}" />
+                                        <apex:param value="{!totalNumOfPages}" />
+                                    </apex:outputText>
+                                </strong>
+                            </span>
+                        </apex:panelGroup>
+                    </apex:panelGrid> 
+                </div>
+            </div>
+        </apex:outputPanel>    
+            
+        </apex:form> 
+   </div>
+    <script>
+        function hideFactorsSection(){
+            var domId = 'pg:frm:pb:factorsTable';
+            if(document.getElementById(domId)){
+                document.getElementById(domId).style.display= "none";
+            }
+        }
+        
+    </script> 
+</apex:page>

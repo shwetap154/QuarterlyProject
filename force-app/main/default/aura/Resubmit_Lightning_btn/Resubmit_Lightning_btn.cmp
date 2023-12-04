@@ -1,0 +1,7 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId">
+    <aura:attribute name="recordId" type="String" />
+    <div class="slds-is-relative" style="height:200px">
+        <c:resubmit_LWC_btn recordId="{!v.recordId}"></c:resubmit_LWC_btn>
+    	<lightning:spinner alternativeText="Loading" size="medium" variant="brand" />
+    </div>
+</aura:component>

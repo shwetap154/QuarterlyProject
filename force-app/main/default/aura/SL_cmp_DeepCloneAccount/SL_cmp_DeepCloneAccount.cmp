@@ -1,0 +1,9 @@
+<aura:component controller="SL_DeepCloneAccountController" implements="force:lightningQuickAction,force:hasRecordId">
+	<aura:attribute name="recordId" type="String" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <div class="slds-is-relative" style="height:200px">
+    	<lightning:spinner alternativeText="Loading" size="medium" variant="brand" />
+    </div>
+</aura:component>

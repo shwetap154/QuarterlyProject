@@ -1,0 +1,57 @@
+<apex:page standardController="ZTS_EU_Campaign_Account__c" extensions="ZTS_US_AddtoCampaignRedirect" tabStyle="ZTS_EU_Campaign_Account__c" id="myPage" action="{!fromCampMethod}">
+  <script> 
+       /* var newWin=null;
+        function openCampaignSearchPopup(){
+            //alert('Hi');
+            var selCampaignIds = document.getElementById("myPage:frm:pb:TopSection:CampaignIds").value;
+            var url="/apex/ZTS_US_campaignSearchPage?CampaignIds="+selCampaignIds;
+            newWin=window.open(url, 'Popup','height=400,width=650,left=500,top=100,resizable=no,scrollbars=yes,toolbar=no,status=no,titlebar=no');
+            newWin.focus();
+        }
+        
+        function sendCampaignInfo(CampaignIds, Campaignname){
+            cancelResponsePopup();
+            document.getElementById("myPage:frm:pb:TopSection:CampaignIds").value = CampaignIds;
+            document.getElementById("myPage:frm:pb:TopSection:pbsi:emailTo").innerHTML= Campaignname;
+            document.getElementById("myPage:frm:pb:TopSection:CampaignNames").value = Campaignname;
+            
+        }
+        
+        function cancelResponsePopup(){
+            if(newWin != null){
+                newWin.close();
+            }
+        }*/
+    </script>
+<apex:pageMessages ></apex:pageMessages>
+    <apex:form id="frm">
+        <apex:pageBlock id="pb"  title="Select Campaign record :">
+            <apex:pageBlocksection id="TopSection" columns="1" collapsible="false" >
+                <apex:pageBlockSectionItem id="pbsi">
+                    <apex:outputLabel value="Selected Campaign : "/>
+                    <apex:outputPanel >
+                       <!-- <apex:outputText value="{!selectedCampaignNames}" id="emailTo" rendered="true" style="width:49%"/>
+                        <a href="#" onclick="openCampaignSearchPopup();">
+                            <apex:image value="/s.gif" styleClass="lookupIcon"/>
+                        </a>-->
+                        <apex:inputField value="{!campAccnt.ZTS_EU_Campaign_Hidden__c}"/>
+                    </apex:outputPanel>
+                    
+                </apex:pageBlockSectionItem>
+                
+                
+
+               <!-- <apex:inputHidden id="CampaignIds" value="{!selectedCampaignIds}"/>
+                
+                <apex:inputHidden id="CampaignNames" value="{!selectedCampaignNames}"/>-->
+                
+            </apex:pageBlocksection>
+            <apex:pageBlockButtons location="bottom">
+            <apex:commandButton action="{!addAccCampaign}" value="Add"/>
+           
+            <apex:commandButton action="/001" value="Cancel" immediate="true" />
+            
+          </apex:pageBlockButtons>
+        </apex:pageBlock>  
+    </apex:form>
+</apex:page>

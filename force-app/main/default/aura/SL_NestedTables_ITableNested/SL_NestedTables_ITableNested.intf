@@ -1,0 +1,72 @@
+<!--
+ - Created by jerridkimball on 2018-05-17.
+ -->
+
+<!-- Creating this base allows derivation in the Card. -->
+<aura:interface
+    description="SL_NestedTables_ITableNested"
+>
+    <aura:attribute
+        description="The title to display on the nested tables of records. It may be desirable to set this to the nested object label."
+        name="nestedTitle"
+        type="String"
+        default=""            
+    />
+    <aura:attribute
+        description="The object name for the records that the nested tables will display."
+        name="nestedObjectName"
+        type="String"
+        default=""            
+    />
+    <aura:attribute
+        description="A comma-separated list of field API names of the nested object to display."
+        name="nestedFieldList"
+        type="String"
+        default=""            
+    />
+    <aura:attribute
+        description="The field API name by which to sort when the nested table loads. The default is the first field in the Nested Field List."
+        name="nestedSortField"
+        type="String"
+        default=""            
+    />
+    <aura:attribute
+        description="Sort in either ascending (A-Z, 0-9) or descending (Z-A, 9-0) order."
+        required="true"
+        default="ASC"
+        name="nestedSortDirection"
+        type="String"
+    />
+    <aura:attribute
+        description="A SOQL filter condition, i.e., what follows a WHERE keyword."
+        name="nestedQueryFilter"
+        type="String"
+        default=""            
+    />
+    <aura:attribute
+        description="The link to the record of the row of the main table. e.g.: To show Assets for an Account, this value should be ContactId as that is the field on Contact that references the Contact."
+        name="nestedLookupFieldName"
+        type="String"
+        default=""            
+    />
+    <aura:attribute
+        description="If true, show the Edit button on the record rows of the main table for which the user has permission to edit."
+        required="true"
+        default="false"
+        name="nestedEnableEditButton"
+        type="Boolean"
+    />
+    <aura:attribute
+        description="If true, show the Delete button on the record rows of the nested table for which the user has permission to delete."
+        required="true"
+        default="false"
+        name="nestedEnableDeleteButton"
+        type="Boolean"
+    />
+    <aura:attribute
+        description="A comma-separated list specifying the widths of the respective fields in the field list. Widths can be any number from 1 - 11, but the sum of all the widths should be no more than 11."
+        name="nestedColumnWidths"
+        type="String"
+        default=""            
+    />
+</aura:interface>

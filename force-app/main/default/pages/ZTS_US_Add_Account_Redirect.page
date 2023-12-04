@@ -1,0 +1,24 @@
+<apex:page standardController="ZTS_Events__c" extensions="ZTS_US_AddAccountRedirect" action="{!saveEventAccount}" tabStyle="ZTS_Events__c" LightningStyleSheets="false">
+ 	
+ 	<apex:form id="theForm">
+    	<apex:pageMessages />
+    	
+    	<apex:pageBlock id="pb"  title="Select Event record">
+            <apex:pageBlocksection id="TopSection" columns="1" collapsible="false" >
+                <apex:pageBlockSectionItem id="pbsi">
+                    <apex:outputLabel value="Select Event: "/>
+                    <apex:outputPanel >
+                        <apex:inputField value="{!eventAcc.ZTS_US_Events__c}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+            	</apex:pageBlocksection>
+            <apex:pageBlockButtons location="bottom">
+            	<apex:commandButton action="{!fetchIDAndSave}" value="Add" reRender="theForm">
+            		<apex:param name="source" value="account" assignTo="{!source}"/>
+            	</apex:commandButton>
+            	<apex:commandButton action="/001" value="Cancel" immediate="true" />
+          	</apex:pageBlockButtons>
+		</apex:pageBlock>  
+    </apex:form>
+</apex:page>

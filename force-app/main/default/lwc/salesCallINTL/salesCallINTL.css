@@ -1,0 +1,138 @@
+.modal-content-override {
+    padding: 1.5rem !important;
+    padding-top: 5.5% !important;
+    padding-bottom: 5.5% !important;
+}
+
+.form-container {
+    margin-bottom: 4rem;
+}
+
+.sticky-top {
+    position: absolute;
+    z-index: 5000;
+    width: 100%;
+}
+
+.sticky-bottom {
+    position: fixed;
+    z-index: 5000;
+    bottom: 12.5%;
+    width: 100%;
+}
+
+.large-font-size {
+    font-size: 1.25rem;
+}
+.medium-height {
+    margin-top: 12.5%;
+    margin-bottom: 12.5%;
+}
+
+.ltng-input-fields {
+    padding-top: 0.5rem;
+    padding-right: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-left: 0.25rem;
+}
+
+.new-contact-form-container {
+    padding-top: 1.25rem;
+    margin-top: .5rem;
+    padding-bottom: 1rem;
+    border-top: 1px solid rgb(201,199,197);
+    border-bottom: 1px solid rgb(201,199,197);
+}
+
+.new-contact-container {
+    padding-top: 0.5rem;
+}
+
+.followup-container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.header-span {
+    padding-left: 0.385rem;
+    font-weight: bold;
+    color: rgb(93,93,91);
+}
+.followup-header {
+    border-top: 1px solid rgb(232,232,232);
+    border-bottom: 1px solid rgb(232,232,232);
+    background-color: rgb(244,243,241);
+}
+
+.assign-to-column {
+    width: 20%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+.subject-column  {
+    width: 20%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+.due-date-column{
+    width: 10%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+.priority-column, .status-column {
+    width: 15%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+.followup-column{
+    width: 25%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+.delete-column {
+    width: 5%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+.task-row {
+    border-bottom: 1px solid rgb(235,235,235);
+}
+
+.info-color {
+    color: white;
+    background-color: #032E61;
+}
+
+.slds-notify_container {
+    z-index: inherit;
+}
+
+.contact-buttons {
+    margin-bottom: 0.5rem;
+    padding-top: 0.5rem;
+}
+ .contact-column, .description-column, .product-column  {
+    width: 25%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+ .quantity-column {
+    width: 15%;
+    padding-right: .385rem;
+    padding-top: .385rem;
+    padding-bottom: .385rem;
+}
+
+
+.sd-row {
+    border-bottom: 1px solid rgb(235,235,235);
+}

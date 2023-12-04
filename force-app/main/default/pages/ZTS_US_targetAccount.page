@@ -1,0 +1,23 @@
+<apex:page standardController="ZTS_EU_Campaign_Account__c" extensions="ZTS_US_targetAccountController">
+  <apex:form id="frm">
+        <apex:pageMessages ></apex:pageMessages>
+        <apex:pageBlock id="pb"  title="Select Account Record :">
+            <apex:pageBlocksection id="TopSection" columns="1" collapsible="false" >
+                <apex:pageBlockSectionItem id="pbsi">
+                    <apex:outputLabel value="Selected Account : "/>
+                    <apex:outputPanel >
+                        <apex:inputField value="{!campAccnt.ZTS_EU_Account__c}"/>
+                    </apex:outputPanel>
+                    
+                </apex:pageBlockSectionItem>
+                
+            </apex:pageBlocksection>
+            <apex:pageBlockButtons location="bottom">
+            <apex:commandButton action="{!addTargetAccount}" value="Add"/>
+           
+            <apex:commandButton action="/{!campId}" value="Cancel" immediate="true" />
+            
+          </apex:pageBlockButtons>
+        </apex:pageBlock>  
+    </apex:form>
+</apex:page>

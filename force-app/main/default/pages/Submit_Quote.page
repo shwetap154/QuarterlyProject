@@ -1,0 +1,42 @@
+<apex:page standardController="SBQQ__Quote__c" extensions="QuoteExtController" >
+    
+     <html>
+        <head>
+            <style>
+
+                .format-message {
+                 font-size: 150%;
+                font-weight: bold;
+                padding-top: 20px;
+                }
+
+            </style>
+        </head>
+
+    <!-- Setup JS function to call apex controller method -->
+    <apex:form id="form">
+        <apex:actionFunction name="onSubmit" action="{!onSubmit}" />
+    </apex:form>
+
+    <script type = "text/javascript">
+        window.onload = function() {        
+            console.log("submitting quote for approval ...");
+            onSubmit();
+        };
+    </script>
+
+
+    <apex:pageMessages />
+
+    <table>
+        <tr>
+            <td>
+                <img width="50" height="50" src="{!URLFOR($Resource.LoadingImageAdvancedApprovals)}" />
+            </td>
+            <td>
+                 <div class="format-message "> Submitting Quote for approval ... </div>
+            </td>
+        </tr>
+    </table>
+    </html>
+</apex:page>

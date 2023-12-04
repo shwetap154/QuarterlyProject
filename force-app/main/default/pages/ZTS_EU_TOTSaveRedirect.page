@@ -1,0 +1,4 @@
+<apex:page standardController="Time_Out_of_Territory__c" extensions="ZTS_EU_TOTSaveRedirect" action="{!save_submit}" >
+    <apex:pageMessages />
+    
+</apex:page>

@@ -1,0 +1,68 @@
+<apex:page showHeader="false" sidebar="false" showChat="false" >
+    
+    <!-- This script takes the endpoint URL parameter passed from the deployment page and makes it the action for the form -->
+    <script type='text/javascript'>
+    (function() {
+        function handlePageLoad() {
+            var endpointMatcher = new RegExp("[\\?\\&]endpoint=([^&#]*)");
+            document.getElementById('prechatForm').setAttribute('action',
+                                                                decodeURIComponent(endpointMatcher.exec(document.location.search)[1]));
+        } if (window.addEventListener) {
+            window.addEventListener('load', handlePageLoad, false);
+        } else { window.attachEvent('onload', handlePageLoad, false);
+               }})();
+    </script>
+    
+     
+    
+    <!-- Form that gathers information from the chat visitor and sets the values to Live Agent Custom Details used later in the example -->
+    <form method='post' id='prechatForm' >
+        <apex:pageBlock >
+            <apex:pageBlockSection title="Pre-Chat Form" >
+                <table width="160%">
+                    <tr>
+                        <td  width="100%">
+                            Welcome to Zoetis, who am I speaking with?
+                        </td>
+                    </tr>
+                    <tr><td  width="70%"><input type='text' name='liveagent.prechat:Name' id='name' /></td></tr>
+                    <!--
+                    <tr>
+                        <td>First Name:</td>
+                        <td><input type='text' name='liveagent.prechat:FirstName' id='firstName' /></td>
+                    </tr>
+                    <tr>
+                        <td> Last Name:</td>
+                        <td><input type='text' name='liveagent.prechat:LastName' id='lastName' /></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><input type='text' name='liveagent.prechat:Email' id='email' /></td>
+                    </tr>
+                    <tr>
+                        <td>Phone:</td>
+                        <td><input type='text' name='liveagent.prechat:Phone' id='phone' /></td>
+                    </tr>
+                    -->
+                    <tr><td></td></tr>
+                    <tr>
+                        <td><input type='submit' value='Start Chat' id='prechat_submit' onclick="setVisitorName();"/> </td> 
+                    </tr>
+                </table>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <input type="hidden" name="liveagent.prechat.name" id="prechat_field_name" /> 
+        
+        <script type="text/javascript">
+        function setVisitorName() {  
+           // document.getElementById("prechat_field_name").value = document.getElementById("firstName").value + " " + document.getElementById("lastName").value;
+            document.getElementById("prechat_field_name").value = document.getElementById("name").value;  
+        } 
+        </script> 
+        
+        <style type="text/css">
+            p {font-weight: bolder }
+        </style>
+        
+    </form>
+</apex:page>

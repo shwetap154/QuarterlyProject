@@ -1,0 +1,27 @@
+.trAlign{
+	vertical-align:top;
+}
+.errMsg{
+	color:red;
+}
+.colTextRight{
+	text-align:right;
+}
+.colTextCenter{
+	text-align:center;
+}
+/*Css for account list*/
+.AccBackgroundStyle{
+	/*margin-left: 10px;*/
+	display: block;
+	clear:both;
+	float:left;
+	cursor:pointer;
+	z-index:1000!important;
+}
+.textRight{
+	float:right;
+}
+.mpCalendar{
+	margin-left:15px;
+}

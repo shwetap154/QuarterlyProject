@@ -1,0 +1,363 @@
+<apex:page sidebar="false" showHeader="false" id="pg" controller="AddAttendeesAndContactController" lightningStyleSheets="true">
+
+    <style type="text/css">
+    .activeTab {background-color: #FFFFFF; background-image:none}
+    .inactiveTab { background-color: #DFDFDF; background-image:none}
+    body {
+        padding: 10px;
+    }
+    
+    body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+        background-color: rgba(0, 0, 0, 0);
+        border-color: #FF6400;
+        border-radius: 0;
+        border-style: solid none none;
+        border-width: 1px medium medium;
+    }
+    .bEditBlock .pbHeader > table, .apexp .bPageBlock.apexDefaultPageBlock .pbHeader > table, #ep.bLayoutBlock .pbHeader > table {
+        border-bottom: medium none;
+    }
+    .remove{
+        color: #DC143C !important;
+        font-weight: bold;
+        
+        text-decoration: none;
+    }
+    body .bPageBlock .pbBody hr {
+        border: none;
+        border-bottom: 1px solid #DBDBDB;
+    }
+    
+    /*body .bPageBlock .pbBody .labelCol,
+    body .bPageBlock .pbBody .dataCol,
+    body .bPageBlock .pbBody .data2Col,
+    body .bPageBlock .pbBody ..headerRow th,
+    .apexp .bPageBlock .detailList .list,
+    body .pbBody table.list tr.dataRow th, 
+    body .pbBody table.list tr.dataRow td,
+    body .bEditBlock .pbBottomButtons, 
+    body .apexp .bPageBlock.apexDefaultPageBlock .pbBottomButtons {
+        border: medium none;
+    }*/
+    .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader {
+        background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+        border-top: 0 none;
+        color: #000000;
+    }
+    body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th,
+    body .pbBody table.list tr.headerRow th:first-child, 
+    body .pbBody table.list tr.dataRow td:first-child,
+    body .bRelatedList .pbBody table.list, body .apexp .pbBody table.list {
+        background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+        border: medium none;
+        padding-left: 20px;
+        text-align: left;
+    }
+    
+    body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th:last-child{
+    text-align: center;
+    }
+    body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow td {
+        border-bottom: 1px solid #DBDBDB !important;
+        padding: 5px 0;
+        text-align: left;
+    }
+    body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow:last-child td {
+        border-bottom: none !important;
+    }
+    body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow td:last-child{
+    text-align: center;
+    }
+    .pbSubheader > img {
+        display: none;
+    }
+    .pbSubheader > h3 {
+        font-size: 1.2em;
+    }
+    .pbBody > a {
+        display: block;
+        float: left;
+        font-size: 1em;
+        font-weight: bold;
+        left: 0;
+        margin-bottom: 10px;
+        margin-left: 10px;
+        margin-top: 10px;
+        text-decoration: none;
+    }
+    .pbBody a > i{
+        font-size: 1.5em;
+        font-weight: normal;
+        margin-right: 5px;
+        margin-top: -4px;
+    }
+    
+    .listRelatedObject .bPageBlock .pbHeader .btn, .listRelatedObject .bPageBlock .pbBottomButtons .btn, .apexp .bPageBlock .pbHeader .btn, .apexp .bPageBlock .pbBottomButtons .btn, div.buttons .btn, div.pbBottomButtons > .btn,
+    body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+        background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+        border-color: #DBDBDB;
+        font-size: 1em;
+        font-weight: normal;
+       
+        margin: 0 10px;
+    }
+    .add {
+        color: #0096AF !important;
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    .add:hover{
+       opacity: .5;
+       text-decoration: none;
+    }
+    .listRelatedObject .bPageBlock .pbHeader .btn:hover, .listRelatedObject .bPageBlock .pbBottomButtons .btn:hover, .apexp .bPageBlock .pbHeader .btn:hover, .apexp .bPageBlock .pbBottomButtons .btn:hover, div.buttons .btn:hover, div.pbBottomButtons > .btn:hover,
+    body button:hover, body .x-btn:hover, body .btn:hover, body .btnDisabled:hover, body .btnCancel:hover, body .menuButton .menuButtonButton:hover {
+        background: linear-gradient(to bottom, #DBDBDB 0%, #808080 99%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    }
+    
+    .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader h3 {
+        font-size: 1.3em;
+    }
+    .errorConsole .x-grid3-row-over, body .pbBody table.list tr.dataRow.highlight td, body .pbBody table.list tr.dataRow.highlight th {
+        background-color: #FFC19B;
+    
+    }
+    
+    
+    body > h3 {
+       
+        display: block;
+        font-size: 1.6em;
+        padding-bottom: 10px;
+        
+    }
+    .listRelatedObject .bPageBlock .pbHeader .btn:hover, .listRelatedObject .bPageBlock .pbBottomButtons .btn:hover, 
+    .apexp .bPageBlock .pbHeader .btn:hover, .apexp .bPageBlock .pbBottomButtons .btn:hover, div.buttons .btn:hover, 
+    div.pbBottomButtons > .btn:hover, body button:hover, body .x-btn:hover, body .btn:hover, body .btnDisabled:hover, body .btnCancel:hover, 
+    body .menuButton .menuButtonButton:hover
+    {
+        background:rgb(244, 246, 249);
+    }
+    </style>
+    <h3>{!$Label.ZTS_EU_Add_Attendees_to_this_call}</h3>
+ <apex:form id="frm">
+     <apex:outputPanel id="CurrentContacts">
+      <apex:pageBlock title="{!$Label.ZTS_EU_Contacts_Associated_to} {!CurrentAccount.Name}">
+          <apex:dataTable value="{!lstCon}" var="con">
+              <apex:column headerValue="{!$Label.ZTS_EU_Contact_Name}" value="{!con.LastName} {!con.firstName}" width="25%"/>
+              <!-- <apex:column headerValue="Contact Id" value="{!con.Id}"/> -->
+              <apex:column headerValue="{!$Label.ZTS_EU_Primary_Account}" value="{!con.AccountId}" width="25%"/>
+              <apex:column headerValue="{!$Label.ZTS_EU_Profession}" value="{!con.ZTS_EU_Contact_type__c}" width="20%"/>
+              <!--<apex:column headerValue="Job Function" value="{!dispjobfunc[con.id]}" width="20%"/> -->
+              <apex:column headerValue="{!$Label.ZTS_EU_Add_Remove}" width="10%" >
+              <apex:actionStatus id="saveStatus">
+              <apex:facet name="stop">
+                  <apex:commandLink action="{!Add}" value="+" reRender="CurrentContacts,CurrentAttendees" status="saveStatus" style="" styleClass="add" rendered="{!mapConIdAndBool[con.Id]}">
+                  <apex:param name="ContactId" assignTo="{!conId}" value="{!con.Id}" />
+                  <apex:param name="ContactName" assignTo="{!conName}" value="{!con.Name}" />
+                  <apex:param name="ContactAccName" assignTo="{!conAccName}" value="{!con.AccountId}" />
+                  </apex:commandLink>
+                 </apex:facet>
+                 <apex:facet name="start">
+                    <apex:commandButton value="{!$Label.ZTS_EU_Adding}" disabled="true" status="saveStatus"/>
+                    </apex:facet>
+                </apex:actionStatus>
+                  <apex:commandLink action="{!RemoveAttendee}" value="X" reRender="CurrentContacts,SearchedContacts,CurrentAttendees" style="" styleClass="remove" rendered="{!!mapConIdAndBool[con.Id]}">
+                  <apex:param name="ContactIdDel" assignTo="{!conIdDel}" value="{!con.Id}" />
+                  </apex:commandLink>
+              </apex:column>
+          </apex:dataTable>
+          
+      </apex:pageBlock>
+     </apex:outputPanel> 
+        <apex:pageBlock id="blk" title="{!$Label.ZTS_EU_Search_for_Contacts}" rendered="{!isRendered1}">
+            <apex:outputText value="{!$Label.ZTS_EU_Enter_the_search_text}"></apex:outputText>
+            <apex:inputText value="{!searchString}" id="srchTxt"  />  
+            <apex:commandButton value="{!$Label.ZTS_EU_Search}" action="{!search}" title="{!$Label.ZTS_EU_Contact_can_be_searched_by_Name_and_Email}" onclick=" return checkSearchBox();"><br/>
+                <apex:actionSupport event="onclick" reRender="addContactText" oncomplete="alert('hiiii');" />
+            </apex:commandbutton> 
+            <!--<apex:outputText value="Check what data you need to search: "/>
+            <apex:outputText value="Employees"></apex:outputText>
+            <apex:inputCheckbox id="EmpChk" value="{!EmployeeFlag}" selected="{!EmployeeFlag}" />
+            <apex:outputText value="Contacts"></apex:outputText>
+            <apex:inputCheckbox id="ConChk" value="{!ContactFlag}" selected="{!ContactFlag}" />-->
+                       
+            <div style="padding-top:20px;">
+                <div><apex:outputText value="{!$Label.ZTS_EU_Contacts_can_be_searched_by_Name_Account_Name_and_Email}" style=" font-style: italic"/></div>
+                
+            </div>
+            <span>
+            <apex:outputText id="addContactText" value="{!$Label.ZTS_EU_Contact_Not_Found}" style=" font-style: italic;" rendered="{!NOT(NOT(ISNULL(Contacts)) && Contacts.size > 0) && isOnload && ContactFlag && searchString != null && searchString != ''}"/>
+            
+            <apex:commandLink value="{!$Label.ZTS_EU_Add_Contact}" id="addContact" action="{!flipFlop}" rendered="{!NOT(NOT(ISNULL(Contacts)) && Contacts.size > 0) && isOnload && ContactFlag && searchString != null && searchString != ''}" style="padding-left:5px;">
+                <apex:actionSupport event="onclick" reRender="newContBlk"/>
+             </apex:commandlink>
+             </span>
+        </apex:pageBlock>
+         
+         <!-- Adding contact creation page-->
+        <div id="newcon">
+        <apex:pageBlock id="newContBlk" tabStyle="Contact" title="Contact" rendered="{!isRendered}" >
+            <apex:pageBlockSection id="createContact">
+                 <apex:inputField id="salutation" value="{!oContact.Salutation}"/>
+                 <apex:inputField id="ZTS_EU_Contact_type__c" value="{!oContact.ZTS_EU_Contact_type__c}" required="true"/>
+                 <apex:inputField id="firstName" value="{!oContact.FirstName}" required="true"/>
+                 <apex:inputField id="lastName" value="{!oContact.lastName}" required="true"/>
+                  <apex:inputField id="email" value="{!oContact.email}"/>
+                 <apex:inputField id="phone" value="{!oContact.phone}"/>
+               
+                               
+                </apex:pageBlockSection>
+                <apex:pageBlockButtons > 
+                    <apex:commandButton value="{!$Label.ZTS_EU_Save}" action="{!saveConact}" title="Contact can be saved." >
+                        <apex:actionSupport event="onclick" reRender="CurrentAttendees" />
+                    </apex:commandButton>                
+                    <apex:commandButton id="Cancel" value="{!$Label.ZTS_EU_Cancel}" immediate="true" action="{!flipFlop1}" rendered="{!isRendered}" >
+                    <apex:actionSupport event="onclick" reRender="newContBlk,addContact,addContactText,blk"/>
+                 </apex:commandButton>
+             </apex:pageBlockButtons>
+                   
+         </apex:pageBlock>
+       </div>         
+        <apex:pageBlock id="contBlk" tabStyle="Contact" title="{!$Label.ZTS_EU_Contacts}" rendered="{!NOT(ISNULL(Contacts)) && Contacts.size > 0}">
+            <apex:outputPanel id="SearchedContacts">
+            <apex:dataTable id="contactTbl" value="{!contacts}" var="a" title="Contacts" width="100%">
+                <apex:column value="{!a.Name}" headerValue="{!$ObjectType.Contact.Fields.Name.Label}"/>
+                 <apex:column headerValue="{!$Label.ZTS_EU_Primary_Account}">
+                  <apex:outputText value="{!a.Account.Name}"/>
+                </apex:column> 
+                <apex:column headerValue="{!$Label.ZTS_EU_Profession}">
+                  <apex:outputText value="{!a.ZTS_EU_Contact_type__c}"/>
+                </apex:column>
+               <!--<apex:column headerValue="Job Function">
+                  <apex:outputText value="{!jobfunction[a.Id]}"/>
+                </apex:column> -->
+                
+                <apex:column >
+              <!--<apex:commandLink action="{!Add}" value="+" reRender="CurrentContacts,SearchedContacts,CurrentAttendees,createaff" style="" styleClass="add" rendered="{!mapSearchedConIdAndBool[a.Id]}">
+                <apex:param name="ContactIdGeneric" assignTo="{!conId}" value="{!a.Id}" />
+                <apex:param name="ContactNameGeneric" assignTo="{!conName}" value="{!a.Name}" />
+                <apex:param name="ContactAccNameGen" assignTo="{!conAccName}" value="{!a.AccountId}" />
+                </apex:commandLink>-->
+                <apex:actionStatus id="saveStatus">
+              <apex:facet name="stop">
+                <apex:commandLink action="{!Add}" value="+" reRender="CurrentContacts,SearchedContacts,CurrentAttendees" status="saveStatus" style="" styleClass="add" rendered="{!mapSearchedConIdAndBool[a.Id]}">
+                <apex:param name="ContactIdGeneric" assignTo="{!conId}" value="{!a.Id}" />
+                <apex:param name="ContactNameGeneric" assignTo="{!conName}" value="{!a.Name}" />
+                <apex:param name="ContactAccNameGen" assignTo="{!conAccName}" value="{!a.AccountId}" />
+                </apex:commandLink>
+                </apex:facet>
+                 <apex:facet name="start">
+                    <apex:commandButton value="{!$Label.ZTS_EU_Adding}" disabled="true" status="saveStatus"/>
+                    </apex:facet>
+                </apex:actionStatus>
+                <apex:commandLink action="{!RemoveAttendee}" value="X" reRender="CurrentContacts,SearchedContacts,CurrentAttendees" style="" styleClass="remove" rendered="{!!mapSearchedConIdAndBool[a.Id]}">
+                <apex:param name="ContactIdDelGeneric" assignTo="{!conIdDel}" value="{!a.Id}" />
+                </apex:commandLink>
+                
+                </apex:column>
+                
+                
+            </apex:dataTable>
+            </apex:outputPanel>
+        
+                  <apex:outputPanel layout="block" styleClass="pSearchShowMore" id="otpNav1" rendered="{!NOT(ISNULL(setConCont))}">   
+                  {!$Label.ZTS_EU_Total_Contacts} <apex:outputText rendered="{!IF(setConCont.resultSize==10000,true,false)}">10000 +</apex:outputText>
+                 
+                      <apex:outputText rendered="{!IF(setConCont.resultSize < 10000,true,false)}">{!setConCont.resultSize}</apex:outputText>   
+                  
+                      <apex:image url="/img/search_prevarrow_disabled.gif" styleClass="prevArrow" rendered="{!NOT(setConCont.hasPrevious)}"/>   
+                      <apex:image url="/img/search_prevarrow.gif" title="Previous Page" styleClass="prevArrow" rendered="{!setConCont.hasPrevious}"/>   
+                      
+                      <apex:commandLink action="{!setConCont.previous}" rendered="{!setConCont.hasPrevious}" reRender="contBlk">{!$Label.ZTS_EU_Previous}</apex:commandLink>   
+                      <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(setConCont.hasPrevious)}">{!$Label.ZTS_EU_Previous_Page}</apex:outputPanel>            
+                      &nbsp;({!IF(setConCont.PageNumber == 1,1,((setConCont.PageNumber -1) * setConCont.PageSize)+1)}-{!IF(setConCont.resultSize < setConCont.PageSize,setConCont.resultSize,setConCont.PageNumber * setConCont.pageSize)})&nbsp;   
+                      <apex:outputPanel styleClass="pShowLess noLink" style="color:grey" rendered="{!NOT(setConCont.hasNext)}">{!$Label.ZTS_EU_Next_Page}</apex:outputPanel>            
+
+                      <apex:commandLink value="{!$Label.ZTS_EU_Next_Page}" rendered="{!setConCont.hasNext}" action="{!setConCont.next}" reRender="contBlk"/>&nbsp;   
+
+                      <apex:image url="/img/search_nextarrow.gif" title="{!$Label.ZTS_EU_Next_Page}" styleClass="nextArrow" rendered="{!setConCont.hasNext}"/>   
+                      <apex:image url="/img/search_nextarrow_disabled.gif" rendered="{!NOT(setConCont.hasNext)}"/>             
+                  </apex:outputPanel> 
+        </apex:pageBlock>
+        
+         
+      <apex:outputPanel id="CurrentAttendees">
+      <apex:pageBlock title="{!$Label.ZTS_EU_Attendees_Currently_Added_to} {!CurrentCall.Name}">
+          <apex:dataTable value="{!CurrentCall.Attendees__r}" var="att" width="100%">
+              <!--<apex:column headerValue="Contact" value="{!att.Name}" rendered="{!IF(att.ZTS_EU_Employee__c==null,true,false)}"/> -->
+
+              <apex:column headerValue="{!$Label.ZTS_EU_Contact_Name}" rendered="{!IF(att.ZTS_EU_Employee__c==null,true,false)}">
+                 <apex:outputField value="{!att.ZTS_EU_Contact__c}" rendered="{!(ISNULL(att.ZTS_EU_Employee__c))}"/>
+              </apex:column>
+               <apex:column headerValue="{!$Label.ZTS_EU_Primary_Account}">
+                   <apex:outputField value="{!att.ZTS_EU_Represents_Account__c}" rendered="{!(ISNULL(att.ZTS_EU_Employee__c))}"/>
+                </apex:column> 
+                <apex:column headerValue="{!$Label.ZTS_EU_Profession}">
+                  <apex:outputText value="{!att.ZTS_EU_Contact_Profession__c}"/>
+                </apex:column>
+              
+              <!--
+              <apex:column value="{!att.ZTS_EU_Contact__c}"/>
+              <apex:column value="{!att.ZTS_EU_Employee__c}"/>
+              -->
+              
+              <apex:column rendered="{!IF(att.ZTS_EU_Employee__c==null,true,false)}">
+                  <apex:commandLink action="{!RemoveAttn}" value="X" reRender="CurrentContacts,SearchedContacts,SearchedEmployees,CurrentAttendees" status="" style="" styleClass="remove" immediate="">
+                      <apex:param name="AttendeeId" assignTo="{!attId}" value="{!att.Id}" />
+                      <apex:param name="AttenConIdDel" assignTo="{!attConIdDel}" value="{!att.ZTS_EU_Contact__c}" />
+                      <apex:param name="AttenUserIdDel" assignTo="{!attUserIdDel}" value="{!att.ZTS_EU_Employee__c}" />
+                  </apex:commandLink>
+              </apex:column>
+          </apex:dataTable>
+          
+      </apex:pageBlock>
+      </apex:outputPanel>
+      <apex:commandButton value="{!$Label.ZTS_EU_Done}" onclick="closeWindow();" style="margin-left:33%" />
+        <script type = "text/javascript">
+            window.onload=scrollview;
+            
+            function scrollview(){
+                var searchstr = '{!searchString}';
+                if(searchstr != null && searchstr != undefined && searchstr !=''){
+                var element = document.getElementById('newcon');
+                 element.scrollIntoView(true);  
+                }
+               
+                }
+            function checkSearchBox(){ 
+            
+                var Emp = document.getElementById("pg:frm:blk:EmpChk");
+                var Con = document.getElementById("pg:frm:blk:ConChk");     
+                var search = document.getElementsByName("pg:frm:blk:srchTxt");  
+                    if(Emp.checked != true && Con.checked != true){
+                        alert('Select atleast one checkbox to search.');  
+                        return false;
+                    }           
+                    if(search[0].value == '' || search[0].value == null){
+                        alert('Search Text Cannot be Blank');  
+                        return false;
+                    } 
+            }
+            
+            function closeWindow(){
+                //window.parent.location.reload();
+                opener.location.reload(true);
+                window.close();
+                return;
+            }
+            function cancelContact(){
+                 document.getElementById("pg:frm:newContBlk:createContact:lastName").value = ''; 
+                 document.getElementById("pg:frm:newContBlk:createContact:title").value = '';
+                 document.getElementById("pg:frm:newContBlk:createContact:phone").value = '';
+                 document.getElementById("pg:frm:newContBlk:createContact:email").value = '';
+                 document.getElementById("pg:frm:newContBlk:createContact:firstName").value = '';
+                 document.getElementById("pg:frm:newContBlk:createContact:fax").value = '';
+                 document.getElementById("pg:frm:newContBlk:createContact:salutation").value = '--None--';
+                 return false;   
+            }
+        </script>                  
+ </apex:form>
+</apex:page>

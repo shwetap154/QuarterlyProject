@@ -1,0 +1,305 @@
+<!--
+  @description       : 
+  @author            : Unknown
+  @group             : 
+  @last modified on  : 11-23-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   02-22-2021   Morgan Marchese @ Zoetis Inc   Header Creation
+-->
+<apex:page id="mainPage" title="New Online Account" standardController="Lead" extensions="NOA_NewOnlineAccount" cache="false" showChat="false"
+           showHeader="false" sidebar="false" standardStylesheets="false">
+    <head>
+    <style>
+        html,body{height:85%}  
+        body {
+        text-align: center;
+        font-family: "proxima-nova", Helvetica, Arial, sans-serif;
+        //background-color: #f9f9f9;
+        //color: #585858;
+        }
+        
+        .main_container h2 span {
+        font-weight: 200;
+        font-family: "proxima-nova-condensed", Helvetica, Arial, sans-serif;
+        }
+        .main_container h2 {
+        text-transform: uppercase;
+        font-family: "proxima-nova-extra-condensed", Helvetica, Arial, sans-serif;
+        font-size: 2.5em;
+        line-height: 1;
+        color: #FF6400;
+        margin: 0;
+        margin-bottom: 0.5em;
+        padding-top: 1em;
+        text-align: center;
+        }
+        .main_container .appButton {
+        width: inherit;
+        padding: 0.5em 0.25em;
+        min-width: 7em;
+        text-transform: uppercase;
+        background-color: #ff6400;
+        color: white;
+        }
+        .main_container .appNumEntry {
+        padding: 0.5em 0.5em;
+        font-size: 1em;
+        border: none;
+        background: white;
+        min-width: 12em;
+        border-color: #6dd2de;
+        border-style: solid;
+        }
+        .message {
+        background-color: white;
+        width: 80%;
+        border-color: red;
+        border-width: thin;
+        border-style: solid;
+        margin-left: 11em;
+        font-weight:bold;
+        }
+        
+        .headtext{
+        text-align: left;
+        margin-left: 10%;
+        margin-right: 10%; 
+        }
+        
+        .emailSearchTable td,th{
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-top: 5px;
+            padding-bottom: 5px; 
+        }
+
+        table.form label {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            display: block;
+            margin-left: 10px;
+            color: #000000;
+        }
+
+        .formInput {
+            margin-bottom:5px;
+            width:30%;
+            min-width: 25%;
+        }
+        
+    </style> 
+       
+    </head>
+    <body> 
+         
+       <c:NOA_AnimalHeader />
+        <div class="main_container"> 
+            <h2>
+                New Account Application
+              <!--  <span>Application</span>    -->
+            </h2> 
+             
+            <div class="headtext">
+                <apex:pageMessages />
+                <br/>
+                <p>
+                    Welcome and thank you for your interest in Zoetis. In a few short steps, you can complete your application.
+                    The application guides you through the process step-by-step. If you need to leave the application, you can pick up where you left off by entering your saved Application Number.  
+                    <br/><br/>
+                    There are two ways to return to your Application:
+                </p>
+                <ol>
+                    <li>Once you complete Step 1, if you click on the “Save and Exit” button at any step in the process, you will receive an email with a link.  Save this email and click the link to pick up where you left off.</li>
+                    <li>After you complete Step 1, click the “Next Page” button. You will see your Application # at the top of the page in the light blue bar. Write this down for reference and use it to bring you back into the application.</li>
+                </ol>
+                <br/>
+                <apex:form id="quesForm" style="text-align:left;" > 
+                    <apex:variable var="spList" value="{!''}{!species}" />  
+                    <apex:outputPanel id="basic_info" style="">
+                        <apex:pageBlock mode="edit" >
+                            <apex:outputPanel id="op1"> 
+                                <apex:pageBlockSection columns="1">
+                                    <apex:pageBlockSectionItem >
+                                        <label><b>Ready to get started? </b></label>
+                                    </apex:pageBlockSectionItem>
+                                    <br/>
+                                    <apex:pageBlockSectionItem >
+                                        <!--
+                                        <label> <b>First let us know what your primary care areas are: </b></label>
+										-->
+                                        <label> <b>Select an Account Type: </b></label>
+                                        <apex:actionstatus id="counterstatus">
+                                            <apex:facet name="start">
+                                                <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb;
+                                                                                                     height: 100%;opacity:0.65;width:100%;"> 
+                                                    <div class="waitingHolder" style="top: 74.2px; width: 91px;">
+                                                        <img class="waitingImage" src="/img/loading.gif" title="" />
+                                                        <span class="waitingDescription"></span>
+                                                    </div>
+                                                </div>
+                                            </apex:facet>
+                                        </apex:actionstatus>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                    <apex:pageBlockSectionItem >
+                                        <apex:selectRadio label="" value="{!newOnlineAcc.Customer_Type__c}" layout="pageDirection" immediate="true" >
+                                            <apex:actionSupport event="onchange" reRender="vetQues" status="counterstatus" />
+                                            <apex:selectOption itemLabel="Veterinarian" itemValue="Vet Practice"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Mobile Veterinarian" itemValue="Mobile Practice"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Government/Public Sector" itemValue="Government / Military"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Academic" itemValue="University"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Laboratory " itemValue="Laboratory"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Producer" itemValue="Producer"></apex:selectOption>
+                                            <!--apex:selectOption itemLabel="Processor" itemValue="Processor"></apex:selectOption-->
+                                            <apex:selectOption itemLabel="Pet Owner" itemValue="Pet Owner"></apex:selectOption> 
+                                        </apex:selectRadio> 
+                                    </apex:pageBlockSectionItem>
+                                    <!--
+                                    <apex:pageBlockSectionItem >
+                                        <apex:selectCheckboxes label="" value="{!species}" layout="pageDirection" immediate="true" >
+                                            <apex:actionSupport event="onchange" reRender="vetQues" status="counterstatus" />
+                                            <apex:selectOption itemLabel="Cats & Dogs" itemValue="Cats & Dogs"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Horses" itemValue="Horses"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Beef" itemValue="Beef"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Dairy" itemValue="Dairy"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Pork" itemValue="Pork"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Poultry" itemValue="Poultry"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Sheep" itemValue="Sheep"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Diagnostics (Advex, Smartbow & Non-Prescription Products)" itemValue="Diagnostics"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Reproductive Services (Non-Prescription Products)" itemValue="Reproductive Services"></apex:selectOption>
+                                            <apex:selectOption itemLabel="Genetic Services (Non-Prescription Products)" itemValue="Genetic Services"></apex:selectOption>
+                                        </apex:selectCheckboxes> 
+                                    </apex:pageBlockSectionItem>
+                                    -->
+                                </apex:pageBlockSection>
+                                
+                            </apex:outputPanel>
+                            <apex:outputPanel id="vetQues"  > 
+                                <apex:pageBlockSection columns="1" rendered="{!newOnlineAcc.Customer_Type__c == 'Producer' }">
+                                    <label><b>Please Select Account Sub Type:</b></label>
+                                    <apex:selectRadio label="" value="{!newOnlineAcc.Customer_Sub_Type__c}"  >
+                                        <apex:selectOption itemLabel="Diagnostic Services" itemValue="Diagnostic"></apex:selectOption>
+                                        <apex:selectOption itemLabel="Genetic Services" itemValue="Genetics Services"></apex:selectOption>
+                                        <apex:selectOption itemLabel="Poultry" itemValue="Poultry"></apex:selectOption>
+                                        <apex:selectOption itemLabel="Producer Rx" itemValue="Producer Rx"></apex:selectOption>
+                                    </apex:selectRadio>    
+                                </apex:pageBlockSection>
+                                
+                                <apex:pageBlockSection columns="1" rendered="{!newOnlineAcc.Customer_Type__c == 'Pet Owner' }">
+                                    <label><b>Please Select Account Sub Type:</b></label>
+                                    <apex:selectRadio label="" value="{!newOnlineAcc.Customer_Sub_Type__c}"   >
+                                        <apex:selectOption itemLabel="Reproductive Services" itemValue="Reproductive Services"></apex:selectOption>
+                                        <apex:selectOption itemLabel="Veterinary Services" itemValue="Veterinary Services"></apex:selectOption>                                     
+                                    </apex:selectRadio>    
+                                </apex:pageBlockSection>
+                                
+                                <!--
+                                <apex:pageBlockSection columns="1" rendered="{!IF(CONTAINS(spList,'Cats & Dogs'),'true','false')}">
+                                    <label><b>Are you a licensed veterinarian or do you employ a licensed veterinarian?</b></label>
+                                    <apex:selectRadio label="" value="{!newOnlineAcc.Do_you_have_a_licensed_veterinarian__c}" style="width:40%" >
+                                        <apex:selectOption itemLabel="Yes" itemValue="Yes"></apex:selectOption>
+                                        <apex:selectOption itemLabel="No" itemValue="No"></apex:selectOption>
+                                    </apex:selectRadio>    
+                                </apex:pageBlockSection>
+                                -->
+                            </apex:outputPanel>
+                            <apex:commandButton action="{!identifyForm}" value="Continue" styleClass="appButton"/> 
+                        </apex:pageBlock>
+                    </apex:outputPanel>
+                </apex:form>
+                <br/>
+                <apex:form id="appNumForm" style="align:left" >
+                    <!-- <apex:messages style="color: red; font-weight:bold; font-size: small; " />     -->
+                    <label id="searchtitle"> <b> Already started your application? Please enter: </b></label> 
+                    <br/><br/>
+                    <b>
+                    <table class="form" width="80%" >
+                        <tr> 
+                            <td>
+                                <label for="appNumber">Application Number <span style="color:red;">*</span></label> 
+                                <apex:inputText id="appNumber" value="{!applicationNo}"  styleClass="formInput appNumEntry" style="text-align:center;"/> 
+                            </td>
+                        </tr>
+                        <tr>                                  
+                            <td>
+                                <label for="emailId">Email Address<span style="color:red;">*</span></label> 
+                                <apex:inputText id="emailId" value="{!emailId}"  styleClass="formInput appNumEntry" style="text-align:center;"/>
+                            </td> 
+                        </tr>
+                        <tr>
+                            <td>
+                                <apex:commandButton action="{!fetchNOA}" value="Search" styleClass="appButton" status="loading" /> 
+                            </td>
+                            <td>
+                                <apex:actionstatus id="loading">
+                                    <apex:facet name="start"> 
+                                            <div>
+                                                <img class="waitingImage" src="/img/loading.gif" title="" /> 
+                                            </div> 
+                                    </apex:facet>
+                                </apex:actionstatus>
+                            </td>
+                        </tr> 
+                    </table>
+                    </b>
+                    <br/>
+                    <apex:pageBlock id="resulttable" >
+                        <apex:pageBlockTable border="1px" value="{!emailLeads}" var="l" rendered="{!emailLeads != null && emailLeads.size > 0}" width="100%" styleClass="emailSearchTable" >
+                            <apex:column headerValue="App Number" >
+                                <apex:commandLink value="{!l.NOA_Application_Number__c}" action="{!fetchNOA}"  >
+                                    <apex:param name="appNumber" value="{!l.NOA_Application_Number__c}" assignTo="{!applicationNo}"/>
+                                    <apex:param name="emailAddr" value="{!l.Email}" assignTo="{!emailId}"/>
+                                </apex:commandLink> 
+                            </apex:column>
+                            <apex:column headerValue="Name" >
+                                <apex:outputField value="{!l.Name}" />
+                            </apex:column>
+                            <apex:column headerValue="Status" >
+                                <apex:outputField value="{!l.Status}" />
+                            </apex:column>
+                            <apex:column headerValue="Created Date" >
+                                <apex:outputField value="{!l.CreatedDate}" />
+                            </apex:column>
+                        </apex:pageBlockTable>
+                        <br/>
+                        <apex:outputText value="<b><U>Note: </U></b> If you have multiple applications in progress, please contact us via Chat, Phone 1-855-721-0078 or Email: CustomerAccounts@zoetis.com for assistance on the best application to complete." 
+                        rendered="{!emailLeads != null && emailLeads.size > 0}" escape="false" />
+                        
+                        <!-- Below is to display SAP Bill To Id search results -->
+                        <br/>
+                        <apex:outputText value="<b>Existing customer looking to add a new shipping location, please enter the Bill To Account Number:</b>" escape="false" />
+                        <br/><br/>
+                        <apex:inputText id="sapBillToId" value="{!sapBillToId}"  styleClass="appNumEntry" style="text-align:center;"/>
+                        &nbsp;&nbsp;&nbsp; <apex:commandButton action="{!fetchNOA}" value="Search" styleClass="appButton" status="loading" /> 
+                        <br/><br/>
+                        <apex:pageBlockTable border="1px" value="{!sapBillToIdLeads}" var="le" rendered="{!sapBillToIdLeads != null && sapBillToIdLeads.size > 0}" width="85%" styleClass="emailSearchTable" >
+                            <apex:column headerValue="Name" >
+                                <apex:outputText value="{!le.Name}" />
+                            </apex:column> 
+                            <apex:column headerValue="Address" >
+                                <apex:outputText value="{!le.Billing_Street_1__c},{!le.Billing_City__c},{!le.Billing_State__c} {!le.Billing_Zip_Code__c}" />
+                            </apex:column>
+                            <apex:column headerValue=" " >
+                                <apex:commandButton value="Add New Shipping Location" action="{!addNewShippingLocation}" styleClass="appButton" status="loadstatus" reRender="appNumForm" >
+                                    <apex:param name="applNumber" value="{!le.NOA_Application_Number__c}" assignTo="{!applicationNo}"/>
+                                    <apex:param name="applEmail" value="{!le.Email}" assignTo="{!emailId}"/><!-- Updated Param Name-->
+                                </apex:commandButton> 
+                                <apex:actionstatus id="loadstatus">
+                                    <apex:facet name="start"> 
+                                            <div>
+                                                <img class="waitingImage" src="/img/loading.gif" title="" /> 
+                                            </div> 
+                                    </apex:facet>
+                                </apex:actionstatus>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:pageBlock>
+                </apex:form>
+                
+            </div>  
+        </div>   <br/><br/><br/><br/>                       
+      <c:NOA_footerpage /> 
+    </body>
+</apex:page>

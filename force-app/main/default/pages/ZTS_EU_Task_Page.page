@@ -1,0 +1,46 @@
+<apex:page standardController="Task" extensions="ZTS_EU_Task_Controller" sidebar="false" showHeader="false" id="pgId" LightningStyleSheets="True">
+
+  <script language="JavaScript" type="text/javascript">
+  function closeWindow(){
+                //window.parent.location.reload();
+                opener.location.reload(true);
+                window.close();
+                return;
+            }
+</script>
+    <apex:form id="formID">
+        <apex:pageMessages escape="true" /> 
+         <apex:pageBlock title="{!$Label.ZTS_GL_Task_Edit_Details}">
+           <apex:pageblocksection title="Task Information" columns="2">
+                <apex:pageblocksectionitem >
+                     <apex:outputLabel value="{!$ObjectType.Task.Fields.OwnerId.Label}:"/>
+                     <apex:inputField value="{!Task.OwnerId}" rendered="{!$ObjectType.Task.Fields.OwnerId.Accessible}"/>
+                </apex:pageblocksectionitem>
+                  <apex:pageblocksectionitem >
+                     <apex:outputLabel value="{!$Label.ZTS_GL_Related_To_Details}:"/>
+                     <apex:inputField value="{!Task.WhatId}" rendered="{!$ObjectType.Task.Fields.WhatId.Accessible}"/>
+                </apex:pageblocksectionitem>
+                  <apex:pageblocksectionitem >
+                     <apex:outputLabel value="{!$ObjectType.Task.Fields.Subject.Label}:"/>
+                     <apex:inputField value="{!Task.Subject}" rendered="{!$ObjectType.Task.Fields.Subject.Accessible}"/>
+                </apex:pageblocksectionitem>
+                 <apex:pageblocksectionitem >
+                     <apex:outputLabel value="{!$ObjectType.Task.Fields.Status.Label}:"/>
+                     <apex:inputField value="{!Task.Status}" rendered="{!$ObjectType.Task.Fields.Status.Accessible}"/>
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >
+                     <apex:outputLabel value="{!$ObjectType.Task.Fields.Priority.Label}:"/>
+                     <apex:inputField value="{!Task.Priority}" rendered="{!$ObjectType.Task.Fields.Priority.Accessible}"/>
+                </apex:pageblocksectionitem>
+                </apex:pageBlocksection>
+                
+                
+
+                          <apex:pageBlockButtons location="both">              
+                <apex:commandButton value="Cancel"  onClick="closeWindow()"/>
+                <apex:commandButton value="Save" action="{!save}" oncomplete="closeWindow()" />
+                </apex:pageBlockButtons>                         
+        </apex:pageBlock>
+    </apex:form>
+
+</apex:page>

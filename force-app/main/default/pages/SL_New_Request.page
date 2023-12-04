@@ -1,0 +1,5 @@
+<apex:page standardController="ZTS_EU_Request__c" recordSetVar="requestRecords" extensions="SL_NewRequest" action="{!fetchNewTemplate}">
+    <script>
+        window.parent.location.href='{!strURLLocation}';
+    </script>
+</apex:page>

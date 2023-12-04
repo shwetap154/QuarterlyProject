@@ -1,0 +1,4 @@
+<apex:page standardController="ZTS_EU_Campaign_Account__c" extensions="TargetedAccListController" 
+                    recordSetVar="targeted" action="{!doAccountRedirect}">
+
+</apex:page>

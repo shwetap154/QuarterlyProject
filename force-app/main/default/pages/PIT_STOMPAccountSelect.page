@@ -1,0 +1,14 @@
+<apex:page standardController="PIT_STOMP__c" extensions="PIT_STOMPAccountSelectController" action="{!autoRedirectAction}">
+    <apex:form >
+        <apex:pageBlock title="Select Account">
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                <apex:commandButton value="Next" action="{!nextButtonAction}"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection >
+                <apex:inputField value="{!stomp.PIT_Account__c}"/>
+            </apex:pageBlockSection>    
+        </apex:pageBlock>
+    </apex:form>        
+</apex:page>

@@ -1,0 +1,66 @@
+<template>
+    <template if:true={showBreadCrumb}>
+        <lightning-breadcrumbs class="zs_fc_list_breadcrumbs slds-p-bottom_medium">
+            <lightning-breadcrumb label="Forecast, Stock and Order" href=""></lightning-breadcrumb> / 
+            <lightning-breadcrumb label={objName} href=""></lightning-breadcrumb> /
+            <lightning-breadcrumb class="zs_active_breadcrumb" label="List View" href=""></lightning-breadcrumb>
+        </lightning-breadcrumbs>
+   
+    <div class="slds-text-heading_medium slds-p-bottom_small zs_fc_listview_title">{objName} List View</div>
+     </template>
+    <article class="slds-card zs_monthyear_card">
+        <div class="slds-card__body slds-card__body_inner">
+            <lightning-layout vertical-align="center" class="x-large zs_monthyear_layout">
+                <lightning-layout-item flexibility="auto" size="4" padding="around-small">
+                   <lightning-combobox
+                           data-name='forecastMonth'
+                           name="month"
+                           label={monthLabel}
+                           value={monthValue}
+                           placeholder="Select month"
+                           options={monthOptions}
+                           onchange={handleChange} >
+                   </lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="1" padding="around-small">
+                </lightning-layout-item>
+                 <lightning-layout-item flexibility="auto" size="4" padding="around-small">
+                       <lightning-combobox
+                           data-name='forecastYear'
+                           name="year"
+                           label={yearLabel}
+                           value={yearValue}
+                           placeholder="Select year"
+                           options={yearOptions}
+                           onchange={handleChange} >
+                   </lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="1" padding="around-small">
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="2" padding="around-small">
+                    <lightning-button class="zs_fc_list_searchbtn" variant="brand" label="Search"  onclick={handleClick}></lightning-button> 
+             </lightning-layout-item>
+           </lightning-layout>
+        </div>
+        
+        </article>
+                       
+      
+  <div style="height: 400px;overflow-y:auto;" class="container-fluid slds-table slds-m-top_x-large">
+    
+    <template if:true={finalresult}>
+         <div class="slds-scrollable_y" style="height:24rem">
+          <div class="zs_fc_listview_table "> 
+           
+            <lightning-datatable
+                    hide-checkbox-column
+                    key-field="id"
+                    data={finalresult}
+                    columns={columns}
+                    min-column-width = "100">
+            </lightning-datatable>
+         </div> 
+         </div>
+        </template>
+</div>
+</template>

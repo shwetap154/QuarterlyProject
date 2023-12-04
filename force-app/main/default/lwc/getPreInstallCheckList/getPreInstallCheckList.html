@@ -1,0 +1,1267 @@
+<template>
+
+    <template if:true={data}>
+        
+        <lightning-card icon-name="standard:task" title="Pre-Install Checklist">           
+            <template if:true={OpportunityData}>
+                <div class="slds-grid">
+                         <div class="slds-col slds-size_1-of-5">
+                        <lightning-record-view-form record-id={questionRecord.recordId} object-api-name="PreInstallCheckList__c">            
+                            <label class="slds-text-title slds-m-left_x-small" for={questionRecord.recordId}>Quote #:</label>
+                            <div style="margin-left:8px">
+                            <lightning-output-field field-name="Quote__c" variant="label-hidden"></lightning-output-field>
+                            </div>
+                        </lightning-record-view-form>                            
+    
+                    </div>                
+    
+                    <div class="slds-col slds-size_1-of-5">
+                        <lightning-record-view-form record-id={questionRecord.recordId} object-api-name="PreInstallCheckList__c">            
+                            <label class="slds-text-title" for={questionRecord.recordId}>Opportunity:</label>                        
+                            <lightning-output-field field-name="Opportunity__c" variant="label-hidden"></lightning-output-field>
+                        </lightning-record-view-form>
+                    </div>
+    
+                    <div class="slds-col slds-size_1-of-5">
+                        <lightning-record-view-form record-id={questionRecord.opportunityId} object-api-name="Opportunity">            
+                            <label class="slds-text-title" for={questionRecord.opportunityId}>{label.header_SAPContract}</label>
+                            <lightning-output-field field-name="SAP_Contract__c" variant="label-hidden"></lightning-output-field>
+                            </lightning-record-view-form>                            
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-5"></div>                
+                    
+                    <div class="slds-col slds-size_1-of-5">
+                        <lightning-record-view-form record-id={questionRecord.recordId} object-api-name="PreInstallCheckList__c">            
+                            <label class="slds-text-title_bold" for={questionRecord.recordId}>Status:</label>
+                            <lightning-output-field field-name="Status__c" variant="label-hidden"></lightning-output-field>
+                            </lightning-record-view-form>                            
+                    </div>                
+                    
+                </div>
+
+                <br>
+
+                <div class="slds-grid">
+
+                    <div class="slds-col slds-size_1-of-5">
+                        <lightning-record-view-form record-id={questionRecord.opportunityId} object-api-name="Opportunity">            
+                        <label class="slds-text-title slds-m-left_x-small" for={questionRecord.opportunityId}>{label.header_clinic_name}</label>
+                        <div style="margin-left:8px">
+                        <lightning-output-field field-name="AccountId" variant="label-hidden"></lightning-output-field>
+                        </div>
+                        </lightning-record-view-form>
+    
+                        <br>
+                    
+                        <lightning-record-view-form record-id={questionRecord.opportunityId} object-api-name="Opportunity">            
+                        <label class="slds-text-title slds-m-left_x-small" for={questionRecord.opportunityId}>{label.header_purchaser}</label>
+                        <div style="margin-left:8px">
+                        <lightning-output-field field-name="Purchasing_Contact__c" variant="label-hidden"></lightning-output-field>
+                        </div>
+                        </lightning-record-view-form>                
+                    </div>
+    
+                    <div class="slds-col slds-size_1-of-5">
+                            <lightning-record-view-form record-id={questionRecord.accountId} object-api-name="Account">
+                            <label class="slds-text-title" for={questionRecord.accountId}>{label.header_phone}</label>                        
+                            <lightning-output-field field-name="ZTS_EU_Main_Phone__c" variant="label-hidden"></lightning-output-field>
+                            </lightning-record-view-form>
+                            <br>
+                            <lightning-record-view-form record-id={questionRecord.accountId} object-api-name="Account">
+                            <label class="slds-text-title" for={questionRecord.accountId}>{label.header_fax}</label>
+                            <lightning-output-field field-name="Fax" variant="label-hidden"></lightning-output-field>                    
+                            </lightning-record-view-form>
+                    </div>
+    
+                    <div class="slds-col slds-size_1-of-5">
+                            <lightning-record-view-form record-id={questionRecord.accountId} object-api-name="Account">
+                            <label class="slds-text-title" for={questionRecord.accountId}>NARC ID:</label>
+                            <lightning-output-field field-name="ZTS_US_NARC_ID__c" variant="label-hidden"></lightning-output-field>                                
+                            </lightning-record-view-form>
+    
+                            <br>
+                        
+                            <lightning-record-view-form record-id={questionRecord.contactId} object-api-name="Contact">            
+                            <label class="slds-text-title" for={questionRecord.contactId}>{label.header_email}</label>
+                            <lightning-output-field field-name="Email" variant="label-hidden"></lightning-output-field>
+                            </lightning-record-view-form>
+                    </div>
+    
+                    <div class="slds-col slds-size_1-of-5">
+                            <lightning-record-view-form record-id={questionRecord.accountId} object-api-name="Account">
+                            <label class="slds-text-title" for={questionRecord.addressId}>{label.header_address}</label>
+                            <lightning-output-field field-name="ZTS_EU_Primary_Address__c" variant="label-hidden"></lightning-output-field>                                
+                            </lightning-record-view-form>
+    
+                            <br>
+                            
+                            <lightning-record-view-form record-id={questionRecord.addressId} object-api-name="Address__c">            
+                            <label class="slds-text-title" for={questionRecord.addressId}>{label.header_city}</label>
+                            <lightning-output-field field-name="ZTS_EU_City_Country__c" variant="label-hidden"></lightning-output-field>
+                            </lightning-record-view-form>
+                    </div>
+    
+                    <div class="slds-col slds-size_1-of-5">
+                            <lightning-record-view-form record-id={questionRecord.addressId} object-api-name="Address__c">
+                            <label class="slds-text-title" for={questionRecord.addressId}>{label.header_state}</label>
+                            <lightning-output-field field-name="ZTS_EU_State_County__c" variant="label-hidden"></lightning-output-field>                                
+                            </lightning-record-view-form>
+    
+                            <br>
+                        
+                            <lightning-record-view-form record-id={questionRecord.addressId} object-api-name="Address__c">
+                            <label class="slds-text-title" for={questionRecord.addressId}>{label.header_zip}</label>
+                            <lightning-output-field field-name="Zip_Postal_Code__c" variant="label-hidden"></lightning-output-field>
+                            </lightning-record-view-form>
+                    </div>
+                </div>  
+            </template>
+            <template if:true={QuoteData}>
+                <div class="slds-grid">
+    
+                    <div class="slds-col slds-size_1-of-5">
+                        <lightning-record-view-form record-id={questionRecord.recordId} object-api-name="PreInstallCheckList__c">            
+                            <label class="slds-text-title slds-m-left_x-small" for={questionRecord.recordId}>Quote #:</label>
+                            <div style="margin-left:8px">
+                            <lightning-output-field field-name="Quote__c" variant="label-hidden"></lightning-output-field>
+                            </div>
+                        </lightning-record-view-form>                            
+    
+                    </div>                
+    
+                    <div class="slds-col slds-size_1-of-5">
+                        <lightning-record-view-form record-id={questionRecord.quoteId} object-api-name="SBQQ__Quote__c">            
+                            <label class="slds-text-title" for={questionRecord.quoteId}>Opportunity:</label>                        
+                            <lightning-output-field field-name="SBQQ__Opportunity2__c" variant="label-hidden"></lightning-output-field>
+                        </lightning-record-view-form>
+                    </div>
+    
+                    <div class="slds-col slds-size_1-of-5">
+                        <lightning-record-view-form record-id={questionRecord.quoteId} object-api-name="SBQQ__Quote__c">            
+                            <label class="slds-text-title" for={questionRecord.quoteId}>{label.header_SAPContract}</label>
+                            <lightning-output-field field-name="SAP_Contract__c" variant="label-hidden"></lightning-output-field>
+                            </lightning-record-view-form>                            
+                    </div>
+                            
+                    <div class="slds-col slds-size_1-of-5"></div>                
+                    
+                    <div class="slds-col slds-size_1-of-5">
+                        <lightning-record-view-form record-id={questionRecord.recordId} object-api-name="PreInstallCheckList__c">            
+                            <label class="slds-text-title_bold" for={questionRecord.recordId}>Status:</label>
+                            <lightning-output-field field-name="Status__c" variant="label-hidden"></lightning-output-field>
+                            </lightning-record-view-form>                            
+                    </div>                
+                    
+                </div>
+            
+                <br>
+
+            
+                <div class="slds-grid">
+
+                    <div class="slds-col slds-size_1-of-5">
+                        <lightning-record-view-form record-id={questionRecord.quoteId} object-api-name="SBQQ__Quote__c">            
+                        <label class="slds-text-title slds-m-left_x-small" for={questionRecord.quoteId}>{label.header_clinic_name}</label>
+                        <div style="margin-left:8px">
+                        <lightning-output-field field-name="SBQQ__Account__c" variant="label-hidden"></lightning-output-field>
+                        </div>
+                        </lightning-record-view-form>
+    
+                        <br>
+                    
+                        <lightning-record-view-form record-id={questionRecord.opportunityId} object-api-name="Opportunity">            
+                        <label class="slds-text-title slds-m-left_x-small" for={questionRecord.opportunityId}>{label.header_purchaser}</label>
+                        <div style="margin-left:8px">
+                        <lightning-output-field field-name="Purchasing_Contact__c" variant="label-hidden"></lightning-output-field>
+                        </div>
+                        </lightning-record-view-form>                
+                    </div>
+    
+                    <div class="slds-col slds-size_1-of-5">
+                            <lightning-record-view-form record-id={questionRecord.accountId} object-api-name="Account">
+                            <label class="slds-text-title" for={questionRecord.accountId}>{label.header_phone}</label>                        
+                            <lightning-output-field field-name="ZTS_EU_Main_Phone__c" variant="label-hidden"></lightning-output-field>
+    
+                            <br>
+    
+                            <label class="slds-text-title" for={questionRecord.accountId}>{label.header_fax}</label>
+                            <lightning-output-field field-name="Fax" variant="label-hidden"></lightning-output-field>                    
+                            </lightning-record-view-form>
+                    </div>
+    
+                    <div class="slds-col slds-size_1-of-5">
+                            <lightning-record-view-form record-id={questionRecord.accountId} object-api-name="Account">
+                            <label class="slds-text-title" for={questionRecord.accountId}>NARC ID:</label>
+                            <lightning-output-field field-name="ZTS_US_NARC_ID__c" variant="label-hidden"></lightning-output-field>                                
+                            </lightning-record-view-form>
+    
+                            <br>
+                        
+                            <lightning-record-view-form record-id={questionRecord.contactId} object-api-name="Contact">            
+                            <label class="slds-text-title" for={questionRecord.contactId}>{label.header_email}</label>
+                            <lightning-output-field field-name="Email" variant="label-hidden"></lightning-output-field>
+                            </lightning-record-view-form>
+                    </div>
+    
+                    <div class="slds-col slds-size_1-of-5">
+                            <lightning-record-view-form record-id={questionRecord.quoteId} object-api-name="SBQQ__Quote__c">
+                            <label class="slds-text-title" for={questionRecord.addressId}>{label.header_address}</label>
+                            <lightning-output-field field-name="Address__c" variant="label-hidden"></lightning-output-field>                                
+                            </lightning-record-view-form>
+    
+                            <br>
+                            
+                            <lightning-record-view-form record-id={questionRecord.addressId} object-api-name="Address__c">            
+                            <label class="slds-text-title" for={questionRecord.addressId}>{label.header_city}</label>
+                            <lightning-output-field field-name="ZTS_EU_City_Country__c" variant="label-hidden"></lightning-output-field>
+                            </lightning-record-view-form>
+                    </div>
+    
+                    <div class="slds-col slds-size_1-of-5">
+                            <lightning-record-view-form record-id={questionRecord.addressId} object-api-name="Address__c">
+                            <label class="slds-text-title" for={questionRecord.addressId}>{label.header_state}</label>
+                            <lightning-output-field field-name="ZTS_EU_State_County__c" variant="label-hidden"></lightning-output-field>                                
+                            </lightning-record-view-form>
+    
+                            <br>
+                        
+                            <lightning-record-view-form record-id={questionRecord.addressId} object-api-name="Address__c">
+                            <label class="slds-text-title" for={questionRecord.addressId}>{label.header_zip}</label>
+                            <lightning-output-field field-name="Zip_Postal_Code__c" variant="label-hidden"></lightning-output-field>
+                            </lightning-record-view-form>
+                    </div>
+                </div>  
+            </template>      
+        </lightning-card>
+    
+            <br>
+    
+            <lightning-record-edit-form record-id={questionRecord.recordId}
+                                        object-api-name="PreInstallCheckList__c"
+                                        onsuccess={handleSuccess}
+                                        onerror={handleError}>    
+    
+                <lightning-accordion allow-multiple-sections-open
+                    onsectiontoggle={handleSectionToggle}
+                    active-section-name={activeSections}>
+                
+                
+                <lightning-accordion-section name="Analyzer" label={label.section_Analyzer} class="slds-button test-id__section-header-button slds-section__title-action">
+    
+                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                        
+                    <div class="slds-size_1-of-4" style="margin-right: 20px;">
+                        <label for={questionRecord.recordId}>{label.analizer_1}</label>
+                        <lightning-input-field field-name="Analizer_to_be_Removed__c" value="N/A" variant="label-hidden">            
+                        </lightning-input-field>
+                    </div>
+    
+                    <div class="slds-size_1-of-4" style="margin-right: 20px;">
+                        <label for={questionRecord.recordId}>{label.analizer_2}</label>
+                        <lightning-input-field field-name="Analizer_to_be_Removed_Serial__c" value="N/A" variant="label-hidden">            
+                        </lightning-input-field>        
+                    </div>
+    
+                    <div class="slds-size_1-of-4" style="margin-right: 20px;">
+                        <label for={questionRecord.recordId}>{label.analizer_3}</label>
+                        <lightning-input-field field-name="Analizer_to_be_Removed_SAP_Num__c" value="N/A" variant="label-hidden">            
+                        </lightning-input-field>            
+                    </div>
+    
+                </div>
+                
+                </lightning-accordion-section>
+    
+                <br>
+    
+                <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+                    GENERAL PRE-INSTALL INFORMATION
+                </h2>    
+                
+                
+    
+                    <template if:true={questionRecord.IsClinicElectricalRelevant}>
+                        <lightning-accordion-section name="A" label={label.section_clinicElectric} class="slds-button test-id__section-header-button slds-section__title-action">
+                            <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                                <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                    <template if:true={marketIsSouthAfrica}>
+                                        <label for={questionRecord.recordId}>{label.ClinicElectic_Q1_SA}</label>
+                                    </template>
+                                    <template if:false={marketIsSouthAfrica}>
+                                        <label for={questionRecord.recordId}>{label.ClinicElectic_Q1}</label>
+                                    </template>
+                                    <lightning-input-field field-name="Clinic_Electrical_Question_1__c" variant="label-hidden" value="Yes" required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                    <lightning-input-field field-name="Clinic_Electrical_Question_1_Notes__c" variant="label-hidden">
+                                    </lightning-input-field>
+                                </div>                    
+                                <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                    <label for={questionRecord.recordId}>{label.ClinicElectic_Q2}</label>
+                                    <lightning-input-field field-name="Clinic_Electrical_Question_2__c" variant="label-hidden" value="Yes" required >
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-size_5-of-12">
+                                    <label for={questionRecord.recordId}>{label.Notes}</label>
+                                    <lightning-input-field field-name="Clinic_Electrical_Question_2_Notes__c" variant="label-hidden" >
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                    <label for={questionRecord.recordId}>{label.ClinicElectic_Q3}</label>
+                                    <lightning-input-field field-name="Clinic_Electrical_Question_3__c" variant="label-hidden" value="Yes" required>
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-size_5-of-12">
+                                    <label for={questionRecord.recordId}>{label.Notes}</label>
+                                    <lightning-input-field field-name="Clinic_Electrical_Question_3_Notes__c" variant="label-hidden">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                    <label for={questionRecord.recordId}>{label.ClinicElectic_Q4}</label>
+                                    <lightning-input-field field-name="Clinic_Electrical_Question_4__c" variant="label-hidden" value="Yes" required>
+                                    </lightning-input-field>                        
+                                </div>
+                                <div class="slds-size_5-of-12">
+                                    <label for={questionRecord.recordId}>{label.Notes}</label>
+                                    <lightning-input-field field-name="Clinic_Electrical_Question_4_Notes__c" variant="label-hidden">
+                                    </lightning-input-field>
+                                </div>
+                            </div>                
+                        </lightning-accordion-section>
+                    </template>        
+                
+                <template if:true={questionRecord.IsClinicDeliveryRelevant}>
+                    <lightning-accordion-section name="B" label={label.section_clinicDelivery} class="slds-button test-id__section-header-button slds-section__title-action">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicDelivery_Q1}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_1__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicDelivery_Q2}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_2__c" variant="label-hidden"  value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_2_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicDelivery_Q3}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_3__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_3_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">                    
+                                <label for={questionRecord.recordId}>{label.ClinicDelivery_Q4}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_4__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_4_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicDelivery_Q5}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_5__c" variant="label-hidden" value="Yes"  required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_5_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicDelivery_Q6}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_6__c" variant="label-hidden" value="No" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_6_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicDelivery_Q7}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_7__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_7_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicDelivery_Q8}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_8__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_8_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicDelivery_Q9}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_9__c" variant="label-hidden" value="No" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_9_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicDelivery_Q10}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_10__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>                                        
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Delivery_Question_10_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                        </div>        
+                    </lightning-accordion-section>
+                </template>
+                
+                <template if:true={questionRecord.IsClinicCommunicDeliveryRelevant}>
+                    <lightning-accordion-section name="C" label={label.section_clinicComm} class="slds-button test-id__section-header-button slds-section__title-action">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicCommunic_Q1}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_1__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicCommunic_Q2}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_2__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_2_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-4">
+                                <label for={questionRecord.recordId}>Market</label>
+                                <lightning-input-field field-name="Market__c" variant="label-hidden" disabled>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-4" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicCommunic_Q3}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_3__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_3_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicCommunic_Q4}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_4__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_4_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicCommunic_Q5}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_5__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_5_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicCommunic_Q6}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_6__c" variant="label-hidden"  value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_6_Notes__c" variant="label-hidden">
+                                </lightning-input-field>                    
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicCommunic_Q7}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_7__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_7_Notes__c" variant="label-hidden">
+                                </lightning-input-field>                    
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicCommunic_Q8}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_8__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_8_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicCommunic_Q9}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_9__c" variant="label-hidden"  value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_9_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.ClinicCommunic_Q10}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_10__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Clinic_Communications_Question_10_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>                
+                        </div>            
+                    </lightning-accordion-section>
+                </template>
+    
+                <template if:true={questionRecord.IsCloudInternetRelevant}>
+                    <lightning-accordion-section name="D" label={label.section_clinicCloud} class="slds-button test-id__section-header-button slds-section__title-action">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q1}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_1__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q2}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_2__c" variant="label-hidden"  value=" " required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_2_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q3}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_3__c" variant="label-hidden" value={cloudInternet_Q3_Value} required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_3_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+    
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q4}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_4__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_4_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q5}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_5__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_5_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q6}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_6__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_6_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q7}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_7__c" variant="label-hidden" value="No" required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_7_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q8}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_8__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_8_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q9}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_9__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_9_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q10}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_10__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_10_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q11}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_11__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_11_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.CloudInternet_Q12}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_12__c" variant="label-hidden"  value=" " required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Cloud_Internet_Question_12_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+    
+                
+    
+                <template if:true={questionRecord.IsInstallationAndTrainRelevant}>
+                    <lightning-accordion-section name="E" label="Installation and Training" class="slds-button test-id__section-header-button slds-section__title-action">
+    
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.InstallationAndTrain_Q1}</label>
+                                <lightning-input-field field-name="Installation_Training_Question_1__c" variant="label-hidden"  value=" " required>
+                                </lightning-input-field>                
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Installation_Training_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.InstallationAndTrain_Q2}</label>
+                                <lightning-input-field field-name="Installation_Training_Question_2__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Installation_Training_Question_2_Notes__c" variant="label-hidden">
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.InstallationAndTrain_Q3}</label>
+                                <lightning-input-field field-name="Installation_Training_Question_3__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>                    
+                            </div>                
+                            
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="Installation_Training_Question_3_Notes__c" variant="label-hidden">
+                                </lightning-input-field>                    
+                            </div>                
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+    
+                
+                <lightning-accordion-section name="F" label={label.addCommentsLabel} class="slds-button test-id__section-header-button slds-section__title-action">
+                    <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                        <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                            <lightning-input-field field-name="Additional_Comments__c" variant="label-hidden" required>
+                            </lightning-input-field>                
+                        </div>            
+                    </div>
+                </lightning-accordion-section>    
+                
+                <br>
+                <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+                    INSTRUMENT REQUIREMENTS
+                </h2>    
+    
+                <template if:true={questionRecord.IsVETSCANvs2Relevant}>
+                    <lightning-accordion-section name="G" label="VETSCAN VS2" class="slds-button test-id__section-header-button slds-section__title-action">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                            
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <template if:false={marketIsSouthAfrica}>
+                                    <label for={questionRecord.recordId}>{label.vetscanVS2Label_Q1}</label>
+                                </template>
+                                <template if:true={marketIsSouthAfrica}>
+                                    <label for={questionRecord.recordId}>{label.vetscanVS2Label_Q1_SA}</label>
+                                </template>
+                                <lightning-input-field field-name="VETSCAN_VS2_Question_1__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>                    
+                            </div>
+                            
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_VS2_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>                    
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+    
+                <template if:true={questionRecord.IsVETSCANhm5Relevant}>
+                    <lightning-accordion-section name="H" label="VETSCAN HM5" class="slds-button test-id__section-header-button slds-section__title-action">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                            
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <template if:true={marketIsSouthAfrica}>
+                                    <label for={questionRecord.recordId}>{label.vetscanHM5Label_Q1_SA}</label>
+                                </template>
+                                <template if:false={marketIsSouthAfrica}>
+                                    <label for={questionRecord.recordId}>{label.vetscanHM5Label_Q1}</label>
+                                </template>
+                                <lightning-input-field field-name="VETSCAN_HM5_Question_1__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_HM5_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>                    
+                            </div>
+    
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+    
+                <template if:true={questionRecord.IsISTATRelevant}>
+                    <lightning-accordion-section name="I" label="i-STAT Alinity v" class="slds-button test-id__section-header-button slds-section__title-action">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                            
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.istatAliLabel_Q1}</label>
+                                <lightning-input-field field-name="i_STAT_Alinity_Question_1__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="i_STAT_Alinity_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.istatAliLabel_Q2}</label>
+                                <lightning-input-field field-name="i_STAT_Alinity_Question_2__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="i_STAT_Alinity_Question_2_Notes__c" variant="label-hidden">
+                                </lightning-input-field>                    
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </template>    
+    
+                <template if:true={questionRecord.isVETSCANvSProRelevant}>
+                    <lightning-accordion-section name="J" label="VETSCAN Vspro" class="slds-button test-id__section-header-button slds-section__title-action">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">                             
+                                <label for={questionRecord.recordId}>{label.vetscanVsProLabel_Q1}</label>
+                                <lightning-input-field field-name="VETSCAN_Vspro_Question_1__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>                    
+                            </div>                
+                            
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_Vspro_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+    
+                <template if:true={questionRecord.isVETSCANSARelevant}>
+                    <lightning-accordion-section name="K" label="VETSCAN SA" class="slds-button test-id__section-header-button slds-section__title-action">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                            
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanSA_Q1}</label>
+                                <lightning-input-field field-name="VETSCAN_SA_Question_1__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_SA_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>                    
+                            </div>                
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+    
+                <template if:true={questionRecord.isVETSCANFUSERelevant}>
+                    <lightning-accordion-section name="L" label="VETSCAN FUSE" class="slds-button test-id__section-header-button slds-section__title-action">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q1}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_1__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q2}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_2__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_2_Notes__c" variant="label-hidden">
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q3}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_3__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_3_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q4}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_4__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_4_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q5}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_5__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_5_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q6}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_6__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_6_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q7}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_7__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_7_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q8}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_8__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_8_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+    
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q9}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_9__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_9_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q10}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_10__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>                    
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_10_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q11}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_11__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_11_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanFuseLabel_Q12}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_12__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>                  
+                            
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_FUSE_Question_12_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>                
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+    
+                <template if:true={questionRecord.isVETSCANImagystRelevant}>
+                    <lightning-accordion-section name="M" label="VETSCAN IMAGYST" class="slds-button test-id__section-header-button slds-section__title-action">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q1}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_1__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q2}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_2__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>                
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_2_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            
+                            </div>
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q3}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_3__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_3_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q4}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_4__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_4_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q5}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_5__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_5_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q6}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_6__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_6_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q7}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_7__c" variant="label-hidden" value="<8 Mbps" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_7_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q8}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_8__c" variant="label-hidden" value="8 - 10 Mbps" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_8_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                            
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q9}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_9__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_9_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q10}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_10__c" variant="label-hidden" value="yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_10_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q11}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_11__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_11_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanImagyst_Q12}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_12__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_12_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>                
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+    
+                <template if:true={questionRecord.isVETSCANIvueRelevant}>
+                    <lightning-accordion-section name="N" label="VETSCAN VUE" class="slds-button test-id__section-header-button slds-section__title-action">
+                        <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanVUE_Q1}</label>
+                                <lightning-input-field field-name="VETSCAN_VUE_Question_1__c" variant="label-hidden" value="Yes" required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_1_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanVUE_Q2}</label>
+                                <lightning-input-field field-name="VETSCAN_VUE_Question_2__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_2_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanVUE_Q3}</label>
+                                <lightning-input-field field-name="VETSCAN_VUE_Question_3__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_3_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanVUE_Q4}</label>
+                                <lightning-input-field field-name="VETSCAN_VUE_Question_4__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_4_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanVUE_Q5}</label>
+                                <lightning-input-field field-name="VETSCAN_VUE_Question_5__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_5_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+    
+                            <div class="slds-size_1-of-2" style="margin-right: 20px;">
+                                <label for={questionRecord.recordId}>{label.vetscanVUE_Q6}</label>
+                                <lightning-input-field field-name="VETSCAN_VUE_Question_6__c" variant="label-hidden" value=" " required>
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-size_5-of-12">
+                                <label for={questionRecord.recordId}>{label.Notes}</label>
+                                <lightning-input-field field-name="VETSCAN_IMAGYST_Question_6_Notes__c" variant="label-hidden">
+                                </lightning-input-field>
+                            </div>
+                        
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+                <br>
+    
+                </lightning-accordion>
+                    <lightning-button
+                        class="slds-m-top_small"                    
+                        type="submit"
+                        name="update"
+                        variant="brand"            
+                        label="Save">
+                    </lightning-button>
+                    &nbsp;
+                    <lightning-button
+                        label="Cancel"
+                        onclick={handleCancel}
+                        class="slds-m-top_small">
+                    </lightning-button>
+                </lightning-record-edit-form>
+    
+        </template>
+        
+    </template>

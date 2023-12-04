@@ -1,0 +1,87 @@
+<!--
+ - Created by jerridkimball on 2018-05-31.
+ -->
+
+<aura:component
+    description="SL_NestedTables_CardBase"
+    implements="force:hasRecordId,force:appHostable,force:hasSObjectName,c:SL_NestedTables_ITableMain,c:SL_NestedTables_ITableNested"
+    extensible="true"
+    controller="SL_NestedTables"
+>
+    <aura:attribute name="recordCount" type="Integer" default="0" />
+
+    
+    <aura:attribute name="mainEnableNew" type="Boolean" default="false" />
+
+    <aura:attribute name="mainSVGName" type="String" />
+
+    <aura:attribute name="isOpen" type="Boolean" default="false" />
+    <aura:attribute name="profileAccessForObject" type="Object" />
+    <aura:attribute name="lstOfRecordType" type="list[]" />
+    <aura:attribute name="objectName" type="String" />
+
+    <aura:attribute name="class" type="String" default=""/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--<aura:handler name="init" value="{!this}" action="{!c.doInit}" />-->
+    <!--<aura:if isTrue="{!v.}">-->
+    <!--<lightning:card iconName="{!v.mainSVGName}" class="slds-card_boundary">-->
+
+    <lightning:card iconName="{!v.mainSVGName}" class="{!'slds-card forceBaseCard ' + v.class}">
+
+        <aura:set attribute="title">
+            <h2 id="header" class="header-title-container">
+                <span class="slds-text-heading--small slds-truncate">{!v.mainTitle} ({!v.recordCount})</span>
+            </h2>
+        </aura:set>
+
+        <aura:set attribute="actions">
+            <lightning:buttonGroup >
+                <aura:if isTrue="{!v.mainEnableNew}">
+                    <lightning:button label="New" disabled="{!!v.profileAccessForObject.isCreatable}" onclick="{!c.createRecord}"/>
+                </aura:if>
+
+                <!--<lightning:button label="Do Something" onclick="{!c.createNewRecord}"/>-->
+            </lightning:buttonGroup>
+        </aura:set>
+
+        <aura:if isTrue="{!v.isOpen}">
+            <div role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModal}">
+                            X<span class="slds-assistive-text">Cancel</span>
+                        </button>
+                        <h2 id="header43" class="slds-text-heading--medium">{!v.objectName}</h2>
+                    </div>
+                    
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-size--1-of-2 slds-large-size--3-of-12" style="height:25px;line-height:30px;">
+                                <div class="slds-p-right_small">Select a Record Type</div>                            
+                            </div>
+                            <div class="slds-size--1-of-2 slds-large-size--6-of-12">
+                                
+                              <ui:inputSelect aura:id="selectid">
+                                    <aura:iteration items="{!v.lstOfRecordType}" var="lstRecordTyp">                            
+                                        <ui:inputSelectOption text="{!lstRecordTyp.Id}" label="{!lstRecordTyp.Name}"  />
+                                    </aura:iteration>
+                                </ui:inputSelect>
+                                
+                            </div>&nbsp; &nbsp;
+                        </div>                   
+                    </div>
+                    <div class="slds-modal__footer">
+                        <lightning:button class="slds-button slds-button--neutral" onclick="{!c.closeModal}">Cancel</lightning:button>
+                        <lightning:button class="slds-button slds-button--brand" onclick="{!c.stdCreateRecord}">Next</lightning:button>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>
+        </aura:if>
+
+        {!v.body}
+
+    </lightning:card>
+
+</aura:component>

@@ -1,0 +1,7 @@
+<apex:page standardController="ZTS_Events__c" extensions="ZTS_US_AddContactAndRedirect" action="{!saveEventAccount}" tabStyle="ZTS_Events__c">
+    
+    <apex:form id="theForm">
+        <apex:pageMessages />
+    </apex:form>
+    
+</apex:page>

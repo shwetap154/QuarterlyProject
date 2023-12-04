@@ -1,0 +1,15 @@
+<apex:page standardController="Account" extensions="ZTS_EU_BuyingGroup_Display"  sidebar="false" showHeader="false" tabStyle="Account" Action="{!bugaffdisplay}" LightningStyleSheets="true">
+<Script>
+function showDetail(recordId){
+    window.top.location.href='/'+recordId;    
+}
+</script>
+        <apex:pageBlock >
+            <apex:pageBlockTable value="{!AccountAffiliation}" var="aff">
+                <apex:column headerValue="Buying Group Name"> 
+                    <apex:outputLink title="" value="/{!aff.ZTS_EU_Affiliated_Account__c}" target="_self" onclick="showDetail('{!aff.ZTS_EU_Affiliated_Account__c}')">{!aff.ZTS_EU_Affiliated_Account__r.name}</apex:outPutLink>
+                </apex:column>
+            </apex:pageBlockTable>
+            <apex:messages ></apex:messages>
+        </apex:pageBlock>    
+</apex:page>

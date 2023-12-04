@@ -1,0 +1,108 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="ContentDisplayPageHandler">
+    <!-- declaring variables here-->
+    <aura:attribute name="contentVersions" type="ContentVersion[]" default="[]" access="global" />
+    <aura:attribute name="loading" type="Boolean" default="true" access="global" />
+    <aura:attribute name="errorMessage" type="String" access="global" />
+    <aura:attribute name="baseURL" type="String" access="global" />
+
+    <!-- Fires when component is initialized -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <!-- Loading Spinner -->
+    <aura:if isTrue="{!v.loading}">
+        <div>
+            <lightning:spinner variant="brand" size="large" alternativeText="loading" class="slds-m-top--xx-large slds-p-top--xx-large" />
+        </div>
+    </aura:if>
+
+    <!-- Error Message What does this evaluate to if false?-->
+    <aura:if isTrue="{!v.errorMessage}">
+        <lightning:icon variant="error" iconName="utility:warning" size="small" />
+            <div class="slds-text-heading_small slds-text-color_error slds-m-bottom--medium">
+            {!v.errorMessage}
+        </div>
+    </aura:if>
+
+    <div>
+        <h2> Recent Documents Update</h2>
+        <aura:iteration items="{!v.contentVersions}" var="contentVersion">
+            <div class="zs_recent_update_list">
+                <a href="{!v.baseURL + contentVersion.Id + '?operationContext=S1'}">
+                    <img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/filedownload_icon.png'}" class="zs_recent_updates_download_icon"></img>
+                </a>
+                <div class="zs_distributor_section">
+                    <p class="zs_distributor_summit">{!contentVersion.Title}</p>
+                    <aura:renderIf isTrue="{!contentVersion.Library_File_Type__c != null}">
+                        <p class="zs_sales_dashboard slds-p-top_xxx-small">{!contentVersion.Library_File_Type__c}</p>
+                    </aura:renderIf>
+                    <p class="zs_dayshrs_ago slds-p-top_xxx-small">
+                        <lightning:formattedDateTime value="{!contentVersion.CreatedDate}" />
+                    </p>
+                </div>
+            </div>
+        </aura:iteration>
+    </div>
+
+    <!--
+    <div class="slds-text-heading_medium zs_recent_update_wrap">
+        <h2> Recent Documents Update</h2>
+        <div class="zs_recent_update_list">
+            <img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/filedownload_icon.png'}" class="zs_recent_updates_download_icon"></img>
+            <div class="zs_distributor_section">
+                <p class="zs_distributor_summit">Distributor Summit</p>
+                <p class="zs_sales_dashboard slds-p-top_xxx-small">Sales dashboard created</p>
+                <p class="zs_dayshrs_ago slds-p-top_xxx-small">1 hrs ago</p>
+            </div>
+        </div>
+
+        <div class="zs_recent_update_list">
+            <img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/filedownload_icon.png'}" class="zs_recent_updates_download_icon"></img>
+            <div class="zs_distributor_section">
+                <p class="zs_distributor_summit">Samonella - Diagnosis and monitoring</p>
+                <p class="zs_sales_dashboard slds-p-top_xxx-small">Sales dashboard created</p>
+                <p class="zs_dayshrs_ago slds-p-top_xxx-small">6 hrs ago</p>
+            </div>
+        </div>
+
+        <div class="zs_recent_update_list">
+            <img src="{!$Resource.Zoetis_Static_Resources + '/images/icons/filedownload_icon.png'}" class="zs_recent_updates_download_icon"></img>
+            <div class="zs_distributor_section">
+                <p class="zs_distributor_summit">Samonella - Disease in poultry</p>
+                <p class="zs_sales_dashboard slds-p-top_xxx-small">Sales dashboard created</p>
+                <p class="zs_dayshrs_ago slds-p-top_xxx-small">2 days ago</p>
+            </div>
+        </div>
+    </div>
+    -->
+
+    <!--
+    <div>
+        <h2> Recent Documents Update</h2>
+        <ul>
+            <li class="slds-item">
+                <aura:iteration items="{!v.contentVersions}" var="contentVersion">
+                    <lightning:tile label="{!contentVersion.Title}" href="{!v.baseURL + contentVersion.Id + '?operationContext=S1'}">
+                        <aura:set attribute="media">
+                            <lightning:icon iconName="standard:document" alternativeText="Recently Added Files" class="custom-news-icon" />
+                        </aura:set>
+                        <ul class="slds-list_horizontal slds-has-dividers_right custom-font">
+                            <li class="slds-item">
+                                <p class="custom-font">
+                                    <lightning:formattedDateTime value="{!contentVersion.CreatedDate}" />
+                                </p>
+                            </li>
+                            <aura:renderIf isTrue="{!contentVersion.Library_File_Type__c != null}">
+                                <li class="slds-item">
+                                    <p class="custom-font">
+                                        {!contentVersion.Library_File_Type__c}
+                                    </p>
+                                </li>
+                            </aura:renderIf>
+                        </ul>
+                    </lightning:tile>
+                </aura:iteration>
+            </li>
+        </ul>
+    </div>
+    -->
+</aura:component>

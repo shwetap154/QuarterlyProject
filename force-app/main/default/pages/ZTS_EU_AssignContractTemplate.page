@@ -1,0 +1,87 @@
+<!--
+*******************************************************************************************************************************************
+* File Name     :   ZTS_EU_AssignContractTemplate
+* Description   :   This page will be called from the account page from where the account will be assigned to a contract.                        
+
+* @author       :   CloudSense (Shreyas)
+* Modification Log
+===================================================================================================
+* Ver.    Date          Author              Modification
+---------------------------------------------------------------------------------------------------
+* 1.0     4th-Feb-15   Shreyas             Created the vf page.
+
+********************************************************************************************************************************************
+-->
+
+<apex:page Controller="ZTS_EU_AssignContractTemplateController">
+    
+    <script>
+    
+    function getTemplateDetails(){
+        getCT();
+    }
+                   
+    </script>
+    
+    <apex:form id="frm_ct">
+    
+    <apex:pageblock id="pb_ct">
+    
+        <apex:pageblockSection columns="1" id="pbs_ctSelectList">
+            <apex:pageblockSectionItem >
+                <apex:outputText value="{!$Label.ZTS_EU_Available_Contract_Templates}" />
+                <apex:selectList id="ctList" size="1"  multiselect="false" required="true" value="{!selectedTemplateId}" onchange="getTemplateDetails();"> 
+                    <apex:selectOptions value="{!contractTemplateSelectList}" />                                                              
+                </apex:selectList>
+            </apex:pageblockSectionItem>
+        </apex:pageblockSection>
+        
+        <br></br><br></br>
+        
+        <apex:pageblockSection title="{!$Label.ZTS_EU_ContractDetails}" columns="2" id="pbs_ctDetail">
+                  <apex:outputField value="{!contractTemplateDetail.Name}"/>
+                  <apex:outputField value="{!contractTemplateDetail.ZTS_EU_CTBusiness_Unit__c}"/>
+                  <apex:outputField value="{!contractTemplateDetail.ZTS_EU_Type__c}"/>
+                  <apex:outputField value="{!contractTemplateDetail.ZTS_EU_Discount_Type__c}"/>
+                  <apex:outputField value="{!contractTemplateDetail.ZTS_EU_Discount__c}"/>
+                  <apex:outputField value="{!contractTemplateDetail.ZTS_EU_Short_Code__c}"/>
+                  <apex:outputField value="{!contractTemplateDetail.ZTS_EU_Status__c}"/>
+                  <apex:outputField value="{!contractTemplateDetail.ZTS_EU_Fiscal_Year__c}"/>
+                  <apex:outputField value="{!contractTemplateDetail.ZTS_EU_Start_Date__c}"/>
+                  <apex:outputField value="{!contractTemplateDetail.ZTS_EU_End_Date__c}"/>
+         </apex:pageblockSection>
+         
+         
+         <apex:pageblockSection title="{!$Label.ZTS_EU_ProductAssociations}" columns="2" id="pbs_prodAsso" >
+                  
+                  <apex:pageblockTable value="{!productTemplateAssociationList}" var="pa" id="pbt_prodAsso" rendered="{! (productTemplateAssociationListSize > 0)}">
+                      <apex:column value="{!pa.Name}" headerValue="{!$ObjectType.Product_Contract_Template_Association__c.Fields.Name.Label}" />
+                      <apex:column headerValue="{!$ObjectType.Product_Contract_Template_Association__c.Fields.ZTS_EU_Product_Hierarchy__c.Label}" >
+                         <apex:outputField value="{!pa.ZTS_EU_Product_Hierarchy__c}" />
+                     </apex:column>
+                 </apex:pageblockTable>
+                  
+         </apex:pageblockSection>
+        
+        
+        <apex:actionFunction name="getCT" action="{!getSelectedTemplateDetails}" reRender="pbs_ctDetail,pbs_prodAsso,pbt_prodAsso" status="status_Loading"/> 
+        
+        <apex:pageBlockButtons location="top">
+          <apex:commandButton action="{!assignContractTemplate}" value="{!$Label.ZTS_EU_AssignContractTemplate}"/>
+          
+        </apex:pageBlockButtons>
+      
+        
+    </apex:pageblock>
+    
+    
+    
+    <apex:actionStatus id="status_Loading">
+        <apex:facet name="start"> 
+            <c:ZTS_EnhancedActionStatus BackColor="#F1F2C6" borderColor="#336699" borderSize="1" height="30px" width="120px" ImageUrl="{!$Resource.AjaxAnimation}" Message="{!$Label.ZTS_EU_Loading}" messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+        </apex:facet>
+    </apex:actionStatus>
+    
+    </apex:form>
+    
+</apex:page>

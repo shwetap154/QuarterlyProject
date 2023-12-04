@@ -1,0 +1,181 @@
+<apex:page controller="PDFGenCtrl" action="{!loadPageData}">
+  <apex:form id="form">   
+<!--<apex:includeScript value="{!URLFOR($Resource.chartjs)}"/>-->
+    <apex:includeScript value="https://cdn.jsdelivr.net/npm/chart.js"/>
+    <!-- dom-to-image js lib -->
+    <apex:includeScript value="{!URLFOR($Resource.domtoimage)}"/>
+    <!-- dom-to-image jspdf -->
+    <apex:includeScript value="{!URLFOR($Resource.jspdf)}/jspdf/jspdf.umd.min.js"/>
+    <apex:includeScript value="../../soap/ajax/54.0/connection.js" />
+    <!--<apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"/>-->
+    
+    <!-- TODO - HTML -->
+    <div class="container">
+        <button onclick="downloadPDF()" style="float:right;">
+            Download PDF
+        </button>
+        <!-- page 1 -->
+        <div class="page" style="width:300px; height:500px;">
+            <canvas id="myChart"></canvas>
+            <apex:chart height="400" width="700" data="{!ChartData}">
+                  <apex:axis type="Numeric" position="left" fields="data1" 
+                      title="Opportunities Closed" grid="true"/>
+                  <apex:axis type="Category" position="bottom" fields="name" 
+                      title="Month of the Year">
+                </apex:axis>
+                <apex:lineSeries axis="left" fill="true" xField="name" yField="data1"
+                    markerType="cross" markerSize="4" markerFill="#FF0000"/>
+            </apex:chart>
+        </div>
+        <!-- page 2 
+        <div class="page">
+            <img alt="img" src="/resource/image_content"
+                 id="p2_img" width="300"/>
+        </div>-->
+    </div>
+
+    
+    <apex:actionFunction action="{!savePDF}" name="savePDF" reRender="form" oncomplete="navigateTo('{!benchmarkUrl}')">
+      <apex:param name="pdfFile" assignTo="{!pdfFile}" value="" />
+  </apex:actionFunction>
+<script>
+  var previousOnLload = window.onload;
+  window.onload = function () {
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: 'Coach',
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    //downloadPDF();
+  }
+    
+    function downloadPDF(){
+        console.log('inside button::');
+        // Select all div with 'page' class
+        var pages = document.getElementsByClassName('page');
+        var pageCount = 0;
+        var scale = 1;
+        //Create PDF
+        var pdf = new jspdf.jsPDF();
+        // Loop selected divs / pages
+        for (var i = 0; i < pages.length; i++) {
+          var page = pages[i];
+            if(i >0 && i< pages.length){
+            pdf.addPage();
+        }
+                                  // Convert each div.page node to image
+                                  domtoimage.toPng(page, {
+                                  width: page.offsetWidth*scale,
+                                  height: page.offsetHeight*scale,
+                                  style: {
+                                  transform: "scale("+ scale + ")",
+                                  transformOrigin: "top left",
+                                  width: page.offsetWidth + "px",
+                                  height: page.offsetHeight + "px"
+                                  }
+                                  }).then((blob) => {
+            pdf.setPage(i+1);
+            // Attach the converted blob / image into created pdf
+            pdf.addImage(blob, 'PNG', 0, 0, undefined, undefined, i, 'FAST');
+            pageCount++;
+            if(pageCount == pages.length){
+              pdf.save('PDF_REeport.pdf');
+              //savePdf(encodeURIComponent(pdf.output()));
+              sforce.connection.sessionId = '{!$Api.Session_ID}';
+
+                // var output = pdf.output();
+                // var attachment         = new sforce.SObject('Attachment');
+                //     attachment.Name        = 'PDF_Report.pdf';
+                //     attachment.IsPrivate   = false;
+                //     attachment.ContentType = 'application/pdf';
+                //     attachment.Body        = encodeURIComponent(output);
+                //     attachment.ParentId    = 'aDp7h000000CeczCAC';
+                //     sforce.connection.create([attachment]);
+
+                //Download PDF
+                // var output = pdf.output('datauristring');
+                // savePdf(encodeURIComponent(output));
+                // pdf.output('blob', {filename: 'PDF_Report.pdf'}).text().then(
+                //   function(text) {
+                //     // console.log(text);
+                //     // savePdf(text);
+                //     var attachment         = new sforce.SObject('Attachment');
+                //     attachment.Name        = 'PDF_Report.pdf';
+                //     attachment.IsPrivate   = false;
+                //     attachment.ContentType = 'application/pdf';
+                //     attachment.Body        = encodeURIComponent(text);
+                //     attachment.ParentId    = 'aDp7h000000CeczCAC';
+                //     sforce.connection.create([attachment]);
+                //   });
+
+               // sforce.connection.sessionId = '{!$Api.Session_ID}';
+                // var output = pdf.output('datauristring');
+                // var attachment         = new sforce.SObject('Attachment');
+                // attachment.Name        = 'test.pdf';
+                // attachment.IsPrivate   = false;
+                // attachment.ContentType = 'application/pdf';
+                // attachment.Body        = encodeURIComponent(output);
+                // attachment.ParentId    = 'aDp7h000000CeczCAC';
+                // sforce.connection.create([attachment]);
+
+                // var reader = new FileReader()
+                // var data = pdf.output();
+                // var buffer = new ArrayBuffer(data.length);
+                // var array = new Uint8Array(buffer);
+
+                // for (var i = 0; i < data.length; i++) {
+                //     array[i] = data.charCodeAt(i);
+                // }
+
+                // var blob = new Blob(
+                //     [array],
+                //     {type: 'application/pdf', encoding: 'UTF-8'}
+                // );
+
+                // reader.addEventListener("load", function(evt) {
+                //   var fileString = evt.target.result;
+                //   // savePdf(fileString);   
+                //                    var attachment         = new sforce.SObject('Attachment');
+
+                //   attachment.Name        = 'PDF_Report.pdf';
+                //     attachment.IsPrivate   = false;
+                //     attachment.ContentType = 'application/pdf';
+                //     attachment.Body        = fileString;
+                //     attachment.ParentId    = 'aDp7h000000CeczCAC';
+                //     sforce.connection.create([attachment]);     
+                // });
+                // reader.readAsDataURL(blob);
+                // .text().then(
+                //   function(text) {
+                //     console.log(text);
+                //     savePdf(text);
+                //   });
+                // console.log(output);
+            }
+        });
+        }
+      }
+
+      function navigateTo(url) {
+        console.log(url);
+        //window.location.href = url;
+      }
+</script>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<batchInfo
+   xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+  <id>751x00000000079AAA</id>
+  <jobId>750c0000000FusYAAS</jobId>
+  <state>Completed</state>
+  <createdDate>2009-09-01T17:44:45.000Z</createdDate>
+  <systemModstamp>2009-09-01T17:44:45.000Z</systemModstamp>
+  <numberRecordsProcessed>2</numberRecordsProcessed>
+</batchInfo>

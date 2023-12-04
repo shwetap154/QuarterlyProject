@@ -1,0 +1,25 @@
+<!--
+  @description       : 
+  @author            : Padma Nerella @ Zoetis Inc
+  @group             : 
+  @last modified on  : 11-29-2023
+  @last modified by  : Padma Nerella @ Zoetis Inc
+-->
+<template>
+
+        <template for:each={filesList} for:item="file">
+            <div key={file.value} class="slds-box">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-large-size_4-of-12 slds-medium-size_4-of-12 slds-size_12-of-12">
+                      <a data-fileid={file.value} onclick={DeleteFileHandler}>Remove</a>
+                    </div>
+                    <div class="slds-col slds-large-size_4-of-12 slds-medium-size_4-of-12 slds-size_12-of-12">
+                      FileName -{file.label}</p>
+                    </div>
+                    <div class="slds-col slds-large-size_4-of-12 slds-medium-size_4-of-12 slds-size_12-of-12">
+                      <a href={file.url.VersionDataUrl} download>Download</a>
+                    </div>
+                  </div>
+            </div>
+        </template> 
+</template>

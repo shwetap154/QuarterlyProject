@@ -1,0 +1,13 @@
+NAME,CURRENCYISOCODE,ZTS_GL_REVERSE_ROLE__C
+Corporate,EUR,Corporate Member
+Referrals for,EUR,Referrals from
+Purchases from,EUR,Sells to
+Serves,EUR,Serviced by
+Influences,EUR,Influenced by
+Branch of,EUR,Member of
+Referrals from,EUR,Referrals for
+Member of,EUR,Branch of
+Influenced by,EUR,Influences
+Sells to,EUR,Purchases from
+Serviced by,EUR,Serves
+Corporate Member,EUR,Corporate

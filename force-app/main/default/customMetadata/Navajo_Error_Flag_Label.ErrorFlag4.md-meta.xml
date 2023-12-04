@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>ErrorFlag4</label>
+    <protected>false</protected>
+    <values>
+        <field>Byte_Size__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Cancellation_Label__c</field>
+        <value xsi:type="xsd:string">Bead Check 1 / Bead Check 2</value>
+    </values>
+    <values>
+        <field>Chemistries__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Flag_Column__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Flag_Row__c</field>
+        <value xsi:type="xsd:double">4.0</value>
+    </values>
+    <values>
+        <field>Material_Number__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Old_SAP_Mat_Number__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Type__c</field>
+        <value xsi:type="xsd:string">Cancellation</value>
+    </values>
+</CustomMetadata>

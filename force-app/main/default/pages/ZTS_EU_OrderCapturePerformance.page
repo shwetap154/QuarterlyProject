@@ -1,0 +1,107 @@
+<apex:page controller="ZTS_EU_OrderCapturePerformanceController" readOnly="true">
+  
+    <apex:SectionHeader subtitle="Order Capture Performance" />
+    
+    <apex:form id="frm_ocp">
+        <apex:pageBlock id="pb_ocp">
+            <apex:pageblockSection columns="1" id="pbs_ocp">
+                <apex:pageblockTable value="{!CapturePerformance}" var="cp">
+                    <apex:variable var="c" value="{!userCurrency}" />
+                
+                    <apex:column headerValue="User Name" width="50">
+                        <apex:outputText value="{!cp.user.Name}"/>
+                    </apex:column>
+                    <apex:column headerValue="Year" width="30">
+                        <apex:outputText value="{!Year}"/>
+                    </apex:column>
+                    <apex:column headerValue="FY Target" width="30">
+                        <apex:outputText value="{0, number, ##0.00}">
+                            <apex:param value="{!cp.performance['FY'].target}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="FY Value" width="30">
+                        <apex:outputText value="{0, number, ##0.00}">
+                            <apex:param value="{!cp.performance['FY'].orderValue}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="FY Perf." width="30">
+                        <apex:outputText value="{0, number, ##0.00}%">
+                            <apex:param value="{!cp.performance['FY'].value}"/>
+                        </apex:outputText>
+                    </apex:column>
+
+                     
+                
+                    <apex:column headerValue="FQ1 Target" width="30">
+                        <apex:outputText value="{0, number, ##0.00}">
+                            <apex:param value="{!cp.performance['01'].target}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="FQ1 Value" width="30">
+                        <apex:outputText value="{0, number, ##0.00}">
+                            <apex:param value="{!cp.performance['01'].orderValue}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="FQ1 Perf." width="30">
+                        <apex:outputText value="{0, number, ##0.00}%">
+                            <apex:param value="{!cp.performance['01'].value}"/>
+                        </apex:outputText>
+                    </apex:column>
+
+                     <apex:column headerValue="FQ2 Target" width="30">
+                        <apex:outputText value="{0, number, ##0.00}">
+                            <apex:param value="{!cp.performance['02'].target}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="FQ2 Value" width="30">
+                        <apex:outputText value="{0, number, ##0.00}">
+                            <apex:param value="{!cp.performance['02'].orderValue}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="FQ2 Perf." width="30">
+                        <apex:outputText value="{0, number, ##0.00}%">
+                            <apex:param value="{!cp.performance['02'].value}"/>
+                        </apex:outputText>
+                    </apex:column>
+
+                     <apex:column headerValue="FQ3 Target" width="30">
+                        <apex:outputText value="{0, number, ##0.00}">
+                            <apex:param value="{!cp.performance['03'].target}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="FQ3 Value" width="30">
+                        <apex:outputText value="{0, number, ##0.00}">
+                            <apex:param value="{!cp.performance['03'].orderValue}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="FQ3 Perf." width="30">
+                        <apex:outputText value="{0, number, ##0.00}%">
+                            <apex:param value="{!cp.performance['03'].value}"/>
+                        </apex:outputText>
+                    </apex:column>
+
+                     <apex:column headerValue="FQ4 Target" width="30">
+                        <apex:outputText value="{0, number, ##0.00}">
+                            <apex:param value="{!cp.performance['04'].target}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="FQ4 Value" width="30">
+                        <apex:outputText value="{0, number, ##0.00}">
+                            <apex:param value="{!cp.performance['04'].orderValue}"/>
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="FQ4 Perf." width="30">
+                        <apex:outputText value="{0, number, ##0.00}%">
+                            <apex:param value="{!cp.performance['04'].value}"/>
+                        </apex:outputText>
+                    </apex:column>
+
+                </apex:pageblockTable>
+            </apex:pageblockSection>
+
+        </apex:pageBlock>    
+    </apex:form>  
+     
+     
+     
+</apex:page>

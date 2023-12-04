@@ -1,0 +1,3 @@
+<apex:page standardController="ZTS_EU_ContractTemplate__c" extensions="ZTS_EU_ContrTemplateController" 
+                            action="{!doAssign}">
+</apex:page>

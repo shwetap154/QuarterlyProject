@@ -1,0 +1,205 @@
+<!--
+  @description       : 
+  @author            : Morgan Marchese @ Zoetis Inc
+  @group             : 
+  @last modified on  : 11-23-2021
+  @last modified by  : Morgan Marchese @ Zoetis Inc
+  Modifications Log
+  Ver   Date         Author                         Modification
+  1.0   11-23-2021   Morgan Marchese @ Zoetis Inc   Initial Version
+-->
+<apex:page title="Zoetis For Shelters" standardController="Lead" extensions="ZoetisForShelters" cache="false" showChat="false"
+           showHeader="false" sidebar="false" standardStylesheets="false">
+  <apex:stylesheet value="{!$Resource.ZFS_styles}" />
+	<style>
+    	html,body{height:75%} 
+    	
+        .main_container h3 {
+            color: #9a9797;
+            font-weight: normal;
+            font-size: 1.2em;
+        }
+        .main_container .input {
+            max-width: 40em;
+            margin: 0 auto 1em;
+        	color: #9a9797;
+        	width: 80% !important;
+        }
+       
+        
+        .main_container ol {
+            font-size: small; 
+        }
+        
+        .main_container h2 {
+            text-transform: uppercase;
+            font-family: "proxima-nova-extra-condensed", Helvetica, Arial, sans-serif;
+            font-size: 2.5em;
+            line-height: 1;
+            color: #dc1f53;
+            margin: 0;
+            margin-bottom: 0.5em;
+            padding-top: 1em;
+            text-align: center;        	
+        }
+        footer {
+            color: black;
+        }
+        
+        .main_container .appButton {
+            width: inherit;
+            //padding: 0.5em 0.5em;
+            min-width: 5em;
+            text-transform: uppercase;
+            background-color: #ff6400;
+            color: white;
+        }
+        .main_container .appNumEntry {
+            padding: 0.5em 0.5em;
+            font-size: 1em;
+            border: none;
+            background: white;
+            min-width: 12em;
+            border-color: #6dd2de;
+            border-style: solid;
+        }
+        .message {
+            background-color: white;
+            width: 50% !important;
+            border-color: red;
+            border-width: thin;
+            border-style: solid;
+            margin-left: 11em;
+            font-weight:bold;
+        	margin-left: 25%;
+        }
+        
+        .headtext{
+            text-align: left;
+            margin-left: 10%;
+            margin-right: 10%; 
+        }
+        
+        .emailSearchTable td,th{
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-top: 5px;
+            padding-bottom: 5px; 
+        }
+        
+        label {
+            font-size: 1em !important;
+        }
+        
+        body{
+            text-align: left !important;
+        }
+
+        table.form label {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            display: block;
+            margin-left: 10px;
+            color: #000000;
+        }
+
+        .formInput {
+            margin-bottom:5px;
+            width:30%;
+            min-width: 25%;
+        }
+
+    </style>
+    <body> 
+       <c:ZFS_ChatHeader /> 
+        <div class="main_container">
+             
+                <h2>
+                    Zoetis For Shelters 
+                    <span>Application</span>
+                </h2> 
+            	<div>
+                	<apex:pageMessages />    
+            	</div>
+				
+                <div class="input" >
+                    <h3> The Zoetis for Shelters application guides you through the application process step-by-step.  
+                        If for some reason you need to leave the application, you can pick up where you left off at another time. </h3>                    
+                    <br/>
+                    <!--
+                    <h3>
+                        Already started your application? To continue, please enter your application number below:
+                    </h3> 
+                    	Application Number 
+                    <br/>
+                    <apex:inputText id="appNumber" value="{!applicationNo }"  style="text-align:center;"/>
+                    <apex:messages style="color: red; font-weight:bold" />
+                    <apex:commandButton action="{!fetchShelter}" value="Continue" styleClass="button"   /> 
+                    -->
+                    
+                    <apex:form id="appNumForm" style="align:left" >
+                    <label id="searchtitle"> <b> Already started your application? Please enter: </b></label> 
+                    <br/><br/>
+                    <b>
+                    <table width="60%" >
+                        <tr> 
+                            <td>
+                                <label for="appNumber">Application Number <span style="color:red;">*</span></label> 
+                                <apex:inputText id="appNumber" value="{!applicationNo}"  styleClass="formInput appNumEntry" style="text-align:center;"/> 
+                            </td>
+                        </tr>
+                        <tr>                                  
+                            <td>
+                                <label for="emailId">Email Address<span style="color:red;">*</span></label> 
+                                <apex:inputText id="emailId" value="{!emailId}"  styleClass="formInput appNumEntry" style="text-align:center;"/>
+                            </td> 
+                        </tr>
+                        <tr>
+                            <td>
+                                <apex:commandButton action="{!fetchShelter}" value="Search" styleClass="appButton" status="loading" /> 
+                            </td>
+                            <td>
+                                <apex:actionstatus id="loading">
+                                    <apex:facet name="start"> 
+                                            <div>
+                                                <img class="waitingImage" src="/img/loading.gif" title="" /> 
+                                            </div> 
+                                    </apex:facet>
+                                </apex:actionstatus>
+                            </td>
+                        </tr>
+                    </table>
+                    </b>
+                    <br/>
+                    <apex:pageBlock id="resulttable" >
+                        <apex:pageBlockTable border="1px" value="{!emailLeads}" var="l" rendered="{!emailLeads != null && emailLeads.size > 0}" width="100%" styleClass="emailSearchTable" >
+                            <apex:column headerValue="App Number" >
+                                <apex:commandLink value="{!l.Shelter_Application_Number__c}" action="{!fetchShelter}"  >
+                                    <apex:param name="appNumber" value="{!l.Shelter_Application_Number__c}" assignTo="{!applicationNo}"/>
+                                    <apex:param name="emailAddr" value="{!l.Email}" assignTo="{!emailId}"/>
+                                </apex:commandLink> 
+                            </apex:column>
+                            <apex:column headerValue="Name" >
+                                <apex:outputField value="{!l.Name}" />
+                            </apex:column>
+                            <apex:column headerValue="Status" >
+                                <apex:outputField value="{!l.Status}" />
+                            </apex:column>
+                            <apex:column headerValue="Created Date" >
+                                <apex:outputField value="{!l.CreatedDate}" />
+                            </apex:column>
+                        </apex:pageBlockTable>
+                        <br/>
+                        <apex:outputText value="<b><U>Note: </U></b> If you have multiple applications in progress, please contact us via Phone 1-866-225-9777 or Email: shelterteam@zoetis.com for assistance on the best application to complete." 
+                        rendered="{!emailLeads != null && emailLeads.size > 0}" escape="false" />
+                    </apex:pageBlock>
+                </apex:form>
+                    
+                </div>
+                
+            
+             
+        </div>
+        <c:ZFS_footer /> 
+    </body>
+</apex:page>

@@ -1,0 +1,72 @@
+<aura:component controller="SL_cmp_DynamicLookupController">
+    <!-- Attributes -->
+    <aura:attribute name="sObjectAPIName" type="String" required="true"
+                    description="The API name of the SObject to search" access="public"/>
+    <aura:attribute name="pluralLabel" type="String" required="true"
+                    description="The plural label to assign to the lookup, eg: Accounts" access="public"/>
+    <aura:attribute name="listIconSVGPath" type="String" 
+                    description="The static resource path to the svg icon to use." access="public"/>
+    <aura:attribute name="searchString" type="String"
+                    description="The search string to find." access="public"/>
+    <aura:attribute name="lstSelectedUsers" type="Object[]"
+                    description="List of selected pills" access="public"/>
+    <aura:attribute name="isFilter" type="Boolean" access="public"/>
+    <aura:attribute name="selRecId" type="String" access="public"/>
+    <aura:attribute name="selRecName" type="String" access="public"/>
+    <aura:attribute name="FieldApiName" type="String" access="public"/>
+    <aura:attribute name="isError" type="Boolean" access="public"/>
+    <aura:attribute name="isDisplayCreateNew" type="Boolean" access="public" default="false"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!--Event Registering-->
+    <aura:registerEvent name="SL_evt_LookupValue" type="c:SL_evt_LookupValue"/>
+    <!-- Lookup Markup : See https://www.lightningdesignsystem.com/components/lookups -->
+    <div class="slds"> 
+        <div aura:id="lookup-div" class="slds-lookup" data-select="single" data-scope="single" data-typeahead="true">
+            <!-- This is the Input form markup -->
+            <div class="slds-form-element">
+                <div class="{!v.lstSelectedUsers.length > 0 ? 'hide' : ''}">
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
+                        <ui:inputText aura:id="lookup" value="{!v.searchString}" class="{!(v.isError?'borderRed':'borderStand')+ ' slds-input'}" keypress="{!c.search}" keyup="{!c.search}" keydown="{!c.search}" 
+                                      updateOn="keypress, keyup, keydown" placeholder="Search..."/>
+                        <lightning:icon iconName="utility:search" class="slds-input__icon" size="x-small"/>
+                    </div>
+                </div>
+                <!-- This is the lookup list markup. Initially it's hidden -->
+                <div aura:id="lookuplist" class="slds-lookup__menu slds-hide" style="Z-index:111;position:relative;" role="listbox" >
+                    <div class="slds-lookup__item">
+                        <button class="slds-button">
+                            <lightning:icon iconName="utility:search" class="slds-input__icon" size="x-small"/>
+                            &quot;{!v.searchString}&quot;
+                        </button>
+                    </div>
+                    <ul aura:id="lookuplist-items" class="slds-lookup__list" role="presentation">
+                    </ul>
+                    <aura:if isTrue="{!v.isDisplayCreateNew}">
+                        <div class="slds-lookup__item">
+                            <lightning:button class="AddNewBtn" variant="brand" label="{! 'Add New ' + v.sObjectAPIName}" iconName="utility:add" iconPosition="left" onclick="{! c.createNewRecord }" />
+                        </div>
+                    </aura:if>
+                </div>
+                
+                <!-- This markup is for when an item is currently selected -->
+                <div aura:id="lookup-pill" class="{!v.lstSelectedUsers.length > 0 ? 'slds-pill-container minHeight' : 'slds-pill-container minHeight hide'}">
+                    <ul style="cursor:text;margin: 0 auto;width: 100%;">
+                        <aura:iteration items="{!v.lstSelectedUsers}" var="objSelectedUser">
+                            <li class="slds-pill" style="float: left;width: 100%;">
+                                <lightning:icon iconName="{!v.sObjectAPIName == 'User'?'standard:user':'custom:custom24'}" class="slds-input__icon " size="small"/>
+                                <a href="javascript:void(0);" class="slds-pill__label" style="padding: 0px 6px;" title="{!objSelectedUser.Name}">{!objSelectedUser.Name}</a>
+                                <button data-UserId="{!objSelectedUser.id}" data-UserName="{!objSelectedUser.Name}" class="slds-button slds-button--icon-bare" onclick="{!c.clear}">
+                                    <lightning:icon iconName="utility:close" class="slds-input__icon" size="x-small"/>
+                                </button>
+                            </li>
+                        </aura:iteration>
+                        <div style="clear: left; margin-top: -2px;"></div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</aura:component>

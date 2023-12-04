@@ -1,0 +1,113 @@
+<!--
+ - Created by jerridkimball on 2018-05-17.
+ -->
+
+<aura:component
+                description="SL_NestedTables_TableRowParent"
+                implements="c:SL_NestedTables_ITableMain"
+                extends="c:SL_NestedTables_TableRowBase"
+                >
+    <!-- - - - -->
+    <!-- Local -->
+    <!-- - - - -->
+    <aura:attribute
+                    name="nestedEnableEditButton"
+                    type="Boolean"
+                    description="If true, show the Edit button on a record row."
+                    default="false"
+                    />
+    <aura:attribute
+                    name="nestedEnableDeleteButton"
+                    type="Boolean"
+                    description="If true, show the Delete button on a record row."
+                    default="false"
+                    />
+    
+    <aura:attribute name="recordCount" type="Integer" default="0" />
+    
+    <aura:attribute name="isExpandedByDefault" type="Boolean" default="false" />
+    <aura:attribute name="isExpanded" type="Boolean" default="false" />
+    <!--<aura:attribute name="recordId" type="String" default="{!v.currentRecord.Id}" />-->
+    
+    <aura:attribute name="nestedSVGName" type="String" />
+    <aura:attribute name="nestedEnableNew" type="Boolean" default="false"  />
+    
+    <aura:attribute name="profileAccessForObject" type="Object"   />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <tr aria-level="1" aria-posinset="1" aria-setsize="4" class="slds-no-hover no-table-child" tabindex="0">
+        <td class=" " data-label="Icon" scope="row" style="width:3%;">
+            <aura:if isTrue="{!v.currentRecord.relSize > 0}">
+                <lightning:buttonIcon iconName="{!v.isExpanded ? 'utility:chevrondown' : 'utility:chevronright'}" size="medium" title="" alternativeText="" onclick="{!c.toggleExpanded}" variant="bare" />
+            </aura:if>
+        </td>
+        
+        <aura:iteration items="{!v.fieldMap}" var="fldR" indexVar="index">
+            <td
+                data-label="{!fldR.label}"
+                style="{!'vertical-align: top; '+ (fldR.fieldType == 'ICON' ? ' padding-left:0; padding-right : 0;' : '') + if(or(fldR.fieldType == 'STRING', fldR.fieldType == 'TEXTAREA'),' white-space: normal;','')}"
+                class="{!'slds-truncate  slds-size_' + fldR.columnWidth + '-of-12'}"
+                >
+                <!--{!v.fieldMap.length}, {!index}, {!add(v.fieldMap.length,1)} {!equals(add(v.fieldMap.length,1),index)}-->
+                <c:SL_NestedTables_DynamicTableCell currentField="{#fldR}" currentRecord="{#v.currentRecord.record}"/>
+            </td>
+        </aura:iteration>
+        <td class="" role="gridcell" style="5.33%;">
+            <!-- Only show the button menu if one of these is true. -->
+            <aura:if isTrue="{!or( v.mainEnableEditButton, v.mainEnableDeleteButton )}">
+                <aura:if isTrue="{!or(v.currentRecord.record.UserRecordAccess.HasDeleteAccess,v.currentRecord.record.UserRecordAccess.HasEditAccess)}">
+                    <aura:if isTrue="{!or(v.profileAccessForObject.isEditable,v.profileAccessForObject.isDeletable)}">
+                        <lightning:buttonMenu
+                                              iconSize="x-small"
+                                              iconName="utility:down"
+                                              alternativeText="Settings"
+                                              onselect="{!c.handleSelect}"
+                                              menuAlignment="right"
+                                              >
+                            <!-- Added by Divyansh as per LIB-615, as AccountCOntactRealtion doesn't have any association with userRecordAccess, so we are not checking that condtion only for this object -->
+                            <aura:if isTrue="{!and(and(v.mainEnableEditButton, v.currentRecord.record.UserRecordAccess.HasEditAccess),v.profileAccessForObject.isEditable)}">
+                                <lightning:menuItem label="Edit" value="edit" iconName="utility:edit" 
+                                                    disabled="{!not(and(v.mainEnableEditButton, v.currentRecord.record.UserRecordAccess.HasEditAccess))}"/>
+                            </aura:if>
+                            <aura:if isTrue="{!and(and(v.mainEnableDeleteButton,v.currentRecord.record.UserRecordAccess.HasDeleteAccess),v.profileAccessForObject.isDeletable)}">
+                                <lightning:menuItem label="Delete" value="delete" iconName="utility:delete" 
+                                                    disabled="{!not(and(v.mainEnableDeleteButton,v.currentRecord.record.UserRecordAccess.HasDeleteAccess))}"/>
+                            </aura:if>
+                        </lightning:buttonMenu>
+                    </aura:if>
+                </aura:if>
+            </aura:if>
+        </td>
+    </tr>
+    
+    <aura:if isTrue="{!and(v.isExpanded, v.currentRecord.relSize > 0)}">
+        <tr class="slds-no-row-hover">
+            
+            <td colspan="{!v.fieldMap.length + 2}" style="padding: 0;">
+                <c:SL_NestedTables_CardChild
+                                             class="slds-m-left_x-large slds-m-right_x-large"
+                                             recordCount="{!v.recordCount}"
+                                             
+                                             recordId="{!v.currentRecord.record.Id}"
+                                             mainEnableNew="{!v.nestedEnableNew}"
+                                             mainSVGName="{!v.nestedSVGName}"
+                                             
+                                             mainObjectName="{!v.mainObjectName}"
+                                             mainFieldList="{!v.mainFieldList}"
+                                             mainTitle="{!v.mainTitle}"
+                                             mainSortField="{!v.mainSortField}"
+                                             mainSortDirection="{!v.mainSortDirection}"
+                                             mainQueryFilter="{!v.mainQueryFilter}"
+                                             mainLookupFieldName="{!v.mainLookupFieldName}"
+                                             mainEnableEditButton="{!v.nestedEnableEditButton}"
+                                             mainEnableDeleteButton="{!v.nestedEnableDeleteButton}"
+                                             mainColumnWidths="{!v.mainColumnWidths}"
+                                             
+                                             nestedNumberOfRecords="{!v.nestedNumberOfRecords}"
+                                             />
+            </td>
+        </tr>
+        
+    </aura:if>
+</aura:component>

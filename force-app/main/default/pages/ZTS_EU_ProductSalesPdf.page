@@ -1,0 +1,452 @@
+<apex:page standardController="Account" extensions="ZTS_EU_salesDataReportingController" renderAs="pdf" applyhtmltag="false" showheader="false">
+    
+    <head>
+        <style type="text/css">
+            #htmlTable2 tr.alt td {
+            color:#000000;
+            background-color:#EAF2D3;
+            }
+            @page :first {
+            size:landscape;
+            margin-top: 100px;
+            margin-bottom:80px;
+            //  margin-top: 3cm;              
+            @top-center {
+            content: element(headerOne);                
+            }           
+            
+            /* Put page numbers in the bottom center of each
+            page in the pdf document. */
+            @bottom-center {
+            font-family: Arial Unicode MS;
+            content:  counter(page) "  /  "  counter(pages);
+            font-size: 8pt;
+            }                       
+            }   
+            
+            @page{
+            /* Landscape orientation */
+            size:landscape;
+            margin-top: 200px;
+            @top-center {
+            content: element(header);
+            }   
+            /* Put page numbers in the bottom center of each
+            page in the pdf document. */
+            @bottom-center {
+            font-family: Arial Unicode MS;
+            content: counter(page)"  /  " counter(pages);
+            font-size: 8pt;
+            }
+            }
+            
+            body {
+            font-family: Arial Unicode MS;
+            }
+            div.header
+            {        
+            margin-top:122px;
+            margin-left:3px;
+            
+            padding: 5px;
+            position: running(header);
+            }
+            div.headerOne
+            {        
+            margin-top:321px;
+            margin-left:3px;        
+            padding: 5px;
+            position: running(headerOne);
+            }
+            div.NoBreak
+            {
+            page-break-inside: avoid;                
+            }
+            table.fixed { table-layout:fixed; }
+            table.fixed td { overflow: hidden; margin-top: 2px; }                          
+        </style>
+    </head>
+    <body>
+        <apex:form id="theForm">
+            <center> Product Sales Report </center> <br/><br/>
+            <table id="tb1" style="border-style: solid;font-size:8px;">
+                <tr>
+                    <td>
+                        <apex:outputText rendered="{!IF(accntchild.Id <> null, FALSE, TRUE)}">{!accntCurrent.Name}</apex:outputtext>
+                        <apex:outputText rendered="{!IF(accntchild.Id <> null, TRUE, FALSE)}">{!accntCurrent.Name}-{!$Label.ZTS_EU_Aggregated}</apex:outputtext>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <apex:outputText value="{!$Label.ZTS_EU_Generated_On} {!NOW()}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <apex:outputText value="{!$Label.ZTS_EU_Sales_Through} {!apStartDate}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <apex:outputText value="" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <apex:outputText value="{!$Label.ZTS_EU_Filter_By} " />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:1.5cm;">
+                        <apex:outputText value="{!selectedMATYTD}" />
+                    </td>
+                </tr>
+                <!--<tr>
+
+<td style="padding-left:3cm;">
+<apex:outputText value="{!selectedBillToShipTo}"/>
+</td>
+</tr>-->
+                <tr>
+                    <td style="padding-left:1.5cm;">
+                        <apex:outputText value="{!$Label.ZTS_EU_Business_Units} :N/A" rendered="{!IF(AND(selectedBusinessUnit == '<BusinessUnit>',selectedPreset == '--None--'),true, false)}" />
+                        <apex:outputText value="{!$Label.ZTS_EU_Business_Units} :{!selectedBusinessUnit}" rendered="{!IF(AND(selectedBusinessUnit != '<BusinessUnit>',selectedPreset == '--None--'),true, false)}" />
+                        <apex:outputText value="{!$Label.ZTS_EU_Business_Units} :{!salesPresets.ZTS_EU_Selected_Preferred_Species__c}" rendered="{!IF(AND(selectedBusinessUnit == '<BusinessUnit>',selectedPreset != '--None--'),true, false)}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:1.5cm;">
+                        <apex:outputText value="{!$Label.ZTS_EU_Therapeutic_Group} :N/A" rendered="{!IF(AND(selectedTherapeuticGrp == '<Therapeutic Group>',selectedPreset == '--None--'),true, false)}" />
+                        <apex:outputText value="{!$Label.ZTS_EU_Therapeutic_Group} :{!selectedTherapeuticGrp}" rendered="{!IF(AND(selectedTherapeuticGrp != '<Therapeutic Group>',selectedPreset == '--None--'),true, false)}" />
+                        <apex:outputText value="{!$Label.ZTS_EU_Therapeutic_Group} :{!salesPresets.ZTS_EU_Selected_Preferred_Thera_Grps__c}" rendered="{!IF(AND(selectedTherapeuticGrp == '<Therapeutic Group>',selectedPreset != '--None--'),true, false)}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left:1.5cm;">
+                        <apex:outputText value="{!$Label.ZTS_EU_Product} :N/A" rendered="{!IF(AND(selectedProduct == '<Product>',selectedPreset == '--None--'),true, false)}" />
+                        <apex:outputText value="{!$Label.ZTS_EU_Product} :{!selectedProduct}" rendered="{!IF(AND(selectedProduct != '<Product>',selectedPreset == '--None--'),true, false)}" />
+                        <apex:outputText value="{!$Label.ZTS_EU_Product} :{!salesPresets.ZTS_EU_Selected_Preferred_Brands__c}" rendered="{!IF(AND(selectedProduct == '<Product>',selectedPreset != '--None--'),true, false)}" />
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <br/>
+            
+            <div class="headerOne" >
+                <table border="1" cellpadding="0" cellspacing="0" style="width:950px;font-family:sans-serif;font-size:4px" id="htmlTable2">
+                    <tr style="font-weight:bold;background-color: #819FF7;font-size: 10px;">
+                        <td style="width: 6%;text-align:center;" align="middle"><b><apex:outputText value="{!$Label.ZTS_EU_Account_Name}"/></b> 
+                        </td>
+                        <td style="width: 10%;text-align:center;" align="middle"><b><apex:outputText value="{!$Label.ZTS_EU_Therapeutic_Group}"/></b> 
+                        </td>
+                        <td style="width: 9%;text-align:center;" align="middle"><b><apex:outputText value="{!$Label.ZTS_EU_Product}"/></b> 
+                        </td>
+                        <td style="width: 7%;text-align:center;" align="middle"><b> <apex:outputText value="{!$Label.ZTS_EU_Product_Sales}"/></b> 
+                        </td>
+                        <td style="width: 6%;text-align:center;" align="middle"><b><apex:outputText value="{!$Label.ZTS_EU_Grand_Total}"/></b> 
+                        </td>
+                        <!--   <apex:outputText rendered="{!IF((selectedMATYTD != 'MAT'),false, true)}">
+
+                                    <apex:repeat value="{!monthAPList}" var="monthName">
+                                    <td style="width: 35px;text-align:center;" align="middle"><b><apex:outputText value="{!monthName}" /></b> 
+                                    </td>
+                                    </apex:repeat>
+                                    </apex:outputText>
+                                    <apex:repeat value="{!monthList}" var="colItem">
+                                    <apex:outputText rendered="{!IF((selectedMATYTD != 'YTD'),false, true)}">
+                                    <td align="middle" style="width: 35px;">
+                                    <div style="margin:0;padding:0;text-align:center;">  <b><apex:outputText value="{!colItem}" ></apex:outputText></b>
+                                    </div> 
+                                    
+                                    </td>
+                                    </apex:outputText> 
+                                    </apex:repeat> -->
+                        <!-- Added by Koustav Das -->
+                        <apex:outputText rendered="{!IF((selectedMATYTD != 'MAT'),false, true)}">
+                            <apex:repeat value="{!finalMonthList}" var="monthName" rendered="{!IF((selectedDisplayType == 'Gregorian Calendar'),true,false)}">
+                                <td style="width: 75px;" align="middle">
+                                    <b><apex:outputText value="{!monthName}" /></b> 
+                                </td> 
+                            </apex:repeat>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!IF((selectedMATYTD != 'MAT'),false, true)}">
+                            <apex:repeat value="{!finalAPList}" var="monthName" rendered="{!IF((selectedDisplayType != 'Gregorian Calendar'),true,false)}">
+                                <td style="width: 75px;" align="middle">
+                                    <b><apex:outputText value="{!monthName}" /></b> 
+                                </td> 
+                            </apex:repeat>
+                        </apex:outputText>
+                        
+                        <apex:outputText rendered="{!IF((selectedMATYTD != 'YTD'),false, true)}">
+                            <apex:repeat value="{!monthList}" var="colItem" rendered="{!IF((selectedDisplayType != 'Gregorian Calendar'),true,false)}">
+                                <td align="middle" style="width: 75px;">
+                                    <b><apex:outputText value="{!colItem}" ></apex:outputText></b>
+                                </td>
+                                
+                            </apex:repeat>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!IF((selectedMATYTD != 'YTD'),false, true)}">
+                            <apex:repeat value="{!monthNameListYTDGreg}" var="colItem" rendered="{!IF((selectedDisplayType == 'Gregorian Calendar'),true,false)}">
+                                <td align="middle" style="width: 75px;">
+                                    <b><apex:outputText value="{!colItem}" ></apex:outputText></b>
+                                </td>
+                            </apex:repeat>
+                        </apex:outputText>
+                        <!-- Koustav Das Code end here -->
+                    </tr>
+                </table>
+            </div>
+            
+            
+            
+            <div class="header" style="if(counter(page) < counter(pages));">
+                <font><center> Product Sales Report </center> </font> <br/>
+                <table border="1" cellpadding="0" cellspacing="0" style="width:950px;font-family:sans-serif;font-size:4px" id="htmlTable2">
+                    <tr style="font-weight:bold;background-color: #819FF7;font-size: 10px;">
+                        <td style="width: 6%;text-align:center;" align="middle"><b><apex:outputText value="{!$Label.ZTS_EU_Account_Name}"/></b> 
+                        </td>
+                        <td style="width: 10%;text-align:center;" align="middle"><b><apex:outputText value="{!$Label.ZTS_EU_Therapeutic_Group}"/></b> 
+                        </td>
+                        <td style="width: 9%;text-align:center;" align="middle"><b><apex:outputText value="{!$Label.ZTS_EU_Product}"/></b> 
+                        </td>
+                        <td style="width: 7%;text-align:center;" align="middle"><b> <apex:outputText value="{!$Label.ZTS_EU_Product_Sales}"/></b> 
+                        </td>
+                        <td style="width: 6%;text-align:center;" align="middle"><b><apex:outputText value="{!$Label.ZTS_EU_Grand_Total}"/></b> 
+                        </td>
+                        <!--  <apex:outputText rendered="{!IF((selectedMATYTD != 'MAT'),false, true)}">
+							  <td style="width: 35px;" align="middle"><b> <apex:outputText value="{!salesDateCustSett.ZTS_EU_12__c}"/></b> </td> 
+						      <td style="width: 35px;" align="middle"><b><apex:outputText value="{!salesDateCustSett.ZTS_EU_11__c}" /></b> </td> 
+							  <td style="width: 35px;" align="middle"><b> <apex:outputText value="{!salesDateCustSett.ZTS_EU_10__c}" /></b> </td> 
+                              <td style="width: 35px;" align="middle"><b><apex:outputText value="{!salesDateCustSett.ZTS_EU_09__c}" /></b> </td> 
+                              <td style="width: 35px;" align="middle"><b> <apex:outputText value="{!salesDateCustSett.ZTS_EU_08__c}" /></b> </td> 
+                              <td style="width: 35px;" align="middle"><b><apex:outputText value="{!salesDateCustSett.ZTS_EU_07__c}" /></b> </td>
+                              <td style="width: 35px;" align="middle"><b> <apex:outputText value="{!salesDateCustSett.ZTS_EU_06__c}" /></b> </td> 
+                              <td style="width: 35px;" align="middle"><b><apex:outputText value="{!salesDateCustSett.ZTS_EU_05__c}" /></b> </td> 
+                              <td style="width: 35px;" align="middle"><b> <apex:outputText value="{!salesDateCustSett.ZTS_EU_04__c}" /></b> </td> 
+                              <td style="width: 35px;" align="middle"><b><apex:outputText value="{!salesDateCustSett.ZTS_EU_03__c}" /></b> </td> 
+                              <td style="width: 35px;" align="middle"><b> <apex:outputText value="{!salesDateCustSett.ZTS_EU_02__c}" /></b> </td> 
+                              <td style="width: 35px;" align="middle"><b><apex:outputText value="{!salesDateCustSett.ZTS_EU_01__c}" /></b> </td>
+                              <apex:repeat value="{!monthAPList}" var="monthName">
+                              <td style="width: 35px;text-align:center;" align="middle"><b><apex:outputText value="{!monthName}" /></b> 
+                              </td>
+                              </apex:repeat>
+                              </apex:outputText>
+                              <apex:repeat value="{!monthList}" var="colItem">
+                              <apex:outputText rendered="{!IF((selectedMATYTD != 'YTD'),false, true)}">
+                              <td align="middle" style="width: 35px;">
+                              <div style="margin:0;padding:0;text-align:center;">  <b><apex:outputText value="{!colItem}" ></apex:outputText></b>
+                              </div> 
+ 							  </td>
+                              </apex:outputText>
+							  </apex:repeat> -->
+                        <!-- Added by Koustav Das -->
+                        <apex:outputText rendered="{!IF((selectedMATYTD != 'MAT'),false, true)}">
+                            <apex:repeat value="{!finalMonthList}" var="monthName" rendered="{!IF((selectedDisplayType == 'Gregorian Calendar'),true,false)}">
+                                <td style="width: 75px;" align="middle">
+                                    <b><apex:outputText value="{!monthName}" /></b> 
+                                </td> 
+                            </apex:repeat>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!IF((selectedMATYTD != 'MAT'),false, true)}">
+                            <apex:repeat value="{!finalAPList}" var="monthName" rendered="{!IF((selectedDisplayType != 'Gregorian Calendar'),true,false)}">
+                                <td style="width: 75px;" align="middle">
+                                    <b><apex:outputText value="{!monthName}" /></b> 
+                                </td> 
+                            </apex:repeat>
+                        </apex:outputText>
+                        
+                        <apex:outputText rendered="{!IF((selectedMATYTD != 'YTD'),false, true)}">
+                            <apex:repeat value="{!monthList}" var="colItem" rendered="{!IF((selectedDisplayType != 'Gregorian Calendar'),true,false)}">
+                                <td align="middle" style="width: 75px;">
+                                    <b><apex:outputText value="{!colItem}" ></apex:outputText></b>
+                                </td>
+                                
+                            </apex:repeat>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!IF((selectedMATYTD != 'YTD'),false, true)}">
+                            <apex:repeat value="{!monthNameListYTDGreg}" var="colItem" rendered="{!IF((selectedDisplayType == 'Gregorian Calendar'),true,false)}">
+                                <td align="middle" style="width: 75px;">
+                                    <b><apex:outputText value="{!colItem}" ></apex:outputText></b>
+                                </td>
+                            </apex:repeat>
+                        </apex:outputText>
+                        <!-- Koustav Das Code end here -->
+                    </tr>
+                </table>
+            </div>  
+            <table class="fixed" border="1" cellpadding="0" cellspacing="0" style="width:950px;font-family:sans-serif;font-size:4px" id="htmlTable2">
+                <col width="60px" />
+                <col width="88px"/>
+                <col width="90px" />
+                <col width="65px" />
+                <col width="60px" />
+                <apex:repeat value="{!monthAPList}" var="mon"> 
+                    <col width="45px" />
+                </apex:repeat>
+                
+                
+                
+                
+                <apex:repeat value="{!customSetList}" var="salesDataRec" id="theTable3b">
+                    <tr style="font-family:verdana;color:Black;font-size:9px;text-align:center !important;">
+                        <td>
+                            <div style="margin:0;padding:0;">
+                                {!salesDataRec.accntName}
+                            </div>
+                        </td>
+                        <td>
+                            <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                <apex:outputPanel rendered="{!IF(str1.therapeuticGrp.size==0,TRUE,FALSE)}">&nbsp;</apex:outputPanel>
+                                <apex:repeat value="{!str1.therapeuticGrp}" var="str">
+                                    <div class="NoBreak" style="width:90px;height:52px;text-align:center;display:table;border-top:1px solid #666;white-space:no-wrap;margin:0;padding:40px 0 0 0;word-break:break-all;">
+                                        <span style="display: table-cell;vertical-align: middle;">{!str}</span>
+                                    </div>
+                                </apex:repeat>
+                            </apex:repeat>
+                        </td>
+                        <td>
+                            <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                <apex:outputPanel rendered="{!IF(str1.prodValue.size==0,TRUE,FALSE)}">&nbsp;</apex:outputPanel>
+                                <apex:repeat value="{!str1.prodValue}" var="str">
+                                    <div class="NoBreak" style="width:90px;height:52px;text-align:center;display:table;border-top:1px solid #666;white-space:no-wrap;margin:0;padding:40px 0 0 0;word-break:break-all;">
+                                        <span style="display: table-cell;vertical-align: middle;">{!str}</span>
+                                    </div>
+                                </apex:repeat>
+                            </apex:repeat>
+                        </td>
+                        <td>
+                            <apex:variable var="i" value="{!0}" />
+                            <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                <apex:variable var="i" value="{!i+1}" />
+                                <apex:repeat value="{!str1.valueType}" var="str">
+                                    <div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">
+                                        {!str}
+                                    </div>                                
+                                </apex:repeat>
+                            </apex:repeat>
+                        </td>
+                        <td>
+                            <apex:variable var="i" value="{!0}" />
+                            <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                <apex:variable var="i" value="{!i+1}" />
+                                <apex:repeat value="{!str1.grandTotal}" var="str">
+                                    <div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}
+                                    </div>
+                                </apex:repeat>
+                            </apex:repeat>
+                        </td>
+                        <apex:outputText rendered="{!IF((selectedMATYTD != 'MAT'),false, true)}">
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthTwelve}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthEleven}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthTen}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthNine}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthEight}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthSeven}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthSix}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthFive}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthFour}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthThree}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthTwo}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                            <td>
+                                <apex:variable var="i" value="{!0}" />
+                                <apex:repeat value="{!salesDataRec.salesDataWrapp}" var="str1">
+                                    <apex:variable var="i" value="{!i+1}" />
+                                    <apex:repeat value="{!str1.monthOne}" var="str"><div class="NoBreak" style="height:25px;border-top:1px solid #666;margin:0;padding:5px 0 0 0;white-space:nowrap;">{!currencyType}{!str}</div></apex:repeat>
+                                </apex:repeat>
+                            </td>
+                        </apex:outputText>
+                        <apex:variable var="i" value="{!0}" />
+                        <apex:repeat value="{!monthList}" var="colItem">
+                            <apex:variable var="i" value="{!i+1}" />
+                            <apex:outputText rendered="{!IF((selectedMATYTD != 'YTD'),false, true)}">
+                                <td>
+                                    <apex:repeat value="{!salesDataRec.monthValueMap[colItem]}" var="listvar">
+                                        <div class="NoBreak" style="height:20px;border-top:1px solid #666;white-space:no-wrap;text-align:center;margin:0;padding:5px 0;"> <!-- Shefali's Changes -->
+                                            <apex:outputLabel value="{!currencyType}{!listvar}"></apex:outputLabel>
+                                        </div> 
+                                    </apex:repeat>                                
+                                </td>
+                            </apex:outputText>
+                        </apex:repeat>
+                    </tr>
+                </apex:repeat>
+            </table>
+            <br/>
+            <br/>
+            <br/>
+            <apex:outputText rendered="{!IF(customSetList.size == 0,TRUE,FALSE)}">
+                <br/><b style="font-size: 15px;">{!$Label.ZTS_EU_Based_on_the_current_report_selections_no_data_is_available}</b>
+                
+            </apex:outputText>
+            <br/>
+            <br/>
+            <br/>
+        </apex:form>
+    </body>
+</apex:page>

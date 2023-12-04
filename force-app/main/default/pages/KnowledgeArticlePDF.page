@@ -1,0 +1,140 @@
+<apex:page applyHtmlTag="false" showQuickActionVfHeader="false" standardStylesheets="false" Controller="KnowledgeArticlePDFController" showHeader="false" renderAs="PDF">
+  <html>
+        <head>
+            <style>
+                body {
+                margin: 2px;
+                padding: 10px;
+                border: .5px groove #000000;
+                }
+
+                table {
+                border-collapse: collapse;
+                margin-top: 25px;
+                width: 100%;
+                }
+                
+                .th {
+                background-color:rgb(243, 243, 243);
+                font-align: left;
+                font-size: 16px;
+                font-weight: medium;
+                padding: 5px;
+                width: 33%;
+                }
+                
+                td {
+                font-size: 12px;
+                padding: 5px;
+                text-align: left;
+                width: 33%;
+                }     
+
+                .box--full {
+                float: left;
+                width: 100%;
+                }
+
+                .box--left {
+                float: left;
+                width: 25%;
+                }
+
+                .box--right {
+                float: left;
+                width: 75%;
+                }
+
+                table {
+                border-collapse: collapse;
+                margin-top: 25px;
+                width: 100%;
+                }
+                
+                .th {
+                background-color: #c2c2c2;
+                font-align: left;
+                font-size: 16px;
+                font-weight: medium;
+                padding: 5px;
+                }
+
+                .th2 {
+                    font-size: 14px;
+                    font-weight: medium;
+                }
+                
+                td {
+                font-size: 12px;
+                padding: 5px;
+                text-align: left;
+                width: 33%;
+                } 
+
+                .heading--main {
+                font-size: 18px;
+                }
+                
+                .heading--sub {
+                font-size: 16px;
+                font-weight: bold;
+                }
+
+                .heading--min {
+                font-size: 16px;
+                }
+
+                .para--min {
+                font-size: 16px;
+                text-align: justify;
+                text-justify: inter-word;
+                }
+
+
+                
+            </style>
+        </head>
+        <body>
+              <div class="box-full"> 
+                <table>
+                    <tr>
+                        <th class="th2">Knowledge Article</th>
+                    </tr>
+                    <tr>
+                        <th class="heading--main">{!Title}</th>
+                    </tr>
+                </table>
+            </div>
+          <div class="box-full"> 
+                <table>
+                    <tr>
+                        <th class="th">Article Abstract</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="box--left">
+                <p class="heading--sub">Title :</p>
+              	<p class="heading--sub">Description :</p>
+                
+                <br />
+            </div>
+            <div class="box-right">
+                <p class="heading--min"><apex:outputText value="{!Title}" escape="false" /></p>
+                <p class="heading--min"><apex:outputText value="{!Description}" escape="false" /></p>
+            </div>
+            <div class="box-full"> 
+                <table>
+                    <tr>
+                        <th class="th">Article Details</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="box-full"> 
+                <div>
+                    <h2 class="heading--sub">Content :</h2>
+                    <apex:outputText value="{!Content}" escape="false" styleClass="para--min" />
+                </div>
+            </div>
+        </body>
+    </html>
+</apex:page>

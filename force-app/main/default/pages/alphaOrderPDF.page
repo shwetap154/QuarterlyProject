@@ -1,0 +1,225 @@
+<!--
+  @description       : 
+  @author            : Morgan Marchese @ Zoetis Inc
+  @group             : 
+  @last modified on  : 08-07-2023
+  @last modified by  : Dephney Dsouza
+  Modifications Log 
+  Ver   Date         Author                         Modification
+  1.0   07-16-2021   Morgan Marchese @ Zoetis Inc   Initial Version
+  1.1   09-21-2021   Morgan Marchese @ Zoetis Inc   Made Name Mandatory (SC-008967)
+  1.2   10-18-2021   Mahendra Kumar					Added a column SAP Material Code (SC-009048)
+  1.3   08-07-2023   Dephney Dsouza                 Added renderShippingDoc and renderDeliveryDate
+-->
+<apex:page standardController="Order" extensions="alphaOrderPDFController" renderAs="advanced_pdf" applyBodyTag="false" showHeader="false" contentType="application/x-pdf#Order_Report.pdf">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />  
+
+        <style type="text/css">
+            @page {
+                margin-top: 0.5in;
+                @bottom-left {
+                    content: "Distributor Purchase Order";
+                }
+                @bottom-center {
+                    content: "Page " counter(page) " of " counter(pages);
+                }
+                @bottom-right{
+                    content: "Purchase Order #{!Order.PoNumber}";
+                }
+            }
+
+            .sectionTitle {
+                font-weight: bold;
+            }
+
+            .header table {
+                width:100%;
+                border-collapse:separate;
+                border-spacing:2px;
+                margin:0px;
+                padding:0px;
+                margin-bottom:10px
+            }
+            .header td {text-align: left;}
+            
+            table {border-collapse:collapse;width:100%}
+            th, tr, td {padding:5px;}       
+            th,td {text-align: center;}     
+            th {background-color:#0096af;color:#FFFFFF;}
+            
+            hr {margin-top:40px;border:2px solid #0096af;}
+
+        </style>
+    </head>
+    <div class="header">
+        <table>
+            <td style="width:50%;padding:10px">
+                <h3>Company Information</h3>
+                <p style="margin:0px;padding:0px;"><b>Company:</b>&nbsp;<apex:outputText value="{!Order.Account.Name}"/></p>
+                <p style="margin:0px;padding:0px;"><b>Tel:</b>&nbsp;<apex:outputText value="{!Order.Phone__c}"/></p>
+                <p style="margin:0px;padding:0px;"><b>Fax:</b>&nbsp;<apex:outputText value="{!Order.Fax__c}"/></p>
+                <p style="margin:0px;padding:0px;"><b>Contact Name:</b>&nbsp;<apex:outputText value="{!Order.BillToContact.Name}"/></p>
+            </td>
+            <td style="width:50%;padding:10px">
+                <h3>Order Details</h3>
+                <p style="margin:0px;padding:0px;"><b>Purchase Order No:</b>&nbsp;<apex:outputText value="{!Order.PoNumber}"/></p>
+                <p style="margin:0px;padding:0px;"><b>Purchase Order Date:</b>&nbsp;
+                    <apex:outputText value="{0, date, yyyy/MM/dd}">
+                        <apex:param value="{!Order.PoDate}" />
+                    </apex:outputText>
+                </p>
+                <p style="margin:0px;padding:0px;"><b>Ship To-Address:</b>&nbsp;<apex:outputText value="{!Order.Ship_To_Address__r.Full_Address__c}"/></p>
+                <p style="margin:0px;padding:0px;"><b>Sold To-Address:</b>&nbsp;<apex:outputText value="{!Order.Address__r.Full_Address__c}"/></p>
+            </td>
+        </table>
+    </div>
+    <div class="content">
+        <table class="content-table">
+            <tr>
+                <th>SAP Material No</th>
+                <th>Product Description</th>
+                <th>Quantity</th>
+                <th>UOM</th>
+                <!-- added renderDeliveryDate- TPDEV -1023 changes-->
+                <apex:outputPanel rendered="{!renderDeliveryDate}" layout="none">
+                	<th>Requested Delivery Date</th>
+                </apex:outputPanel>    
+                
+                <th>Unit Price</th>
+                <apex:outputPanel rendered="{!renderFreePercent}" layout="none">
+                    <th>% of Free of Charge</th>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!renderFreeQuantity}" layout="none">
+                    <th>Free of Charge Quantity</th>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!renderDiscount}" layout="none">
+                    <th>Discount</th>
+                </apex:outputPanel>
+                <th>Total Price</th>
+            </tr>
+            <apex:variable var="rowColor" value="#f5f5f5"/>
+            <apex:repeat value="{!orderProducts}" var="orderProduct">
+                <tr style="background-color: {!rowColor}">
+                    <apex:variable var="rowColor" value="{!IF(rowColor == '#f5f5f5', '#FFFFFF', '#f5f5f5')}"/>
+                    <td><apex:outputText value="{!orderProduct.Product2.SAP_Material_Code__c}"/></td>
+                    <td><apex:outputText value="{!orderProduct.Product2.Name}"/></td>
+                    <td><apex:outputText value="{!orderProduct.Quantity}"/></td>
+                    <td><apex:outputText value="{!orderProduct.SAP_Unit_Of_Measure__c}"/></td> 
+                    <apex:outputPanel rendered="{!renderDeliveryDate}" layout="none">
+                    <td>
+                        <apex:outputText value="{0, date, yyyy/MM/dd}">
+                            <apex:param value="{!orderProduct.Requested_Delivery_Date__c}" />
+                        </apex:outputText>
+                    </td>
+                    </apex:outputPanel>
+                    <td>
+                        <apex:outputText value="{0, number, ###,###,##0.00}">
+                            <apex:param value="{!orderProduct.UnitPrice}" />
+                        </apex:outputText>
+                    </td>
+                    <apex:outputPanel rendered="{!renderFreePercent}" layout="none">
+                        <td><apex:outputText value="{!orderProduct.FreeOfChargePercent__c}%"/></td>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!renderFreeQuantity}" layout="none">
+                        <td><apex:outputText value="{!orderProduct.FreeOfChargeQuantity__c}"/></td>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!renderDiscount}" layout="none">
+                        <td><apex:outputText value="{!orderProduct.Discount__c}"/></td>
+                    </apex:outputPanel>
+                    <td>
+                        <apex:outputText value="{0, number, ###,###,##0.00}">
+                            <apex:param value="{!orderProduct.TotalPrice}" />
+                        </apex:outputText>
+                    </td>
+                </tr>
+            </apex:repeat>
+        </table>
+    </div>
+    <div style="width: 100%;position:relative;">
+        <div style="position:absolute;right:0;">
+            <p><b>Grand Total:&nbsp;</b> 
+                <apex:outputText value="{0, number, ###,###,##0.00}">
+                    <apex:param value="{!Order.Portal_Total_price__c}" />
+                </apex:outputText>
+            </p>
+        </div>
+    </div>
+    <div style="width: 100%;position:relative;">
+        <div style="margin-top:50px">
+            <table>
+                <tr>
+                    <th>Remarks</th>
+                </tr>
+                <tr>
+                    <td>{!Order.Customer_Comments__c}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div style="width: 100%;position:relative;">
+        <div style="margin-top:50px">
+            <table style="width:100%">
+                <tr>
+                    <th>Currency</th>
+                    <th>Mode of Transport</th>
+                    <th>Incoterms</th>
+                    <th>Payment Terms</th>
+                </tr>
+                <tr style="background-color:#f5f5f5;">
+                    <td>{!Order.CurrencyIsoCode}</td>
+                    <td>{!Order.Mode_of_Transport__c}</td>
+                    <td>{!accountAddress.ZTS_EU_Account__r.Incoterms__c}-{!accountAddress.ZTS_EU_Account__r.Incoterms_Description__c}</td>
+                    <td>{!accountAddress.ZTS_EU_Account__r.Distributor_Payment_Terms__c}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div style="page-break-before:always;"/>
+    <!-- added renderShippingDoc- TPDEV -1023 changes-->
+    <apex:outputPanel rendered="{!renderShippingDoc}" layout="none">
+    <table>
+        <tr>
+            <th>Document Type</th>
+            <th>Original By Courier</th>
+            <th>Electronic by Email</th>
+            <!--<th style="background-color:#DFDFDF">When Others Selected</th>-->
+        </tr>
+        <apex:variable var="rowColor" value="#f5f5f5"/>
+        <apex:repeat value="{!shippingDocs}" var="shippingDoc"> 
+            <tr style="background-color: {!rowColor}">
+                <apex:variable var="rowColor" value="{!IF(rowColor == '#f5f5f5', '#FFFFFF', '#f5f5f5')}"/>
+                <td><apex:outputText value="{!IF(shippingDoc.Document_Type__c == 'Other',shippingDoc.Other_Document__c,shippingDoc.Document_Type__c)}"/></td>
+                <td><apex:outputText value="{!shippingDoc.Original_By_Courier__c}"/></td>
+                <td>{!IF(shippingDoc.Electronic_by_Email__c,'Yes','No')}</td>
+                <!--<td><apex:outputText value="{!shippingDoc.Other_Document__c}"/></td>-->
+            </tr>
+        </apex:repeat>
+    </table>
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!!isDownload}">
+    <hr />
+    <div style="width: 100%;position:relative;">
+        <p>Please complete the order form by signing below.</p>
+        <div>
+            <p><span style="font-weight:bold;">Signature:</span> <span style="font-size: 30px;">{{O1_es_:signer1:signature}}</span></p>
+            <p><span style="font-weight:bold;">Name:</span> {{*Name1_es_:signer1:fullname}}</p> <!-- Name is Mandatory (SC-008967)-->
+            <p><span style="font-weight:bold;">Date:</span> {{Date1_es_:signer1:date}}</p>
+        </div>
+        <!--<table>
+            <tr>
+                <th>Signature</th>
+                <th>Name</th>
+                <th>Date</th>
+            </tr>
+            <tr>
+                <td style="padding-top:35px"><apex:outputText styleClass="esignTagSize" style="font-size: 30px" value="{{O1_es_:signer1:signature}}" /></td>
+                <td style="padding-top:35px">{{*Name1_es_:signer1:fullname}}</td>
+                <td style="padding-top:35px">{{Date1_es_:signer1:date}}</td>
+            </tr>
+        </table>       -->
+    </div>
+    </apex:outputPanel>
+</apex:page>

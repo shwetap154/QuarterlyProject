@@ -1,0 +1,46 @@
+.info-card{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color:#F3F2F2;
+}
+
+.info-card2{
+    display: flex;
+    flex-direction: row;
+}
+
+.selector{
+    height: 50px;
+    margin-top: -27px;
+    margin-left: 5px;
+}
+
+.icon-name{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.list-name{
+    margin-right: 5px;
+}
+
+.object-name{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.main-layout{
+    margin-top: -25px;
+}
+
+.number-objects{
+    margin-left: 3px;
+}
+
+.modal-button-delete{
+    background-color: transparent !important;
+}

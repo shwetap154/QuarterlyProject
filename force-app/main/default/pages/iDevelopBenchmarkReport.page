@@ -1,0 +1,1524 @@
+<!--
+@description       : 
+@author            : Ethan Hirsch @ Zoetis Inc
+@group             : 
+@last modified on  : 05-10-2023
+@last modified by  : Padma Nerella @ Zoetis Inc
+Modifications Log
+Ver   Date         Author                         Modification
+1.0   02-27-2023   Ethan Hirsch @ Zoetis Inc   Initial Version
+1.1   03-20-2023   Morgan Marchese @ Zoetis    Changed High/Low Score Table formatting
+1.2   03-21-2023   Morgan Marchese @ Zoetis    Changed changeToImage and saveAsPDF Plugins from afterDraw to afterRender 
+to address an issue where bar charts were being converted/saved before 
+they were fully rendered. Added a beforeDraw to saveAsPDF to make sure 
+the loading spinner still came up immediately instead of afterRender.
+1.3   03-22-2023   Morgan Marchese @ Zoetis    Fixed a bug in barValues plugin where certain high-rated datapoint (greater than 8) 
+caused the numerical bar value to fall off the right-side of the chart 
+and become illegible.
+1.4   03-31-2023   Ethan Hirsch @ Zoetis       Added support for Self-Observations by adding the self-awareness section to the second page,
+adding self scores to the Overview of Results and Scoring Category Summary,
+and adding Self-Awareness Gaps. Including a dumbbell chart for Self-Awareness Gaps section.
+Fix a bug with the PDF rendering larger text in IOS by adding text-size-adjust:none css.
+Refactor the splitChartsAcrossPages function so it splits by height instead of chart count.
+Call splitChartsAcrossPages after all charts have loaded so it can work for the bar charts
+and dumbbell charts.
+1.5   04-10-2023   Ethan Hirsch @ Zoetis       Update the createDumbbellCharts logic to be able to split long charts across pages
+1.6   04-26-2023   Padma Nerella @ Zoetis      Updated the iDevelopBenchmarkReport Page to follow Zoetis documentation standards TPDEV-860
+1.7   05-01-2023   Padma Nerella @ Zoetis      Uncommentted the HTML code for the Lessons/eLearnings TPDEV-555
+1.8   05-08-2023   Padma Nerella @ Zoetis      Removed HTML tags in href link in the eLearning Lessons table TPDEV-965
+1.9   05-10-2023   Padma Nerella @ Zoetis      Fixed learning table layout and cell width, height. To fit text size inside the table TPDEV-965 issue-2
+1.10  08-03-2023   Kalyan Nayak @ Zoetis       Fixed Font-Family for De,Tr,Pl,Ko,Vi,Th,Ja and zh_CN languages as part of TPDEV-1579 and TPDEV-1584 bugs
+1.11  10-13-2023   Neeraj Rautela @Deloitte    Added Previous bencmark average score under Scoring Category Summary.
+-->
+<apex:page applyHtmlTag="false" showQuickActionVfHeader="false" standardStylesheets="false" standardController="Benchmark__c" extensions="iDevelopBenchmarkReportController" Title="{!Title}" showHeader="false" language="{!UserLanguage}">
+    <html>
+        <head>
+            <apex:includeScript value="{!URLFOR($Resource.chartJS)}"/>
+            <apex:includeScript value="{!URLFOR($Resource.html2canvas)}" />
+            <apex:includeScript value="{!URLFOR($Resource.jspdf)}/jspdf/jspdf.umd.min.js"/>
+            
+            
+            <!--Import Font for German,Turkish,Polish-->
+            <apex:outputPanel layout="none" rendered="{!UserLanguage=='de' || UserLanguage=='tr' || UserLanguage=='pl'}">
+                <apex:includeScript value="{!URLFOR($Resource.iDevelopReport_Font_Pl_Ja)}/Amiri-Regular-normal.js"/>
+                <apex:includeScript value="{!URLFOR($Resource.iDevelopReport_Font_Pl_Ja)}/Amiri-Bold-normal.js"/>
+            </apex:outputPanel>
+            
+            <!--Import Font for Korean-->
+            <apex:outputPanel layout="none" rendered="{!UserLanguage=='ko'}">
+                <apex:includeScript value="{!URLFOR($Resource.iDevelopReport_Font_Ko)}/NanumMyeongjo-Regular-normal.js"/>
+                <apex:includeScript value="{!URLFOR($Resource.iDevelopReport_Font_Ko)}/NanumMyeongjo-Bold-normal.js"/>
+            </apex:outputPanel>
+            
+            
+            <!--Import Font for Vietnamese, Thai-->
+            <apex:outputPanel layout="none" rendered="{!UserLanguage=='vi' || UserLanguage=='th'}">
+                <apex:includeScript value="{!URLFOR($Resource.iDevelopReportFont_Vi_Th_zhCN)}/Kanit-Regular-normal.js"/>
+                <apex:includeScript value="{!URLFOR($Resource.iDevelopReportFont_Vi_Th_zhCN)}/Kanit-Bold-normal.js"/>
+            </apex:outputPanel>
+            
+            
+            <!--Import Font for Japanese -->
+            <apex:outputPanel layout="none" rendered="{!UserLanguage=='ja'}">
+                <apex:includeScript value="{!URLFOR($Resource.iDevelopReport_Font_Pl_Ja)}/ZenKakuGothicNew-Regular-normal.js"/>
+                <apex:includeScript value="{!URLFOR($Resource.iDevelopReport_Font_Pl_Ja)}/ZenKakuGothicNew-Bold-normal.js"/>
+            </apex:outputPanel>
+            
+            
+            <!--Import Font for Simplified Chinese -->
+            <apex:outputPanel layout="none" rendered="{!UserLanguage=='zh_CN'}">
+                <apex:includeScript value="{!URLFOR($Resource.iDevelopReportFont_Vi_Th_zhCN)}/ZCOOLXiaoWei-Regular-normal.js"/>
+            </apex:outputPanel>
+            
+            <script src="/canvas/sdk/js/43.0/publisher.js" type="text/javascript"></script>
+            <apex:includeScript value="{!URLFOR($Resource.d3)}" />
+                <title>{!Title}</title>
+            <style>
+                /** For mobile this will prevent the size from adjusting**/
+                body * {
+                text-size-adjust: none;
+                -webkit-text-size-adjust: none;
+            }
+            
+            div.pdf-container {
+                display:flex;
+                flex-direction: column;
+                width: 100%;
+                align-items: center;
+            }
+            
+            div.page {
+                width: 210mm;
+                min-height: 296.9mm;
+                padding: 4.03em 2.5em 5.4em 2.5em;
+                box-sizing: border-box;
+                /** Keep font of the PDF consistent across all browser**/
+                font-family: 'Helvetica', Helvetica, serif;
+                font-size: 12pt;
+                color: #585858;
+            }
+            /**Added for De,Tr,Pl,Ko,Vi,Th,Ja and zh_CN languages as part of TPDEV-1579 and TPDEV-1584**/
+            div.page.Amiri {
+                font-family: 'Amiri';
+            }
+            div.page.NanumMyeongjo {
+                font-family: 'NanumMyeongjo';
+            }
+            div.page.Kanit {
+                font-family: 'Kanit';
+                letter-spacing: 0.01px;
+            }
+            div.page.ZenKakuGothicNew {
+                font-family: 'ZenKakuGothicNew';
+            }
+            div.page.ZCOOLXiaoWei {
+                font-family: 'ZCOOLXiaoWei';
+            }
+            
+            .center-text-container {
+                text-align: center;
+            }
+            
+            .first-page-text {
+                font-size: 20pt;
+                color: #F65C00;
+                margin-bottom: 3em;
+            }
+            
+            .first-page-details {
+                margin-left: .5em;
+                color: #585858;
+            }
+            
+            div.bar-chart-container {
+                width: 640px;
+                height: 135px;
+                margin-left: 30px;
+            }
+            
+            div.bar-chart-container img {
+                width: 100%;
+                height: 100%;
+            }
+            
+            
+            .page h1 {
+                font-size: 26pt;
+                color: #F65C00;
+                font-weight: bold;
+                margin-top: 0;
+            }
+            
+            .page h2 {
+                font-size: 16pt;
+                color: #585858;
+                font-weight: bold;
+            }
+            
+            .page h1.black-border-bottom {
+                border-bottom: 1px solid #585858;
+            }
+            
+            .page h2.competency-model-name {
+                color: #F65C00
+            }
+            
+            .page p.competency-model-name {
+                font-weight: bold;
+                font-size: 16pt;
+                color: #585858;
+                text-transform: capitalize;
+            }
+            
+            .page h3 {
+                font-size: 12pt;
+                color: #585858;
+                font-weight: bold;
+            }
+            
+            .page h4 {
+                font-size: 11pt;
+                color: #585858;
+                font-weight: normal;
+                margin-left: 30px;
+            }
+            
+            .page h1,h2,h3,h4 {
+                display: inline-block;
+                width: 100%;
+            }
+            
+            .commented-date{
+                color:#000000;
+                font-weight:bold;
+                font-size: 12pt;
+            }
+            
+            div.gray-border {
+                height: .1em;
+                background-color: #585858;
+            }
+            
+            div.lam-scale {
+                font-size: 12pt;
+                color: #585858;
+                font-weight: bold;
+            }
+            
+            table.scoring-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            
+            table.scoring-table td {
+                border: 1px solid #000000; 
+                font-size: 12pt;
+                text-align: left;
+                padding: 0.2em 0.3em 0.2em 0.4em;
+                color: #585858;
+            }
+            
+            table.scoring-table td:first-child {
+                border-left: none;
+                text-align: center;
+            }
+            
+            table.scoring-table td:last-child {
+                border-right: none;
+                text-align: center;
+            }
+            
+            table.scoring-table td.numerical-score {
+                text-align: right;
+            }
+            
+            table.scoring-table th {
+                font-size: 12pt;
+                font-weight: normal;
+                text-align: center;
+                font-weight: bold;
+                padding-left: 0.3em;
+                color: #585858;
+            }
+            
+            table.scoring-table th.numerical-label{
+                text-align: center;
+            }
+            
+            table.learning-table {
+                width: 100%;
+                table-layout: fixed;
+                border-collapse: collapse;
+            }
+            
+            table.learning-table td, table.learning-table th {
+                width:100%;
+                height: 100%;
+                font-size: 12pt;
+                text-align: left;
+                border: 1px solid #000000; 
+                padding-left: 0.3em;
+                word-break: break-all;
+            }
+            
+            table.learning-table th {
+                font-weight: bold;
+            }
+            
+            .pdf-container.loading {
+                height: 80vh;
+                overflow-y: hidden;
+            }
+            
+            .slds-spinner_container::after {
+                content: '{! $Label.iDevelop_Benchmark_Report_Loading_Text} "{!Title}.pdf"';
+                position: absolute;
+                width: 100%;
+                text-align: center;
+                top: calc(50% + 3em);
+            }
+            
+            .results-overview-table {
+                width: 75%;
+                height: 280px;
+                float: right;
+                border-left: 1px solid #000000;
+                border-bottom: 1px solid #000000;
+                padding-left: 1em;
+                padding-bottom: 1em;
+            }
+            
+            .results-overview-table td {
+                text-align: center;
+                vertical-align: top;
+                padding: 0 1em;
+                color: #585858;
+            }
+            
+            .results-overview-title {
+                font-weight: bold;
+                font-size: 12pt;
+                color: #585858
+            }
+            
+            .results-overview-index-label {
+                font-weight: bold;
+                font-style: italic;
+                color: #585858;
+                position: absolute;
+                width: 85px;
+                text-align: center;
+            }
+            
+            .footer-text {
+                color: #585858;
+            }
+            
+            .dumbbell-chart {
+                background-color: white;
+            }
+            
+            .dumbbell-chart .self-average {
+                fill: #00839a;
+            }
+            
+            .dumbbell-chart .manager-score {
+                fill: white;
+                stroke: black;
+            }
+            
+            .dumbbell-chart .guide-lines {
+                stroke: #e4e4e4;
+                stroke-width: 0.15em;
+                stroke-dasharray: 1em 0.4em;
+            }
+            
+            .dumbbell-chart .connecting-line {
+                stroke: #899099;
+                stroke-width: 0.15em;
+            }
+            
+            .dumbbell-chart .axis text {
+                font-size: 10pt;
+            }
+            
+            .gap-text {
+                font-weight: bold;
+            }
+            
+            .gap-text.green-text {
+                color: #42A046;
+            }
+            
+            .gap-text.red-text {
+                color: #E43834;
+            }
+            </style>
+            <apex:slds />
+                </head>
+            <body>
+                <!-- Button is left for debugging and in case something goes wrong-->
+                    <button onclick="downloadPDF()" style="float:right;">
+                    Download PDF
+                    </button>
+                    
+                    <!-- Only the Action Function will be wrapped in a form. Everything else will live outside the Form-->
+                    <apex:form >
+                    <apex:actionFunction action="{!savePDF}" name="savePDF" reRender="" oncomplete="closePage()">
+                    <apex:param name="pdfFile" assignTo="{!pdfFile}" value="" />
+                    </apex:actionFunction>
+                    </apex:form>
+                    
+                    <div class='pdf-container'>
+                    <!--Spinner is borrowed from SLDS and is the only HTML enclosed in the slds-scope-->
+                    <div class="slds-scope">
+                    <div id="mySpinner"  class="slds-spinner_container" style="display: none;">
+                    <div role="status" class="slds-spinner slds-spinner_medium">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                    </div>
+                    </div>
+                    </div>
+                    <div id="pdf">
+                    <!-- Title Page -->
+                    <div class="page">
+                    <div class="center-text-container">
+                    <apex:image url="{!URLFOR($Resource.iDevelop_PDFPage_Logo)}" width="230px" height="100px"/>
+                    <br />
+                    <br />
+                    <br />
+                    <div class="first-page-text">{! $Label.iDevelop_Benchmark_Report_Subtitle}</div>
+                    <br />
+                    </div>
+                    <span class="first-page-text first-page-details">{! $Label.iDevelop_Benchmark_Report_For_Text} {!CoacheeName}</span>
+                    <br />
+                    <span class="first-page-text first-page-details">{! $Label.iDevelop_Benchmark_Report_Rater_Text} {!RaterName}</span>
+                    <br />
+                    <span class="first-page-text first-page-details">{! $Label.iDevelop_Benchmark_Report_Date_Text} {!CurrentDate}</span>
+                    <br />
+                    <span style="display:inline-block; margin-top:5em;">
+                    &nbsp;&nbsp;&nbsp;{! $Label.iDevelop_Benchmark_Report_Link_Text}&nbsp;
+                    <!-- Anchor tag is used to avoid an additional querystring from being added-->
+                    <a href="{!SalesforceBaseUrl}/{!BenchmarkId}">{! $Label.iDevelop_Benchmark_Report_Clickable_Link_Text}</a>
+                    </span>
+                    </div>
+                    
+                    <!-- Page 1 -->
+                    <div class="page">
+                    <h1 class="black-border-bottom">{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Title}</h1>
+                    <p>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Report_Explanation}</p>
+                    <ul>
+                    <li>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Report_Explanation_Note_1}</li>
+                    <li>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Report_Explanation_Note_2}</li>
+                    </ul>
+                    <p>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Review_Explanation}</p>
+                    <ul>
+                    <li>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Review_Explanation_Note_1}</li>
+                    <li>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Review_Explanation_Note_2}</li>
+                    <li>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Review_Explanation_Note_3}</li>
+                    </ul>
+                    <div class="gray-border"></div>
+                    <apex:outputPanel rendered="{!SelfObservationPresent}" layout="none">
+                    <p>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Review_Results_Instructions}</p>
+                    <div style="position: relative; height: 325px">
+                    <span class="results-overview-index-label" style="top: 0; right: 76%">{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_High_Others_Rating}</span>
+                    <span class="results-overview-index-label" style="top: 250px; right: 76%">{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Low_Others_Rating}</span>
+                    <span class="results-overview-index-label" style="top: 285px; left: 28%">{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Low_Self_Rating}</span>
+                    <span class="results-overview-index-label" style="top: 285px; right: 0">{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_High_Self_Rating}</span>
+                    <table class="results-overview-table">
+                    <tr>
+                    <td style="border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+                    <p class="results-overview-title" style="color: #00ABC1">{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Unrecognized_Strength_Label}</p>
+                    <p>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Unrecognized_Strength_Description}</p>
+                    </td>
+                    <td style="border-bottom: 1px solid #000000">
+                    <p class="results-overview-title" style="color: #3849AB">{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Clear_Strength_Label}</p>
+                    <p>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Clear_Strength_Description}</p>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td style="border-right: 1px solid #000000">
+                    <p class="results-overview-title" style="color: #F4501D">{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Clear_Weakness_Label}</p>
+                    <p>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Clear_Weakness_Description}</p>
+                    </td>
+                    <td>
+                    <p class="results-overview-title" style="color: #FFB300">{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Unrecognized_Weakness_Label}</p>
+                    <p>{! $Label.iDevelop_Benchmark_Report_Using_Your_Report_Unrecognized_Weakness_Description}</p>
+                    </td>
+                    </tr>
+                    </table>
+                    </div>
+                    </apex:outputPanel>
+                    </div>
+                    
+                    <!-- Page 2 -->
+                    <div class="page">
+                    <h2>{! $Label.iDevelop_Benchmark_Report_Understanding_Graphs_Title}</h2>
+                    <p>{! $Label.iDevelop_Benchmark_Report_Understanding_Graphs_Details}</p>
+                    <div class="center-text-container">
+                    <div class="lam-scale" style="padding-bottom: 3em;">{! $Label.iDevelop_Benchmark_Report_LAM_Scale}</div>
+                    <div class="bar-chart-container">
+                    <canvas id="sample-chart"></canvas>
+                    </div>
+                    </div>
+                    <br />
+                    <br />
+                    <span style="font-weight: bold; color: #585858">{! $Label.iDevelop_Benchmark_Report_Sample_Graph_Note}</span>
+                    </div>                   
+                    <!-- TPDEV-2414 - Added differnce of Current - Previous score in versus column-->
+					<apex:repeat value="{!BenchmarkScores}" var="benchmarkScore">
+						<apex:variable var="chartCount" value="{!0}" />
+						<apex:variable var="pageCount" value="{!0}" />
+						<div class="page multi-page">
+							<div class="multi-page-block">
+								<h1 class="black-border-bottom">{! $Label.iDevelop_Benchmark_Report_Overview_of_Results_Title}</h1>
+								<div class="center-text-container">
+									<div class="lam-scale">{! $Label.iDevelop_Benchmark_Report_LAM_Scale}</div>
+								</div>
+								<h2 class ="competency-model-name">{!benchmarkScore.Name}</h2>
+							</div>
+							<apex:repeat value="{!benchmarkScore.CompetencySkillAverageScores}" var="competencyScore">
+								<div class="multi-page-block">
+									<h3>{!competencyScore.Name}</h3>
+									<div class="bar-chart-container">
+										<canvas class="competency-score" id="{!competencyScore.RecordId}" data-managerscore="{!competencyScore.ManagerAverageScore}" data-selfscore="{!competencyScore.SelfAverageScore}"></canvas>
+									</div>
+								</div>
+								<apex:variable var="chartCount" value="{!chartCount + 1}" />
+								<apex:repeat value="{!competencyScore.SkillScores}" var="skillScore">
+									<div class="multi-page-block">
+										<h4>{!skillScore.Name}</h4>
+										<div class="bar-chart-container">
+											<canvas class="skill-score" id="{!skillScore.RecordId}" data-managerscore="{!skillScore.ManagerAverageScore}" data-selfscore="{!skillScore.SelfAverageScore}"></canvas>
+										</div>
+									</div>
+								</apex:repeat>
+							</apex:repeat>
+							<div class="multi-page-block">
+								<!--<div class="footer-text" style="padding-top: 1.5em">{! $Label.iDevelop_Benchmark_Report_Overview_of_Results_Note}</div>-->
+							</div>
+							<div class="multi-page-block">
+								<div style="padding-top: 3em">
+									<h3>{!$Label.iDevelop_Benchmark_Report_Overview_of_Results_Overall}</h3>
+									<div class="bar-chart-container">
+										<canvas class="competency-score" data-managerscore="{!benchmarkScore.ManagerOverallScore}" data-selfscore="{!benchmarkScore.SelfOverallScore}"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+					</apex:repeat>
+					<!-- Page 4 -->
+					<div class="page">
+						<h1 class="black-border-bottom">{! $Label.iDevelop_Benchmark_Report_Scoring_Category_Summary_Title}</h1>
+						<p>{! $Label.iDevelop_Benchmark_Report_Scoring_Category_Summary_Description}</p>
+						<div class="center-text-container">
+							<div class="lam-scale">{! $Label.iDevelop_Benchmark_Report_LAM_Scale}</div>
+						</div>
+						<br></br>
+						<apex:repeat value="{!BenchmarkScores}" var="benchmarkScore">
+							<!-- Display Self Assessment if Self-Assessment is present -->
+							<table class="scoring-table">
+								<colgroup>
+									<col width="{!IF(!SelfObservationPresent, "80%", "90%")}"/>
+									<col width="10%" />
+									<apex:outputPanel rendered="{!SelfObservationPresent}" layout="none">
+										<col width="10%" />
+									</apex:outputPanel>
+								</colgroup>
+								<tr>
+									<th>{!benchmarkScore.Name}</th>
+									<th class="numerical-label">{! $Label.iDevelop_Manager}</th>
+                                    
+                                        <th class="numerical-label">{! $Label.iDevelop_PreviousBench}</th>
+                                   
+                                     
+									<apex:outputPanel rendered="{!SelfObservationPresent}" layout="none">
+										<th class="numerical-label">{! $Label.iDevelop_Self}</th>
+									</apex:outputPanel>
+								    <apex:outputPanel rendered="{!SelfObservationPresent}" layout="none">
+										<th class="numerical-label">{! $Label.iDevelop_PreviousBench}</th>
+									</apex:outputPanel>
+									<!-- End -->
+								</tr>
+                                    
+								<apex:repeat value="{!benchmarkScore.CompetencySkillAverageScores}" var="competencyScore">
+									<tr>
+										<td>{!competencyScore.Name}</td>
+										<td class="numerical-score">
+											<apex:outputText value="{0, number, 0.00}">
+												<apex:param value="{!competencyScore.ManagerAverageScore}" />
+											</apex:outputText>
+										</td>
+                                        
+                                            <apex:variable var="ManagerAverageScoreFraction" value="{!IF(competencyScore.PreviousManagerAverageScore == null , '' ,(IF(competencyScore.ManagerAverageScore == null , 0 ,competencyScore.ManagerAverageScore) - IF(competencyScore.PreviousManagerAverageScore == null , 0 ,competencyScore.PreviousManagerAverageScore)))}" /> 
+											<td class="numerical-score">
+                                                <apex:outputText value="{!IF(ManagerAverageScoreFraction != null && ManagerAverageScoreFraction > 0, '+ ' , '')}"></apex:outputText>
+												<apex:outputText value="{0, number, 0.##}">
+													<apex:param value="{!IF(ManagerAverageScoreFraction != null,ManagerAverageScoreFraction,'')}" />
+												</apex:outputText>
+											</td>
+                                          
+                                         
+                                        
+                                        
+										<apex:outputPanel rendered="{!SelfObservationPresent}" layout="none">
+											<td class="numerical-score">
+												<apex:outputText value="{0, number, 0.00}">
+													<apex:param value="{!competencyScore.SelfAverageScore}" />
+												</apex:outputText>
+											</td>
+										</apex:outputPanel>
+									 <apex:outputPanel rendered="{!SelfObservationPresent}" layout="none">
+                                         <apex:variable var="SelfAverageScoreFraction" value="{!IF(competencyScore.PreviousSelfAverageScore == null , '' ,(IF(competencyScore.SelfAverageScore == null, 0, competencyScore.SelfAverageScore) - IF(competencyScore.PreviousSelfAverageScore == null , 0, competencyScore.PreviousSelfAverageScore)))}" /> 
+											<td class="numerical-score">
+                                                <apex:outputText value="{!IF(SelfAverageScoreFraction != null && SelfAverageScoreFraction > 0, '+ ' , '')}"></apex:outputText>
+                                                <apex:outputText value="{0, number, 0.##}">
+                                                    <apex:param value="{!IF(SelfAverageScoreFraction != null, SelfAverageScoreFraction,'')}" />
+                                                </apex:outputText>
+											</td>
+									</apex:outputPanel>
+										<!-- end --> 
+									</tr>
+								</apex:repeat>
+							</table>
+						</apex:repeat>
+					</div>
+					<!-- Page 5 -->
+					<!-- Self-Awareness Check will only render when there is a Self-Observations -->
+					<apex:outputPanel rendered="{!SelfObservationPresent}" layout="block" styleClass="page multi-page">
+						<div class="multi-page-block">
+							<h1 class="black-border-bottom">{! $Label.iDevelop_Benchmark_Report_Self_Awareness_Check_Title}</h1>
+							<p>{! $Label.iDevelop_Benchmark_Report_Self_Awareness_Check_Description}</p>
+						</div>
+						<div class="dumbbell-chart-template multi-page-block" style="display:none;">
+							<p class="competency-model-name"></p>
+							<div>
+								<svg width="700" class="dumbbell-chart"></svg>
+							</div>
+							<p class="footer-text">{! $Label.iDevelop_Benchmark_Report_Self_Awareness_Check_Footer}</p>
+						</div>
+					</apex:outputPanel>
+					<!-- Page 6 -->
+					<div class="page">
+						<h1 class="black-border-bottom">{! $Label.iDevelop_Benchmark_Report_Scoring_Highest_Lowest_Scores}</h1>
+						<div class="center-text-container">
+							<div class="lam-scale">{! $Label.iDevelop_Benchmark_Report_LAM_Scale}</div>
+						</div>
+						<h2>{! $Label.iDevelop_Benchmark_Report_Scoring_Highest_Lowest_Scores_Highest_Scores}</h2>
+						<table class="scoring-table">
+							<colgroup>
+								<col width="8%" />
+								<col width="25%" />
+								<col/>
+								<col width="12%" />
+							</colgroup>
+							<tr>
+								<th>{! $Label.iDevelop_Benchmark_Report_Rank}</th>
+								<th>{! $Label.iDevelop_Benchmark_Report_Competencies}</th>
+								<th>{! $Label.iDevelop_Benchmark_Report_Item}</th>
+								<th class="numerical-label">{! $Label.iDevelop_Benchmark_Report_Average}</th>
+							</tr>
+							<apex:repeat value="{!HighestScores}" var="highScore">
+								<tr>
+									<td>{!highScore.Rank}</td>
+									<td>{!highScore.Competency}</td>
+									<td>{!highScore.Skill}</td>
+									<td>
+										<apex:outputText value="{0, number, 0.00}">
+											<apex:param value="{!highScore.Score}" />
+										</apex:outputText>
+									</td>
+								</tr>
+							</apex:repeat>
+						</table>
+						<h2>{! $Label.iDevelop_Benchmark_Report_Scoring_Highest_Lowest_Scores_Lowest_Scores}</h2>
+						<table class="scoring-table">
+							<colgroup>
+								<col width="8%" />
+								<col width="25%" />
+								<col/>
+								<col width="12%" />
+							</colgroup>
+							<tr>
+								<th>{! $Label.iDevelop_Benchmark_Report_Rank}</th>
+								<th>{! $Label.iDevelop_Benchmark_Report_Competencies}</th>
+								<th>{! $Label.iDevelop_Benchmark_Report_Item}</th>
+								<th class="numerical-label">{! $Label.iDevelop_Benchmark_Report_Average}</th>
+							</tr>
+							<apex:repeat value="{!LowestScores}" var="lowScore">
+								<tr>
+									<td>{!lowScore.Rank}</td>
+									<td>{!lowScore.Competency}</td>
+									<td>{!lowScore.Skill}</td>
+									<td>{!lowScore.Score}</td>
+								</tr>
+							</apex:repeat>
+						</table>
+					</div>
+					<!-- Page 7 -->
+					<!-- Self-Awareness Gap goes here -->
+					<apex:outputPanel rendered="{!SelfObservationPresent}" layout="block" styleClass="page">
+						<h1 class="black-border-bottom">{! $Label.iDevelop_Benchmark_Report_Self_Awareness_Gaps_Title}</h1>
+						<h2>{! $Label.iDevelop_Benchmark_Report_Self_Awareness_Gaps_Hidden_Strengths_Title}</h2>
+						<table class="scoring-table">
+							<colgroup>
+								<col width="8%" />
+								<col width="25%" />
+								<col/>
+								<col width="9%" />
+								<col width="12%" />
+								<col width="9%" />
+							</colgroup>
+							<tr>
+								<th>{! $Label.iDevelop_Benchmark_Report_Rank}</th>
+								<th>{! $Label.iDevelop_Benchmark_Report_Competencies}</th>
+								<th>{! $Label.iDevelop_Benchmark_Report_Item}</th>
+								<th class="numerical-label">{! $Label.iDevelop_Self}</th>
+								<th class="numerical-label">{! $Label.iDevelop_Manager}</th>
+								<th class="numerical-label">{! $Label.iDevelop_Benchmark_Report_Gap}</th>
+							</tr>
+							<apex:repeat value="{!TopPositiveGaps}" var="highGap">
+								<tr>
+									<td>{!highGap.Rank}</td>
+									<td>{!highGap.Competency}</td>
+									<td>{!highGap.Skill}</td>
+									<td class="numerical-score">
+										<apex:outputText value="{0, number, 0.00}">
+											<apex:param value="{!highGap.SelfScore}" />
+										</apex:outputText>
+									</td>
+									<td class="numerical-score">
+										<apex:outputText value="{0, number, 0.00}">
+											<apex:param value="{!highGap.Score}" />
+										</apex:outputText>
+									</td>
+									<td class="numerical-score">
+										<span class="gap-text green-text">
+											+
+											<apex:outputText value="{0, number, 0.00}">
+												<apex:param value="{!highGap.Gap}" />
+											</apex:outputText>
+										</span>
+									</td>
+								</tr>
+							</apex:repeat>
+						</table>
+						<h2>{! $Label.iDevelop_Benchmark_Report_Self_Awareness_Gaps_Areas_For_Improvement_Title}</h2>
+						<table class="scoring-table">
+							<colgroup>
+								<col width="8%" />
+								<col width="25%" />
+								<col/>
+								<col width="9%" />
+								<col width="12%" />
+								<col width="9%" />
+							</colgroup>
+							<tr>
+								<th>{! $Label.iDevelop_Benchmark_Report_Rank}</th>
+								<th>{! $Label.iDevelop_Benchmark_Report_Competencies}</th>
+								<th>{! $Label.iDevelop_Benchmark_Report_Item}</th>
+								<th class="numerical-label">{! $Label.iDevelop_Self}</th>
+								<th class="numerical-label">{! $Label.iDevelop_Manager}</th>
+								<th class="numerical-label">{! $Label.iDevelop_Benchmark_Report_Gap}</th>
+							</tr>
+							<apex:repeat value="{!TopNegativeGaps}" var="lowGap">
+								<tr>
+									<td>{!lowGap.Rank}</td>
+									<td>{!lowGap.Competency}</td>
+									<td>{!lowGap.Skill}</td>
+									<td class="numerical-score">
+										<apex:outputText value="{0, number, 0.00}">
+											<apex:param value="{!lowGap.Score}" />
+										</apex:outputText>
+									</td>
+									<td class="numerical-score">
+										<apex:outputText value="{0, number, 0.00}">
+											<apex:param value="{!lowGap.SelfScore}" />
+										</apex:outputText>
+									</td>
+									<td class="numerical-score">
+										<span class="gap-text red-text">
+											<apex:outputText value="{0, number, 0.00}">
+												<apex:param value="{!lowGap.Gap}" />
+											</apex:outputText>
+										</span>
+									</td>
+								</tr>
+							</apex:repeat>
+						</table>
+						<p class="footer-text">{! $Label.iDevelop_Benchmark_Report_Self_Awareness_Gaps_Footer_Text}</p>
+					</apex:outputPanel>
+					<!-- Page 8 -->
+					<!-- TPDEV-555 Uncommentting the below html code for use of eLearnings part of MVP-->
+					<div class="page">
+						<h1 class="black-border-bottom">{! $Label.iDevelop_Benchmark_Report_Suggested_e_Learnings_Title}</h1>
+						<apex:repeat value="{!LowestScoringCompetencies}" var="competencyScore">
+							<div style="{!IF(competencyScore.HasELearnings, '', 'display:none;')}">
+								<h2>{!competencyScore.Rank}. {!competencyScore.Name}</h2>
+								<table class="learning-table">
+									<colgroup>
+										<col width="33%" />
+										<col width="33%" />
+										<col width="34%" />
+									</colgroup>
+									<tr>
+										<th>{! $Label.iDevelop_Benchmark_Report_Suggested_e_Learnings_Title_Header}</th>
+										<th>{! $Label.iDevelop_Benchmark_Report_Suggested_e_Learnings_Description_Header}</th>
+										<th>{! $Label.iDevelop_Benchmark_Report_Suggested_e_Learnings_Link_Header}</th>
+									</tr>
+									<apex:repeat value="{!competencyScore.RecommendedELearnings}" var="eLearning">
+										<tr>
+											<td>{!eLearning.Title}</td>
+											<td>{!eLearning.Description}</td>
+											<td>
+												<apex:outputText escape="false" value="{0}">
+													<apex:param value="{!eLearning.Link}"/>
+												</apex:outputText>
+											</td>
+										</tr>
+									</apex:repeat>
+								</table>
+							</div>
+						</apex:repeat>
+					</div>
+					<!-- Page 9 -->
+					<!-- TPDEV-1213 Added to Show Observation Comments-->
+					<apex:outputPanel rendered="{!commentsAvailable}" layout="block" styleClass="page multi-page">
+						<div class="multi-page-block">
+							<!--Comments for observations whose type is Coach -->
+							<h1 class="black-border-bottom">{! $Label.iDevelop_Benchmark_Comment_Header}</h1>
+							<apex:repeat value="{!CoachObservations}" var="observations">
+								<apex:outputText value="{0,date,dd/MM/yyyy}" styleClass="commented-date">
+									<apex:param value="{!observations.Created_Date}" />
+								</apex:outputText>
+								<br></br><br></br>
+								<apex:outputText value="{!observations.Comments}">
+									<apex:param value="{!observations.Comments}" />
+								</apex:outputText>
+								<br></br><br></br>
+							</apex:repeat>
+						</div>
+					</apex:outputPanel>
+					</div>
+					</div>
+					<script>
+					const previousOnLoad = window.onload,
+					barChartOptions = {
+					indexAxis: 'y',
+					maintainAspectRatio: false,
+					scales: {
+					x: {
+					min: 1,
+					max: 9
+					}
+					},
+					plugins: {
+					legend: false
+					},
+					layout: {
+					padding: {
+					bottom: 50
+					}
+					}
+					};
+					barChartBorderWidth = 1,
+					maxLengthLabel = 10,
+					// Adds a white background so the PDF renders the chart properly
+					whiteBackground = {
+					id: 'whiteBackground',
+					beforeDraw: function(chart, args, pluginOptions) {
+					let ctx = chart.ctx;
+					ctx.fillStyle = 'white';
+					ctx.fillRect(0, 0, chart.width, chart.height);
+					}
+					}
+            // Adds Learning/Applying/Mastery at the end of the bar
+            subLabels = {
+                id: 'subLabels',
+                afterDatasetDraw: (chart, args, pluginOptions) => {
+                    const ctx = chart.ctx,
+                    width = chart.chartArea.width;
+                    left = chart.chartArea.left;
+                    bottom = chart.chartArea.bottom;
+                    
+                    ctx.save();
+                    setupLearningApplyingMasteryBoxes('#C31C49', '{! JSENCODE($Label.iDevelop_Learning)}', left);
+                    setupLearningApplyingMasteryBoxes('#F65C00', '{! JSENCODE($Label.iDevelop_Applying)}', left + width / 3);
+                    setupLearningApplyingMasteryBoxes('#01516F', '{! JSENCODE($Label.iDevelop_Mastery)}', left + (width / 3) * 2);
+                    
+                    function setupLearningApplyingMasteryBoxes(fillStyle, text, x) {
+                    ctx.fillStyle = fillStyle;
+                    ctx.fillRect(x, bottom + 30, width / 3, 40);
+                    ctx.font = 'bolder 16px Helvetica';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+                    ctx.textAlign = 'center';
+                    
+                    ctx.fillText(text, width / 6 + x, bottom + 55);
+                }
+            }
+            },
+                // Adds the labels at the end of a chart
+                // afterDatasetDraw
+                barValues = {
+                    id: 'barValues',
+                    afterRender: (chart, args, pluginOptions) => {
+                        const ctx = chart.ctx,
+                        x = chart.scales.x,
+                        y = chart.scales.y;
+                        
+                        chart.data.datasets[0].data.forEach((datapoint, index) => {
+                        ctx.font = 'bold 13px sans-serif';
+                        ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+                        if(datapoint > 8){
+                        ctx.fillText(datapoint, chart.getDatasetMeta(0).data[index].x - 15, y.getPixelForValue(index) + 5)
+                    }else {
+                    ctx.fillText(datapoint, chart.getDatasetMeta(0).data[index].x + 15, y.getPixelForValue(index) + 5)
+                }
+            });
+            }
+            },
+                // Converts the chart to an image to avoid an IOS memory limitation with Canvas
+                changeToImage = {
+                    id: 'changeToImage',
+                    afterRender: (chart, args, pluginOptions) => {
+                        convertCanvasToImage(chart.canvas);
+                    }
+                    },
+                        // Saves the pages as a PDF once all charts are loaded
+                        saveAsPdf = {
+                        id: 'changeToImage',
+                        beforeDraw: (chart, args, pluginOptions) => {
+                            showLoadingSpinner();
+                        },
+                            afterRender: (chart, args, pluginOptions) => {
+                                determineIfPDFShouldDownload();
+                            }
+                            },
+                                selfObservationPresent = {!SelfObservationPresent};
+                                
+                                window.totalCharts = 0;
+                                window.chartsLoaded = 0;
+                                
+                                window.onload = function () {
+                                previousOnLoad && previousOnLoad();
+                                
+                                if (selfObservationPresent) {
+                                createDumbbellCharts();
+                            }
+                                
+                                setupSampleChart();
+                                setupBarCharts();
+                            };
+                                
+                                // Adds a new page for any charts defined as multi-page so that the page size can be accurately calculated
+                                function splitChartsAcrossPages() {
+                                let multiPages = document.querySelectorAll('.multi-page');
+                                
+                                multiPages.forEach((multiPage) => {
+                                let pages = [],
+                                currentPage = ['<div class="page">'];
+                                
+                                const blocks = multiPage.querySelectorAll('.multi-page-block');
+                                
+                                let pageSize = 0;
+                                const pageStyles = window.getComputedStyle(multiPage),
+                                // Max size is the min height minus any margins or paddings
+                                maxPageSize = parseFloat(pageStyles.getPropertyValue('min-height')) - parseFloat(pageStyles.getPropertyValue('margin-top')) - parseFloat(pageStyles.getPropertyValue('margin-bottom')) - parseFloat(pageStyles.getPropertyValue('padding-top')) - parseFloat(pageStyles.getPropertyValue('padding-bottom'));
+                                
+                                blocks.forEach((block) => {
+                                const blockHeight = block.getBoundingClientRect().height;
+                                // If the next block's height will overflow the page, add a new page
+                                if (blockHeight + pageSize > maxPageSize) {
+                                currentPage.push('</div>')
+                                pages.push(currentPage.join(''));
+                                currentPage = ['<div class="page">'];
+                                pageSize = 0;
+                            }
+                                
+                                pageSize += blockHeight;
+                                currentPage.push(block.outerHTML);
+                            });
+                                
+                                // Close the current page
+                                currentPage.push('</div>')
+                                pages.push(currentPage.join(''));
+                                multiPage.outerHTML = pages.join('');
+                            })
+                            }
+                                
+                                // Setup the Sample Chart with static data
+                                function setupSampleChart() {
+                                const sampleChart = document.getElementById('sample-chart');
+                                
+                                let barData = [6.67],
+                                barLabels = ['{! JSENCODE($Label.iDevelop_Manager)}'];
+                                
+                                if (selfObservationPresent) {
+                                barData.push(9.00);
+                                barLabels.push('{! JSENCODE($Label.iDevelop_Self)}');
+                            }
+                                
+                                setupBarChart(sampleChart, barData, barLabels);
+                            }
+                                
+                                // Setup all bar charts
+                                function setupBarCharts() {
+                                let barCharts = document.querySelectorAll('canvas.competency-score, canvas.skill-score');
+                                
+                                for (let i = 0, len = barCharts.length; i < len; i++) {
+                                let barChart = barCharts[i];
+                                
+                                let barData = [];
+                                barData.push(barChart.dataset.managerscore);
+                                
+                                let barLabels = [];
+                                barLabels.push('{! JSENCODE($Label.iDevelop_Manager)}');
+                                
+                                if (selfObservationPresent) {
+                                barData.push(barChart.dataset.selfscore);
+                                barLabels.push('{! JSENCODE($Label.iDevelop_Self)}');
+                            }
+                                
+                                setupBarChart(barCharts[i], barData, barLabels);
+                            }
+                            }
+                                
+                                // Setup a single bar chart
+                                function setupBarChart(element, barData, barLabels) {
+                                totalCharts++;
+                                new Chart(element, {
+                                type: 'bar',
+                                data: {
+                                    datasets: [
+                                        {
+                                            data: barData
+                                        }
+                                    ],
+                                    labels: barLabels,
+                                    borderWidth: barChartBorderWidth
+                                },
+                                options: barChartOptions,
+                                plugins: [subLabels, barValues, whiteBackground, changeToImage, saveAsPdf]
+                            });
+                        }
+                        
+                        function determineIfPDFShouldDownload() {
+                        window.chartsLoaded++;
+                        
+                        if (window.chartsLoaded >= window.totalCharts) {
+                        splitChartsAcrossPages();
+                        downloadPDF();
+                    }
+                }
+                
+                // Converts the HTML to a PDF and attaches it to the Benchmark
+                function downloadPDF() {
+                    showLoadingSpinner();
+                    //Get Current logged in Users Language
+                    var userLang = '{!UserLanguage}';
+                    
+                    // Select all div with 'page' class
+                    const pages = document.getElementsByClassName('page');
+                    
+                    //Create PDF
+                    const pdf = new jspdf.jsPDF({
+                        unit: "px",
+                        hotfixes: ["px_scaling"]
+                    });
+                    
+                    let fontClass;
+                    
+                    // Set the font so it's consistent with the HTML
+                    //Added for De,Tr,Pl,Ko,Vi,Th,Ja and zh_CN languages as part of TPDEV-1579 and TPDEV-1584
+                    if(userLang === 'pl' || userLang === 'de' || userLang === 'tr'){
+                        pdf.setFont('Amiri','normal');
+                        fontClass = 'Amiri';
+                    }
+                    else if(userLang === 'vi' || userLang === 'th'){
+                        pdf.setFont('Kanit','normal');
+                        fontClass = 'Kanit';
+                    }
+                        else if(userLang === 'ja'){
+                            pdf.setFont('ZenKakuGothicNew','normal');
+                            fontClass = 'ZenKakuGothicNew';
+                        }
+                            else if(userLang === 'ko'){
+                                pdf.setFont('NanumMyeongjo','normal');
+                                fontClass = 'NanumMyeongjo';
+                            }
+                                else if(userLang === 'zh_CN'){
+                                    pdf.setFont('ZCOOLXiaoWei','normal');
+                                    fontClass = 'ZCOOLXiaoWei';
+                                }
+                                    else{
+                                        pdf.setFont('Helvetica', 'normal');
+                                    }
+                    pdf.setFontSize(12);
+                    
+                    // Fixes an issue where Adobe Acrobat says there is an error with the PDF by adding all pages in advance
+                    // This occurs when using the html method to render the PDF
+                    if(fontClass){
+                        pages[0].classList.add(fontClass);
+                    }
+                    for (let i = 1, len = pages.length; i < len; i++) {
+                        pdf.addPage();
+                        if(fontClass){
+                            pages[i].classList.add(fontClass);
+                        }
+                    }
+                    
+                    // Set page back to page 1 before rendeirng the PDF
+                    pdf.setPage(1);
+                    
+                    // Accepts an HTML element and renders it as a PDF
+                    pdf.html(document.getElementById('pdf'), {
+                        callback: function(doc) {
+                            // Identifies where the Hyperlinks are and adds a clickable link in the PDF
+                            for (let i = 0, len = pages.length; i < len; i++) {
+                                doc.setPage(i + 1);
+                                const targetRect = pages[i].getBoundingClientRect();
+                                
+                                const anchors = pages[i].querySelectorAll('a');
+                                anchors.forEach(anchor => {
+                                    const rect = anchor.getBoundingClientRect();
+                                    doc.link(rect.x - targetRect.x, rect.y - targetRect.y, Math.ceil(rect.width), Math.ceil(rect.height), {url: replaceSrcUp(anchor.href)});
+                            });
+                        }
+                        
+                        
+                        
+                        let fileName = '{!JSENCODE(Title)}' + '.pdf'; 
+                        
+                        // Save the file as a Blob, convert it to Base64 String, and use a an Action Function to send it to Salesforce
+                        // Using an Action Function allows for larger files
+                        let blob = doc.output('blob', {filename: fileName});
+                    let reader = new FileReader();
+                    reader.addEventListener(
+                        'load',
+                        () => {
+                            savePDF(reader.result.substring(reader.result.indexOf('base64') + 7));
+                        }
+                            );
+                            
+                            reader.readAsDataURL(blob);
+                            
+                        },
+                            html2canvas: {
+                                // Clear out the canvases to avoid a memory leak in IOS in the cloned document
+                                onclone: function(cloneDoc) {
+                                    const target = cloneDoc.getElementById('pdf'),
+                                        canvases = target.querySelectorAll('canvas');
+                                    
+                                    canvases.forEach(canvas => {
+                                        canvas.width = 1;
+                                        canvas.height = 1;
+                                        const ctx = canvas.getContext('2d');
+                                        ctx && ctx.clearRect(0, 0, 1, 1);
+                                    });
+                                    }
+                                    }
+                                    });
+                                    }
+                                        
+                                        function showLoadingSpinner() {
+                                        const spinner = document.getElementById('mySpinner');
+                                        spinner.style.display = '';
+                                        
+                                        const pdfContainer = document.querySelector('.pdf-container');
+                                        pdfContainer.classList.add('loading');
+                                    }
+                                        
+                                        // In the console Salesforce adds a JavaScript function around the URL. This removes that function
+                                        function replaceSrcUp(link) {
+                                        const startIndex = link.indexOf('(\'') + 2,
+                                        endIndex = link.indexOf('\')');
+                                        
+                                        if (endIndex == -1) {
+                                        return link;
+                                    }
+                                        
+                                        return decodeURIComponent(link.substring(startIndex, endIndex));
+                                    }
+                                        
+                                        function closePage() {
+                                        hideLoadingSpinner();
+                                        //If this is opened within Lightning, navigate using sforce
+                                        if (sforce && sforce.one && sforce.one.navigateToSObject) {
+                                        sforce.one.navigateToSObject('{!BenchmarkId}');
+                                    }
+                                        else {
+                                        // If this is opened in a Quick Action, the logic below will work to close the Action and refresh the Benchmark
+                                        // Otherwise the logic below will navigate back to the Benchmark
+                                        try {
+                                        Sfdc.canvas.publisher.publish({name: 'publisher.refresh'});
+                                    Sfdc.canvas.publisher.publish({name: 'publisher.close', payload: {refresh: 'true'}});
+                                }
+                                catch {
+                                window.location.href = '{!SalesforceBaseUrl}/{!BenchmarkId}';
+                            }
+                        }
+                        }
+                        
+                        function hideLoadingSpinner() {
+                        const spinner = document.getElementById('mySpinner');
+                        spinner.style.display = 'none';
+                        
+                        const pdfContainer = document.querySelector('.pdf-container');
+                        pdfContainer.classList.remove('loading');
+                    }
+                    
+                    // adapted from https://github.com/jeremyholcombe/d3-dumbbell-chart
+                    // Sets up the dumbbell charts for self-awareness gaps
+                    function createDumbbellCharts() {
+                        const data = [
+                            <apex:repeat value="{!BenchmarkScores}" var="benchmarkScore">
+                            {
+                            name: '{!JSENCODE(benchmarkScore.Name)}',
+                            competencyScores: [
+                            <apex:repeat value="{!benchmarkScore.CompetencySkillAverageScores}" var="competencyScore">
+                            {
+                            name: '{!JSENCODE(competencyScore.Name)}',
+                            managerAverageScore: {!competencyScore.ManagerAverageScore},
+                            selfAverageScore: {!competencyScore.SelfAverageScore},
+                            gap: ({!competencyScore.SelfAverageScore - competencyScore.ManagerAverageScore}).toFixed(2)
+                            },
+                            </apex:repeat>
+                        ]
+                        },
+                            </apex:repeat>
+                            ];
+                    
+                    const template = document.querySelector('.dumbbell-chart-template');
+                    let chartCount = 0;
+                    const maxHeightChart1 = 700,
+                        maxHeightChart = 870,
+                        sizePerTick = 70;
+                    
+                    data.forEach(function (competencyModel) {
+                        const maxChartHeight = chartCount++ === 0 ? maxHeightChart1 : maxHeightChart,
+                            chartHeight = sizePerTick * competencyModel.competencyScores.length;
+                        
+                        let splitCharts = [];
+                        
+                        if (chartHeight < maxChartHeight) {
+                            splitCharts.push({
+                                scores: competencyModel.competencyScores,
+                                height: chartHeight
+                            });
+                        }
+                        else {
+                            const maxTicks = maxChartHeight / sizePerTick;
+                            for (let i = 0, len = competencyModel.competencyScores.length; i < len; i+= maxTicks) {
+                                const scores = competencyModel.competencyScores.slice(i, i + maxTicks);
+                                splitCharts.push({
+                                    scores: scores,
+                                    height: scores.length * sizePerTick
+                                });
+                            }
+                        }
+                        
+                        splitCharts.forEach(function (splitChart, i) {
+                            // Clone the Chart Section Template to create one per Competency Model
+                            const chartSection = template.cloneNode(true);
+                            chartSection.style.display = '';
+                            // Set title on the first index only
+                            if (i === 0) {
+                                chartSection.querySelector('.competency-model-name').innerHTML = competencyModel.name;
+                            }
+                            // Remove on subsequent elements
+                            else {
+                                chartSection.querySelector('.competency-model-name').remove();
+                            }
+                            
+                            // Add the chart to the page immediately after cloning so widths are calculated properly
+                            template.parentElement.appendChild(chartSection);
+                            
+                            const svgElement = chartSection.querySelector('.dumbbell-chart');
+                            
+                            svgElement.style.height = splitChart.height + 'px';
+                            
+                            const data = splitChart.scores, 
+                                svg = d3.select(svgElement),
+                                margin = {top: 0, right: 60, bottom: 50, left: 150},
+                                width = +svg.attr('width') - margin.left - margin.right,
+                                height = +splitChart.height - margin.top - margin.bottom;
+                            
+                            // sets up the position of the X and y axis
+                            const x = d3.scaleLinear().rangeRound([10, width - 10]),
+                                y = d3.scalePoint().rangeRound([height, 10]).padding(0.4);
+                            
+                            // Setups up the position of the chart
+                            const chart = svg.append('g')
+                            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+                            
+                            // Setup the max values for the chart's x axis
+                            x.domain([0, 9]);
+                            // Add the values for the chart's y axis. Add in reverse order so it renders from first to last
+                            y.domain(data.reverse().map(function(d) { return d.name; }));
+                            
+                            // x-axis
+                            chart.append('g')
+                            .attr('class', 'x axis')
+                            .attr('transform', 'translate(0,' + height + ')')
+                            .call(d3.axisBottom(x));
+                            
+                            // y-axis
+                            const ticks = chart.append('g')
+                            .attr('class', 'y axis')
+                            .call(d3.axisLeft(y))
+                            .selectAll('.tick text');
+                            
+                            // y-axis guidelines
+                            for (let i = 0, len = 10; i < len; i++) {
+                                chart.append('line')
+                                .attr('class', 'guide-lines')
+                                .attr('x1', x(i))
+                                .attr('x2', x(i))
+                                .attr('y1', 0)
+                                .attr('y2', height);
+                            }
+                            
+                            // Setup dumbbells
+                            var dumbbellGroup = chart.append('g')
+                            .attr('id', 'dumbbellGroup');
+                            
+                            // Setup the dumbbell lines
+                            var dumbbell = dumbbellGroup.selectAll('.dumbbell')
+                            .data(data)
+                            .enter().append('g')
+                            .attr('class', 'dumbbell')
+                            .attr('transform', function(d) { return 'translate(0,' + y(d.name) + ')'; });
+                            
+                            // lines: Guidelines on the X-axis
+                            dumbbell.append('line')
+                            .attr('class', 'guide-lines')
+                            .attr('x1', 0)
+                            .attr('x2', width)
+                            .attr('y1', 0)
+                            .attr('y2', 0);
+                            
+                            const circleRadius = 6;
+                            // lines: line between dots
+                            // Add before the dots so it doesn't appear if the values are the same
+                            dumbbell.append('line')
+                            .attr('class', 'connecting-line')
+                            // X1 should be the lower number
+                            // X2 should be the higher number
+                            .attr('x1', function(d) { return x(d.managerAverageScore > d.selfAverageScore ? d.selfAverageScore : d.managerAverageScore) + circleRadius; })
+                            .attr('x2', function(d) { return x(d.managerAverageScore > d.selfAverageScore ? d.managerAverageScore : d.selfAverageScore) - circleRadius; })
+                            .attr('y1', 0)
+                            .attr('y2', 0);
+                            
+                            // dots: Manager Score
+                            dumbbell.append('circle')
+                            .attr('class', 'manager-score')
+                            .attr('cx', function(d) { return x(d.managerAverageScore); })
+                            .attr('cy', 0)
+                            .attr('r', circleRadius);
+                            
+                            // Add this second so it appears above the Manager Score if they are both the same
+                            // dots: Self-Average Score
+                            dumbbell.append('circle')
+                            .attr('class', 'self-average')
+                            .attr('cx', function(d) { return x(d.selfAverageScore); })
+                            .attr('cy', 0)
+                            .attr('r', circleRadius);
+                            
+                            // data labels: gap
+                            dumbbell.append('text')
+                            .attr('class', 'gap')
+                            .attr('x', function(d) { return x(d.selfAverageScore); })
+                            .attr('y', 0)
+                            .attr('dy', '.35em')
+                            .attr('dx', function(d) {
+                                if (d.selfAverageScore >= d.managerAverageScore) {
+                                    return 10;
+                                }
+                                
+                                return -42;
+                            })
+                            .text(function(d) {
+                                let positiveNegativeSign = '';
+                                
+                                if (d.gap > 0) {
+                                    positiveNegativeSign = '+'
+                                }
+                                
+                                return positiveNegativeSign + d.gap;
+                            });
+                            
+                            //Legend
+                            const xAxisRect = document.querySelector('g.x.axis').getBoundingClientRect();
+                            const legend = chart.append('g')
+                            .attr('id', 'legend')
+                            .attr('transform', 'translate(-' + margin.left + ',' + (height + xAxisRect.height + 10) + ')');
+                            
+                            let legendX = circleRadius;
+                            legend.append('circle')
+                            .attr('class', 'manager-score')
+                            .attr('cx', legendX)
+                            .attr('r', circleRadius);
+                            
+                            legendX += circleRadius + 4;
+                            
+                            const managerText = legend.append('text')
+                            .attr('x', legendX)
+                            .attr('dy', '.35em')
+                            .text('{! JSENCODE($Label.iDevelop_Manager)}');
+                            
+                            legendX += managerText.node().getComputedTextLength() + 20;
+                            
+                            legend.append('circle')
+                            .attr('class', 'self-average')
+                            .attr('cx', legendX)
+                            .attr('r', circleRadius);
+                            
+                            legendX += circleRadius + 4;
+                            
+                            legend.append('text')
+                            .attr('x', legendX)
+                            .attr('dy', '.35em')
+                            .text('{! JSENCODE($Label.iDevelop_Self)}');
+                            
+                            // Call this last so that the getComputedTextLength method works. It will return 0 if content is not rendered before it is called
+                            ticks.call(wrapDumbellLabel, svg.attr('width') - xAxisRect.width - chartSection.querySelector('g.y.axis path').getBoundingClientRect().width - margin.right - 5);
+                            
+                            // Convert the SVG to an Image so it renders in the PDF
+                            convertSvgToImage(svgElement);
+                            window.totalCharts++;
+                        });
+                    });
+                    
+                    // Remove the template to avoid JSPDF issues with SVGs
+                    template.parentElement.removeChild(template);
+                }
+            
+            // Wraps the y-axis labels for the Dumbbel chart so they completely appear on the page.
+            // This also centers the label on the tick.
+            // Example adapted from here: https://gist.github.com/guypursey/f47d8cd11a8ff24854305505dbbd8c07
+            function wrapDumbellLabel(text, width) {
+                text.each(function() {
+                    const text = d3.select(this),
+                        words = text.text().split(/\s+/).reverse(),
+                        dy = parseFloat(text.attr('dy')),
+                        lineHeight = 1.1, // ems
+                        y = text.attr('y'),
+                        x = text.attr('x');
+                    
+                    let line = [],
+                        lineNumber = 0,
+                        word,
+                        tspan = text.text(null)
+                    .append('tspan')
+                    .attr('x', x)
+                    .attr('y', y)
+                    .attr('dy', dy + 'em'),
+                        adjustedTextY = 0;
+                    
+                    while (word = words.pop()) {
+                        line.push(word);
+                        tspan.text(line.join(' '));
+                        
+                        // If adding the new word will cause the length to overflow, add the line without the new word
+                        // and start a new line
+                        if (tspan.node().getComputedTextLength() > width + parseFloat(x)) {
+                            line.pop();
+                            tspan.text(line.join(' '));
+                            line = [word];
+                            
+                            // For the first line height use the same value as dy
+                            // For all others add the line height
+                            // Also adjust the y axis so the text appears on top of each other and in the center of the tick
+                            let adjustedLineHeight = lineHeight;
+                            if (++lineNumber > 0) {
+                                adjustedLineHeight = lineHeight + dy;
+                                adjustedTextY += (lineHeight + dy) / 2;
+                            }
+                            else {
+                                adjustedLineHeight = dy;
+                            }
+                            
+                            tspan = text.append('tspan')
+                            .attr('x', x)
+                            .attr('y', y)
+                            .attr('dy', `${adjustedLineHeight}em`)
+                            .text(word);
+                        }
+                    }
+                    
+                    // Center text with the tick based on the number of lines added
+                    text.attr('y', `-${adjustedTextY}em`);
+                })
+            }
+            
+            // Converts the SVG to an image so it can be converted to a canvas
+            function convertSvgToImage(svg) {
+                // CSS must be explicitly embedded in the SVG for it to render
+                const style = document.head.getElementsByTagName('style')[0].cloneNode(true);
+                svg.insertBefore(style, svg.firstChild);
+                
+                // First convert it to an image compoment with a Blob URL
+                const data = (new XMLSerializer()).serializeToString(svg);
+                const svgBlob = new Blob([data], {
+                    type: 'image/svg+xml;charset=utf-8'
+                });
+                
+                // remove the temporarily injected CSS
+                svg.removeChild(style);
+                
+                // Create the Image Object
+                const url = URL.createObjectURL(svgBlob);
+                const img = new Image();
+                img.width = svg.clientWidth;
+                img.height = svg.clientHeight;
+                img.src = url;
+                // Add the image to the page so it renders properly on IOS
+                svg.parentElement.appendChild(img);
+                
+                // Wait for the image to load before converting it to a canvas
+                img.addEventListener('load', () => {
+                    // Next convert the image to a Canvas
+                    const canvas = document.createElement('canvas');
+                    canvas.width = svg.clientWidth;
+                    canvas.height = parseFloat(svg.style.height);
+                    
+                    const canvasCtx = canvas.getContext('2d');
+                    canvasCtx.fillStyle = 'white';
+                    canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+                    canvasCtx.drawImage(img, 0, 0);
+                    svg.parentElement.appendChild(canvas);
+                    svg.parentElement.removeChild(img);
+                    svg.parentElement.removeChild(svg);
+                    
+                    // Then convert it to an JPEG Image
+                    convertCanvasToImage(canvas);
+                    
+                    // As this is the end of a chart load, determine if the PDF can load now
+                    determineIfPDFShouldDownload();
+                });
+                
+            }
+            
+            // Converts a Canvas to an Image for JSPDF to render properly and avoid issues in IOS with memory leaks
+            function convertCanvasToImage(canvas) {
+                const imageUrl = canvas.toDataURL('image/jpeg', 1),
+                    parentElement = canvas.parentElement;
+                
+                if (parentElement) {
+                    let imgElement = new Image(canvas.width, canvas.height);
+                    imgElement.src = imageUrl;
+                    parentElement.appendChild(imgElement);
+                    
+                    // For Safari, make the Canvas take up 0 space before removing it to avoid a memory leak
+                    canvas.width = 1;
+                    canvas.height = 1;
+                    const ctx = canvas.getContext('2d');
+                    ctx && ctx.clearRect(0, 0, 1, 1);
+                    parentElement.removeChild(canvas);
+                }
+            }
+            </script>
+        </body>
+    </html>
+</apex:page>

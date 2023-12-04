@@ -1,0 +1,5 @@
+<apex:page standardController="Account" extensions="FASTreportIFrameController">
+    <apex:pageBlock >
+        <apex:iframe src="{!reportUrl}" scrolling="true" id="theIframe" height="1000px" />
+    </apex:pageBlock>
+</apex:page>

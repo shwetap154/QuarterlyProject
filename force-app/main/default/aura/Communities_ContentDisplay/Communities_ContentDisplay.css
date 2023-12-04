@@ -1,0 +1,193 @@
+/* "Select an image" Help Icon */
+.THIS .custom-help-icon {
+  background-color: #0096af;
+}
+
+/* Species Filter (Text + Image) */
+.THIS div:hover > .custom-filter-icon {
+  cursor: pointer;
+}
+
+/* Species Filter Colors when not selected or hovering */
+.THIS .custom-filter-default {
+  color: white;
+  background-color: #0096af;
+}
+
+/* Species tile filter when hovering (not on phone) */
+.THIS div:hover > .custom-filter-default {
+  background-color: #ff671e;
+  color: black;
+}
+
+/* Species tile colors when not selected or hovering for PHONE
+   Using a different class so hover doesn't apply on Phone */
+.THIS .custom-filter-default-phone {
+  background-color: #0096af;
+  color: white;
+}
+
+/* Species tile filter Colors when selected */
+.THIS .custom-filter-selected {
+  background-color: #ff671e;
+  color: black;
+}
+
+/* Species Text */
+.THIS .custom-text {
+  font-size: 12px;
+  padding: 8px 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  white-space: nowrap;
+}
+
+/* Species Text on Phone */
+.THIS .custom-text-phone {
+  padding: 5px 0px 5px 0px;
+  border-radius: 5px;
+  margin: 0px 30px 0px 30px;
+}
+
+/* Species Images */
+.THIS .custom-image {
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+/* Data Table Format */
+.THIS .custom-data-table {
+  table-layout: fixed;
+  width: 100%;
+  margin: 20px 0px 10px 0px;
+  border: .5px solid #d8d8d8;
+}
+
+/* Data Table Format */
+.THIS .custom-data-column {
+  /* width: 100%; */
+    /* SC-008987 Added text-align to the left by Mahendra Kumar */
+  width: 200px;
+    text-align: left !important;
+}
+
+/* Download button text */
+.THIS .custom-download-text {
+  padding-right: 3px;
+}
+
+/* Subtext */
+.THIS .custom-sub-text {
+  font-style: italic;
+}
+
+/* When screen size is small, remove image, widen columns and update text to a static value*/
+@media screen and (max-width: 1100px) {
+  .THIS img.custom-image {
+    display: none;
+  }
+
+  .THIS .custom-column {
+    width: 100%;
+  }
+
+  .THIS p.custom-text {
+    font-size: small;
+    padding: 10px 2px 10px 2px;
+    border-radius: 5px;
+  }
+}
+
+/* When screen size is large, update species tiles text to as static value */
+@media screen and (min-width: 1550px) {
+  .THIS p.custom-text {
+    padding: 10px 2px 10px 2px;
+  }
+}
+
+
+/*** New Wireframe Styles ***/
+
+.THIS .zs_community_content_wrap{
+  background: #fff;
+}
+.THIS .zs_filter_text{
+  letter-spacing: 0.121875px;
+  color: #4094AC;
+  font-size: 16px;
+  font-family: "GothamNarrow";
+}
+/* search bar */
+
+.THIS .search_wrap_section{
+  display:flex;
+  width:100%;
+}
+.THIS .search {
+  width: 75%;
+  position: relative;
+  display: flex;
+  margin: 20px 5px 10px 20px;
+}
+.THIS .searchButton {
+  width: 40px;
+  height: 43px;
+  border: 0.5px solid #969696;
+  background: #fff;
+  text-align: center;
+  border-radius: 0 10px 10px 0;
+  cursor: pointer;
+  font-size: 20px;
+  border-left: none;
+}
+.THIS .searchTerm {
+  width: 100%;
+  border: .5px solid #969696;
+  border-right: none;
+  padding: 10px;
+  border-radius: 10px 0 0 10px;
+  outline: none;
+  font-size: 14px;
+  font-family: "GothamNarrow";
+  color: #969696;
+}
+.THIS .zs_search_button {
+  background-color: #4094AC;
+    border: none;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    width: 25%;
+    border-radius: 10px;
+    margin: 20px 10px 10px 10px;
+    font-family: "GothamNarrow";
+}
+.THIS .slds-table thead th{
+  background: #005670;
+  font-size: 13px;
+  color: #ffffff;
+  font-family: 'GothamNarrow';
+  padding: 10px;
+  text-align: center;
+  line-height: 16px;
+  border: 0.5px solid #D8D8D8;
+  font-weight: normal;
+}
+.THIS .custom-data-table tr{
+  border: .5px solid #d8d8d8;
+}
+.THIS .custom-data-table td{
+  text-align: center;
+}
+.THIS .custom-data-table td a{
+  border:0;
+}
+.THIS .custom-data-table td a:hover{
+  background:0;
+}
+.THIS .search-text {
+    margin-top: 25px;
+    font-size: 15px;
+    margin-right: 12px;
+}

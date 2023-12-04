@@ -1,0 +1,13 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" controller="ApplicableCountriesController">
+	<aura:attribute name="siteURL" type="String" access="global" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="slds-align_absolute-center" style="height:4rem">
+        <a style="color:#FF6400; font-family:Arial; font-size:16pt; text-decoration:underline" href="{!v.siteURL}">  Learn And Grow
+            
+          
+            
+        </a> 
+    </div>
+
+   
+    </aura:component>

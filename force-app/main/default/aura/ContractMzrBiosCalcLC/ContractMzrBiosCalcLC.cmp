@@ -1,0 +1,11 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:isUrlAddressable,lightning:hasPageReference"
+                            controller="ContractDetailViewController">
+    <aura:attribute name="recordId" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.pageReference}" action="{!c.doInit}" />
+    <div>
+        <lightning:spinner alternativeText="Loading" size="medium" variant="brand" />
+
+    </div>
+    <lightning:navigation aura:id="navService"/>
+</aura:component>

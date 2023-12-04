@@ -1,0 +1,14 @@
+<aura:component controller="SL_RxNewCaseController" implements="force:hasRecordId" >
+
+    <aura:attribute name="pageReference" type="Object"/>
+    <aura:attribute name="objCase" type="Object" />
+
+    <lightning:navigation aura:id="navService"/>
+    <lightning:pageReferenceUtils aura:id="pageRefUtils"/>
+
+    <lightning:button   variant="brand" 
+                        label="Confirm Selection" 
+                        title="Confirm Selection" 
+                        onclick="{! c.launchCaseScreen }" />
+
+</aura:component>

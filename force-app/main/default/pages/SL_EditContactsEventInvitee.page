@@ -1,0 +1,15 @@
+<apex:page standardController="ZTS_US_Event_Invitee__c" recordSetVar="eventInviteesLst" tabStyle="ZTS_US_Event_Invitee__c" LightningStyleSheets="true">
+    <script>
+        try 
+        {
+            var evntId = '{!$CurrentPage.parameters.id}';
+            window.location = ("/apex/ZTS_US_ContactEditPage?eventId="+evntId);
+        } 
+        catch(ex) 
+        {
+            alert('Exception:'+ex);
+            window.location = ("/"+evntId);  
+        }
+        
+    </script>
+</apex:page>

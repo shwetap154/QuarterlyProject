@@ -1,0 +1,63 @@
+<apex:page title="New Online Account" standardController="Lead"  extensions="NOA_CreateAccount" cache="false" lightningStylesheets="true">
+    <script>
+        function changeValue(input, textid) {
+            document.getElementById(textid).value = input.value;              
+        }   
+    </script>
+    <apex:form id="mainForm"> 
+        <apex:pageMessages />
+        
+        <apex:pageBlock id="mainBlock" rendered="{!existingAccts != null && existingAccts.size > 0}" >
+            <div style="overflow: scroll; width: 100%; height: 200px;"> 
+                <apex:pageBlockSection title="Matching Accounts"  >
+                    <apex:pageBlockTable value="{!existingAccts}" var="row" border="0" cellpadding="3" width="100%" > 
+                        <apex:column >
+                            <input type="radio" name="chosen" id="{!row.Id}" VALUE="{!row.Id}" onclick="changeValue(this,'{!$Component.RadioButtonValue}');"/>
+                        </apex:column>
+                        <apex:column headerValue="Account NARC#" headerClass="headerStyle" style="text-align:center;"  > 
+                            <apex:outputText value="{!row.ZTS_US_NARC_ID__c}" /> 
+                        </apex:column>
+                        <apex:column headerValue="Account Name" headerClass="headerStyle" > 
+                            <apex:outputLink value="/{!row.Id}" >
+                                <apex:outputText value="{!row.Name}" />
+                            </apex:outputLink>
+                        </apex:column> 
+                        <apex:column headerValue="Billing Street" headerClass="headerStyle" >
+                            <apex:outputText value="{!row.BillingStreet}" />
+                        </apex:column> 
+                        <apex:column headerValue="Billing City" headerClass="headerStyle" >
+                            <apex:outputText value="{!row.BillingCity}" />
+                        </apex:column> 
+                        <apex:column headerValue="Billing State" headerClass="headerStyle" >
+                            <apex:outputText value="{!row.BillingState}" />
+                        </apex:column> 
+                        <apex:column headerValue="Billing Zip/Postal Code" headerClass="headerStyle" >
+                            <apex:outputText value="{!row.BillingPostalCode}" />
+                        </apex:column> 
+                    </apex:pageBlockTable> 
+                    <apex:inputHidden value="{!selectedAccId}" id="RadioButtonValue" />
+                </apex:pageBlockSection>
+                
+            </div>
+            <apex:commandButton value="Submit" action="{!submit}" />
+        </apex:pageBlock> 
+       
+        <apex:pageBlock > 
+            
+            <apex:pageBlockSection title="Create New Account" columns="1" > 
+                <apex:outputText value="* All fields are required" style="color:red" />
+                <apex:inputText value="{!newAcc.Name}" />
+                <apex:inputText value="{!newAcc.BillingStreet}" />
+                <apex:inputText value="{!newAcc.BillingCity}" />
+                <apex:selectList value="{!newAcc.BillingState}" label="State/Province" multiselect="false" size="1" style="width:15%" >
+                    <apex:selectOption itemValue="Select" itemLabel="--Select--"></apex:selectOption>
+                    <apex:selectOptions value="{!statePicklist}" ></apex:selectOptions>
+                </apex:selectList>  
+                <apex:inputText value="{!newAcc.BillingPostalCode}" /> 
+            </apex:pageBlockSection>      
+            <apex:commandButton value="Create New Account" action="{!createNewAccount}"  />
+        </apex:pageBlock>
+        
+        <apex:commandButton value="Close" action="{!cancel}"   />
+    </apex:form>
+</apex:page>

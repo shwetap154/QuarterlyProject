@@ -1,0 +1,47 @@
+<apex:page standardController="Contact" extensions="ZTS_EU_ConRedirect" lightningStylesheets="true">
+
+    <apex:includeScript value="/support/console/47.0/integration.js"/>
+
+    <apex:form >
+        <apex:actionFunction action="{!backToView}" name="exit"/>
+    </apex:form>
+    <apex:form >
+        <apex:actionFunction action="{!conRedirect}" name="redirectToUrl"/>
+    </apex:form>
+    <apex:slds />
+    <div id="lightningscope" class="slds-scope slds-hide">
+        <article class="slds-card">
+            <div class="slds-card__header slds-grid">
+
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <div style="text-align:right; margin-right: .5rem;">
+                    <button class="slds-button slds-button_brand" onclick="exit()">Exit from Contact Creation Wizard</button>
+                </div>
+            </div>
+        </article>
+    </div>
+    <script>
+        window.onload=function()
+        {
+            if (sforce.console.isInConsole())
+                sforce.console.getEnclosingTabId(closeSubtab);
+        };
+
+    	var recordType = '{!recordTypeId}';
+    	if( !recordType ) recordType = null;
+    
+        if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
+            document.getElementById('lightningscope').classList.remove("slds-hide");
+            sforce.one.createRecord('Contact', recordType,{!defaultValues});
+        }else {
+            redirectToUrl();
+        }
+
+
+        var closeSubtab = function closeSubtab(result) {
+            var tabId = result.id;
+            sforce.console.closeTab(tabId);
+        };
+    </script>
+</apex:page>

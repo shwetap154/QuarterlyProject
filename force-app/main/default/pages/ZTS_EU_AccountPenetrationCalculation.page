@@ -1,0 +1,458 @@
+<apex:page standardcontroller="Account" extensions="ZTS_EU_Account_Penetration_Calculation" tabStyle="Account" id="pg" doctype="html-5.0" LightningStyleSheets="true">
+    <!-- <apex:includescript value="{!$Resource.jqueryminjs}"/> -->
+    <style> 
+        .headerRow .headerclass{text-align: right;}
+        .custPpup{
+            z-index: 9998;
+            left: 45%;
+            padding:10px;
+            position: absolute;
+            top:20%;
+        }
+        .greyed{
+            color: darkgrey;
+        }
+        body .rich-tabhdr-cell-active, .slds-scope .rich-tabhdr-cell-active {
+        border-bottom-color: #0070d2 !important;
+        font-weight: 700 !important;
+        color: #3e3e3c !important;
+        }
+        .rich-tab-active  , .rich-tab-inactive , .rich-tabpanel-content {
+        background-image: none;
+        background-color: transparent;
+        border-style: none;
+        }
+        .rich-tabpanel-content {
+            color : none !important;
+        }
+        .rich-tabhdr-side-cell 
+        {
+            border-top-color: transparent!important;
+        }
+        h2, h3, h4, h5, h6
+        {
+            font-size: 1rem!important;
+        }
+        body .bPageBlock .detailList .dataCol input[type="checkbox"]:first-child, 
+        body .bPageBlock .detailList .dataCol input[type="radio"]:first-child, 
+        .slds-vf-scope .bPageBlock .detailList .dataCol input[type="checkbox"]:first-child, 
+        .slds-vf-scope .bPageBlock .detailList .dataCol input[type="radio"]:first-child
+        {
+            margin: 0.25rem;
+        }
+    </style>
+    <!-- Below style sheet is popupBackground style class, to disble the background -->
+    <apex:stylesheet value="{!$Resource.fullCalendarCustomCss}"/>
+    <script>
+        var geoLocation = '{!geoLevel}';
+        /* Below function is used to re Render the Tg values, based on "business unit" selection/Un selection, 
+           and will redirect to specific function based in Geo Location of an account  */
+        function businessUntiRedirectFunction(){
+            showDiv();
+            //if(geoLocation == 'EUAFME'){
+                updateTgSectionBU();
+            //}else{
+            //reRenderTGSectionInBUTab();
+            //}   
+        }
+        /* Below function is used to re Render the Tg values, based on "Specie" selection/Un selection, 
+           and will redirect to specific function based in Geo Location of an account  */ 
+        function specieRedirectFunction(){
+            showDiv();
+            //if(geoLocation == 'EUAFME'){
+                updateTgSectionSpecies();
+            //}else{
+            //reRenderTGSectionInSpecieTab();
+            //}   
+        }
+        
+        /* To Disable editing on page  */
+        function showDiv(){
+           /* if(document.getElementById('disableDiv')){
+                document.getElementById('disableDiv').style.display = "block";
+            } */ 
+        }
+       
+      
+        /* To Enable editing on page  */
+        function hideDiv(){
+             /* if(document.getElementById('disableDiv')){
+                document.getElementById('disableDiv').style.display = "none";
+            }*/
+        }
+        
+    </script>
+    
+    <apex:slds />
+    <div class="slds-scope slds-p-horizontal_medium">
+        <apex:sectionHeader subtitle="{!$Label.ZTS_EU_Penetration_Report} {!accountName}"/>  
+            <apex:outputLink value="/{!accountId}"><b>{!$Label.ZTS_EU_Back_To} {!accountName}</b></apex:outputLink>  <br/><br/>
+            <apex:form id="frm">
+            
+            <!-- Loading image while perfming action fucntion -->
+            <apex:actionStatus id="loading" >
+                <apex:facet name="start">
+                    <apex:image value="{!$Resource.loadingImage}" styleClass="custPpup"
+                                style="height:150px;width:150px"/>
+                </apex:facet>
+                <apex:facet name="stop"></apex:facet>
+            </apex:actionStatus>
+            
+            <!-- 
+                Below tab panel having two tabs
+                    i. By Business unit tab
+                    ii.By Specie Tab
+             -->
+            
+            <apex:tabPanel switchType="client" selectedTab="businessUnit" id="theTabPanel"> 
+                <!-- By Business unit tab -->
+                <apex:tab label="{!$Label.ZTS_EU_By_Business_Unit}" name="businessUnit" id="tabOne">
+                
+                 
+                 <apex:actionFunction name="updateTgSectionBU" action="{!filterDataForTGSection}" oncomplete="hideDiv()" rerender="tgSectionBU" status="loading">
+                    <apex:param name="businessUnit" value="businessUnit" />
+                 </apex:actionFunction>
+                  
+                 <apex:actionFunction name="reRenderTGSectionInBUTab" action="{!reRenderTGSectionInBUTab}" oncomplete="hideDiv()" rerender="tgSectionBU" status="loading"/>
+                 
+                 <apex:pageBlock id="pb1" title="{!$Label.ZTS_EU_Filters}" >
+                    
+                     <apex:pageblocksection id="pbs1" columns="2">
+                        
+                        <apex:pageblocksectionitem id="pbsi1">
+                            <apex:outputlabel >  {!$Label.ZTS_EU_SELECT_BUSINESS_UNITS}</apex:outputlabel>
+                            <apex:outputpanel style="font-size:12px">
+                                <apex:dataTable styleClass="slds-table slds-table--striped slds-table--bordered" value="{!businessUnits}"  var="bu" id="bu" >
+                                   <apex:column style="padding: 5px;">
+                                        <apex:inputCheckbox value="{!bu.unitSelect}" title="{!bu.unitName}" 
+                                                            onclick="businessUntiRedirectFunction()"/>
+                                        
+                                        <apex:outputLabel value="{!bu.unitName}"/>
+                                   </apex:column>
+                                </apex:dataTable>
+                            </apex:outputpanel>                 
+                        </apex:pageblocksectionitem>
+                        
+                        <apex:pageblocksectionitem id="p3">
+                            <apex:outputlabel >  {!$Label.ZTS_EU_SELECT_TG_UNITS}</apex:outputlabel>
+                            <apex:outputpanel style="font-size:12px">
+                                <apex:dataTable styleClass="slds-table slds-table--striped slds-table--bordered" value="{!tgGroup}"  var="tg" id="tgSectionBU">
+                                       <apex:column style="padding: 5px;">
+                                           <apex:inputCheckbox value="{!tg.unitSelect}" title="{!tg.unitName}" /><apex:outputLabel value="{!tg.unitName}"/>
+                                       </apex:column>
+                                 </apex:dataTable>        
+                            </apex:outputpanel>                 
+                        </apex:pageblocksectionitem>
+                        
+                        <apex:pageblocksectionitem id="pbsi2">
+                            <apex:outputpanel id="op2"></apex:outputpanel>
+                            <apex:outputpanel ></apex:outputpanel>                  
+                        </apex:pageblocksectionitem>
+                     </apex:pageblocksection>
+                     
+                      
+                    <apex:pageBlockButtons location="bottom">
+                        <apex:commandButton value="{!$Label.ZTS_EU_Refresh_Data}" action="{!refreshData}" onclick="showDiv()" 
+                                            oncomplete="hideDiv()" reRender="dataPanel1" status="loading">
+                            <apex:param name="businessUnit" value="businessUnit" />
+                        </apex:commandButton>
+                    </apex:pageBlockButtons>
+                                
+                </apex:pageBlock>
+               
+                <!--<apex:pageBlock id="dataPanel1" title="{!if(geoLevel =='CLAR',$Label.SKU_Potential_and_Penetration,$Label.ZTS_EU_Brand_Potential)}"> -->
+                <apex:pageBlock id="dataPanel1" title="{!$Label.ZTS_EU_Brand_Potential}">
+                <apex:pageMessages /> 
+                    
+                    <apex:outputpanel id="pnl2">
+                        <!-- <apex:outputpanel style="font-weight:bold;margin-left:90%"  rendered="{!if(geoLevel =='CLAR',true,false)}"> -->
+                        <apex:outputpanel style="font-weight:bold;margin-left:90%"  rendered="false">
+                            {!$Label.Showing} {!pageNumBU} {!$Label.Of} {!totalNumOfPagesBU}
+                        </apex:outputpanel><br/><br/>
+                        <!-- <apex:pageBlockTable value="{!if(geoLevel =='CLAR',RecordsByBU,allUnitsSpeciesList)}" var="w" headerClass="headerclass" >   -->
+                        <apex:dataTable styleClass="slds-table slds-table--striped slds-table--bordered" value="{!allUnitsSpeciesList}" var="w" headerClass="headerclass" >
+                            <!-- <apex:column rendered="{!if(geoLevel =='CLAR',true, false)}" style="width:10%">  -->
+                               <apex:column rendered="false" style="width:10%"> 
+                                            <apex:facet name="header">
+                                                <apex:outputText style="float:left;" value="{!$Label.Brand_Name}" ></apex:outputText>
+                                            </apex:facet>
+                                            <apex:outputText value="{!w.parentName}"  />
+                                      </apex:column>
+                               <apex:column style="width: 20%;"> <!--style="text-align: right;" headerValue="{!$Label.ZTS_EU_Brand} width="15%"-->
+                                  <apex:outputText value="{!w.brandName}"  />
+                                  <apex:facet name="header">
+                                     <apex:outputText style="float: left;" value="{!product_Potential_Level}" > <!-- Ram - displaying dynamic header value-->
+                                     </apex:outputText>
+                                  </apex:facet>
+                                  <apex:facet name="footer"> 
+                                     <apex:outputText style="float:left;" value="{!$Label.ZTS_EU_Summary}"  >
+                                    </apex:outputText>
+                                  </apex:facet>                         
+                                </apex:column>
+                                <apex:column width="10%">
+                                      <apex:facet name="header">
+                                         <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_Total_CYTD_Sales}"/>
+                                      </apex:facet>
+                                      <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                       <apex:param value="{!w.CYTD_Sales}" />
+                                       </apex:outputText>
+                                       <apex:facet name="footer">
+                                         <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                         <apex:param value="{!totalCYTDSales}" />
+                                       </apex:outputText>
+                                </apex:facet>
+                               </apex:column>
+                                <apex:column width="10%">
+                                       <apex:facet name="header">
+                                             <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_Total_PYTD_Sales}"/>
+                                       </apex:facet>
+                                       <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                       <apex:param value="{!w.PYTD_Sales}" />
+                                       </apex:outputText>
+                                        <apex:facet name="footer">
+                                         <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                       <apex:param value="{!totalPYTDSales}" />
+                                       </apex:outputText>
+                                       </apex:facet>
+                               </apex:column>
+                              <apex:column width="10%">
+                                       <apex:facet name="header">
+                                             <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_MAT}"/>
+                                       </apex:facet>
+                                      <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                       <apex:param value="{!w.MAT}" />
+                                       </apex:outputText>
+                                       <apex:facet name="footer">
+                                         <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                       <apex:param value="{!totalMAT}" />
+                                       </apex:outputText>
+                                       </apex:facet>
+                               </apex:column>
+                                <apex:column width="10%">
+                                      <apex:facet name="header">
+                                             <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_MAT_Prior_Sales}"/>
+                                      </apex:facet>
+                                      <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                       <apex:param value="{!w.MAT_Prior_Sales}" />
+                                       </apex:outputText>
+                                       <apex:facet name="footer">
+                                         <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                       <apex:param value="{!totalMATPriorSales}" />
+                                       </apex:outputText>
+                                       </apex:facet>
+                               </apex:column>
+                               <apex:column width="10%" >
+                                      <apex:facet name="header">
+                                             <apex:outputText style="float: left;" Value="{!$Label.ZTS_EU_Potential}"/>
+                                      </apex:facet>
+                                       <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                       <apex:param value="{!w.potential}" />
+                                       </apex:outputText>
+                                       <apex:facet name="footer">
+                                         <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                       <apex:param value="{!totalPotential}" />
+                                       </apex:outputText>
+                                       </apex:facet>
+                              </apex:column>
+                              
+                               <apex:column width="10%">
+                                      <apex:facet name="header">
+                                             <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_Penetration}" />
+                                      </apex:facet>
+                                      <apex:outputText style="float:left;" value="{!w.Penetration} %"  />
+                               </apex:column>
+                                <apex:column width="13%">
+                                       <apex:facet name="header">
+                                             <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_Opportunity_Gap}" />
+                                       </apex:facet>
+                                       <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                       <apex:param value="{!w.opportunityGap}" />
+                                       </apex:outputText>
+                               </apex:column>
+                            </apex:dataTable>
+                        </apex:outputpanel><br/><br/>      
+                    	<!-- <apex:outputPanel style="font-weight:Bold;margin-left:40%" id="op1"  rendered="{!if(geoLevel =='CLAR',true,false)}"> -->
+                        <apex:outputPanel style="font-weight:Bold;margin-left:40%" id="op1"  rendered="false">
+                            <apex:commandlink value="<< {!$Label.First}" action="{!goToFirstPageBU}" rendered="{!showPrevBU}" reRender="op1,pnl2"/><apex:outputlabel styleClass="greyed" value="<< First" rendered="{!Not(showPrevBU)}"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:commandlink value="<< {!$Label.Previous}" action="{!previousBU}" rendered="{!showPrevBU}" reRender="op1,pnl2"/><apex:outputlabel styleClass="greyed" value="<< Previous" rendered="{!Not(showPrevBU)}"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:commandlink value="{!$Label.Next} >>" action="{!nextBU}" reRender="op1,pnl2" rendered="{!showNextBU}"/> <apex:outputlabel styleClass="greyed" value="Next >>" rendered="{!Not(showNextBU)}"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:commandlink value="{!$Label.Last} >>"  action="{!goToLastPageBU}" reRender="op1,pnl2" rendered="{!showNextBU}"/> <apex:outputlabel styleClass="greyed" value="Last >>" rendered="{!Not(showNextBU)}"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </apex:outputPanel>
+                    </apex:pageBlock>
+               </apex:tab>
+            <!-- Specie Tab --> 
+            <apex:tab label="{!$Label.ZTS_EU_By_Species}" name="species" id="tabTwo">
+               
+               <apex:actionFunction name="updateTgSectionSpecies" action="{!filterDataForTGSection}" oncomplete="hideDiv()" rerender="tgSectionSpecies" status="loading">
+                   <apex:param name="businessUnit" value="species" />
+               </apex:actionFunction>
+               <apex:actionFunction name="reRenderTGSectionInSpecieTab" action="{!reRenderTGSectionInSpecieTab}" oncomplete="hideDiv()" rerender="tgSectionSpecies" status="loading"/>
+               <apex:pageBlock title="{!$Label.ZTS_EU_Filters}">
+                    <apex:pageblocksection columns="2">
+                        
+                        <apex:pageblocksectionitem >
+                            <apex:outputlabel >  {!$Label.ZTS_EU_Select_Species}</apex:outputlabel>
+                            <apex:outputpanel style="font-size:12px">
+                                <apex:dataTable styleClass="slds-table slds-table--striped slds-table--bordered" value="{!species}"  var="bu">
+                                    <apex:column style="padding: 5px;">
+                                         <apex:inputCheckbox value="{!bu.unitSelect}" title="{!bu.unitName}" 
+                                                             onclick="specieRedirectFunction()"/>
+                                         <apex:outputLabel value="{!bu.unitName}"/>
+                                     </apex:column>
+                                 </apex:dataTable>
+                            </apex:outputpanel>                 
+                        </apex:pageblocksectionitem>
+                        
+                        <apex:pageblocksectionitem >
+                            <apex:outputlabel >{!$Label.ZTS_EU_SELECT_TG_UNITS}</apex:outputlabel>
+                            <apex:outputpanel style="font-size:12px">
+                                  <apex:dataTable styleClass="slds-table slds-table--striped slds-table--bordered" value="{!tgGroupSpecies}"  var="tg" id="tgSectionSpecies">
+                                     <apex:column style="padding: 5px;">
+                                         <apex:inputCheckbox value="{!tg.unitSelect}" title="{!tg.unitName}" /><apex:outputLabel value="{!tg.unitName}"/>
+                                     </apex:column>
+                                 </apex:dataTable>     
+                            </apex:outputpanel>                 
+                        </apex:pageblocksectionitem>
+                        
+                        <apex:pageblocksectionitem >
+                            <apex:outputpanel ></apex:outputpanel>
+                            <apex:outputpanel > </apex:outputpanel>                 
+                        </apex:pageblocksectionitem>
+                     </apex:pageblocksection>    
+                 
+                     
+                 <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton value="{!$Label.ZTS_EU_Refresh_Data}" action="{!refreshSpeciesTab}" reRender="dataPanel2" 
+                                        status="loading" onclick="showDiv()" oncomplete="hideDiv()">
+                        <apex:param name="businessUnit" value="species" />
+                    </apex:commandButton>
+                 </apex:pageBlockButtons>
+                            
+            </apex:pageBlock>
+             
+            <!-- <apex:pageBlock id="dataPanel2" title="{!if(geoLevel =='CLAR',$Label.SKU_Potential_and_Penetration,$Label.ZTS_EU_Brand_Potential)}"> -->  
+            <apex:pageBlock id="dataPanel2" title="{!$Label.ZTS_EU_Brand_Potential}">
+            <apex:pageMessages />
+                	<!-- <apex:outputpanel style="font-weight:bold;margin-left:90%" rendered="{!if(geoLevel =='CLAR',true,false)}"> -->
+                    <apex:outputpanel style="font-weight:bold;margin-left:90%" rendered="false">
+                        {!$Label.Showing} {!pageNumBU} {!$Label.Of} {!totalNumOfPagesBU}
+                    </apex:outputpanel><br/><br/>
+                	<!-- <apex:pageBlockTable value="{!if(geoLevel =='CLAR',RecordsBySP,allSpeciesList)}" var="w" headerClass="headerclass"> -->
+                    <apex:dataTable styleClass="slds-table slds-table--striped slds-table--bordered" value="{!allSpeciesList}" var="w" headerClass="headerclass">
+                      <!-- <apex:column rendered="{!if(geoLevel =='CLAR',true, false)}" style="width:10%">  -->
+                      <apex:column rendered="false" style="width:10%"> 
+                            <apex:facet name="header">
+                                <apex:outputText style="float:left;" value="{!$Label.Brand_Name}" ></apex:outputText>
+                            </apex:facet>
+                            <apex:outputText value="{!w.parentName}"  />
+                      </apex:column>
+                      
+                      <apex:column style="width:20%"> <!--headerValue="{!$Label.ZTS_EU_Brand}"-->
+                            <apex:facet name="header">
+                                <apex:outputText style="float:left;" value="{!product_Potential_Level}" > <!-- Ram - displaying     dynamic header value--> </apex:outputText>
+                            </apex:facet>
+                            <apex:outputText value="{!w.brandName}"  />
+                            <apex:facet name="footer">
+                                 <apex:outputText style="float:left;" value="{!$Label.ZTS_EU_Summary}"  ></apex:outputText>
+                            </apex:facet>
+                      </apex:column>
+                      
+                      
+                      <apex:column width="12%">
+                         <apex:facet name="header">
+                               <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_Total_CYTD_Sales}" />
+                         </apex:facet>  
+                         <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                           <apex:param value="{!w.CYTD_Sales}" />
+                         </apex:outputText>
+                         <apex:facet name="footer">
+                             <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                <apex:param value="{!totalCYTDSales}" />
+                            </apex:outputText>
+                        </apex:facet>
+                     </apex:column>
+                         
+                           <apex:column width="12%">
+                                   <apex:facet name="header">
+                                       <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_Total_PYTD_Sales}" />
+                                   </apex:facet>    
+                                   <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                   <apex:param value="{!w.PYTD_Sales}" />
+                                   </apex:outputText>
+                                    <apex:facet name="footer">
+                                     <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                   <apex:param value="{!totalPYTDSales}" />
+                                   </apex:outputText>
+                                   </apex:facet>
+                          </apex:column>
+                          <apex:column width="12%">
+                                  <apex:facet name="header">
+                                       <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_MAT}" />
+                                   </apex:facet>    
+                                  <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                   <apex:param value="{!w.MAT}" />
+                                   </apex:outputText>
+                                   <apex:facet name="footer">
+                                     <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                   <apex:param value="{!totalMAT}" />
+                                   </apex:outputText>
+                                   </apex:facet>
+                           </apex:column>
+                           <apex:column width="12%">
+                                   <apex:facet name="header">
+                                       <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_MAT_Prior_Sales}"/>
+                                   </apex:facet>     
+                                   <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                   <apex:param value="{!w.MAT_Prior_Sales}" />
+                                   </apex:outputText>
+                                   <apex:facet name="footer">
+                                     <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                   <apex:param value="{!totalMATPriorSales}" />
+                                   </apex:outputText>
+                                   </apex:facet>
+                           </apex:column>
+                           <apex:column width="13%" >
+                                   <apex:facet name="header">
+                                       <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_Potential}"/>
+                                   </apex:facet>
+                                   <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                   <apex:param value="{!w.potential}" />
+                                   </apex:outputText>
+                                   <apex:facet name="footer">
+                                     <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                   <apex:param value="{!totalPotential}" />
+                                   </apex:outputText>
+                                   </apex:facet>
+                          </apex:column>
+                           
+                           <apex:column width="12%">
+                                  <apex:facet name="header">
+                                       <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_Penetration}"/>
+                                   </apex:facet>
+                                  <apex:outputText style="float:left;" value="{!w.Penetration} %"  />
+                           </apex:column>
+                            <apex:column width="13%">
+                                   <apex:facet name="header">
+                                       <apex:outputText style="float: left;" value="{!$Label.ZTS_EU_Opportunity_Gap}"/>
+                                   </apex:facet>
+                                   <apex:outputText style="float:left;" value="{0, number, ###,###,##0.00} {!w.Currncy}"  >
+                                   <apex:param value="{!w.opportunityGap}" />
+                                   </apex:outputText>
+                           </apex:column>
+                      
+                     </apex:dataTable> <br/><br/>
+                	<!-- <apex:outputPanel style="font-weight:Bold;margin-left:40%" id="op2"  rendered="{!if(geoLevel =='CLAR',true,false)}"> -->
+                     <apex:outputPanel style="font-weight:Bold;margin-left:40%" id="op2"  rendered="false">
+                        <apex:commandlink value="<< {!$Label.First}" action="{!goToFirstPageSP}" rendered="{!showPrevSP}" reRender="dataPanel2"/><apex:outputlabel styleClass="greyed" value="<< First" rendered="{!Not(showPrevSP)}"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <apex:commandlink value="<< {!$Label.Previous}" action="{!previousSP}" rendered="{!showPrevSP}" reRender="dataPanel2"/><apex:outputlabel styleClass="greyed" value="<< Previous" rendered="{!Not(showPrevSP)}"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <apex:commandlink value="{!$Label.Next} >>" action="{!nextSP}" reRender="dataPanel2" rendered="{!showNextSP}"/> <apex:outputlabel styleClass="greyed" value="Next >>" rendered="{!Not(showNextSP)}"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <apex:commandlink value="{!$Label.Last} >>" action="{!goToLastPageSP}" reRender="dataPanel2" rendered="{!showNextSP}"/> <apex:outputlabel styleClass="greyed" value="Last >>" rendered="{!Not(showNextSP)}"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </apex:outputPanel>
+                </apex:pageBlock>
+        
+                
+            </apex:tab>
+            </apex:tabPanel>
+            </apex:form>
+    </div>
+    </apex:page>

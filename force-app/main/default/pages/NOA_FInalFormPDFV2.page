@@ -1,0 +1,622 @@
+<!--
+  @description       : Final PDF output for the New Online Account Process
+  @author            : Ethan Hirsch @ Zoetis Inc
+  @group             : 
+  @last modified on  : 09-08-2023
+  @last modified by  : Padma Nerella @ Zoetis Inc
+  Modifications Log
+  Ver   Date         Author                         Modification
+  1.0   08-01-2023   Ethan Hirsch @ Zoetis Inc      Initial Version TPDEV-1079
+  1.1   08-17-2023   Padma Nerella @ Zoetis Inc     Modified customer spelling TPDEV-1809
+  1.2   09-08-2023   Padma Nerella @ Zoetis Inc     Modified Zoetis Account number in Change of Ownership application
+-->
+<apex:page standardController="Lead" applyHtmlTag="false" applyBodyTag="false"  extensions="NOA_FinalFormPDFV2Controller" standardStylesheets="false" 
+           showHeader="false" renderAs="pdf">
+    <html>
+        
+        <!-- head -->   
+        <head>
+            <meta charset="UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <!-- Style -->  
+            <style>
+                /*Most styles were provided by the Methodical team to better match the mockups*/
+                body {
+                    font-size: 16px;
+                    line-height: 1.5;
+                    letter-spacing: 0;
+                    font-family: "Arial";
+                    color: #585858;
+                }
+                
+                h1 {
+                    font-size: 56px;
+                    line-height: 1;
+                    letter-spacing: 0;
+                    font-family: "Arial";
+                    padding: 0;
+                    margin: 0;
+                }
+
+                h1.title {
+                    padding-bottom: 20px;
+                    margin-bottom: 0px;
+                }
+                
+                h4 {
+                    font-size: 32px;
+                    line-height: 1;
+                    letter-spacing: 0;
+                    font-family: "Arial";
+                    padding: 0;
+                    margin: 0;
+                    padding-bottom: 24px;
+                }
+
+                h4.section-header {
+                    border-bottom: 2px solid #007b8f;
+                    font-family: "Arial";
+                    margin-bottom: 12px;
+                    padding-bottom: 12px;
+                }
+
+                h6 {
+                    font-size: 20px;
+                    line-height: 1;
+                    letter-spacing: 0;
+                    padding: 0;
+                    margin: 0;
+                    padding-bottom: 20px;
+                }
+
+                div.intro-text {
+                    padding-bottom: 32px;
+                }
+
+                img.header-image {
+                    height: 110px;
+                }
+
+                div.section {
+                    padding-bottom: 32px;
+                }
+
+                /*When the Add a Shipping Address PDF is rendered, some sections will be treated as sub-sections and
+                  not need extra padding*/
+                div.section.no-padding {
+                    padding-bottom: 0px;
+                }
+
+                div.sub-section {
+                    padding-bottom: 32px;
+                }
+
+                div.genetics-terms-section {
+                    padding-bottom: 15px;
+                }
+
+                div.signer-title {
+                    margin-bottom: 20px;
+                }
+
+                div.standalone-text {
+                    margin-bottom: 10px;
+                }
+
+                table {
+                    width: 100%;
+                    border-top: 2px solid #007b8f;
+                    text-align: left;
+                }
+                
+                td,
+                th {
+                    padding-top: 6px;
+                    padding-bottom: 6px;
+                    border-bottom: 1px solid #eaeaea;
+                    color: #767676;
+                }
+
+                tr th:first-child {
+                    width: 40%;
+                }
+
+                tr td:first-child {
+                    width: 40%;
+                }
+
+                td.bold-cell {
+                    font-weight: bold;
+                }
+
+                tr.separator-border td,
+                tr.separator-border th {
+                    border-bottom: 2px solid #dedede;
+                }
+
+                tr.separator-border-top td,
+                tr.separator-border-top th {
+                    border-top: 2px solid #dedede;
+                }
+
+                /*Use the vw unit to evenly distribute the signature sections.
+                  When vw is not available in a browser, it will fall back to percentage units*/
+                .signature-section {
+                    width: 100%;
+                    width: 100vw;
+                }
+
+                .signature-section .name,
+                .signature-section .date {
+                    display: inline-block;
+                    padding-top: 0.5em;
+                }
+
+                .signature-section .name {
+                    width: 37%;
+                    width: 37vw;
+                    margin-right: 2%;
+                    margin-right: 2vw;
+                }
+
+                .signature-section .date {
+                    width: 19%;
+                    width: 19vw;
+                }
+                
+                .signature-section .label{
+                    border-top: 1px solid black;
+                }
+
+                /*Keep the spot for a signature the same height regardless of if there is an adobe eSign Tag*/
+                .signature-section .sign-space {
+                    height: 24px;
+                }
+
+                a {
+                    color: #007b8f;
+                }
+            </style>
+        </head>
+        <!-- head --> 
+        <body>
+            <div>
+                <apex:image url="{!URLFOR($Resource.New_Online_Account_Zoetis_logo)}" styleClass="header-image" />
+                <apex:image url="{!URLFOR($Resource.New_Online_Account_US_logo)}" styleClass="header-image"/>
+                <apex:image url="{!URLFOR($Resource.New_Online_Account_Species_logo)}" styleClass="header-image last-header-image"/>
+            </div>
+            
+             <h1 class="title">
+                <apex:outputPanel rendered="{!AND(NOT(Lead.New_Shipping_Location__c), NOT(Lead.Ownership_Change__c = 'Yes'))}" layout="none">
+                    New Account Application
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!Lead.New_Shipping_Location__c}" layout="none">
+                    Add a Shipping Address
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!Lead.Ownership_Change__c = 'Yes'}" layout="none">
+                    Change of Ownership Application
+                </apex:outputPanel>
+            </h1>   
+            
+            <div class="intro-text"> Application reference: {!Lead.NOA_Application_Number__c} </div>
+        
+            <apex:outputPanel rendered="{!OR(Lead.New_Shipping_Location__c, Lead.Ownership_Change__c = 'Yes')}" layout="block" styleClass="section">
+                <table cellspacing="0">
+                    <tr style="{!IF(Lead.Ownership_Change__c != 'Yes', 'display: none', '')}">
+                        <th>Date of ownership change</th>
+                        <td>
+                            <apex:outputText value="{0, date, dd MMMM yyyy}">
+                                <apex:param value="{!Lead.Date_of_Ownership_Change__c}" />
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                    <tr style="{!IF((Lead.Zoetis_Account__c =='' && Lead.Ownership_Change__c=='Yes')||(Lead.SAP_Bill_To_ID__c==''&& Lead.New_Shipping_Location__c), 'display: none;','')}">
+                        <th>Zoetis account number</th>
+                        <td>
+                           {!if(Lead.New_Shipping_Location__c,Lead.SAP_Bill_To_ID__c,Lead.Zoetis_Account__c)}
+                            <apex:outputText value="{!Lead.Zoetis_Account__c}" rendered="false"/>
+                            <apex:outputText value="{!Lead.SAP_Bill_To_ID__c}" rendered="false"/>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+            <div class="section {!IF(Lead.New_Shipping_Location__c, 'no-padding', '')}">
+                <apex:outputPanel rendered="{!NOT(Lead.New_Shipping_Location__c)}" layout="none">
+                    <h4>
+                        Business Overview
+                    </h4>
+                </apex:outputPanel>
+                <div class="sub-section">
+                    <h6>
+                        About You
+                    </h6>
+                    <table cellspacing="0">
+                        <tr>
+                            <th>Email</th>
+                            <td>{!Lead.Email}</td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td>{!Lead.Name}</td>
+                        </tr>
+                        <tr>
+                            <th>Role</th>
+                            <td>{!Lead.NOA_Applicant_Role__c}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone number</th>
+                            <td>{!Lead.Phone}</td>
+                        </tr>
+                    </table>
+                </div>
+                <apex:outputPanel rendered="{!NOT(Lead.New_Shipping_Location__c)}" layout="block" styleClass="sub-section">
+                    <h6>
+                        About Your Business
+                    </h6>
+                    <table cellspacing="0">
+                        <tr>
+                            <th>What your business does</th>
+                            <td>{!whatYourBusinessDoes}</td>
+                        </tr>
+                        <tr>
+                            <th>Registered business name </th>
+                            <td>{!Lead.Business_Name__c}</td>
+                        </tr>
+                        <tr>
+                            <th>Registered in</th>
+                            <td>{!Lead.Business_Registered_In__c}</td>
+                        </tr>
+                        <tr style="{!IF(NOT(Lead.Has_Alternative_Business_Name__c), 'display:none;', '')}">
+                            <th>Also operates under</th>
+                            <td>{!Lead.Alternative_Business_Name__c}</td>
+                        </tr>
+                        <tr>
+                            <th>Business type</th>
+                            <td>{!Lead.Ownership_Type__c}</td>
+                        </tr>
+                        <tr>
+                            <th>Business permit or license number</th>
+                            <td>{!Lead.Business_Permit_or_License_Number__c}</td>
+                        </tr>
+                        
+                        <tr>
+                            <th>Sales tax status</th>
+                            <td>{!Lead.Sales_Tax_Status__c}</td>
+                        </tr>
+                        <tr style="{!IF(NOT(rxForm), 'display:none;', '')}">
+                            <th>Hospital type</th>
+                            <td>{!Lead.Specialty_Description__c}</td>
+                        </tr>
+                        <tr style="{!IF(NOT(rxForm), 'display:none;', '')}">
+                            <th>Full time staff veterinarians</th>
+                            <td>{!Lead.Total_number_of_practitioners__c}</td>
+                        </tr>
+                        <tr>
+                            <th>Animals your business works with</th>
+                            <td>{!animalsYourBusinessWorksWith}</td>
+                        </tr>
+            
+                    </table>
+                </apex:outputPanel>
+            </div>
+
+            <div class="section {!IF(Lead.New_Shipping_Location__c, 'no-padding', '')}">
+                <apex:outputPanel rendered="{!NOT(Lead.New_Shipping_Location__c)}" layout="none">
+                    <h4>
+                        Address  Communication Details
+                    </h4>
+                    <div class="sub-section">
+                        <h6>
+                            Billing Address
+                        </h6>
+                        <table cellspacing="0">
+                            <tr>
+                                <th>Billing address</th>
+                                <td>{!billingAddress}</td>
+                            </tr>
+                            
+                            <tr>
+                                <th>Billing email</th>
+                                <td>{!Lead.Billing_Email__c}</td>
+                            </tr>
+                            
+                            <tr>
+                                <th>Billing phone</th>
+                                <td>{!Lead.Billing_Phone__c}</td>
+                            </tr>
+                            
+                            <tr>
+                                <th>Invoice method</th>
+                                <td>{!Lead.Contact_Preference__c}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </apex:outputPanel>
+                <div class="sub-section">
+                    <h6>
+                        Shipping Address
+                    </h6>
+                    <table cellspacing="0">
+                        <apex:repeat value="{!addressList}" var="b" rendered="{!NOT(addressList.empty)}">
+                            <tr>
+                                <apex:outputPanel rendered="{!NOT(Lead.New_Shipping_Location__c)}" layout="none">
+                                    <th>Shipping name {!b.counter}</th>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!Lead.New_Shipping_Location__c}" layout="none">
+                                    <th>New shipping location name</th>
+                                </apex:outputPanel>
+                                <td class="bold-cell">{!b.address.Source_Address_Name__c}</td>
+                            </tr>
+                            <tr>
+                                <th>Shipping address <apex:outputText rendered="!NOT(Lead.New_Shipping_Location__c)">{!b.counter}</apex:outputText></th>
+                                <td>{!b.address.ZTS_Address_Line_1__c},{!b.address.ZTS_EU_City__c},{!b.address.State_Code__c},{!b.address.Zip_Postal_Code__c}</td> 
+                            </tr>
+                            <tr>
+                                <th>Shipping email <apex:outputText rendered="!NOT(Lead.New_Shipping_Location__c)">{!b.counter}</apex:outputText></th>
+                                <td>{!b.address.ZTS_EU_Email__c}</td>
+                            </tr>
+                            <tr class="separator-border">
+                                <th>Shipping phone <apex:outputText rendered="!NOT(Lead.New_Shipping_Location__c)">{!b.counter}</apex:outputText></th>
+                                <td>{!b.address.ZTS_EU_Phone__c}</td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                </div>
+            </div>
+            <div class="section">
+                <apex:outputPanel rendered="{!NOT(Lead.New_Shipping_Location__c)}" layout="none">
+                    <h4>
+                        Authorized Representatives
+                    </h4>
+                </apex:outputPanel>
+                <div class="sub-section">
+                    <h6>
+                        Financially Authorized Person
+                    </h6>
+                    <table cellspacing="0">
+                        <apex:repeat value="{!financiallyAuthPersonList}" var="b" rendered="{!NOT(financiallyAuthPersonList.empty)}">
+                            <tr>
+                                <th>Full name</th>
+                                <td class="bold-cell">{!b.First_Name__c} {!b.Last_Name__c}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{!b.Email__c}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone number</th>
+                                <td>{!b.Phone_Number__c}</td>
+                            </tr>
+                            <apex:outputPanel rendered="{!NOT(Lead.New_Shipping_Location__c)}" layout="none">
+                                <tr class="separator-border">
+                                    <th>Other accounts?</th>
+                                    <td>{!IF(b.Financial_Resp_Other_Zoetis_Accounts__c, 'Yes: ' & b.Additional_Responsible_Accounts__c, 'No')} </td>
+                                </tr>
+                            </apex:outputPanel>
+                        </apex:repeat>
+                    </table>
+                </div>
+                <apex:repeat value="{!shipAddressVetList}" var="b" rendered="{!NOT(shipAddressVetList.empty)}">
+                    <div class="sub-section">
+                        <apex:outputPanel rendered="{!NOT(Lead.New_Shipping_Location__c)}" layout="none">
+                            <h6>
+                                {!b.addressName}, {!b.addressStreet}, {!b.addressCity}
+                            </h6>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!Lead.New_Shipping_Location__c}" layout="none">
+                            <h6>
+                                Veterinarians &amp; Licenses
+                            </h6>
+                        </apex:outputPanel>
+                        <table cellspacing="0">
+                            <tr>
+                                <th>Primary Veterinarian</th>
+                                <td class="bold-cell">{!b.primaryVet.vet.Veterinarian_First_Name__c} {!b.primaryVet.vet.Veterinarian_Last_Name__c}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{!b.primaryVet.vet.Veterinarian_Email__c}</td>
+                            </tr>
+                            <tr>
+                                <th>Also an owner?</th>
+                                <td>{!IF(b.primaryVet.vet.Veterinarian_Role__c == 'Owner', 'Yes', 'No')}</td>
+                            </tr>
+                            <tr>
+                                <th>State license</th>
+                                <td>{!b.primaryVet.vet.State_License__c}</td>
+                            </tr>
+                            <tr class="separator-border">
+                                <th>DEA license</th>
+                                <td>{!b.primaryVet.vet.DEA__c}</td>
+                            </tr>
+                            <apex:repeat value="{!b.additionalVets}" var="additionalVet" rendered="{!NOT(b.additionalVets.empty)}">
+                                <tr>
+                                    <th>Veterinarian</th>
+                                    <td class="bold-cell">{!additionalVet.Veterinarian_First_Name__c} {!additionalVet.Veterinarian_Last_Name__c}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{!additionalVet.Veterinarian_Email__c}</td>
+                                </tr>
+                                <tr>
+                                    <th>Also an owner?</th>
+                                    <td>{!IF(additionalVet.Veterinarian_Role__c == 'Owner', 'Yes', 'No')}</td>
+                                </tr>
+                                <tr>
+                                    <th>State license</th>
+                                    <td>{!additionalVet.State_License__c}</td>
+                                </tr>
+                                <tr class="separator-border">
+                                    <th>DEA license</th>
+                                    <td>{!additionalVet.DEA__c}</td>
+                                </tr>
+                            </apex:repeat>
+                            <tr>
+                                <th>Facility state license</th>
+                                <td>{!b.facilityStateLicense}</td>
+                            </tr>
+                            <tr>
+                                <th>Facility DEA license</th>
+                                <td>{!b.facilityDEA}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </apex:repeat>
+            </div>
+            <div class="section">
+                <div class="sub-section">
+                    <h4>
+                        Documents
+                    </h4>
+                    <table cellspacing="0">
+                        <apex:repeat value="{!leadContentDocLinklist}" var="b" rendered="{!NOT(leadContentDocLinklist.empty)}">
+                            <tr>
+                                <td colspan="2">{!b.ContentDocument.Title}.{!b.ContentDocument.FileType}</td>
+                            </tr>
+                        </apex:repeat>
+                        <apex:outputPanel rendered="{!leadContentDocLinklist.empty}">
+                            <tr>
+                                <td colspan="2">No documents uploaded</td>
+                            </tr>
+                        </apex:outputPanel>
+                        <tr class="separator-border-top">
+                            <th>Additional notes</th>
+                            <td>{!Lead.Additional_Comments__c}</td>
+                        </tr>
+                    </table>   
+                </div>
+            </div>
+            <h4 class="section-header">
+                Signatures
+            </h4>
+            <apex:outputPanel rendered="{!NOT(exemptFromSignature)}" layout="block">
+                <apex:outputPanel rendered="{!Lead.Customer_Sub_Type__c = 'Genetics Services'}" layout="block" styleClass="section">
+                    <div class="genetics-terms-section">
+                        <strong>GENETICS ACCEPTANCE AND AUTHORIZATION (Beef and Dairy)</strong>
+                    </div>
+                    <div class="genetics-terms-section">
+                        <strong> TERMS &amp; CONDITIONS </strong><br />
+                        By signing this form, you agree to the terms and conditions set forth below (the "Agreement") governing your purchase of services (“Services”) from Zoetis LLC (“Zoetis”). If you are entering into this Agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity to these terms and conditions, and that such company or entity shall be financially responsible for any amounts or balances owed or that become due, in which case the terms "you" or "your" or “Customer” shall refer to such entity. This Agreement shall be governed under the laws of New York, United States.   
+                    </div>
+                    <div class="genetics-terms-section">
+                        <strong>1. Warranty &amp; Indemnification</strong> <br />
+                        Other than as expressly set forth in this Agreement, Zoetis has not made any and hereby excludes all warranties, representations, terms, conditions or undertakings, whether express or implied, written or oral, statutory or otherwise, including any implied warranty of merchantability or of fitness for a particular purpose or intended use in respect of the Services, and as such, Services are delivered “as-is.” Zoetis assumes no legal liability or responsibility for the accuracy, completeness, reliability or usefulness of any information disclosed, nor does Zoetis represent that its use would not infringe privately owned rights. All results will be predicated on the accuracy of Customer’s information systems and the completeness of the samples and information provided to Zoetis. You agree that your damages and remedies for any claim against Zoetis arising out of the provision of Services, howsoever arising, (including arising under theories of breach of warranty express or implied, breach of contract, negligence, tort, strict liability, products liability, design defect, failure to warn) shall be limited, at Zoetis‘ option, to: (1) the resupply of the Services claimed to be defective; or (2) the repayment of the fees paid by you for the performance of the Services proven to be defective. Zoetis may, at its discretion, store samples submitted to Zoetis. At any time during this period, Customer may arrange for the samples to be collected from Zoetis at Customer’s sole expense, with a minimum of thirty (30) days’ notice. 
+                    </div>
+                    <div class="genetics-terms-section">
+                        <strong>2. Data Usage</strong> <br />
+                        You agree that Zoetis may use the data provided to Zoetis for the performance of the Services and to improve the quality of our commercial offerings.  Zoetis will not sell or disclose the data to any third party (other than to any representative of Zoetis who is bound by a legal obligation of confidentiality).  Zoetis agrees to protect your data in accordance with Zoetis’ Privacy and Security Principles, a copy of which may be provided to you upon written request.
+                    </div>
+                    <div class="genetics-terms-section">
+                        <strong>3. Specific Consents</strong> <br />
+                        To the extent that specific products require Zoetis to share the results of genetic tests with a third party for the purposes of completing the genetic analyses, the act of ordering such products shall constitute your consent to do so. Examples include distribution of genotypes or genetic predictions to breed associations and societies, genetic evaluation providers, and product distributors. For dairy, this includes the Council of Dairy Cattle Breeding ("CDCB") and/or the United States Department of Agriculture - Animal Genomics Improvement Laboratory ("USDA AGIL"), or other contractors as requested for Services processed.  PLEASE NOTE:  IN ADDITION TO THE RESULTS YOU WILL RECEIVE FROM ZOETIS, ALL CDCB TEST RESULTS MAY BE POSTED ON THE COUNCIL ON DAIRY CATTLE BREEDING WEBSITE: http://www.uscdcb.com. A full list of relevant breed associations and parties that contribute to the analysis relevant to your specific breed of cattle is available upon request by contacting 877-233-3362.
+                    </div>
+                </apex:outputPanel>
+                <div class="section">
+                    <div>
+                        <h6>
+                            Financially Authorized Person(s)
+                        </h6>
+                        
+                        <apex:outputPanel rendered="{!Lead.Customer_Sub_Type__c <> 'Genetics Services'}" layout="block" styleClass="sub-section">
+                            By signing below you hereby provide Zoetis consent to send the company communications and advertisements
+                            (including via facsimile). The signature below represents that (a) the party signing below is an authorized
+                            representative of the company; (b) the party signing below has the authority to bind the company financially
+                            or otherwise, and (c) that the information provided herein is a complete and accurate representation of the
+                            company as of the data hereof. if Veterinarian Owner, sign here and the Veterinarian portion of the form.
+                        </apex:outputPanel>
+                    </div>
+                    <apex:repeat value="{!financialSigners}" var="signer">
+                        <div class="sub-section">
+                            <div class="signer-title"><strong>{!signer.Name}</strong></div>
+                            <div class="signature-section">
+                                <div>
+                                    <div class="name">
+                                        <div class="sign-space">
+                                            {!IF(NOT(downloadPdf), signer.signatureTag, '')}
+                                        </div>
+                                        <div class="label">
+                                            Signature
+                                        </div>
+                                    </div>
+                                    <div class="name">
+                                        <div class="sign-space">
+                                            {!IF(NOT(downloadPdf), signer.Name, '')}
+                                        </div>
+                                        <div class="label">
+                                            Print name
+                                        </div>
+                                    </div>
+                                    <div class="date">
+                                        <div class="sign-space">
+                                            {!IF(NOT(downloadPdf), signer.dateTag, '')}
+                                        </div>
+                                        <div class="label">
+                                            Date
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </apex:repeat>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!NOT(shipAddressVetList.empty)}" layout="block" styleClass="section">
+                <h6>
+                    Primary Veterinarian(s)
+                </h6>
+                      
+                <div class="standalone-text"> By signing below you agree to be responsible for the oversght, ordering and use of Zoetis prescription
+                    products or the animals cared for by this account. Further, you acknowledge and represent that you have and
+                    maintain all licenses and permits required by state and federal law. Please provide Zoetis prompt notice
+                    should you no longer be responsible for dispensing at this facility.</div>
+                    
+                <apex:repeat value="{!shipAddressVetList}" var="vetSigner">
+                    <div class="sub-section">
+                        <div class="signer-title"><strong>{!vetSigner.primaryVet.vet.Veterinarian_First_Name__c} {!vetSigner.primaryVet.vet.Veterinarian_Last_Name__c} - {!vetSigner.addressStreet}, {!vetSigner.addressCity}</strong></div>
+                        <div class="signature-section">
+                            <div>
+                                <div class="name">
+                                    <div class="sign-space">
+                                        {!IF(NOT(downloadPdf), vetSigner.primaryVet.signatureTag, '')}
+                                    </div>
+                                    <div class="label">
+                                        Signature
+                                    </div>
+                                </div>
+                                <div class="name">
+                                    <div class="sign-space">
+                                        {!IF(NOT(downloadPdf), vetSigner.primaryVet.vet.Veterinarian_First_Name__c & ' ' & vetSigner.primaryVet.vet.Veterinarian_Last_Name__c, '')}
+                                    </div>
+                                    <div class="label">
+                                        Print name
+                                    </div>
+                                </div>
+                                <div class="date">
+                                    <div class="sign-space">
+                                        {!IF(NOT(downloadPdf), vetSigner.primaryVet.dateTag, '')}
+                                    </div>
+                                    <div class="label">
+                                        Date
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </apex:repeat>
+            </apex:outputPanel>
+            <div class="standalone-text">
+                We use electronic signatures for our account applications: it's the quickest, safest and easiest way to
+                complete your application. However, if you're unable to sign this way,you can print this document, sign
+                it, and either:
+            </div>
+            
+            <div class="standalone-text">1.&nbsp;<strong>Email</strong> to <a href="mailto:CustomerAccounts@zoetis.com">CustomerAccounts@zoetis.com</a></div>
+            <div>2.<strong> Mail to:</strong><br/>
+                Attn: Zoetis Customer Accounts<br/>
+                2476 Swedesford Road - Suite 250 <br/>
+                Malvern, PA 19355
+            </div>
+            
+        </body>
+    </html>
+</apex:page>

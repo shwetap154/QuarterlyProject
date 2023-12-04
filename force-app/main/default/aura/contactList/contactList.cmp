@@ -1,0 +1,48 @@
+<aura:component controller="SL_RxNewCaseController">
+
+    <aura:attribute name="rows" type="Map[]"/>
+    <aura:attribute name="cols" type="Map[]"/>
+    <aura:attribute name="objCase" type="Object"/>
+    <aura:attribute name="activeSectionName" type="string"/>
+    <aura:attribute name="showCMP" type="Boolean" default="false"/>
+    <aura:attribute name="displayCaseComponent" type="Boolean" default="true"/>
+    <aura:attribute name="showPetOwner" type="Boolean" default="false"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:NewCaseReset" action="{!c.onNewCaseReset}"/>
+    <aura:handler event="c:contactsLoaded" action="{!c.onContactsLoaded}"/>
+    
+    <lightning:card title="Contact List" iconName="standard:contact">
+        <aura:set attribute="actions">
+            
+            <!--<c:caseNewContact objCase="{!v.objCase}"/>-->
+            <aura:if isTrue="{!not(v.objCase.objectApiName == 'Contact' )}">
+                <c:newContact objCase="{!v.objCase}"/>
+                <aura:if isTrue="{!v.showPetOwner}">
+                	<c:newPetOwnerContactOnCase objCase="{!v.objCase}"/>
+                </aura:if>
+                <button class="slds-button slds-button_neutral" onclick="{!c.noContactSelected}">No Contact</button>
+            </aura:if>
+        </aura:set>
+        <aura:if isTrue="{!v.showCMP}" >
+            <lightning:datatable    data="{!v.rows}"
+                                    columns="{!v.cols}" 
+                                    keyField="Id"
+                                    aura:id="contactList"
+                                    hideCheckboxColumn="false"
+                                    showRowNumberColumn="true"
+                                    onrowselection="{!c.selectedContacts}"
+                                    maxRowSelection = "1"/>
+
+            <aura:set attribute="else">
+                <aura:if isTrue="{!v.objCase.objectApiName == 'Contact'}">
+                    You lauched the screen from the related list.
+                    <aura:set attribute="else">
+                        No contact record found.
+                    </aura:set>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+    </lightning:card>
+    
+</aura:component>

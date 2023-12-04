@@ -1,0 +1,30 @@
+<template>
+    <lightning-card class="slds_spinner-container">
+
+        <lightning-record-edit-form  object-api-name="Case" record-id={recordId} density="comfy" onload={handleFormLoad}>
+        
+        <div if:false={formLoaded}>
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+
+        <div class="form-container slds-m-around_small">
+
+                <lightning-input-field data-assetid field-name="AssetId" value={selectedAssetId} onchange={handleAssetChange}></lightning-input-field>
+                <lightning-input-field data-pcid  field-name="ZTS_US_Primary_Consumable__c"  value={selectedPrimaryConsumableId} onchange={handlePrimaryConsumableChange}></lightning-input-field>
+            
+            
+            <template if:true={renderPrimaryCodeSelector}>
+                <c-error-code-lookup selection={selectedPrimaryErrorCode} 
+                                    onsearch={handleSearch} 
+                                    onselectionchange={handlePrimaryErrorCodeChange}  
+                                    label="Primary Error Code"
+                                    placeholder="Search For Primary Error Codes">
+                </c-error-code-lookup>           
+            </template>
+        </div>   
+        </lightning-record-edit-form>
+
+        <button class="slds-button slds-button_brand slds-align_absolute-center" onclick={handleSaveButtonClick}>Update Case</button>
+        
+    </lightning-card>
+</template>

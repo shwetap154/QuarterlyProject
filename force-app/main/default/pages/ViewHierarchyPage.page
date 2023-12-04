@@ -1,0 +1,35 @@
+<!--
+//************************************************************************************* 
+// Name: ViewHierarchy Page
+// Description: Customized Account Hierarchy View 
+// Created By: Sohil Shah (CloudSense)
+// Created: September 05 2014 
+// 
+// ************************Version Updates******************************************** 
+// 
+// Updated By         Updated Date      Update Comments  
+// Sohil Shah       October 21 2014     In order to handle the FLS for logged in USer
+// ************************************************************************************ 
+-->
+<apex:page standardController="Account" extensions="ViewHierarchyController" id="pageId" LightningStyleSheets="true">
+    <apex:form id="formId">
+    <apex:pageBlock id="pgeBlkId">
+        <apex:pageBlockSection title="Parent Account is {!ParentAccountName }" columns="3" id="pgBlkSecId">               
+        </apex:pageBlockSection>
+        <br/> 
+       <apex:pageBlockTable id="tableAccounts" value="{!accountNodeList}" var="A">
+            <apex:column headerValue="Account name" width="30%" id="accntName">
+                <img style="padding-left:{!A.spanPadding}px;" src="{!$Resource.arrow}" />
+                <apex:outputLink value="/{!A.Account.id}" id="accntId">{!A.Account.Name}</apex:outputLink>
+            </apex:column> 
+            <apex:column value="{!A.Account.ZTS_EU_Address_Line_1__c}" id="addline1"/>   
+            <apex:column value="{!A.Account.ZTS_EU_Zip_Postal_Code__c}" id="zipPostal"/>   
+            <apex:column value="{!A.Account.ZTS_EU_Main_Phone__c}" id="mainPhone"/>
+            <!--<apex:column value="{!A.Account.ZTS_EU_Vetsave_ID__c}" id="vetSaveID"/> -->                            
+            <apex:column rendered="{!!code}"  value="{!A.Account.ZTS_EU_Vetsave_ID__c}" id="vetSaveID"/>
+            <apex:column rendered="{!code}" value="{!A.Account.ZTS_EU_VAT_Code__c}" id="vetCodeID"/>
+            <apex:column rendered="{!city}" value="{!A.Account.ZTS_EU_City__c}" id="vetCityID"/> 
+        </apex:pageBlockTable>       
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

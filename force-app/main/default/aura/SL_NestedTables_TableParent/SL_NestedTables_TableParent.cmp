@@ -1,0 +1,97 @@
+<!--
+ - Created by jerridkimball on 2018-05-17.
+ -->
+
+<aura:component
+    description="SL_NestedTables_TableParent"
+    implements="c:SL_NestedTables_ITableMain,c:SL_NestedTables_ITableNested"
+    extends="c:SL_NestedTables_TableBase"
+>
+    <aura:attribute name="mainRowsExpanded" type="Boolean" default="false" />
+    <aura:attribute name="nestedSVGName" type="String" />
+    <aura:attribute name="nestedEnableNew" type="Boolean" default="false"  /> 
+	<aura:attribute name="profileAccessForObject" type="Object"   />
+    <aura:set attribute="isInfiniteScrollEnabled" value="false" />
+
+    <div
+        aura:id="infiniteScrollDiv"
+        id="infiniteScrollDiv"
+        class="{!(v.isInfiniteScrollEnabled ? 'infiniteScrollDiv' : 'slds-scrollable_x')}"
+        style="overflow: visible"
+    >
+    <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-hover slds-table-expandable " style="table-layout:fixed;"><!--  role="treegrid" aria-readonly="true"-->
+
+        <!-- - - - - -->
+        <!-- Header  -->
+        <!-- - - - - -->
+
+        <thead>
+        <tr class="slds-text-title_caps ">
+            <th scope="col" title="Icon" style="width:3%;">
+                <lightning:buttonIcon class="slds-hide" iconName="{!v.mainRowsExpanded ? 'utility:chevrondown' : 'utility:chevronright'}" size="medium" title="" alternativeText="" onclick="{!c.toggleExpanded}" variant="bare" />
+            </th>
+
+            <aura:iteration items="{!v.fieldMap}" var="fldH" indexVar="index">
+                
+                <th class="{!'slds-truncate  slds-size_' + fldH.columnWidth + '-of-12'}" scope="col" title="{#fldH.label}">
+                    <div>
+                        <!--<div class="sortcol hidden">{#field}</div>-->
+                        <span class="slds-truncate slds-text-link_reset">{#fldH.label}
+                            <aura:if isTrue="{!v.mainSortField == fldH.apiName}">
+                                <aura:if isTrue="{!v.mainSortDirection == 'ASC'}">
+                                    <lightning:icon aura:id="arrowup" iconName="utility:arrowup" size="xx-small" />
+                                </aura:if>
+                                <aura:if isTrue="{!v.mainSortDirection == 'DESC'}">
+                                    <lightning:icon aura:id="arrowdown" iconName="utility:arrowdown" size="xx-small" />
+                                </aura:if>
+                            </aura:if>
+                        </span>
+                    </div>
+                </th>
+            </aura:iteration>
+
+            <th style="width:5.33%" scope="col">
+                <div title="&nbsp;" class="slds-truncate">&nbsp;</div>
+            </th>
+        </tr>
+        </thead>
+
+        <!-- - - - -->
+        <!-- Body  -->
+        <!-- - - - -->
+
+        <tbody>
+        <aura:iteration items="{!v.currentRecords}" var="rec" indexVar="i">
+            <c:SL_NestedTables_TableRowParent
+                currentRecord="{!rec}"
+                fieldMap="{!v.fieldMap}"
+
+                isExpandedByDefault="{!v.mainRowsExpanded}"
+                nestedSVGName="{!v.nestedSVGName}"
+                nestedEnableNew = "{!v.nestedEnableNew}"
+
+                mainObjectName="{!v.nestedObjectName}" 
+                mainFieldList="{!v.nestedFieldList}"
+                mainTitle="{!v.nestedTitle}"
+                mainSortField="{!v.nestedSortField}"
+                mainSortDirection="{!v.nestedSortDirection}"
+                mainQueryFilter="{!v.nestedQueryFilter}"
+                mainLookupFieldName="{!v.nestedLookupFieldName}"
+
+                mainEnableEditButton="{!v.mainEnableEditButton}"
+                mainEnableDeleteButton="{!v.mainEnableDeleteButton}"
+
+                nestedEnableEditButton="{!v.nestedEnableEditButton}"
+                nestedEnableDeleteButton="{!v.nestedEnableDeleteButton}"
+
+                mainColumnWidths="{!v.nestedColumnWidths}"
+
+                nestedNumberOfRecords="{!v.nestedNumberOfRecords}"
+                                              
+                profileAccessForObject="{!v.profileAccessForObject}"
+            />
+        </aura:iteration>
+        </tbody>
+    </table>
+    </div>
+</aura:component>

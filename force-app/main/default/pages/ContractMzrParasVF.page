@@ -1,0 +1,2 @@
+<apex:page standardController="Contract" extensions="ContractDetailViewController" action="{!doParasRedirectLc}">
+</apex:page>

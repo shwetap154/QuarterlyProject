@@ -1,0 +1,9 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" access="global" >
+	<div class="slds-align_absolute-center" style="height:14rem;">
+        
+        <a href="https://www.zoetis.com/" target="_blank">
+            <p style="text-align:center;font-weight:bold;font-family:arial;font-size:2.2em;">Events and Congresses</p>
+            <img style='width:35%;' class="slds-align_absolute-center" src="/sfsites/c/resource/1560289433000/Icon_Calendar?" ></img> 
+        </a> 
+    </div>
+</aura:component>

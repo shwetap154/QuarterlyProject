@@ -1,0 +1,445 @@
+<!--
+    @@Puropose: Displaying calendar for monthly planning, and allow it to create calls
+    @@Author: Ilirjana Predojević
+    @@Modification : Sohil Shah on 5th Aug,2015 for DEF-001265 : Cross brwser issue + drag and drop issue + call update issue
+    @@Modification : Sohil Shah on 14th Dec, 2015 for SC-002047 : Account Search Functionality
+-->
+<apex:page sidebar="false" id="pg" controller="ZTS_MonthlyPlanning" LightningStyleSheets="true">
+    
+    <apex:slds />
+    <style>
+        .slds-scope .filtersTable td, .slds-scope .filtersTable th
+        {
+            padding-bottom: 10px;
+        }
+        body .pbBody, .slds-vf-scope .pbBody
+        {
+            overflow: unset;
+        }
+    </style>
+    <div class="slds-scope slds-p-horizontal_medium">
+         <!-- Full Calendar related plugins -->
+        <apex:stylesheet value="{!$Resource.FullCalendar_CSS}"/>
+        <apex:includescript value="{!$Resource.jqueryminjs}"/>
+        <apex:includescript value="{!$Resource.momentminjs}"/>
+        <apex:includescript value="{!$Resource.Fullcalendarjs}"/>
+        <apex:includescript value="{!$Resource.lang_allJS}"/>
+        <apex:includescript value="{!$Resource.dateFormatter}"/>
+        <apex:includescript value="{!$Resource.tablesorterminjs}"/>
+        <apex:includescript value="{!$Resource.Json2}"/>
+        <!-- Jquery draggable plugins -->
+        <apex:stylesheet value="{!$Resource.jQueryUICSS}"/>
+        <apex:includescript value="{!$Resource.jQueryUIJS}"/>
+         
+        <!-- Custom styles related to pop up, close button , date picker -->
+        <apex:stylesheet value="{!$Resource.fullCalendarCustomCss}"/>
+    
+        <!-- Custom styles related to filters and account list -->
+        <apex:stylesheet value="{!$Resource.monthlyPlanningAccountList}"/>
+        <script> 
+        
+           var eventLst = "{!eventJSON}";   
+            eventLst = eval('(' + eventLst + ')');          
+            var holidayLst = JSON.parse('{!lstHolidays}');
+            var accId = '{!JSENCODE(accId)}';
+            var accName = '{!JSENCODE(accName)}';
+            var userLanguage = '{!JSENCODE(userLanguage)}';
+            var TimeZoneVal = '{!JSENCODE(TimeZoneVal)}';
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+            
+            $(document).ready(function(){ 
+                $('.bPageTitle').hide();  
+                $("[id$=pbTable]").tablesorter();
+                
+                function renderCalendar() 
+                {
+                    var calendar = $('#calendar').fullCalendar({
+    
+                        header:{
+                            right: 'prev,next today',
+                            center: 'title',
+                            left: 'month,agendaWeek,agendaDay'
+                        },
+                        
+                        firstDay : 1,
+                        
+                        /*
+                            defaultView option used to define which view to show by default,
+                            for example we have used month.
+                        */ 
+                        defaultView: 'month',
+                        lang: userLanguage,
+                        
+                        /*
+                            selectable:true will enable user to select datetime slot
+                            selectHelper will add helpers for selectable.
+                        */
+                        selectable: true,
+                        selectHelper: true,
+                        disableResizing: false,
+                        select: false,
+                       
+                        /*
+                            editable: true allow user to edit events.
+                        */
+                        editable: true,
+                        
+                        /*
+                            droppable: true, allow user to drop dom elements.
+                        */
+                        
+                        eventDrop: function(event, delta, revertFunc) {
+                            if (!confirm("{!$Label.AreYouSure}")) {
+                                revertFunc();
+                            }
+                            else {
+                                
+                                updateCall(event.start.format(), event.url);  
+                                 //alert('event.url---'+event.url);   
+                                console.log(event.url);
+                                
+                            }
+                        },
+                        droppable: true,
+                        dropAccept: '.cool-event',
+                        drop: function(date,allDay) {
+                            createEventORCall(date, this.id);
+                            //reRenderTable();
+                            console.log(this.id);
+                        },
+                        events: eventLst,
+                        eventRender: function(event, element) {
+                            var div = document.createElement('div');
+                            div.innerHTML = event.account;
+                            var decoded = div.firstChild.nodeValue; //decode Name so system displays string, eg. A & B instead of A &amp B
+                            element.attr('title', decoded);
+                        },
+                        eventDurationEditable: false,
+                        height: 700,
+                        eventAfterAllRender: function (view) {
+                            var holidayMoment;
+                            var classNames;
+                            var classNamesArray
+                            for(var i = 0; i < holidayLst.length; i++) {    
+                                console.log(holidayLst[i]);
+                                holidayMoment = moment(holidayLst[i],'YYYY-MM-DD');
+                                $("td[data-date=" + holidayMoment.format('YYYY-MM-DD') + "]").addClass('holiday');
+                                classNames = $("th:contains(' " + holidayMoment.format('M/D') + "')").attr("Id");
+                                if (classNames != null) {
+                                    classNamesArray = classNames.split(" ");
+                                    console.log(classNamesArray);
+                                    for(var i = 0; i < classNamesArray.length; i++) {
+                                        if(classNamesArray[i].indexOf('fc-col') > -1) {
+                                            $("td." + classNamesArray[i]).addClass('holiday');
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                  });
+                  
+                    if(document.getElementById("spinner").classList.contains('slds-show'))
+                    {
+                        document.getElementById("spinner").classList.remove('slds-show');
+                        document.getElementById("spinner").classList.add('slds-hide');
+                    }
+                    document.getElementById("spinner").classList.add('slds-hide');
+                }
+                
+                $(".AccBackgroundStyle").draggable({
+                    revert: true,      
+                    revertDuration: 0, 
+                    start: function(event, ui) {}
+                });
+                
+                function createEventORCall(date, accId)
+                {
+                    if ( document.getElementById("spinner").classList.contains('slds-hide') )
+                        document.getElementById("spinner").classList.remove('slds-hide');
+                    document.getElementById("spinner").classList.add('slds-show');
+                    
+                    var account = accId;
+                    
+                    var tempDate = new Date(date); 
+                    var offset = new Date().getTimezoneOffset();
+                    offset = parseInt(offset);
+                    tempDate = tempDate.setMinutes(tempDate.getMinutes() + offset);
+                    tempDate = new Date(tempDate);
+                    var format = "MM/dd/yyyy hh:mm a";
+                    var startDate = formatDate(tempDate,format);
+                    var endDate = tempDate.setHours(tempDate.getHours()+1);
+                    endDate = formatDate(tempDate,format);
+                    var offset = new Date().getTimezoneOffset();
+                  
+                    Visualforce.remoting.Manager.invokeAction(
+                     
+                        '{!$RemoteAction.ZTS_MonthlyPlanning.saveCall}',account,startDate,TimeZoneVal,function(result, event){
+                            if(result != null){
+                                if(result.indexOf("Exception") != -1){
+                                //alert(result);
+                                    result = result.replace('Exception','');
+                                    var errorPanel = document.getElementById("pg:salesCallPg:pg:frm:op");
+                                    if(errorPanel){
+                                        $('[id$=errorPanel]').addClass("errorMsg");
+                                        errorPanel.innerHTML = result;
+                                                                        }
+                                }else{
+                                    reRenderTable(); //IP 16-Feb-15 ReRender list of accounts (next call date)
+                                    var element = {};
+                                    //Creating JSON element  and adding it to Event JSON 
+                                    result = result.split("~");
+                                    element.title = result[0];
+                                    element.start = result[1];
+                                    element.end = result[2];
+                                    element.url = result[3];
+                                    element.account = result[4];
+                                    eventLst.push(element);
+                                    renderCalendar();
+                                    $("#calendar").fullCalendar('removeEvents'); 
+                                    $("#calendar").fullCalendar('addEventSource', eventLst);
+                                } 
+                            }
+                        }
+                    );
+                    
+                }
+                    
+                function updateCall(date, callId){                   
+                        var callId = callId;
+                        var tempDate = new Date(date);
+                        var offset = new Date().getTimezoneOffset();
+                        offset = parseInt(offset);
+                        /*
+                         * By Sohil 5th Aug,2015 DEF-001265  Cross browser Issue
+                        */   
+                        var isChrome = !!window.chrome && !isOpera;                  
+                        var isIE = /*@cc_on!@*/false || !!document.documentMode;               
+                        var isFirefox = typeof InstallTrigger !== 'undefined';
+                        if(isIE == true || isFirefox == true)
+                        {
+                            tempDate = tempDate.setMinutes(tempDate.getMinutes()); 
+                        }   
+                        if(isChrome == true )
+                        {
+                            tempDate = tempDate.setMinutes(tempDate.getMinutes() + offset);     
+                        }
+                        // EOC by Sohil Shah DEF-001265  Cross browser Issue
+                        tempDate = new Date(tempDate);
+                        var format = "MM/dd/yyyy hh:mm a";
+                    <!--     var startDate = tempDate; -->                               
+                        var startDate = formatDate(tempDate,format);
+                        //alert('startDate --1----'+startDate );
+    
+                        Visualforce.remoting.Manager.invokeAction(
+                            '{!$RemoteAction.ZTS_MonthlyPlanning.updateCall}',callId,startDate,TimeZoneVal,function(result, event){
+                                if(result != null){
+                                    if(result.indexOf("Exception") != -1){
+                                        result = result.replace('Exception','');
+                                        var errorPanel = document.getElementById("pg:salesCallPg:pg:frm:op");
+                                        if(errorPanel){
+                                            $('[id$=errorPanel]').addClass("errorMsg");
+                                            errorPanel.innerHTML = result;
+                                                                               }
+                                    }else{
+                                        reRenderTable(); //IP 16-Feb-15 ReRender list of accounts (next call date)
+                                        var element = {};
+                                        //Creating JSON element  and adding it to Event JSON 
+                                        result = result.split("~");
+                                        element.title = result[0];
+                                        element.start = result[1];
+                                        element.end = result[2];
+                                        element.url = result[3];
+                                        element.account = result[4];
+                                        console.log(element);
+                                        
+                                        for (i = 0; i < eventLst.length; i++) { 
+                                            if(eventLst[i].url === element.url) { eventLst[i] = element; }
+                                        }
+                                        renderCalendar();
+                                        $("#calendar").fullCalendar('removeEvents'); 
+                                        $("#calendar").fullCalendar('addEventSource', eventLst);
+                                    }
+                                }
+                            }
+                        );
+                    }
+                
+                $('#calendar').fullCalendar('destroy');
+                renderCalendar();
+                
+            });
+        
+          function makeAccsDraggableAndSortable(){
+            $("[id$=pbTable]").tablesorter();
+            $(".AccBackgroundStyle").draggable({
+                revert: true,       
+                revertDuration: 0,
+                start: function(event, ui) {}
+            });
+          }
+          
+          function openMonthlyMetricsPage(){
+              window.open('/apex/ZTS_MonthlyMetrics', "_blank", "scrollbars=yes, resizable=yes, top=100, left=255, width=1000, height=520");
+              return false;
+          }
+        </script>  
+        <!-- SPINNER -->
+                <div id="spinner" class="slds-spinner_container slds-is-fixed" >
+                    <div role="status" class="slds-spinner slds-spinner_medium slds-spinner--brand">
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+                <!--<div class="slds-backdrop slds-backdrop_open"></div>-->
+        <!-- / SPINNER -->
+        <table>
+            <tr style="vertical-align:top;" class="slds-grid">
+                <td class="slds-size_1-of-2 slds-large-size_8-of-12">
+                    <apex:form >
+                    <apex:pageMessages id="pm"></apex:pageMessages>
+                        <apex:pageBlock id="ThePage">
+                            <table class="filtersTable">
+                                <tr>
+                                    <td>
+                                        <apex:outputLabel >{!$Label.StateCounty}</apex:outputLabel> <br />
+                                   <!-- </td>
+                                    <td>-->
+                                        <apex:selectList size="1" value="{!selectedState}">
+                                            <apex:actionSupport event="onchange" rerender="pbSection" oncomplete="makeAccsDraggableAndSortable();"/>
+                                            <apex:selectOptions value="{!states}"/>
+                                        </apex:selectList>
+                                    </td>
+                                    <td>
+                                        <apex:outputLabel >{!$Label.BU}</apex:outputLabel> <br />
+                                    <!--</td>
+                                    <td>-->
+                                        <apex:selectList size="1" value="{!selectedRatingLabel}">
+                                            <apex:actionSupport event="onchange" rerender="ratingValues,pbSection" oncomplete="makeAccsDraggableAndSortable();"/>
+                                            <apex:selectOptions value="{!ratingLabels}"/>
+                                        </apex:selectList>
+                                    </td>
+                                    <td>
+                                        <apex:outputLabel >{!$Label.AccountType}</apex:outputLabel> <br />
+                                    <!--</td>
+                                    <td>-->
+                                        <apex:selectList size="1" value="{!selectedAccType}">
+                                            <apex:actionSupport event="onchange" rerender="pbSection" oncomplete="makeAccsDraggableAndSortable();"/>
+                                            <apex:selectOptions value="{!accTypes}"/>
+                                        </apex:selectList>
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td>
+                                        <apex:outputLabel title="{!$Label.EnterTextToFilter}">{!$Label.City}</apex:outputLabel> <br />
+                                    <!--</td>
+                                    <td>-->
+                                        <apex:inputText title="{!$Label.EnterTextToFilter}" value="{!selectedCity}">
+                                            <apex:actionSupport event="onchange" rerender="pbSection" oncomplete="makeAccsDraggableAndSortable();"/>
+                                        </apex:inputText>
+                                    </td>
+                                    <td>
+                                        <apex:outputLabel >{!$Label.Rating_Segmentation}</apex:outputLabel> <br />
+                                    <!--</td>
+                                    <td>-->
+                                        <apex:selectList id="ratingValues" size="1" value="{!selectedRatingValue}">
+                                            <apex:actionSupport event="onchange" rerender="pbSection" oncomplete="makeAccsDraggableAndSortable();"/>
+                                            <apex:selectOptions value="{!ratingValues}"/>
+                                        </apex:selectList>
+                                    </td>
+                                    <td>
+                                        <apex:outputLabel >{!$Label.NextCall}</apex:outputLabel> <br />
+                                    <!--</td>
+                                    <td>-->
+                                        <apex:selectList id="nextCall" size="1" value="{!selectedNextCall}">
+                                            <apex:actionSupport event="onchange" rerender="pbSection" oncomplete="makeAccsDraggableAndSortable();"/>
+                                            <apex:selectOptions value="{!nextCallValues}"/>
+                                        </apex:selectList>
+                                    </td>
+                                    <td>
+                                        <apex:commandButton value="{!$Label.ClearFilters}" id="btnClearFilters" rerender="ThePage">
+                                            <apex:actionSupport event="onclick" action="{!clearFilters}" oncomplete="makeAccsDraggableAndSortable();"/>
+                                        </apex:commandButton>
+                                    </td>
+                                </tr>
+                                <!-- Sohil Shah on 14th Dec, 2015 for SC-002047 : Account Search Functionality -->
+                                <tr>
+                                    <td width="250">
+                                        <apex:outputLabel value="Search Account: " /> <br />
+                                    <!--</td>
+                                    <td>-->
+                                        <apex:inputText value="{!AccountName}" /> &nbsp;
+                                    </td>
+                                    <td>
+                                        <apex:commandButton value="Search " action="{!executeSearch}" reRender="pbTable,pagination" status="actStatusId" oncomplete="makeAccsDraggableAndSortable();" style="margin-top: 1.25rem;">                                      
+                                          </apex:commandButton>                                                               
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        <apex:actionStatus id="actStatusId" >
+                                        <apex:facet name="start" >
+                                          <img src="/img/loading.gif" />                    
+                                        </apex:facet>
+                                    </apex:actionStatus>
+                                    <font color="blue"><br/> 
+                                    <i><apex:outputLabel value="Enter Account Name and click Search to find the accounts you wish to schedule a call" /></i></font> 
+                            <!--EOC Sohil Shah on 14th Dec, 2015 for SC-002047 : Account Search Functionality -->
+                            <apex:pageBlockSection columns="1" id="pbSection">
+                              <apex:outputLabel styleClass="errMsg" rendered="{!doesUserHaveMoreThan2kAccs}">
+                                {!$Label.MoreThanMaxAccs}
+                              </apex:outputLabel>
+                              <apex:actionFunction name="reRenderTable" reRender="pbTable" action="{!reRenderTable}" oncomplete="makeAccsDraggableAndSortable();"/>
+                              <apex:dataTable id="pbTable" value="{!lstSetController }" var="accW" styleClass="tablesorter">
+                                  <apex:column headerValue="{!$Label.Account}"> 
+                                      <div id="accContainer">
+                                          <div id="{!accW.Account.Id}" class="AccBackgroundStyle" title="{!$Label.ZTS_FC_Help_Text}">{!accW.Account.Name}</div>
+                                      </div>
+                                  </apex:column>
+                                  <apex:column headerValue="{!$Label.StateCounty}" value="{!accW.Account.ZTS_EU_State_County_Value__c}"/>                               
+                                  <apex:column headerValue="{!$Label.City}" value="{!accW.Account.ZTS_EU_City__c}"/>
+                                  <apex:column headerValue="{!$Label.Rating_Segmentation}" value="{!accW.ratingFromSegment}" rendered="{!displayRatingAndPotential}"/>
+                                  <apex:column headerValue="{!$Label.Potential}" value="{!accW.potentialValue}" rendered="{!displayRatingAndPotential}" styleClass="colTextRight"/>
+                                  <apex:column headerValue="{!$Label.AccountType}" value="{!accW.Account.Type}"/>
+                                  <apex:column headerValue="{!$Label.Days_since_last_visit}" value="{!accW.numberOfDaysSinceLastCall}" styleClass="colTextRight"/>
+                                  <apex:column headerValue="{!$Label.Account_owner}" value="{!accW.accountOwner}"/>
+                                  <apex:column headerValue="{!$Label.NextCall}" styleClass="colTextCenter" rendered="{!displayNextCall}">
+                                      <apex:inputCheckbox value="{!accW.hasCallInNext30Days}" onclick="return false" rendered="{!accW.hasCallInNext30Days}"/>
+                                  </apex:column>
+                                  <apex:column headerValue="{!$Label.NextCallDate}" value="{!accW.nextCallOn}" rendered="{!displayNextCall}"/>
+                              </apex:dataTable>
+                             
+                              <apex:outputPanel id="pagination">
+                                  <apex:commandButton value="<<" rendered="{!hasPrevious}" reRender="ThePage">
+                                      <apex:actionSupport event="onclick" action="{!first}" oncomplete="makeAccsDraggableAndSortable();"/>
+                                  </apex:commandButton>
+                                  <apex:commandButton value="<" rendered="{!hasPrevious}" reRender="ThePage">
+                                      <apex:actionSupport event="onclick" action="{!previous}" oncomplete="makeAccsDraggableAndSortable();"/>
+                                  </apex:commandButton>
+                                  <apex:commandButton value=">" rendered="{!hasNext}" reRender="ThePage">
+                                      <apex:actionSupport event="onclick" action="{!next}" oncomplete="makeAccsDraggableAndSortable();"/>
+                                  </apex:commandButton>
+                                  <apex:commandButton value=">>" rendered="{!hasNext}" reRender="ThePage">
+                                      <apex:actionSupport event="onclick" action="{!last}" oncomplete="makeAccsDraggableAndSortable();"/>
+                                  </apex:commandButton>
+                                  <apex:outputText value="{!accounts.size}" styleClass="textRight"/>
+                                  <apex:outputText value="/" styleClass="textRight"/>
+                                  <apex:outputText value="{!footerNumberOfAccounts}" styleClass="textRight"/>
+                              </apex:outputPanel>  
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+                        <apex:commandButton value="{!$Label.ZTS_EU_MonthlyMetrics}" onclick="return openMonthlyMetricsPage();"/>
+                        
+                    </apex:form>
+                    <br/>
+                </td>
+                <td class="slds-size_1-of-2 slds-large-size_4-of-12">
+                    <div style="margin-left:15px;" id='calendar'></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</apex:page>

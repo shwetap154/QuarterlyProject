@@ -1,0 +1,13 @@
+.THIS.Accordian {
+  font-family: Arial;
+}
+
+.THIS.label {
+  width: 66%;
+  font-family: arial;
+}
+
+.THIS .slds-accordion__summary-heading {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
